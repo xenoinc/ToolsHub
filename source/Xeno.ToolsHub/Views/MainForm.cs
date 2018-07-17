@@ -33,10 +33,6 @@ namespace Xeno.ToolsHub.Views
       base.WndProc(ref m);
     }
 
-    private void MainForm_Load(object sender, EventArgs e)
-    {
-    }
-
     private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
     {
       if (_systemShutdown)
@@ -44,7 +40,7 @@ namespace Xeno.ToolsHub.Views
         // Reset the variable because the user might cancel the shutdown
         _systemShutdown = false;
 
-        //TODO: 
+        //TODO:
         if (DialogResult.Yes == MessageBox.Show("My application", "Do you want to save your work before logging off?", MessageBoxButtons.YesNo))
         {
           e.Cancel = true;
@@ -54,6 +50,10 @@ namespace Xeno.ToolsHub.Views
           e.Cancel = false;
         }
       }
+    }
+
+    private void MainForm_Load(object sender, EventArgs e)
+    {
     }
   }
 }

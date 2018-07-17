@@ -3,19 +3,20 @@
  * Author:  Damian Suess
  * File:    Program.cs
  * Description:
- *  
+ *
  */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Win32;
+using Xeno.ToolsHub.ExtensionModel;
+using Xeno.ToolsHub.Helpers;
+
+[assembly: Mono.Addins.AddinRoot("ToolsHub", "1.0")]
 
 namespace Xeno.ToolsHub
 {
-  static class Program
+  internal static class Program
   {
     public static bool AbortShutdown = false;
 
@@ -23,15 +24,72 @@ namespace Xeno.ToolsHub
     /// The main entry point for the application.
     /// </summary>
     [STAThread]
-    static void Main()
+    private static void Main()
     {
-      RegisterSystemEvents();
+      InitMonoAddins();
+
+      InitSystemEvents();
 
       Application.EnableVisualStyles();
       Application.SetCompatibleTextRenderingDefault(false);
       Application.Run(new Views.MainForm());
     }
-    private static void RegisterSystemEvents()
+
+    #region Add-ins
+
+    private static void InitMonoAddins()
+    {
+      Mono.Addins.AddinManager.AddinLoaded += OnAddinLoaded;
+      Mono.Addins.AddinManager.AddinUnloaded += OnAddinUnloaded;
+
+      Mono.Addins.AddinManager.Initialize(".");
+      Mono.Addins.AddinManager.Registry.Rebuild(null);  // Rebuild registry when debugging
+      Mono.Addins.AddinManager.AddExtensionNodeHandler(Helpers.ExtensionPaths.AppInitializePath, OnInitExtensionChanged);
+    }
+
+    private static void OnAddinLoaded(object sender, Mono.Addins.AddinEventArgs args)
+    {
+      Mono.Addins.Addin addin = Mono.Addins.AddinManager.Registry.GetAddin(args.AddinId);
+      Log.Debug($"=============================");
+      Log.Debug($"OnAddinLoaded: {args.AddinId}");
+      Log.Debug($"         Name: '{addin.Name}'");
+      Log.Debug($"  Description: '{addin.Description.Description}'");
+      Log.Debug($"    Namespace: '{addin.Namespace}'");
+      Log.Debug($"      Enabled: '{addin.Enabled}'");
+      Log.Debug($"         File: '{addin.AddinFile}'");
+      Log.Debug("= = = = = = = = = = = = =");
+    }
+
+    private static void OnAddinUnloaded(object sender, Mono.Addins.AddinEventArgs args)
+    {
+      Log.Debug($"OnAddinUnloaded: {args.AddinId}");
+    }
+
+    private static void OnInitExtensionChanged(object sender, Mono.Addins.ExtensionNodeEventArgs args)
+    {
+      Mono.Addins.TypeExtensionNode extNode = args.ExtensionNode as Mono.Addins.TypeExtensionNode;
+      IStartupExtension ext = (IStartupExtension)args.ExtensionObject;
+      ext.Run();
+
+      Log.Debug("###########################");
+      Log.Debug("OnStartChanged");
+      Log.Debug($"  Id      - '{args.ExtensionNode.Id}'");
+      Log.Debug($"  Path    - '{args.Path}'");
+      Log.Debug($"  Node    - '{args.ExtensionNode}'");
+      Log.Debug($"  Object  - '{args.ExtensionObject}'");
+      Log.Debug($"  Changed - '{args.Change.ToString()}'");
+      Log.Debug("   --[ ExtensionNode ]------");
+      Log.Debug($"  Id      - '{extNode.Id}'");
+      Log.Debug($"  ToString- '{extNode.ToString()}'");
+      Log.Debug($"  TypeName- '{extNode.TypeName}'");
+      Log.Debug("  Running...");
+    }
+
+    #endregion Add-ins
+
+    #region System Events
+
+    private static void InitSystemEvents()
     {
       // https://msdn.microsoft.com/en-us/library/microsoft.win32.systemevents.aspx
       SystemEvents.SessionEnding += SystemEvents_SessionEnding;
@@ -46,15 +104,23 @@ namespace Xeno.ToolsHub
     private static void SystemEvents_SessionEnding(object sender, SessionEndingEventArgs e)
     {
       // Occurs when the user is trying to log off or shut down the system
-      
+
+      foreach (Mono.Addins.TypeExtensionNode node in Mono.Addins.AddinManager.GetExtensionNodes(ExtensionPaths.SystemShutdownPath))
+      {
+        ISystemShutdownExtension ext = (ISystemShutdownExtension)node.CreateInstance();
+        Log.Debug($"  Running add-in titled, '{ext.Title}'");
+        ext.Run();
+      }
+
       if (AbortShutdown == true)
       {
         e.Cancel = true;
-
         // old abort shutdown
         //string cmd = "shutdown /a";
         //System.Diagnostics.Process.Start(cmd);
       }
     }
+
+    #endregion System Events
   }
 }

@@ -1,20 +1,20 @@
 ﻿/* Copyright Xeno Innovations, Inc. 2018
  * Date:    2018-7-17
  * Author:  Damian Suess
- * File:    Constants.cs
+ * File:    Log.cs
  * Description:
- *  
+ *
  */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Xeno.ToolsHub.Helpers
 {
-  class Constants
+  public static class Log
   {
+    public static void Debug(string value)
+    {
+      Console.WriteLine(value);
+    }
   }
 }
