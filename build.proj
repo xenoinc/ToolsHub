@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <Import Project="BuildProperties.resx" />
+
+  <Target Name="CompileCode" DependsOnTargets="CleanOutput;CompileDevCode">
+		<Message Text="*** CompileCode complete ***" />
+	</Target>
+
+  <Target Name="CompileDevCode">
+    <MSBuild Projects="$(SourcePath)\$(SolutionName)"
+        Targets="Clean;Build"
+        Properties="SolutionDir=$(SourcePath)\;Configuration=$(Configuration);OutDir=$(OutputFolder)\"
+        Condition="Exists('$(SourcePath)\$(SolutionName)')" />
+  </Target>
+
+  <Target Name="CleanOutput">
+		<Message Text="Cleaning out $(OutputFolder)" />
+    <ItemGroup>
+      <FilesToDelete Include="$(OutputFolder)\**\*" />
+    </ItemGroup>
+    <Delete Files="@(FilesToDelete)" />
+    <RemoveDir Directories="$(OutputFolder)" />
+    <MakeDir Directories="$(OutputFolder)"/>
+		<Message Text="Cleanup completed." />
+  </Target>
+
+</Project>

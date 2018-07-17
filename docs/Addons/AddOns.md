@@ -1,0 +1,3 @@
+# ToolsHub Extension Points
+
+## Endpoints

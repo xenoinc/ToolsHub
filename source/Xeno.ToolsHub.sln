@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2042
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xeno.ToolsHub", "Xeno.ToolsHub\Xeno.ToolsHub.csproj", "{01D40BBE-DA31-41E7-808E-67AFCC50E698}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Addons", "Addons", "{AE268EE2-8ECA-4ABC-A750-84970AFE053E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{01D40BBE-DA31-41E7-808E-67AFCC50E698}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01D40BBE-DA31-41E7-808E-67AFCC50E698}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01D40BBE-DA31-41E7-808E-67AFCC50E698}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01D40BBE-DA31-41E7-808E-67AFCC50E698}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6B32460D-0DAC-4239-A1B9-A9AF3236C7EC}
+	EndGlobalSection
+EndGlobal
