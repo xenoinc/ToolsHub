@@ -1,0 +1,33 @@
+﻿<!--
+Copyright Xeno Innovations, Inc. 2018
+ * Date:    2018-7-18
+ * Author:  Damian Suess
+ * File:    VeraCrypt.addin.xml
+ * Description:
+ *  Veracrypt addin
+-->
+
+<Addin Id="VeraCryptAddin"
+       Namespace="ToolsHub"
+       Name="VeraCrypt Manager"
+       Author="Damian Suess"
+       Description="Automatically handles mounting &amp; dismounting of encrypted drives."
+       Category="Tools"
+       DefaultEnabled="false"
+       Version="1.0">
+  <Runtime>
+    <Import assembly="VeraCrypt.dll" />
+  </Runtime>
+
+  <Dependencies>
+    <Addin Id="ToolsHub" Version="1.0" />
+  </Dependencies>
+
+  <Extension Path="/ToolsHub/ApplicationAddins">
+    <ApplicationAddin Type="Xeno.ToolsHub.VeraCrypt.VeraCryptAddin" />
+  </Extension>
+
+  <Extension Path="/ToolsHub/AddinPreferences">
+    <ApplicationAddin Type="Xeno.ToolsHub.VeraCrypt.VeraCryptPreferences" />
+  </Extension>
+</Addin>

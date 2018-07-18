@@ -48,6 +48,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExtensionModel\AbstractAddin.cs" />
+    <Compile Include="ExtensionModel\AddinPreferenceFactory.cs" />
+    <Compile Include="ExtensionModel\ApplicationAddin.cs" />
     <Compile Include="ExtensionModel\IBaseExtension.cs" />
     <Compile Include="ExtensionModel\IStartupExtension.cs" />
     <Compile Include="ExtensionModel\ISystemShutdownExtension.cs" />
