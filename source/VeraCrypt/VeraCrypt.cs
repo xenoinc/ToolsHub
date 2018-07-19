@@ -7,6 +7,7 @@
  */
 
 using System;
+using Xeno.ToolsHub.Helpers;
 using Xeno.ToolsHub.ExtensionModel;
 
 namespace Xeno.ToolsHub.VeraCrypt
@@ -19,11 +20,13 @@ namespace Xeno.ToolsHub.VeraCrypt
 
     public override void Initialize()
     {
+      Log.Debug("VeraCrypt add-in initializing");
       throw new NotImplementedException();
     }
 
     public override void Shutdown()
     {
+      Log.Debug("VeraCrypt add-in shutting down");
       throw new NotImplementedException();
     }
   }

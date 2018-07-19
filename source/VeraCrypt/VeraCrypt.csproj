@@ -51,7 +51,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="VeraCrypt.addin.xml" />
+    <EmbeddedResource Include="VeraCrypt.addin.xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Xeno.ToolsHub\Xeno.ToolsHub.csproj">

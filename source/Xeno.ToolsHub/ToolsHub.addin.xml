@@ -1,0 +1,22 @@
+﻿<!--
+Copyright Xeno Innovations, Inc. 2018
+ * Date:    2018-7-18
+ * Author:  Damian Suess
+ * File:    ToolsHub.addin.xml
+ * Description:
+ *  
+-->
+
+<Addin Namespace="ToolsHub"
+       Id="ToolsHub"
+       Version="0.10"
+       IsRoot="true"
+       CompatVersion="0.10">
+  <Runtime>
+    <Import Assembly="Xeno.ToolsHub.exe" />
+  </Runtime>
+
+  <ExtensionPoint Path="/ToolsHub/ApplicationAddins">
+    <ExtensionNode Name="ApplicationAddin" ObjectType="Xeno.ToolsHub.ApplicationAddin" />
+  </ExtensionPoint>
+</Addin>

@@ -93,5 +93,8 @@
   <ItemGroup>
     <Folder Include="InternalAddins\" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ToolsHub.addin.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
