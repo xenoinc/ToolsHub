@@ -1,5 +1,7 @@
 # Xeno.ToolsHub
-Fexable tools launcher desktop app.
+Fexable tools launcher desktop app which is "_not your average extensible sidebar_"
+
+**_This project is a Work in Progress_**
 
 ## Future Features
 * Add-on containers via Mono.Addins
@@ -18,7 +20,12 @@ The framework relyes on Mono.Addins for extending to add new features. With that
 
 ## Use case
 ### VeraCrypt
+* **Status:** wip
 * Auto-mount drives on startup
 * Safely dismount drive on system shutdown to guard against curruption
 
+### Sidebar Launcher
+* **Status:** _n/a_
 
+### SystemTray Launcher
+* **Status:** _n/a_
