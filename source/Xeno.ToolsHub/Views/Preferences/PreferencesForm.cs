@@ -20,11 +20,17 @@ namespace Xeno.ToolsHub.Views
 
     private Panel[] _addinPanel;
 
+    public PreferencesForm() : this(new ToolsManager())
+    {
+    }
+
     public PreferencesForm(ToolsManager toolsManager)
     {
       InitializeComponent();
 
       _addinManager = toolsManager.AddinManager;
+
+      InitAddinManager();
 
       InitAddins();
 
@@ -40,6 +46,19 @@ namespace Xeno.ToolsHub.Views
     {
       // loop through each add-in and save
       this.Close();
+    }
+
+    private void InitAddinManager()
+    {
+      Views.Preferences.AddinManagerCtrl ctrl = new Preferences.AddinManagerCtrl();
+      ctrl.Dock = DockStyle.Fill;
+      tabPage2.Controls.Add(ctrl);
+
+      //Form1 myForm = new Form1();
+      //myForm.TopLevel = false;
+      //myForm.AutoScroll = true;
+      //frmMain.Panel2.Controls.Add(myForm);
+      //myForm.Show();
     }
 
     private void InitAddins()

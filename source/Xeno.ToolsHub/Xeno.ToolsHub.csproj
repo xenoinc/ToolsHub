@@ -69,10 +69,16 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Views\PreferencesForm.cs">
+    <Compile Include="Views\Preferences\AddinManagerCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\Preferences\AddinManagerCtrl.Designer.cs">
+      <DependentUpon>AddinManagerCtrl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Preferences\PreferencesForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\PreferencesForm.Designer.cs">
+    <Compile Include="Views\Preferences\PreferencesForm.Designer.cs">
       <DependentUpon>PreferencesForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\SidebarForm.cs" />
@@ -88,7 +94,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Views\PreferencesForm.resx">
+    <EmbeddedResource Include="Views\Preferences\AddinManagerCtrl.resx">
+      <DependentUpon>AddinManagerCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Preferences\PreferencesForm.resx">
       <DependentUpon>PreferencesForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />

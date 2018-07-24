@@ -26,13 +26,13 @@ namespace Xeno.ToolsHub
     [STAThread]
     private static void Main()
     {
-      InitMonoAddins();
+      //InitMonoAddins();
 
       InitSystemEvents();
 
       Application.EnableVisualStyles();
       Application.SetCompatibleTextRenderingDefault(false);
-      Application.Run(new Views.MainForm());
+      Application.Run(new Views.PreferencesForm());
     }
 
     #region Add-ins
