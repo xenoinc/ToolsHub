@@ -10,7 +10,7 @@ using System;
 using Xeno.ToolsHub.Helpers;
 using Xeno.ToolsHub.ExtensionModel;
 
-namespace Xeno.ToolsHub.VeraCrypt
+namespace Xeno.ToolsHub.VeraCryptAddin
 {
   public class VeraCrypt : ApplicationAddin
   {

@@ -9,7 +9,7 @@
 using System.Windows.Forms;
 using Xeno.ToolsHub.ExtensionModel;
 
-namespace VeraCrypt
+namespace Xeno.ToolsHub.VeraCryptAddin
 {
   public class VeraCryptPreferences : AddinPreferenceFactory
   {

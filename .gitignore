@@ -72,6 +72,6 @@ TestResult.xml
 
 ## USER DEFINED
 
-/Docs/*.csv
-/Docs/backup
-/Test
+/docs/*.csv
+/docs/backup
+/tests
