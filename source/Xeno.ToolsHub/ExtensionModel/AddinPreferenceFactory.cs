@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace Xeno.ToolsHub.ExtensionModel
 {
-  public abstract class AddinPreferenceFactory
+  public abstract class AddinPreferenceFactory : AbstractAddin
   {
     public abstract Panel CreatePreferenceWidget();
   }

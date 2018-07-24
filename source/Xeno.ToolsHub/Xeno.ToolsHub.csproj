@@ -7,7 +7,7 @@
     <ProjectGuid>{01D40BBE-DA31-41E7-808E-67AFCC50E698}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>Xeno.ToolsHub</RootNamespace>
-    <AssemblyName>Xeno.ToolsHub</AssemblyName>
+    <AssemblyName>ToolsHub</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

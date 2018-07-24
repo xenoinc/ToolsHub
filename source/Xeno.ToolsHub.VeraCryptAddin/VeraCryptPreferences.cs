@@ -15,7 +15,15 @@ namespace Xeno.ToolsHub.VeraCryptAddin
   {
     public override Panel CreatePreferenceWidget()
     {
-      throw new System.NotImplementedException();
+      return new VeraCryptPreferencesPanel();
+    }
+  }
+
+  public class VeraCryptPreferencesPanel : Panel
+  {
+    public VeraCryptPreferencesPanel() : base()
+    {
+
     }
   }
 }
