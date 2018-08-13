@@ -7,8 +7,8 @@
  */
 
 using System;
-using Xeno.ToolsHub.Helpers;
 using Xeno.ToolsHub.ExtensionModel;
+using Xeno.ToolsHub.Helpers;
 
 namespace Xeno.ToolsHub.VeraCryptAddin
 {

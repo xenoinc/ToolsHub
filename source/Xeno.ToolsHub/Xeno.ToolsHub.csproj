@@ -61,6 +61,7 @@
     <Compile Include="Helpers\Log.cs" />
     <Compile Include="Domain\SidebarManager.cs" />
     <Compile Include="Domain\SystemTrayManager.cs" />
+    <Compile Include="Helpers\AddinSettings.cs" />
     <Compile Include="Views\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

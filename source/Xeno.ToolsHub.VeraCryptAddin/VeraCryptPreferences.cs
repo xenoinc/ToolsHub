@@ -23,7 +23,6 @@ namespace Xeno.ToolsHub.VeraCryptAddin
   {
     public VeraCryptPreferencesPanel() : base()
     {
-
     }
   }
 }

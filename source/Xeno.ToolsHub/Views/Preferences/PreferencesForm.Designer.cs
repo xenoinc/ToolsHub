@@ -40,9 +40,9 @@ namespace Xeno.ToolsHub.Views
       this.BtnCancel = new System.Windows.Forms.Button();
       this.tabControl1 = new System.Windows.Forms.TabControl();
       this.tabPage1 = new System.Windows.Forms.TabPage();
+      this.TreeAddinList = new System.Windows.Forms.TreeView();
+      this.PanelAddinPrefsView = new System.Windows.Forms.Panel();
       this.tabPage2 = new System.Windows.Forms.TabPage();
-      this.treeView1 = new System.Windows.Forms.TreeView();
-      this.panel1 = new System.Windows.Forms.Panel();
       this.tabControl1.SuspendLayout();
       this.tabPage1.SuspendLayout();
       this.SuspendLayout();
@@ -84,8 +84,8 @@ namespace Xeno.ToolsHub.Views
       // 
       // tabPage1
       // 
-      this.tabPage1.Controls.Add(this.treeView1);
-      this.tabPage1.Controls.Add(this.panel1);
+      this.tabPage1.Controls.Add(this.TreeAddinList);
+      this.tabPage1.Controls.Add(this.PanelAddinPrefsView);
       this.tabPage1.Location = new System.Drawing.Point(4, 22);
       this.tabPage1.Name = "tabPage1";
       this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -93,6 +93,25 @@ namespace Xeno.ToolsHub.Views
       this.tabPage1.TabIndex = 0;
       this.tabPage1.Text = "Preferences";
       this.tabPage1.UseVisualStyleBackColor = true;
+      // 
+      // TreeAddinList
+      // 
+      this.TreeAddinList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+      this.TreeAddinList.Location = new System.Drawing.Point(6, 6);
+      this.TreeAddinList.Name = "TreeAddinList";
+      this.TreeAddinList.Size = new System.Drawing.Size(161, 237);
+      this.TreeAddinList.TabIndex = 5;
+      // 
+      // PanelAddinPrefsView
+      // 
+      this.PanelAddinPrefsView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+      this.PanelAddinPrefsView.Location = new System.Drawing.Point(173, 6);
+      this.PanelAddinPrefsView.Name = "PanelAddinPrefsView";
+      this.PanelAddinPrefsView.Size = new System.Drawing.Size(373, 237);
+      this.PanelAddinPrefsView.TabIndex = 4;
       // 
       // tabPage2
       // 
@@ -103,25 +122,6 @@ namespace Xeno.ToolsHub.Views
       this.tabPage2.TabIndex = 1;
       this.tabPage2.Text = "Add-in Manager";
       this.tabPage2.UseVisualStyleBackColor = true;
-      // 
-      // treeView1
-      // 
-      this.treeView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-      this.treeView1.Location = new System.Drawing.Point(6, 6);
-      this.treeView1.Name = "treeView1";
-      this.treeView1.Size = new System.Drawing.Size(161, 237);
-      this.treeView1.TabIndex = 5;
-      // 
-      // panel1
-      // 
-      this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-      this.panel1.Location = new System.Drawing.Point(173, 6);
-      this.panel1.Name = "panel1";
-      this.panel1.Size = new System.Drawing.Size(373, 237);
-      this.panel1.TabIndex = 4;
       // 
       // PreferencesForm
       // 
@@ -145,8 +145,8 @@ namespace Xeno.ToolsHub.Views
     private System.Windows.Forms.Button BtnCancel;
     private System.Windows.Forms.TabControl tabControl1;
     private System.Windows.Forms.TabPage tabPage1;
-    private System.Windows.Forms.TreeView treeView1;
-    private System.Windows.Forms.Panel panel1;
+    private System.Windows.Forms.TreeView TreeAddinList;
+    private System.Windows.Forms.Panel PanelAddinPrefsView;
     private System.Windows.Forms.TabPage tabPage2;
   }
 }
