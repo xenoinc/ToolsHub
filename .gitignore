@@ -61,9 +61,8 @@ TestResult.xml
 /installer/*.exe
 !/installer/autorun.exe
 
-# Lib folder
-/lib/*
-!/lib/readme.txt
+# Tests
+!/tests/TestVeraCrypt/**
 
 # Output
 /output/*
