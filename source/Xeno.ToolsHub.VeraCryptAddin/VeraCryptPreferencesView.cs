@@ -17,19 +17,23 @@ namespace Xeno.ToolsHub.VeraCryptAddin
     {
       InitializeComponent();
 
-      bool shutdown = Xeno.ToolsHub.Helpers.AddinSettings.Load("VeraCrypt", "AutoDismountShutdown", false);
-      bool logoff = Xeno.ToolsHub.Helpers.AddinSettings.Load("VeraCrypt", "AutoDismountSignout", false);
+      var shutdown = Xeno.ToolsHub.Helpers.AddinSettings.Load("VeraCrypt", "AutoDismountShutdown", "0");
+      var logoff = Xeno.ToolsHub.Helpers.AddinSettings.Load("VeraCrypt", "AutoDismountSignout", "0");
+
+      chkDismountShutdown.Checked = (shutdown == "1" ? true : false);
+      chkDismountSignout.Checked = (logoff == "1" ? true : false);
     }
 
     private void chkDismountShutdown_CheckedChanged(object sender, EventArgs e)
     {
-      // save
-      Xeno.ToolsHub.Helpers.AddinSettings.Save("VeraCrypt")
+      string value = chkDismountShutdown.Checked ? "1" : "0";
+      VeraCryptAddin.VeraCrypt.SettingSave("AutoDismountShutdown", value);
     }
 
     private void chkDismountSignout_CheckedChanged(object sender, EventArgs e)
     {
-      // save
+      string value = chkDismountShutdown.Checked ? "1" : "0";
+      VeraCryptAddin.VeraCrypt.SettingSave("AutoDismountSignout", value);
     }
   }
 }

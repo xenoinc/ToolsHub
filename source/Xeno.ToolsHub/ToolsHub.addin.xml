@@ -16,7 +16,13 @@ Copyright Xeno Innovations, Inc. 2018
     <Import Assembly="Xeno.ToolsHub.exe" />
   </Runtime>
 
+  <ExtensionPoint Path="/ToolsHub/AppInitialize">
+    <ExtensionNode Name="ApplicationAddin" ObjectType="Xeno.ToolsHub.ExtensionModel.ApplicationAddin" />
+  </ExtensionPoint>
+
+  <!--
   <ExtensionPoint Path="/ToolsHub/ApplicationAddins">
     <ExtensionNode Name="ApplicationAddin" ObjectType="Xeno.ToolsHub.ExtensionModel.ApplicationAddin" />
   </ExtensionPoint>
+  -->
 </Addin>

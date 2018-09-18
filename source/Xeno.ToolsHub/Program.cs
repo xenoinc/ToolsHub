@@ -26,7 +26,7 @@ namespace Xeno.ToolsHub
     [STAThread]
     private static void Main()
     {
-      //InitMonoAddins();
+      InitMonoAddins();
 
       InitSystemEvents();
 
