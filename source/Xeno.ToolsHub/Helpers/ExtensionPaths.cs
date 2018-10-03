@@ -10,18 +10,15 @@ namespace Xeno.ToolsHub.Helpers
 {
   public class ExtensionPaths
   {
-    public const string AppInitializePath = "ToolsHub/AppInitialize";
+    // Application directives
+    public const string OnStartupAddinsPath = "/ToolsHub/OnStartupAddins";
+    public const string SystemShutdownPath = "/ToolsHub/OnSystemShutdown";
+    //public const string AppReadyPath = "/ToolsHub/OnAppReady";
+    //public const string AppShutdownPath = "/ToolsHub/OnAppShutdown";
 
-    public const string AppReadyPath = "ToolsHub/AppReady";
-
-    public const string AppShutdownPath = "ToolsHub/AppShutdown";
-
-    public const string PreferencePath = "ToolsHub/PreferenceAddins";
-
-    public const string SidebarPath = "ToolsHub/Sidebar";
-
-    public const string SystemTrayPath = "ToolsHub/SystemTray";
-
-    public const string SystemShutdownPath = "ToolsHub/SystemShutdown";
+    // Internal add-ins
+    public const string PreferencePath = "/ToolsHub/PreferenceAddins";
+    //public const string SidebarPath = "/ToolsHub/Sidebar";
+    //public const string SystemTrayPath = "/ToolsHub/SystemTray";
   }
 }
