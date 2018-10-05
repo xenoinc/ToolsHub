@@ -1,18 +1,18 @@
 ﻿/* Copyright Xeno Innovations, Inc. 2018
- * Date:    2018-7-18
+ * Date:    2018-10-3
  * Author:  Damian Suess
- * File:    VeraCrypt.cs
+ * File:    Sample.cs
  * Description:
- *
+ *  Entry point to Sample add-in
  */
 
 using System;
-using Xeno.ToolsHub.Helpers;
 using Xeno.ToolsHub.ExtensionModel;
+using Xeno.ToolsHub.Helpers;
 
-namespace Xeno.ToolsHub.VeraCrypt
+namespace Xeno.ToolsHub.SampleAddin
 {
-  public class VeraCrypt : ApplicationAddin
+  public class Sample : ApplicationAddin
   {
     private bool _initialized = false;
 
@@ -20,13 +20,15 @@ namespace Xeno.ToolsHub.VeraCrypt
 
     public override void Initialize()
     {
-      Log.Debug("VeraCrypt add-in initializing");
+      _initialized = true;
+
+      Log.Debug("Sample add-in initializing");
       throw new NotImplementedException();
     }
 
     public override void Shutdown()
     {
-      Log.Debug("VeraCrypt add-in shutting down");
+      Log.Debug("Sample add-in shutting down");
       throw new NotImplementedException();
     }
   }

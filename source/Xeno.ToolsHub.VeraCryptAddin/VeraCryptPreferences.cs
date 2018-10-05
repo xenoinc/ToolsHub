@@ -9,13 +9,20 @@
 using System.Windows.Forms;
 using Xeno.ToolsHub.ExtensionModel;
 
-namespace VeraCrypt
+namespace Xeno.ToolsHub.VeraCryptAddin
 {
   public class VeraCryptPreferences : AddinPreferenceFactory
   {
     public override Panel CreatePreferenceWidget()
     {
-      throw new System.NotImplementedException();
+      return new VeraCryptPreferencesPanel();
+    }
+  }
+
+  public class VeraCryptPreferencesPanel : Panel
+  {
+    public VeraCryptPreferencesPanel() : base()
+    {
     }
   }
 }

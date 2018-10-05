@@ -32,7 +32,7 @@ namespace Xeno.ToolsHub
 
       Application.EnableVisualStyles();
       Application.SetCompatibleTextRenderingDefault(false);
-      Application.Run(new Views.MainForm());
+      Application.Run(new Views.PreferencesForm());
     }
 
     #region Add-ins
@@ -44,7 +44,7 @@ namespace Xeno.ToolsHub
 
       Mono.Addins.AddinManager.Initialize(".");
       Mono.Addins.AddinManager.Registry.Rebuild(null);  // Rebuild registry when debugging
-      Mono.Addins.AddinManager.AddExtensionNodeHandler(Helpers.ExtensionPaths.AppInitializePath, OnInitExtensionChanged);
+      Mono.Addins.AddinManager.AddExtensionNodeHandler(Helpers.ExtensionPaths.OnStartupAddinsPath, OnStartupAddins_ExtensionHandler);
     }
 
     private static void OnAddinLoaded(object sender, Mono.Addins.AddinEventArgs args)
@@ -65,11 +65,18 @@ namespace Xeno.ToolsHub
       Log.Debug($"OnAddinUnloaded: {args.AddinId}");
     }
 
-    private static void OnInitExtensionChanged(object sender, Mono.Addins.ExtensionNodeEventArgs args)
+    private static void OnStartupAddins_ExtensionHandler(object sender, Mono.Addins.ExtensionNodeEventArgs args)
     {
       Mono.Addins.TypeExtensionNode extNode = args.ExtensionNode as Mono.Addins.TypeExtensionNode;
+
+      // Execute via class interface definition of extension path
       IStartupExtension ext = (IStartupExtension)args.ExtensionObject;
       ext.Run();
+
+      // Execute via typeof
+      //ApplicationAddin addin;
+      //addin = extNode.GetInstance(typeof(ApplicationAddin)) as ApplicationAddin;
+      //addin.Initialize();
 
       Log.Debug("###########################");
       Log.Debug("OnStartChanged");

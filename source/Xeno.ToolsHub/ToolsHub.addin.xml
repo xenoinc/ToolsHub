@@ -4,7 +4,7 @@ Copyright Xeno Innovations, Inc. 2018
  * Author:  Damian Suess
  * File:    ToolsHub.addin.xml
  * Description:
- *  
+ *  Mono.Addins configuration for ToolsHub application
 -->
 
 <Addin Namespace="ToolsHub"
@@ -16,7 +16,17 @@ Copyright Xeno Innovations, Inc. 2018
     <Import Assembly="Xeno.ToolsHub.exe" />
   </Runtime>
 
-  <ExtensionPoint Path="/ToolsHub/ApplicationAddins">
-    <ExtensionNode Name="ApplicationAddin" ObjectType="Xeno.ToolsHub.ApplicationAddin" />
+  <!--
+    Alt names for 'OnStartupAddins': "StartupAddins", "AppInitialize", ApplicationAddins
+  -->
+
+  <ExtensionPoint Path="/ToolsHub/OnStartupAddins">
+    <ExtensionNode Name="OnStartupAddin" ObjectType="Xeno.ToolsHub.ExtensionModel.ApplicationAddin" />
   </ExtensionPoint>
+
+  <!--
+  <ExtensionPoint Path="/ToolsHub/ApplicationAddins">
+    <ExtensionNode Name="ApplicationAddin" ObjectType="Xeno.ToolsHub.ExtensionModel.ApplicationAddin" />
+  </ExtensionPoint>
+  -->
 </Addin>

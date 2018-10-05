@@ -1,0 +1,35 @@
+﻿<!--
+Copyright Xeno Innovations, Inc. 2018
+ * Date:    2018-10-3
+ * Author:  Damian Suess
+ * File:    SampleAddin.addin.xml
+ * Description:
+ *  
+-->
+
+<Addin Id="VeraCryptAddin"
+       Namespace="ToolsHub"
+       Name="Sample Add-in"
+       Author="Damian Suess"
+       Description="Quick sample add-in project."
+       Category="Tools"
+       DefaultEnabled="false"
+       Version="1.0">
+  <Runtime>
+    <Import assembly="SampleAddin.dll" />
+  </Runtime>
+
+  <Dependencies>
+    <Addin Id="ToolsHub" Version="1.0" />
+  </Dependencies>
+
+  <Extension Path="/ToolsHub/OnStartupAddins">
+    <ApplicationAddin Type="Xeno.ToolsHub.SampleAddin.Sample" />
+  </Extension>
+
+  <!--
+  <Extension Path="/ToolsHub/AddinPreferences">
+    <ApplicationAddin Type="Xeno.ToolsHub.SampleAddin.SamplePreferences" />
+  </Extension>
+  -->
+</Addin>

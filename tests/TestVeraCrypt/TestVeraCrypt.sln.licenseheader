@@ -1,0 +1,5 @@
+extensions: designer.cs generated.cs
+extensions: .cs .cpp .h
+// Copyright 2018 Xeno Innovations, Inc.
+// Author: Damian Suess
+// Date: 2018-08-14

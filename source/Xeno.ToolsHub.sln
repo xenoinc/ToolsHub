@@ -7,7 +7,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xeno.ToolsHub", "Xeno.Tools
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Addons", "Addons", "{AE268EE2-8ECA-4ABC-A750-84970AFE053E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VeraCrypt", "VeraCrypt\VeraCrypt.csproj", "{0F5782C4-CD0E-4CE0-8C5D-9B3E95FDF13D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VeraCryptAddin", "Xeno.ToolsHub.VeraCryptAddin\VeraCryptAddin.csproj", "{0F5782C4-CD0E-4CE0-8C5D-9B3E95FDF13D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleAddin", "Xeno.ToolsHub.SampleAddin\SampleAddin.csproj", "{D6EEB528-ACF4-4235-BAED-8D52AB64035B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,12 +25,17 @@ Global
 		{0F5782C4-CD0E-4CE0-8C5D-9B3E95FDF13D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F5782C4-CD0E-4CE0-8C5D-9B3E95FDF13D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F5782C4-CD0E-4CE0-8C5D-9B3E95FDF13D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6EEB528-ACF4-4235-BAED-8D52AB64035B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6EEB528-ACF4-4235-BAED-8D52AB64035B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6EEB528-ACF4-4235-BAED-8D52AB64035B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6EEB528-ACF4-4235-BAED-8D52AB64035B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0F5782C4-CD0E-4CE0-8C5D-9B3E95FDF13D} = {AE268EE2-8ECA-4ABC-A750-84970AFE053E}
+		{D6EEB528-ACF4-4235-BAED-8D52AB64035B} = {AE268EE2-8ECA-4ABC-A750-84970AFE053E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6B32460D-0DAC-4239-A1B9-A9AF3236C7EC}
