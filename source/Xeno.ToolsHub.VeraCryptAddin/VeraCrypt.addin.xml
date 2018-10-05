@@ -24,10 +24,10 @@ Copyright Xeno Innovations, Inc. 2018
   </Dependencies>
 
   <Extension Path="/ToolsHub/ApplicationAddins">
-    <ApplicationAddin Type="Xeno.ToolsHub.VeraCrypt.VeraCryptAddin" />
+    <ApplicationAddin Type="Xeno.ToolsHub.VeraCryptAddin.VeraCrypt" />
   </Extension>
 
   <Extension Path="/ToolsHub/AddinPreferences">
-    <ApplicationAddin Type="Xeno.ToolsHub.VeraCrypt.VeraCryptPreferences" />
+    <ApplicationAddin Type="Xeno.ToolsHub.VeraCryptAddin.VeraCryptPreferences" />
   </Extension>
 </Addin>

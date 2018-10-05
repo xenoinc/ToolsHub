@@ -3,7 +3,7 @@
  * Author:  Damian Suess
  * File:    VeraCrypt.cs
  * Description:
- *
+ *  Entry point to VeraCrypt add-in
  */
 
 using System;
@@ -30,6 +30,8 @@ namespace Xeno.ToolsHub.VeraCryptAddin
 
     public override void Initialize()
     {
+      _initialized = true;
+
       Log.Debug("VeraCrypt add-in initializing");
       throw new NotImplementedException();
     }
