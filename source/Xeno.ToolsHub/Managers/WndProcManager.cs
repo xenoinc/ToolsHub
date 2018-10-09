@@ -74,9 +74,6 @@ namespace Xeno.ToolsHub.Managers
           // TODO: Signal add-ins!!
           _systemShutdown = true;
           break;
-
-        default:
-          break;
       }
 
       base.WndProc(ref m);

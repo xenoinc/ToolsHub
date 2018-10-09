@@ -4,6 +4,9 @@
  * File:    MainHandler.cs
  * Description:
  *  Main application handler. We don't need a GUI form, but do need WndProc
+ *
+ * TOOD:
+ *  [ ] Use IoC to manage managers. (i.e. AutoFac)
  */
 
 using System;
@@ -29,25 +32,29 @@ namespace Xeno.ToolsHub
       // 3. Initialize Sidebar (add-in) handler
       // 4. Initialize Application add-in manager
 
-      InitSystemEvents();
+      //InitSystemEvents();
       InitSystemTray();
       InitWndProc();
       //InitSideBar();
-      InitMonoAddins();
+      //InitMonoAddins();
       Application.ApplicationExit += Application_ApplicationExit;
     }
 
     private void Application_ApplicationExit(object sender, System.EventArgs e)
     {
-      throw new System.NotImplementedException();
+      //TODO: Inform add-ins of closing application
+      //TODO: Clean up any additional resources
+      //throw new System.NotImplementedException();
     }
 
     private void InitMonoAddins()
     {
+      throw new System.NotImplementedException();
     }
 
     private void InitSystemEvents()
     {
+      throw new System.NotImplementedException();
     }
 
     private void InitSystemTray()

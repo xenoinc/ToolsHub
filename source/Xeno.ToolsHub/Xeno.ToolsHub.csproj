@@ -98,6 +98,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="Views\Preferences\AddinManagerCtrl.resx">
       <DependentUpon>AddinManagerCtrl.cs</DependentUpon>
@@ -119,7 +120,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\AppIcon.ico" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ToolsHub.addin.xml">
       <SubType>Designer</SubType>
