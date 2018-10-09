@@ -8,7 +8,7 @@
 
 using System;
 
-namespace Xeno.ToolsHub.Domain
+namespace Xeno.ToolsHub.Managers
 {
   public class SidebarManager
   {

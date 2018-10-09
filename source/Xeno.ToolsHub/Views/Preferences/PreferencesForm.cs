@@ -8,7 +8,7 @@
 
 using System;
 using System.Windows.Forms;
-using Xeno.ToolsHub.Domain;
+using Xeno.ToolsHub.Managers;
 using Xeno.ToolsHub.ExtensionModel;
 using Xeno.ToolsHub.Helpers;
 

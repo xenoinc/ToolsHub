@@ -48,8 +48,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Domain\AddinManager.cs" />
-    <Compile Include="Domain\ToolsManager.cs" />
+    <Compile Include="LocalAddins\Shortcuts\ShortcutsSidebar.cs" />
+    <Compile Include="LocalAddins\Shortcuts\ShortcutsSysTray.cs" />
+    <Compile Include="MainHandler.cs" />
+    <Compile Include="Managers\AddinManager.cs" />
+    <Compile Include="Managers\ToolsManager.cs" />
     <Compile Include="ExtensionModel\AbstractAddin.cs" />
     <Compile Include="ExtensionModel\AddinPreferenceFactory.cs" />
     <Compile Include="ExtensionModel\ApplicationAddin.cs" />
@@ -59,9 +62,10 @@
     <Compile Include="ExtensionModel\PreferenceAddin.cs" />
     <Compile Include="Helpers\ExtensionPaths.cs" />
     <Compile Include="Helpers\Log.cs" />
-    <Compile Include="Domain\SidebarManager.cs" />
-    <Compile Include="Domain\SystemTrayManager.cs" />
+    <Compile Include="Managers\SidebarManager.cs" />
+    <Compile Include="Managers\SystemTrayManager.cs" />
     <Compile Include="Helpers\AddinSettings.cs" />
+    <Compile Include="Managers\WndProcManager.cs" />
     <Compile Include="Views\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -94,6 +98,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="Views\Preferences\AddinManagerCtrl.resx">
       <DependentUpon>AddinManagerCtrl.cs</DependentUpon>
@@ -116,7 +121,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="InternalAddins\" />
+    <None Include="Resources\AppIcon.ico" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ToolsHub.addin.xml">

@@ -32,7 +32,11 @@ namespace Xeno.ToolsHub
 
       Application.EnableVisualStyles();
       Application.SetCompatibleTextRenderingDefault(false);
-      Application.Run(new Views.PreferencesForm());
+
+      var appContext = new MainHandler();
+      Application.Run(appContext);
+      //Application.Run(new Views.MainForm());
+      //Application.Run(new Views.PreferencesForm());
     }
 
     #region Add-ins

@@ -8,7 +8,7 @@
 
 using Xeno.ToolsHub.Helpers;
 
-namespace Xeno.ToolsHub.Domain
+namespace Xeno.ToolsHub.Managers
 {
   public class ToolsManager
   {

@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using Xeno.ToolsHub.ExtensionModel;
 using Xeno.ToolsHub.Helpers;
 
-namespace Xeno.ToolsHub.Domain
+namespace Xeno.ToolsHub.Managers
 {
   public class AddinManager
   {
