@@ -3,7 +3,9 @@
  * Author:  Damian Suess
  * File:    MainForm.cs
  * Description:
+ *  Main application handler. We don't need a GUI form, but do need WndProc
  *
+ * DEPRECATED: See, WndProcManager
  */
 
 using System;
@@ -19,6 +21,11 @@ namespace Xeno.ToolsHub.Views
     public MainForm()
     {
       InitializeComponent();
+
+      this.ShowInTaskbar = false;
+    }
+    private void MainForm_Load(object sender, EventArgs e)
+    {
     }
 
     protected override void WndProc(ref Message m)
@@ -50,10 +57,6 @@ namespace Xeno.ToolsHub.Views
           e.Cancel = false;
         }
       }
-    }
-
-    private void MainForm_Load(object sender, EventArgs e)
-    {
     }
   }
 }
