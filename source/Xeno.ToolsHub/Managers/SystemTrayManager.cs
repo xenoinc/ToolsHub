@@ -11,12 +11,11 @@
  *  [ ] Ability to add/rmv menu items at will
  *
  * Reference:
- *  NotifyIcon icon = new NotifyIcon();
- *  https://www.codeproject.com/Articles/18683/Creating-a-Tasktray-Application
- *  https://www.red-gate.com/simple-talk/dotnet/.net-framework/creating-tray-applications-in-.net-a-practical-guide/
+ *  - gfx https://www.red-gate.com/simple-talk/dotnet/.net-framework/creating-tray-applications-in-.net-a-practical-guide/
  */
 
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace Xeno.ToolsHub.Managers
@@ -28,51 +27,96 @@ namespace Xeno.ToolsHub.Managers
 
     public SystemTrayManager()
     {
-      InitMenu();
+      InitTrayMenu();
+      RedrawTrayNotifacation();
+    }
 
-      _trayNotify.Icon = InitIcon();
+    private System.Drawing.Icon ApplicationIcon
+    {
+      get
+      { // TODO: Load custom icon here
+        return Properties.Resources.AppIcon;
+      }
+    }
+
+    #region Menu Renderer
+
+    private void InitTrayMenu()
+    {
+      List<MenuItem> menuBuilder = new List<MenuItem>();
+      menuBuilder.Add(new MenuItem("ToolsHub", OnMenuProperties));
+      menuBuilder.Add(new MenuItem("-"));
+
+      // Load add-in menus
+      var addinMenus = LoadMenuFromExtensionPoint();
+      if (addinMenus.Count > 0)
+        menuBuilder.AddRange(addinMenus);
+
+      menuBuilder.Add(new MenuItem("About", OnMenuAbout));
+      menuBuilder.Add(new MenuItem("Exit", OnMenuExit));
+
+      _trayMenu = menuBuilder.ToArray();
+    }
+
+    /// <summary>Load tray menu items from ExtensionPoint</summary>
+    private List<MenuItem> LoadMenuFromExtensionPoint()
+    {
+      List<MenuItem> addinItems = new List<MenuItem>();
+
+      // TODO:
+      //  1. Iterate through extension point nodes
+      //  2. Add sub-items
+
+      var addin1 = new MenuItem("Test Addin-1");
+      addin1.MenuItems.Add(0, new SystemTray.TrayItem("SubItem 1", "tag_addin1-Sub1", true));
+      addin1.MenuItems.Add(1, new SystemTray.TrayItem("SubItem 2", "tag_addin1-Sub2"));
+      addin1.MenuItems.Add(2, new SystemTray.TrayItem("SubItem 3", "tag_addin1-Sub3"));
+
+      var addin2 = new MenuItem("Test Addin-2");
+      addin2.MenuItems.Add(new SystemTray.TrayItem("A2: SubItem 1", "tag_addin2-sub1"));
+      addin2.MenuItems.Add(new SystemTray.TrayItem("A2: SubItem 2", "tag_addin2-sub2"));
+
+      addinItems.Add(addin1);
+      addinItems.Add(addin2);
+
+      return addinItems;
+    }
+
+    /// <summary>Redraw systray menu from memory</summary>
+    private void RedrawTrayNotifacation()
+    {
+      _trayNotify.Icon = ApplicationIcon;
       _trayNotify.ContextMenu = new ContextMenu(_trayMenu);
-      _trayNotify.DoubleClick += new EventHandler(OnMenu_DoubleClick);
+      _trayNotify.DoubleClick += new EventHandler(OnMenuDoubleClick);
       _trayNotify.Visible = true;
     }
 
-    private System.Drawing.Icon InitIcon()
-    {
-      // TODO: Load custom icon here
-      return Properties.Resources.AppIcon;
-    }
+    #endregion Menu Renderer
 
-    private void InitMenu()
-    {
-      _trayMenu = new MenuItem[]
-      {
-        new MenuItem("Properties", OnMenu_Properties) ,  // Make this bold
-        new MenuItem("-"),
-        new MenuItem("About", OnMenu_About),
-        new MenuItem("Exit", OnMenu_Exit)
-      };
-    }
+    #region Local Menu - Event Handlers
 
-    private void OnMenu_About(object sender, EventArgs e)
+    private void OnMenuAbout(object sender, EventArgs e)
     {
       throw new NotImplementedException();
     }
 
-    private void OnMenu_DoubleClick(object sender, EventArgs e)
+    private void OnMenuDoubleClick(object sender, EventArgs e)
     {
       // Show Properties dialog (or About).
       throw new NotImplementedException();
     }
 
-    private void OnMenu_Exit(object sender, EventArgs e)
+    private void OnMenuExit(object sender, EventArgs e)
     {
       _trayNotify.Dispose();
       Application.Exit();
     }
 
-    private void OnMenu_Properties(object sender, EventArgs e)
+    private void OnMenuProperties(object sender, EventArgs e)
     {
       throw new NotImplementedException();
     }
+
+    #endregion Local Menu - Event Handlers
   }
 }

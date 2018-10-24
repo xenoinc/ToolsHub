@@ -48,10 +48,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LocalAddins\Shortcuts\ShortcutAddin.cs" />
     <Compile Include="LocalAddins\Shortcuts\ShortcutsSidebar.cs" />
     <Compile Include="LocalAddins\Shortcuts\ShortcutsSysTray.cs" />
     <Compile Include="MainHandler.cs" />
     <Compile Include="Managers\AddinManager.cs" />
+    <Compile Include="Managers\SystemTray\TrayItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Managers\ToolsManager.cs" />
     <Compile Include="ExtensionModel\AbstractAddin.cs" />
     <Compile Include="ExtensionModel\AddinPreferenceFactory.cs" />
@@ -66,6 +70,7 @@
     <Compile Include="Managers\SystemTrayManager.cs" />
     <Compile Include="Helpers\AddinSettings.cs" />
     <Compile Include="Managers\WndProcManager.cs" />
+    <Compile Include="LocalAddins\Shortcuts\Shortcut.cs" />
     <Compile Include="Views\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -127,6 +132,9 @@
     <EmbeddedResource Include="ToolsHub.addin.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
