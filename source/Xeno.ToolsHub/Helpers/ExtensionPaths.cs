@@ -3,7 +3,7 @@
  * Author:  Damian Suess
  * File:    Constants.cs
  * Description:
- *
+ *  Add-in Extension Paths
  */
 
 namespace Xeno.ToolsHub.Helpers
@@ -17,8 +17,8 @@ namespace Xeno.ToolsHub.Helpers
     //public const string AppShutdownPath = "/ToolsHub/OnAppShutdown";
 
     // Internal add-ins
+    public const string SystemTrayPath = "/ToolsHub/SystemTray";
     public const string PreferencePath = "/ToolsHub/PreferenceAddins";
     //public const string SidebarPath = "/ToolsHub/Sidebar";
-    //public const string SystemTrayPath = "/ToolsHub/SystemTray";
   }
 }

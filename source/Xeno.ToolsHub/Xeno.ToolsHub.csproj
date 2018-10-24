@@ -53,6 +53,7 @@
     <Compile Include="LocalAddins\Shortcuts\ShortcutsSysTray.cs" />
     <Compile Include="MainHandler.cs" />
     <Compile Include="Managers\AddinManager.cs" />
+    <Compile Include="Managers\SystemTray\SysTrayAddin.cs" />
     <Compile Include="Managers\SystemTray\TrayItem.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -67,7 +68,7 @@
     <Compile Include="Helpers\ExtensionPaths.cs" />
     <Compile Include="Helpers\Log.cs" />
     <Compile Include="Managers\SidebarManager.cs" />
-    <Compile Include="Managers\SystemTrayManager.cs" />
+    <Compile Include="Managers\SystemTray\SystemTrayManager.cs" />
     <Compile Include="Helpers\AddinSettings.cs" />
     <Compile Include="Managers\WndProcManager.cs" />
     <Compile Include="LocalAddins\Shortcuts\Shortcut.cs" />
@@ -110,6 +111,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Preferences\PreferencesForm.resx">
       <DependentUpon>PreferencesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MonoAddins.xsd">
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

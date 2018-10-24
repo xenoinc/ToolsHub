@@ -41,6 +41,20 @@ namespace Xeno.ToolsHub.Managers
 
     #region Menu Renderer
 
+    private void LoadAddinsForSysTray()
+    {
+      string pth = Helpers.ExtensionPaths.SystemTrayPath;
+      Mono.Addins.ExtensionNodeList nodes = Mono.Addins.AddinManager.GetExtensionNodes(pth);
+
+      foreach (Mono.Addins.ExtensionNode node in nodes)
+      {
+        System.Diagnostics.Debug.Print("LoadAddinsForSysTray ...");
+        Mono.Addins.TypeExtensionNode typeNode = node as Mono.Addins.TypeExtensionNode;
+
+        // SysTrayAddin
+      }
+    }
+
     private void InitTrayMenu()
     {
       List<MenuItem> menuBuilder = new List<MenuItem>();
@@ -67,6 +81,9 @@ namespace Xeno.ToolsHub.Managers
       //  1. Iterate through extension point nodes
       //  2. Add sub-items
 
+      // foreach (var items in LoadAddinsForSysTray()) { }
+
+      // Dummy data
       var addin1 = new MenuItem("Test Addin-1");
       addin1.MenuItems.Add(0, new SystemTray.TrayItem("SubItem 1", "tag_addin1-Sub1", true));
       addin1.MenuItems.Add(1, new SystemTray.TrayItem("SubItem 2", "tag_addin1-Sub2"));
