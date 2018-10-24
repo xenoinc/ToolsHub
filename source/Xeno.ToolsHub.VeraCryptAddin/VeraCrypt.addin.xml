@@ -10,11 +10,11 @@ Copyright Xeno Innovations, Inc. 2018
 <Addin Id="VeraCryptAddin"
        Namespace="ToolsHub"
        Name="VeraCrypt Manager"
+       Version="1.0"
        Author="Damian Suess"
        Description="Automatically handles mounting &amp; dismounting of encrypted drives."
        Category="Tools"
        DefaultEnabled="false"
-       Version="1.0"
        xmlns="https://github.com/mono/mono-addins/MonoAddins.xsd">
   <Runtime>
     <Import Assembly="VeraCrypt.dll" />

@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<!--
+  Description:
+    Sample SystemTray sub-menu item set
+-->
+
+<ExtensionModel>
+  <Extension Path="/ToolsHub/SysTray">
+    <TrayMenu id="SampleAddin" Text="Sample Add-in">
+      <Command Text="Hello" Id="Xeno.ToolsHub.SampleAddin.SysTrayHandlers.HelloCommand" />
+      <Command Text="World" Id="Xeno.ToolsHub.SampleAddin.SysTrayHandlers.HelloCommand" />
+    </TrayMenu>
+  </Extension>
+</ExtensionModel>

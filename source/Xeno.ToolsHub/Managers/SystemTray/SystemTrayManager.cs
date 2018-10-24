@@ -17,8 +17,9 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using Xeno.ToolsHub.Helpers;
 
-namespace Xeno.ToolsHub.Managers
+namespace Xeno.ToolsHub.Managers.SystemTray
 {
   public class SystemTrayManager : ApplicationContext
   {
@@ -48,10 +49,20 @@ namespace Xeno.ToolsHub.Managers
 
       foreach (Mono.Addins.ExtensionNode node in nodes)
       {
-        System.Diagnostics.Debug.Print("LoadAddinsForSysTray ...");
+        Log.Debug("LoadAddinsForSysTray ...");
         Mono.Addins.TypeExtensionNode typeNode = node as Mono.Addins.TypeExtensionNode;
 
         // SysTrayAddin
+        try
+        {
+          SysTrayAddin addin = typeNode.CreateInstance() as SysTrayAddin;
+          // Keep track of the addins added to each note
+          //AttachAddin(type_node.Id, note, n_addin);
+        }
+        catch (Exception e)
+        {
+          Log.Debug($"Couldn't create a NoteAddin instance: {e.Message}");
+        }
       }
     }
 

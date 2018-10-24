@@ -22,7 +22,7 @@ namespace Xeno.ToolsHub
     //PreferencesForm prefWnd = new PreferencesForm();
     //MenuItem configMenuItem
 
-    Managers.SystemTrayManager _sysTray;
+    Managers.SystemTray.SystemTrayManager _sysTray;
     Managers.WndProcManager _wndProc;
 
     public MainHandler()
@@ -60,7 +60,7 @@ namespace Xeno.ToolsHub
     private void InitSystemTray()
     {
       // Consider adding this into a container
-      _sysTray = new Managers.SystemTrayManager();
+      _sysTray = new Managers.SystemTray.SystemTrayManager();
     }
 
     private void InitWndProc()

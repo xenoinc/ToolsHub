@@ -7,11 +7,11 @@ Copyright Xeno Innovations, Inc. 2018
  * Description:
  *  Mono.Addins configuration for ToolsHub application
 -->
-<Addin Namespace="ToolsHub"
-       Id="ToolsHub"
+<Addin Id="ToolsHub"
+       Namespace="ToolsHub"       
        Version="0.10"
-       IsRoot="true"
        CompatVersion="0.10"
+       IsRoot="true"
        xmlns="https://github.com/mono/mono-addins/MonoAddins.xsd">
   <Runtime>
     <Import Assembly="Xeno.ToolsHub.exe" />

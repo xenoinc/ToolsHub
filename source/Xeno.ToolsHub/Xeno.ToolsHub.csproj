@@ -57,6 +57,7 @@
     <Compile Include="Managers\SystemTray\TrayItem.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Managers\SystemTray\TrayMenuExtensionNode.cs" />
     <Compile Include="Managers\ToolsManager.cs" />
     <Compile Include="ExtensionModel\AbstractAddin.cs" />
     <Compile Include="ExtensionModel\AddinPreferenceFactory.cs" />
