@@ -12,5 +12,9 @@ namespace Xeno.ToolsHub.Managers.SystemTray
 {
   public class SysTrayAddin : AbstractAddin
   {
+    public SysTrayAddin()
+    {
+      ;
+    }
   }
 }

@@ -15,6 +15,7 @@ namespace Xeno.ToolsHub.SampleAddin.SysTrayHandlers
   {
     public void Exec()
     {
+      Xeno.ToolsHub.Helpers.Log.Debug("Hello command, clicked");
       MessageBox.Show("Hello World!", "BooOOOoring!");
     }
   }

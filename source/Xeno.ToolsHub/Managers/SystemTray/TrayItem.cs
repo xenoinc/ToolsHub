@@ -43,7 +43,7 @@ namespace Xeno.ToolsHub.Managers.SystemTray
       }
 
       string dbg = $"TrayItem.OnClick: [ndx={index}] [text={text}] [tag={tag}]";
-      System.Diagnostics.Debug.Print(dbg);
+      Helpers.Log.Debug(dbg);
 
       //TODO: Send back to add-in
     }
@@ -62,7 +62,7 @@ namespace Xeno.ToolsHub.Managers.SystemTray
       }
 
       string dbg = $"TrayItem.OnSelect: [ndx={index}] [text={text}] [tag={tag}]";
-      System.Diagnostics.Debug.Print(dbg);
+      Helpers.Log.Debug(dbg);
 
       //TODO: Send back to add-in
     }

@@ -48,16 +48,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExtensionModel\Command\CommandAttribute.cs" />
+    <Compile Include="ExtensionModel\Command\ICommand.cs" />
     <Compile Include="LocalAddins\Shortcuts\ShortcutAddin.cs" />
     <Compile Include="LocalAddins\Shortcuts\ShortcutsSidebar.cs" />
     <Compile Include="LocalAddins\Shortcuts\ShortcutsSysTray.cs" />
     <Compile Include="MainHandler.cs" />
     <Compile Include="Managers\AddinManager.cs" />
+    <Compile Include="Managers\SystemTray\ISysTray.cs" />
     <Compile Include="Managers\SystemTray\SysTrayAddin.cs" />
     <Compile Include="Managers\SystemTray\TrayItem.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Managers\SystemTray\TrayMenuExtensionNode.cs" />
+    <Compile Include="Managers\SystemTray\SysTrayExtensionNode.cs" />
     <Compile Include="Managers\ToolsManager.cs" />
     <Compile Include="ExtensionModel\AbstractAddin.cs" />
     <Compile Include="ExtensionModel\AddinPreferenceFactory.cs" />
@@ -140,6 +143,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SysTrayMenu.addin.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

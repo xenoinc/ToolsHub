@@ -42,30 +42,6 @@ namespace Xeno.ToolsHub.Managers.SystemTray
 
     #region Menu Renderer
 
-    private void LoadAddinsForSysTray()
-    {
-      string pth = Helpers.ExtensionPaths.SystemTrayPath;
-      Mono.Addins.ExtensionNodeList nodes = Mono.Addins.AddinManager.GetExtensionNodes(pth);
-
-      foreach (Mono.Addins.ExtensionNode node in nodes)
-      {
-        Log.Debug("LoadAddinsForSysTray ...");
-        Mono.Addins.TypeExtensionNode typeNode = node as Mono.Addins.TypeExtensionNode;
-
-        // SysTrayAddin
-        try
-        {
-          SysTrayAddin addin = typeNode.CreateInstance() as SysTrayAddin;
-          // Keep track of the addins added to each note
-          //AttachAddin(type_node.Id, note, n_addin);
-        }
-        catch (Exception e)
-        {
-          Log.Debug($"Couldn't create a NoteAddin instance: {e.Message}");
-        }
-      }
-    }
-
     private void InitTrayMenu()
     {
       List<MenuItem> menuBuilder = new List<MenuItem>();
@@ -73,9 +49,14 @@ namespace Xeno.ToolsHub.Managers.SystemTray
       menuBuilder.Add(new MenuItem("-"));
 
       // Load add-in menus
-      var addinMenus = LoadMenuFromExtensionPoint();
-      if (addinMenus.Count > 0)
-        menuBuilder.AddRange(addinMenus);
+      List<MenuItem> epMenus = new List<MenuItem>();
+      epMenus = LoadTestSysTrayMenu();
+      if (epMenus.Count > 0)
+        menuBuilder.AddRange(epMenus);
+
+      epMenus = LoadSysTrayExtensionPoint();
+      if (epMenus.Count > 0)
+        menuBuilder.AddRange(epMenus);
 
       menuBuilder.Add(new MenuItem("About", OnMenuAbout));
       menuBuilder.Add(new MenuItem("Exit", OnMenuExit));
@@ -83,8 +64,37 @@ namespace Xeno.ToolsHub.Managers.SystemTray
       _trayMenu = menuBuilder.ToArray();
     }
 
+    private List<MenuItem> LoadSysTrayExtensionPoint()
+    {
+      List<MenuItem> addinItems = new List<MenuItem>();
+      string pth = Helpers.ExtensionPaths.SystemTrayPath;
+      Mono.Addins.ExtensionNodeList nodes = Mono.Addins.AddinManager.GetExtensionNodes(pth);
+
+      Log.Debug($"LoadSysTrayExtensionPoint ({nodes.Count} items found)...");
+      foreach (Mono.Addins.ExtensionNode node in nodes)
+      {
+        Mono.Addins.TypeExtensionNode typeNode = node as Mono.Addins.TypeExtensionNode;
+
+        // SysTrayAddin
+        try
+        {
+          SysTrayAddin addin = typeNode.CreateInstance() as SysTrayAddin;
+          Log.Debug($"LoadSysTrayExtensionPoint: addin[{addin.ToString()}]");
+
+          // Keep track of the addins added to each note
+          //AttachAddin(type_node.Id, note, n_addin);
+        }
+        catch (Exception e)
+        {
+          Log.Error($"Couldn't create a NoteAddin instance: {e.Message}");
+        }
+      }
+
+      return addinItems;
+    }
+
     /// <summary>Load tray menu items from ExtensionPoint</summary>
-    private List<MenuItem> LoadMenuFromExtensionPoint()
+    private List<MenuItem> LoadTestSysTrayMenu()
     {
       List<MenuItem> addinItems = new List<MenuItem>();
 

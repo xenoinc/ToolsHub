@@ -57,7 +57,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="SampleAddin.addin.xml" />
-    <Content Include="TrayMenu.addin.xml" />
+    <EmbeddedResource Include="TrayMenu.addin.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

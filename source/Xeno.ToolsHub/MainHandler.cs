@@ -9,7 +9,6 @@
  *  [ ] Use IoC to manage managers. (i.e. AutoFac)
  */
 
-using System;
 using System.Windows.Forms;
 
 // [assembly: Mono.Addins.AddinRoot("ToolsHub", "1.0")]
@@ -22,8 +21,8 @@ namespace Xeno.ToolsHub
     //PreferencesForm prefWnd = new PreferencesForm();
     //MenuItem configMenuItem
 
-    Managers.SystemTray.SystemTrayManager _sysTray;
-    Managers.WndProcManager _wndProc;
+    private Managers.SystemTray.SystemTrayManager _sysTray;
+    private Managers.WndProcManager _wndProc;
 
     public MainHandler()
     {
@@ -37,6 +36,11 @@ namespace Xeno.ToolsHub
       InitWndProc();
       //InitSideBar();
       //InitMonoAddins();
+
+#if DEBUG
+      DebugTests();
+#endif
+
       Application.ApplicationExit += Application_ApplicationExit;
     }
 
@@ -45,6 +49,10 @@ namespace Xeno.ToolsHub
       //TODO: Inform add-ins of closing application
       //TODO: Clean up any additional resources
       //throw new System.NotImplementedException();
+    }
+
+    private void DebugTests()
+    {
     }
 
     private void InitMonoAddins()

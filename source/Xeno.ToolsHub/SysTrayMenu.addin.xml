@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<!--
+Copyright Xeno Innovations, Inc. 2018
+ * Date:    2018-10-25
+ * Author:  <Unknown>
+ * File:    SysTrayMenu.addin.xml
+ * Description:
+ *  
+-->
+
+<ExtensionModel>
+  <Extension Path="/ToolsHub/SystemTray">
+    <SysTray Id="Test1" Text="Test Item 1" />
+    <SysTray Id="Test2" Text="Test Item 2" />
+    <SysTray Id="Test3" Text="Test Item 3 - with command">
+      <!-- sub-item commands go here -->
+      <Command Id="AboutCmd" Text="Exec command" />
+    </SysTray>
+  </Extension>
+</ExtensionModel>

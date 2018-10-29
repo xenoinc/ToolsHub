@@ -11,6 +11,9 @@ Copyright Xeno Innovations, Inc. 2018
        Namespace="ToolsHub"       
        Version="0.10"
        CompatVersion="0.10"
+       Author="Damian Suess"
+       Copyright="Xeno Innovations, Inc. 2018"
+       Description="Customizable Desktop Launcher"
        IsRoot="true"
        xmlns="https://github.com/mono/mono-addins/MonoAddins.xsd">
   <Runtime>
@@ -28,6 +31,11 @@ Copyright Xeno Innovations, Inc. 2018
   <ExtensionPoint Path="/ToolsHub/OnStartupAddins">
     <ExtensionNode Name="OnStartupAddin" ObjectType="Xeno.ToolsHub.ExtensionModel.ApplicationAddin" />
   </ExtensionPoint>
+
+  <ExtensionPoint Path="/ToolsHub/SystemTray">
+    <ExtensionNode Name="SysTray" Type="Xeno.ToolsHub.Managers.SystemTray.SysTrayExtensionNode" />
+  </ExtensionPoint>
+                  
   
   <!--
   <ExtensionPoint Path="/ToolsHub/ApplicationAddins">

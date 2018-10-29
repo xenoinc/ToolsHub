@@ -6,9 +6,9 @@
 
 <ExtensionModel>
   <Extension Path="/ToolsHub/SysTray">
-    <TrayMenu id="SampleAddin" Text="Sample Add-in">
+    <SysTray id="SampleAddin" Text="Sample Add-in">
       <Command Text="Hello" Id="Xeno.ToolsHub.SampleAddin.SysTrayHandlers.HelloCommand" />
       <Command Text="World" Id="Xeno.ToolsHub.SampleAddin.SysTrayHandlers.HelloCommand" />
-    </TrayMenu>
+    </SysTray>
   </Extension>
 </ExtensionModel>

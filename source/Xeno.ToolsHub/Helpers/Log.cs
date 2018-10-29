@@ -3,7 +3,7 @@
  * Author:  Damian Suess
  * File:    Log.cs
  * Description:
- *
+ *  File and console logging system
  */
 
 using System;
@@ -58,11 +58,15 @@ namespace Xeno.ToolsHub.Helpers
     }
 
     public static void Logger(Level level, string message, params object[] args)
-    {
+    {      
+      System.Diagnostics.Debug.Print($"[{FormatTime()}] [{level.ToString()}] [{message}]");
+
+      // TODO: use this when ready
       //if (!_muted && level >= _logLevel)
       //  _logDev.Log(level, message, args);
     }
 
+    /// <summary>Temporary disable logging output</summary>
     public static void Mute()
     {
       _muted = true;
@@ -76,6 +80,16 @@ namespace Xeno.ToolsHub.Helpers
     public static void Warn(string message, params object[] args)
     {
       Logger(Level.WARN, message, args);
+    }
+
+    private static string FormatTime()
+    {
+      string time = string.Format("[{0:00}:{1:00}:{2:00}.{3:000}]",
+                     DateTime.Now.Hour,
+                     DateTime.Now.Minute,
+                     DateTime.Now.Second,
+                     DateTime.Now.Millisecond);
+      return time;
     }
   }
 
