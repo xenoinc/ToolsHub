@@ -2,7 +2,19 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <Import Project="BuildProperties.resx" />
-
+  
+  <Target Name="Clean">
+    <!--
+      Directories="**\obj\**;**\bin\**"
+      https://stackoverflow.com/questions/5080856/how-to-delete-all-file-and-folders-with-msbuild
+    -->
+    <RemoveDir Directories="output"/>
+  </Target>
+  
+  <Target Name="Compile" DependsOnTargets="Clean;Version">
+    <!--<MSBuild Projects="@(ProjectFiles)" />-->
+  </Target>
+  
   <Target Name="CompileCode" DependsOnTargets="CleanOutput;CompileDevCode">
 		<Message Text="*** CompileCode complete ***" />
 	</Target>
