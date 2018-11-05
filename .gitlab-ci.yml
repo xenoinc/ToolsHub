@@ -1,0 +1,16 @@
+variables:
+  PROJECT_NAME: ToolsHub
+before_script:
+  - echo "Starting build for %PROJECT_NAME%"
+stages:
+  - build
+job:
+  stage: build
+  script:
+  - echo "Building Debug..."
+  - C:\Windows\Microsoft.NET\Framework64\v4.0.30319\msbuild.exe /consoleloggerparameters:ErrorsOnly /maxcpucount /nologo /property:Configuration=Debug /verbosity:quiet source\"%PROJECT_NAME%.sln"
+  artifacts:
+    untracked: true
+  tags: 
+  except:
+  - tags

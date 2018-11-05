@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="MonoAddins"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="https://github.com/mono/mono-addins/MonoAddins.xsd"
+    attributeFormDefault="unqualified"
+    elementFormDefault="qualified">
+  <xs:element name="Addin">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Runtime" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Import" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:attribute name="Assembly" type="xs:string" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Dependencies" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Addin" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:attribute name="Id" type="xs:string" use="required" />
+                  <xs:attribute name="Version" type="xs:decimal" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="ConditionType" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:attribute name="Id" type="xs:string" use="required" />
+            <xs:attribute name="Type" type="xs:string" use="required" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="ExtensionPoint" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ExtensionNode">
+                <xs:complexType>
+                  <xs:attribute name="Name" type="xs:string" use="required" />
+                  <xs:attribute name="ObjectType" type="xs:string" use="optional" />
+                  <xs:attribute name="Type" type="xs:string" use="optional" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="Path" type="xs:string" use="required" />
+            <xs:attribute name="Name" type="xs:string" use="optional" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Extension" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:attribute name="Path" type="xs:string" use="required" />
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="Id" type="xs:string" use="required" />
+      <xs:attribute name="Namespace" type="xs:string" use="required" />
+      <xs:attribute name="Name" type="xs:string" use="optional" />
+      <xs:attribute name="Version" type="xs:decimal" use="required" />
+      <xs:attribute name="CompatVersion" type="xs:decimal" use="optional" />
+      <xs:attribute name="Author" type="xs:string" use="optional" />
+      <xs:attribute name="Url" type="xs:string" use="optional" />
+      <xs:attribute name="Copyright" type="xs:string" use="optional" />
+      <xs:attribute name="Description" type="xs:string" use="optional" />
+      <xs:attribute name="Category" type="xs:string" use="optional" />
+      <xs:attribute name="BasePath" type="xs:string" use="optional" />
+      <xs:attribute name="IsRoot" type="xs:boolean" use="optional" />
+      <xs:attribute name="DefaultEnabled" type="xs:boolean" use="optional" />
+      <xs:attribute name="Flags" type="xs:string" use="optional" />
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,4 +1,5 @@
-﻿<!--
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--
 Copyright Xeno Innovations, Inc. 2018
  * Date:    2018-10-3
  * Author:  Damian Suess
@@ -6,15 +7,15 @@ Copyright Xeno Innovations, Inc. 2018
  * Description:
  *  
 -->
-
 <Addin Id="VeraCryptAddin"
        Namespace="ToolsHub"
        Name="Sample Add-in"
+       Version="1.0"
        Author="Damian Suess"
        Description="Quick sample add-in project."
        Category="Tools"
        DefaultEnabled="false"
-       Version="1.0">
+       xmlns="https://github.com/mono/mono-addins/MonoAddins.xsd">
   <Runtime>
     <Import assembly="SampleAddin.dll" />
   </Runtime>
@@ -27,6 +28,9 @@ Copyright Xeno Innovations, Inc. 2018
     <ApplicationAddin Type="Xeno.ToolsHub.SampleAddin.Sample" />
   </Extension>
 
+  <Extension Path="/ToolsHub/SystemTray">
+    <SystemTrayAddin type="Xeno.ToolsHub.SampleAddin.SysTrayAddin" />
+  </Extension>
   <!--
   <Extension Path="/ToolsHub/AddinPreferences">
     <ApplicationAddin Type="Xeno.ToolsHub.SampleAddin.SamplePreferences" />

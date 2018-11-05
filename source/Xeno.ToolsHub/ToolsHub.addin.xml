@@ -1,4 +1,5 @@
-﻿<!--
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--
 Copyright Xeno Innovations, Inc. 2018
  * Date:    2018-7-18
  * Author:  Damian Suess
@@ -6,12 +7,15 @@ Copyright Xeno Innovations, Inc. 2018
  * Description:
  *  Mono.Addins configuration for ToolsHub application
 -->
-
-<Addin Namespace="ToolsHub"
-       Id="ToolsHub"
+<Addin Id="ToolsHub"
+       Namespace="ToolsHub"       
        Version="0.10"
+       CompatVersion="0.10"
+       Author="Damian Suess"
+       Copyright="Xeno Innovations, Inc. 2018"
+       Description="Customizable Desktop Launcher"
        IsRoot="true"
-       CompatVersion="0.10">
+       xmlns="https://github.com/mono/mono-addins/MonoAddins.xsd">
   <Runtime>
     <Import Assembly="Xeno.ToolsHub.exe" />
   </Runtime>
@@ -19,11 +23,20 @@ Copyright Xeno Innovations, Inc. 2018
   <!--
     Alt names for 'OnStartupAddins': "StartupAddins", "AppInitialize", ApplicationAddins
   -->
+  
+  <ExtensionPoint Path="/ToolsHub/OnStartupAddins">
+    <ExtensionNode Name="OnStartupAddin" ObjectType="Xeno.ToolsHub.ExtensionModel.ApplicationAddin" />
+  </ExtensionPoint>
 
   <ExtensionPoint Path="/ToolsHub/OnStartupAddins">
     <ExtensionNode Name="OnStartupAddin" ObjectType="Xeno.ToolsHub.ExtensionModel.ApplicationAddin" />
   </ExtensionPoint>
 
+  <ExtensionPoint Path="/ToolsHub/SystemTray">
+    <ExtensionNode Name="SysTray" Type="Xeno.ToolsHub.Managers.SystemTray.SysTrayExtensionNode" />
+  </ExtensionPoint>
+                  
+  
   <!--
   <ExtensionPoint Path="/ToolsHub/ApplicationAddins">
     <ExtensionNode Name="ApplicationAddin" ObjectType="Xeno.ToolsHub.ExtensionModel.ApplicationAddin" />
