@@ -20,6 +20,9 @@ namespace Xeno.ToolsHub
   {
     public static bool AbortShutdown = false;
 
+    /// <summary>global singleton</summary>
+    public static AppSettings Settings;
+
     /// <summary>
     /// The main entry point for the application.
     /// </summary>
@@ -33,10 +36,26 @@ namespace Xeno.ToolsHub
       Application.EnableVisualStyles();
       Application.SetCompatibleTextRenderingDefault(false);
 
+      LoadSettings();
+
       var appContext = new MainHandler();
       Application.Run(appContext);
+
       //Application.Run(new Views.MainForm());
       //Application.Run(new Views.PreferencesForm());
+    }
+
+    /// <summary>Load application settings</summary>
+    /// <returns>False if settings file does not exist</returns>
+    private static bool LoadSettings()
+    {
+      bool hasSettings = false;
+
+      Settings = new AppSettings();
+      Settings.InitializeDefaults();
+      Settings = Settings.Load();
+
+      return false;
     }
 
     #region Add-ins

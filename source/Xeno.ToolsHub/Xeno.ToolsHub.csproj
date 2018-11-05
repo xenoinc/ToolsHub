@@ -35,6 +35,9 @@
     <Reference Include="Mono.Addins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
       <HintPath>..\packages\Mono.Addins.1.3.8\lib\net45\Mono.Addins.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -50,6 +53,7 @@
   <ItemGroup>
     <Compile Include="ExtensionModel\Command\CommandAttribute.cs" />
     <Compile Include="ExtensionModel\Command\ICommand.cs" />
+    <Compile Include="Helpers\AppSettings.cs" />
     <Compile Include="LocalAddins\Shortcuts\ShortcutAddin.cs" />
     <Compile Include="LocalAddins\Shortcuts\ShortcutsSidebar.cs" />
     <Compile Include="LocalAddins\Shortcuts\ShortcutsSysTray.cs" />

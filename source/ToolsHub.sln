@@ -3,6 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2042
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9E14C472-22F2-418B-873E-0F2016A8287A}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		CodeMaid.config = CodeMaid.config
+		ToolsHub.sln.licenseheader = ToolsHub.sln.licenseheader
+	EndProjectSection
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xeno.ToolsHub", "Xeno.ToolsHub\Xeno.ToolsHub.csproj", "{01D40BBE-DA31-41E7-808E-67AFCC50E698}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Addons", "Addons", "{AE268EE2-8ECA-4ABC-A750-84970AFE053E}"
