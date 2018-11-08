@@ -43,9 +43,11 @@ namespace Xeno.ToolsHub.Managers.SystemTray
       }
 
       string dbg = $"TrayItem.OnClick: [ndx={index}] [text={text}] [tag={tag}]";
-      Helpers.Log.Debug(dbg);
+      Config.Log.Debug(dbg);
 
-      //TODO: Send back to add-in
+      //TODO: (for now) Execute tag as Shortcut's "target" to launch app & such
+
+      //TODO: Send back to add-in so it can execute it's command
     }
 
     public void OnSelect(object sender, EventArgs e)
@@ -62,7 +64,7 @@ namespace Xeno.ToolsHub.Managers.SystemTray
       }
 
       string dbg = $"TrayItem.OnSelect: [ndx={index}] [text={text}] [tag={tag}]";
-      Helpers.Log.Debug(dbg);
+      Config.Log.Debug(dbg);
 
       //TODO: Send back to add-in
     }

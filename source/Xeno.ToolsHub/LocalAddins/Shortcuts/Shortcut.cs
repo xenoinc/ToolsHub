@@ -7,25 +7,28 @@
  */
 
 using System.Collections.Generic;
+using System.Windows.Forms.VisualStyles;
 
 namespace Xeno.ToolsHub.LocalAddins.Shortcuts
 {
   public class Shortcuts : List<Shortcut>
   {
-
   }
 
   public class Shortcut
   {
     public string Title { get; set; }
 
-    public int SortOrder { get; set; }
+    public string Target { get; set; }
 
-    public string Uri { get; set; }
+    public string StartPath { get; set; }
 
     public string Params { get; set; }
 
-    public string Icon { get; set; }
+    public int SortOrder { get; set; }
 
+    public string IconPath { get; set; }
+
+    public int RunAs { get; set; }
   }
 }

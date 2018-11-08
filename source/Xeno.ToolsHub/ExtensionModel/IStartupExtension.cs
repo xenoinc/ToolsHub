@@ -10,7 +10,7 @@ using Mono.Addins;
 
 namespace Xeno.ToolsHub.ExtensionModel
 {
-  [TypeExtensionPoint(Path = Helpers.ExtensionPaths.OnStartupAddinsPath, NodeName = "OnStartupAddins")]
+  [TypeExtensionPoint(Path = Config.ExtensionPaths.OnStartupAddinsPath, NodeName = "OnStartupAddins")]
   public interface IStartupExtension : IBaseExtension
   {
   }

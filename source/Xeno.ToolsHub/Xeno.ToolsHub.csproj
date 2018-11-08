@@ -51,9 +51,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config\Constants.cs" />
+    <Compile Include="Config\Helpers.cs" />
     <Compile Include="ExtensionModel\Command\CommandAttribute.cs" />
     <Compile Include="ExtensionModel\Command\ICommand.cs" />
-    <Compile Include="Helpers\AppSettings.cs" />
+    <Compile Include="Config\Settings\AppSettings.cs" />
     <Compile Include="LocalAddins\Shortcuts\ShortcutAddin.cs" />
     <Compile Include="LocalAddins\Shortcuts\ShortcutsSidebar.cs" />
     <Compile Include="LocalAddins\Shortcuts\ShortcutsSysTray.cs" />
@@ -73,11 +75,11 @@
     <Compile Include="ExtensionModel\IStartupExtension.cs" />
     <Compile Include="ExtensionModel\ISystemShutdownExtension.cs" />
     <Compile Include="ExtensionModel\PreferenceAddin.cs" />
-    <Compile Include="Helpers\ExtensionPaths.cs" />
-    <Compile Include="Helpers\Log.cs" />
+    <Compile Include="Config\ExtensionPaths.cs" />
+    <Compile Include="Config\Log.cs" />
     <Compile Include="Managers\SidebarManager.cs" />
     <Compile Include="Managers\SystemTray\SystemTrayManager.cs" />
-    <Compile Include="Helpers\AddinSettings.cs" />
+    <Compile Include="Config\Settings\AddinSettings.cs" />
     <Compile Include="Managers\WndProcManager.cs" />
     <Compile Include="LocalAddins\Shortcuts\Shortcut.cs" />
     <Compile Include="Views\MainForm.cs">

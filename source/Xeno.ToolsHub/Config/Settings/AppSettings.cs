@@ -6,7 +6,9 @@
  *  Application settings
  */
 
-namespace Xeno.ToolsHub.Helpers
+using System;
+
+namespace Xeno.ToolsHub.Config.Settings
 {
   public class AppSettings
   {
@@ -16,6 +18,8 @@ namespace Xeno.ToolsHub.Helpers
 
     public AppSettings Load()
     {
+      InitializeDefaults();
+      throw new NotImplementedException();
       return new AppSettings();
     }
 

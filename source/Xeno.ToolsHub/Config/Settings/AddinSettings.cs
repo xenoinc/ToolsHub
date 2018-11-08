@@ -10,7 +10,7 @@
 
 using System.Collections.Generic;
 
-namespace Xeno.ToolsHub.Helpers
+namespace Xeno.ToolsHub.Config.Settings
 {
   public static class AddinSettings
   {
