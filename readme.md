@@ -1,7 +1,13 @@
 # Xeno.ToolsHub
-Fexable tools launcher desktop app which is "_not your average extensible sidebar_"
+Flexible tools launcher desktop app which is "_not your average extensible sidebar_"
 
 **_This project is a Work in Progress_**
+
+
+![CRAN](https://img.shields.io/cran/l/devtools.svg?style=plastic)
+![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg)
+
+
 
 ## Future Features
 * Add-on containers via Mono.Addins
