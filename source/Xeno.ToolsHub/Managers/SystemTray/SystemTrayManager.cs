@@ -55,6 +55,7 @@ namespace Xeno.ToolsHub.Managers.SystemTray
       if (epMenus.Count > 0)
         menuBuilder.AddRange(epMenus);
 
+      //TODO: Obsolete - Load only from ExtensionPoint. For now we're just loading it manually
       epMenus = LoadMenuShortcuts();
       if (epMenus.Count > 0)
         menuBuilder.AddRange(epMenus);
@@ -70,12 +71,15 @@ namespace Xeno.ToolsHub.Managers.SystemTray
     }
 
     /// <summary>Load tray menu items from config file</summary>
+    /// <remarks>TEMP code only. Future we'll use Addins</remarks>
+    [Obsolete("we should be using Add-ins, not manually adding things")]
     private List<MenuItem> LoadMenuShortcuts()
     {
       List<MenuItem> addinItems = new List<MenuItem>();
 
       ShortcutsSysTray shortcutMenu = new ShortcutsSysTray();
-      addinItems = shortcutMenu.LoadAsMenuItems();
+      var subSet = shortcutMenu.LoadAsMenuItems();
+      addinItems.Add(subSet);
 
       return addinItems;
     }
