@@ -11,7 +11,7 @@
     <RemoveDir Directories="output"/>
   </Target>
   
-  <Target Name="Compile" DependsOnTargets="Clean;Version">
+  <Target Name="Compile" DependsOnTargets="Clean">
     <!--<MSBuild Projects="@(ProjectFiles)" />-->
   </Target>
   

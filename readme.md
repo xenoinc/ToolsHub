@@ -1,7 +1,18 @@
 # Xeno.ToolsHub
-Fexable tools launcher desktop app which is "_not your average extensible sidebar_"
+Flexible tools launcher desktop app which is "_not your average extensible sidebar_"
 
 **_This project is a Work in Progress_**
+
+
+|||
+| --- | --- |
+| **License** | [![GitHub license](https://img.shields.io/github/license/DamianSuess/ToolsHub.svg)](https://github.com/DamianSuess/ToolsHub/blob/master/LICENSE) |
+| **Master** | <img src="https://ci.appveyor.com/api/projects/status/github/DamianSuess/ToolsHub?branch=master&svg=true" alt="Project Badge" /> |
+| **Develop** | <img src="https://ci.appveyor.com/api/projects/status/github/DamianSuess/ToolsHub?branch=develop&svg=true" alt="Project Badge" /> |
+
+
+
+
 
 ## Future Features
 * Add-on containers via Mono.Addins
@@ -11,7 +22,7 @@ Fexable tools launcher desktop app which is "_not your average extensible sideba
 * Launch app on system startup
 
 ## Coding
-The framework relyes on Mono.Addins for extending to add new features. With that, there are key ``endpoints`` you can attach to.
+The framework relies on Mono.Addins for extending to add new features. With that, there are key ``endpoints`` you can attach to.
 
 ### Endpoints
 * OnStart
@@ -22,7 +33,7 @@ The framework relyes on Mono.Addins for extending to add new features. With that
 ### VeraCrypt
 * **Status:** wip
 * Auto-mount drives on startup
-* Safely dismount drive on system shutdown to guard against curruption
+* Safely dismount drive on system shutdown to guard against corruption
 
 ### Sidebar Launcher
 * **Status:** _n/a_
