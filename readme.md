@@ -4,8 +4,12 @@ Flexible tools launcher desktop app which is "_not your average extensible sideb
 **_This project is a Work in Progress_**
 
 
-|---|---|
+|||
+| --- | --- |
 | **License** | [![GitHub license](https://img.shields.io/github/license/DamianSuess/ToolsHub.svg)](https://github.com/DamianSuess/ToolsHub/blob/master/LICENSE) |
+| **Build** | https://ci.appveyor.com/api/projects/status/github/DamianSuess/ToolsHub
+
+<img src="https://ci.appveyor.com/api/projects/status/32r7s2skrgm9ubva?svg=true&passingText=master%20-%20OK" alt="Project Badge">|
 
 
 

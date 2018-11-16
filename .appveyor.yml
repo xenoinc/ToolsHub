@@ -1,5 +1,5 @@
 version: 1.0.{build}
-before_build: 
+before_build:
   - nuget restore source/ToolsHub.sln
 build:
   project: source/ToolsHub.sln
