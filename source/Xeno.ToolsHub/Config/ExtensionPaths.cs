@@ -6,7 +6,7 @@
  *  Add-in Extension Paths
  */
 
-namespace Xeno.ToolsHub.Helpers
+namespace Xeno.ToolsHub.Config
 {
   public class ExtensionPaths
   {

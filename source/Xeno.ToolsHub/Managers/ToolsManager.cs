@@ -6,7 +6,7 @@
  *
  */
 
-using Xeno.ToolsHub.Helpers;
+using Xeno.ToolsHub.Config;
 
 namespace Xeno.ToolsHub.Managers
 {

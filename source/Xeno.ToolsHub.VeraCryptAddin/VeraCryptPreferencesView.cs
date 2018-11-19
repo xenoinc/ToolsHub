@@ -17,8 +17,8 @@ namespace Xeno.ToolsHub.VeraCryptAddin
     {
       InitializeComponent();
 
-      var shutdown = Xeno.ToolsHub.Helpers.AddinSettings.Load("VeraCrypt", "AutoDismountShutdown", "0");
-      var logoff = Xeno.ToolsHub.Helpers.AddinSettings.Load("VeraCrypt", "AutoDismountSignout", "0");
+      var shutdown = Xeno.ToolsHub.Config.Settings.AddinSettings.Load("VeraCrypt", "AutoDismountShutdown", "0");
+      var logoff = Xeno.ToolsHub.Config.Settings.AddinSettings.Load("VeraCrypt", "AutoDismountSignout", "0");
 
       chkDismountShutdown.Checked = (shutdown == "1" ? true : false);
       chkDismountSignout.Checked = (logoff == "1" ? true : false);

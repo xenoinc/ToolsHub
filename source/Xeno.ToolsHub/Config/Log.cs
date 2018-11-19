@@ -10,7 +10,7 @@ using System;
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace Xeno.ToolsHub.Helpers
+namespace Xeno.ToolsHub.Config
 {
   public enum Level { DEBUG, INFO, WARN, ERROR, FATAL };
 

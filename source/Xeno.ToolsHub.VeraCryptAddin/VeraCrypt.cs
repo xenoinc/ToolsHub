@@ -8,7 +8,7 @@
 
 using System;
 using Xeno.ToolsHub.ExtensionModel;
-using Xeno.ToolsHub.Helpers;
+using Xeno.ToolsHub.Config;
 
 namespace Xeno.ToolsHub.VeraCryptAddin
 {
@@ -20,12 +20,12 @@ namespace Xeno.ToolsHub.VeraCryptAddin
 
     public static void SettingSave(string setting, string value)
     {
-      Xeno.ToolsHub.Helpers.AddinSettings.Save("VeraCrypt", setting, value);
+      Xeno.ToolsHub.Config.Settings.AddinSettings.Save("VeraCrypt", setting, value);
     }
 
     public static string SettingLoad(string setting, string defaultValue)
     {
-      return Xeno.ToolsHub.Helpers.AddinSettings.Load("VeraCrypt", setting, defaultValue);
+      return Xeno.ToolsHub.Config.Settings.AddinSettings.Load("VeraCrypt", setting, defaultValue);
     }
 
     public override void Initialize()
