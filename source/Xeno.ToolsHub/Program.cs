@@ -7,6 +7,7 @@
  */
 
 using System;
+using System.Threading;
 using System.Windows.Forms;
 using Microsoft.Win32;
 using Xeno.ToolsHub.Config;
@@ -23,12 +24,19 @@ namespace Xeno.ToolsHub
     /// <summary>global singleton</summary>
     public static Config.Settings.AppSettings Settings;
 
+    private static Mutex _mutex = null;
+
     /// <summary>
     /// The main entry point for the application.
     /// </summary>
     [STAThread]
     private static void Main()
     {
+      if (HasPrevInstance())
+      {
+        return;
+      }
+
       InitMonoAddins();
 
       InitSystemEvents();
@@ -43,6 +51,19 @@ namespace Xeno.ToolsHub
 
       //Application.Run(new Views.MainForm());
       //Application.Run(new Views.PreferencesForm());
+    }
+
+    /// <summary>Check for previous instance</summary>
+    /// <returns></returns>
+    private static bool HasPrevInstance()
+    {
+      const string appName = "ToolsHub-{AC52F444-759A-4681-9D5D-1E234502B5E1}";
+      bool createdNew;
+      _mutex = new Mutex(true, appName, out createdNew);
+      if (!createdNew)
+        return true;
+      else
+        return false;
     }
 
     /// <summary>Load application settings</summary>
