@@ -42,6 +42,13 @@ namespace Xeno.ToolsHub.Managers.SystemTray
 
     #region Menu Renderer
 
+    public void Refresh()
+    {
+      //TODO: Create a singleton or IoC pattern to call Refresh() from outside
+      InitTrayMenu();
+      RedrawTrayNotifacation();
+    }
+
     private void InitTrayMenu()
     {
       List<MenuItem> menuBuilder = new List<MenuItem>();
@@ -152,20 +159,14 @@ namespace Xeno.ToolsHub.Managers.SystemTray
       _trayNotify.Visible = true;
     }
 
-    public void Refresh()
-    {
-      //TODO: Create a singleton or IoC pattern to call Refresh() from outside
-      InitTrayMenu();
-      RedrawTrayNotifacation();
-    }
-
     #endregion Menu Renderer
 
     #region Local Menu - Event Handlers
 
     private void OnMenuAbout(object sender, EventArgs e)
     {
-      throw new NotImplementedException();
+      Form f = new Views.AboutForm();
+      f.ShowDialog();
     }
 
     private void OnMenuDoubleClick(object sender, EventArgs e)
@@ -182,7 +183,8 @@ namespace Xeno.ToolsHub.Managers.SystemTray
 
     private void OnMenuProperties(object sender, EventArgs e)
     {
-      throw new NotImplementedException();
+      Form p = new Views.PreferencesForm();
+      p.Show();
     }
 
     #endregion Local Menu - Event Handlers
