@@ -81,7 +81,7 @@
     <Compile Include="Managers\SystemTray\SystemTrayManager.cs" />
     <Compile Include="Config\Settings\AddinSettings.cs" />
     <Compile Include="Managers\WndProcManager.cs" />
-    <Compile Include="LocalAddins\Shortcuts\Shortcut.cs" />
+    <Compile Include="LocalAddins\Shortcuts\ShortcutItem.cs" />
     <Compile Include="Views\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -13,10 +13,8 @@ namespace Xeno.ToolsHub.Config
   public static class Constants
   {
     public static string SettingsFile => "config.json";
-    public static string LocalSettingsPath => Path.Combine(LocalFolder, SettingsFile);
 
-    public static string ShortcutsFile => "shortcuts.json";
-    public static string LocalShortcutsPath => Path.Combine(LocalFolder, ShortcutsFile);
+    public static string LocalSettingsPath => Path.Combine(LocalFolder, SettingsFile);
 
     public static string LocalFolder => Directory.GetCurrentDirectory();
   }

@@ -11,11 +11,11 @@ using System.Windows.Forms.VisualStyles;
 
 namespace Xeno.ToolsHub.LocalAddins.Shortcuts
 {
-  public class Shortcuts : List<Shortcut>
+  public class ShortcutItems : List<ShortcutItem>
   {
   }
 
-  public class Shortcut
+  public class ShortcutItem
   {
     public string Title { get; set; }
 

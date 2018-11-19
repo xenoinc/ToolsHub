@@ -10,6 +10,7 @@
  */
 
 using System.Collections.Generic;
+using System.IO;
 using System.Windows.Forms;
 using Xeno.ToolsHub.Config;
 
@@ -21,36 +22,74 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
     {
     }
 
-    /// <summary>
-    ///   Load shortcuts into systray from config file
-    /// </summary>
+    private string ShortcutsFile => "shortcuts.json";
+
+    private string LocalShortcutsPath => Path.Combine(Constants.LocalFolder, ShortcutsFile);
+
+    /// <summary>Load shortcuts into systray from config file</summary>
     /// <returns></returns>
     public MenuItem LoadAsMenuItems()
     {
-      if (!System.IO.File.Exists(Constants.LocalShortcutsPath))
-      {
-        Log.Debug($"Missing local '{Constants.ShortcutsFile}' file");
-        return new MenuItem("Shortcuts");
-      }
-
-      var shortcuts = Helpers.FileDeserialize<Shortcuts>(Constants.LocalShortcutsPath);
-
       var menu = new MenuItem("Shortcuts");
-      List<MenuItem> items = new List<MenuItem>();
-      int ndx = 0;
 
-      foreach (Shortcut shortcut in shortcuts)
+      if (!System.IO.File.Exists(LocalShortcutsPath))
       {
-        // TODO: add real details to launcher
+        Log.Debug($"Missing local '{ShortcutsFile}' file");
 
-        var target = shortcut.Target;
+        var item = new Managers.SystemTray.TrayItem("Create test JSON...", "", true, TestJsonGenerator);
+        menu.MenuItems.Add(0, item);
 
-        var subItem = new Managers.SystemTray.TrayItem(shortcut.Title, "tag_addin1-Sub1", true);
-        menu.MenuItems.Add(ndx, subItem);
-        ndx++;
+        // Generate test items
+        //var item = new Managers.SystemTray.TrayItem("Temp folder", @"c:\temp", true);
+        //menu.MenuItems.Add(0, item);
+        //
+        //item = new Managers.SystemTray.TrayItem("Dev folder", @"C:\dev", true, MethodRouter);
+        //menu.MenuItems.Add(1, item);
+      }
+      else
+      {
+        var shortcuts = Helpers.FileDeserialize<ShortcutItems>(LocalShortcutsPath);
+
+        List<MenuItem> items = new List<MenuItem>();
+        int ndx = 0;
+        foreach (ShortcutItem shortcut in shortcuts)
+        {
+          var subItem = new Managers.SystemTray.TrayItem(shortcut.Title, shortcut.Target, true, MethodRouter);
+          menu.MenuItems.Add(ndx, subItem);
+          ndx++;
+        }
       }
 
       return menu;
+    }
+
+    public int MethodRouter(string target)
+    {
+      Log.Debug($"Executing MyMethod with target, '{target}'");
+
+      System.Diagnostics.Process.Start(target);
+      return 0;
+    }
+
+    public int TestJsonGenerator(string target)
+    {
+      //TODO: 1. Open dialog to create custom shorts
+      //TODO: 2. Force SysTray to refresh itself
+
+      Log.Debug($"Generating a test, {ShortcutsFile}");
+
+      var items = new ShortcutItems
+      {
+        new ShortcutItem { Title = "Dev", Target = @"C:\dev" },
+        new ShortcutItem { Title = "Lab", Target = @"C:\work\lab" },
+        new ShortcutItem { Title = "Docs", Target = @"C:\work\docs" },
+      };
+
+      Helpers.FileSerialize(items, LocalShortcutsPath, true);
+
+      //TODO: Managers.SystemTray.SystemTrayManager.Refresh();
+
+      return 0;
     }
   }
 }
