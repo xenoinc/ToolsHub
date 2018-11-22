@@ -56,7 +56,7 @@
     <Compile Include="ExtensionModel\Command\CommandAttribute.cs" />
     <Compile Include="ExtensionModel\Command\ICommand.cs" />
     <Compile Include="Config\Settings\AppSettings.cs" />
-    <Compile Include="LocalAddins\Shortcuts\ShortcutAddin.cs" />
+    <Compile Include="LocalAddins\Shortcuts\ShortcutsAddin.cs" />
     <Compile Include="LocalAddins\Shortcuts\ShortcutsSidebar.cs" />
     <Compile Include="LocalAddins\Shortcuts\ShortcutsSysTray.cs" />
     <Compile Include="MainHandler.cs" />
@@ -161,6 +161,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="SysTrayMenu.addin.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="LocalAddins\Shortcuts\Shortcuts.addin" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

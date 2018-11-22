@@ -34,6 +34,7 @@ namespace Xeno.ToolsHub
     {
       if (HasPrevInstance())
       {
+        Log.Info("App is already running, closing down.");
         return;
       }
 
@@ -83,6 +84,7 @@ namespace Xeno.ToolsHub
 
     private static void InitMonoAddins()
     {
+      Log.Debug("Initializing Mono.Addins");
       Mono.Addins.AddinManager.AddinLoaded += OnAddinLoaded;
       Mono.Addins.AddinManager.AddinUnloaded += OnAddinUnloaded;
 
@@ -93,6 +95,8 @@ namespace Xeno.ToolsHub
 
     private static void OnAddinLoaded(object sender, Mono.Addins.AddinEventArgs args)
     {
+      Log.Debug("OnAddinLoaded() Entering");
+
       Mono.Addins.Addin addin = Mono.Addins.AddinManager.Registry.GetAddin(args.AddinId);
       Log.Debug($"=============================");
       Log.Debug($"OnAddinLoaded: {args.AddinId}");

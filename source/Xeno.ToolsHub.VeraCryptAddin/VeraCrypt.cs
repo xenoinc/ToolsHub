@@ -30,9 +30,8 @@ namespace Xeno.ToolsHub.VeraCryptAddin
 
     public override void Initialize()
     {
-      _initialized = true;
-
       Log.Debug("VeraCrypt add-in initializing");
+      _initialized = true;
       throw new NotImplementedException();
     }
 
