@@ -8,7 +8,7 @@ Copyright Xeno Innovations, Inc. 2018
  *  Mono.Addins configuration for ToolsHub application
 -->
 <Addin Id="ToolsHub"
-       Namespace="ToolsHub"       
+       Namespace="ToolsHub"
        Version="0.10"
        CompatVersion="0.10"
        Author="Damian Suess"
@@ -23,23 +23,27 @@ Copyright Xeno Innovations, Inc. 2018
   <!--
     Alt names for 'OnStartupAddins': "StartupAddins", "AppInitialize", ApplicationAddins
   -->
-  
-  <ExtensionPoint Path="/ToolsHub/OnStartupAddins">
-    <ExtensionNode Name="OnStartupAddin" ObjectType="Xeno.ToolsHub.ExtensionModel.ApplicationAddin" />
-  </ExtensionPoint>
 
   <ExtensionPoint Path="/ToolsHub/OnStartupAddins">
     <ExtensionNode Name="OnStartupAddin" ObjectType="Xeno.ToolsHub.ExtensionModel.ApplicationAddin" />
   </ExtensionPoint>
 
-  <ExtensionPoint Path="/ToolsHub/SystemTray">
-    <ExtensionNode Name="SysTray" Type="Xeno.ToolsHub.Managers.SystemTray.SysTrayExtensionNode" />
-  </ExtensionPoint>
-                  
-  
   <!--
+  NOT IMPLEMENTED:
+  <ExtensionPoint Path="/ToolsHub/OnSystemShutdown">
+    <ExtensionNode Name="OnSystemShutdownAddin" ObjectType="xxx" />
+  </ExtensionPoint>
+
+  <ExtensionPoint Path="/ToolsHub/OnExit">
+    <ExtensionNode Name="OnExitAddin" ObjectType="xxx" />
+  </ExtensionPoint>
+
   <ExtensionPoint Path="/ToolsHub/ApplicationAddins">
     <ExtensionNode Name="ApplicationAddin" ObjectType="Xeno.ToolsHub.ExtensionModel.ApplicationAddin" />
   </ExtensionPoint>
   -->
+
+  <ExtensionPoint Path="/ToolsHub/SystemTray">
+    <ExtensionNode Name="SysTray" Type="Xeno.ToolsHub.Managers.SystemTray.SysTrayExtensionNode" />
+  </ExtensionPoint>
 </Addin>
