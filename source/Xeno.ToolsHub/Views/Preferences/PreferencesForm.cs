@@ -10,7 +10,7 @@ using System;
 using System.Windows.Forms;
 using Xeno.ToolsHub.Managers;
 using Xeno.ToolsHub.ExtensionModel;
-using Xeno.ToolsHub.Helpers;
+using Xeno.ToolsHub.Config;
 
 namespace Xeno.ToolsHub.Views
 {

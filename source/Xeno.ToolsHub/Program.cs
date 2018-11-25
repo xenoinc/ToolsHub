@@ -7,10 +7,11 @@
  */
 
 using System;
+using System.Threading;
 using System.Windows.Forms;
 using Microsoft.Win32;
+using Xeno.ToolsHub.Config;
 using Xeno.ToolsHub.ExtensionModel;
-using Xeno.ToolsHub.Helpers;
 
 [assembly: Mono.Addins.AddinRoot("ToolsHub", "1.0")]
 
@@ -20,12 +21,22 @@ namespace Xeno.ToolsHub
   {
     public static bool AbortShutdown = false;
 
+    /// <summary>global singleton</summary>
+    public static Config.Settings.AppSettings Settings;
+
+    private static Mutex _mutex = null;
+
     /// <summary>
     /// The main entry point for the application.
     /// </summary>
     [STAThread]
     private static void Main()
     {
+      if (HasPrevInstance())
+      {
+        return;
+      }
+
       InitMonoAddins();
 
       InitSystemEvents();
@@ -33,10 +44,39 @@ namespace Xeno.ToolsHub
       Application.EnableVisualStyles();
       Application.SetCompatibleTextRenderingDefault(false);
 
+      LoadSettings();
+
       var appContext = new MainHandler();
       Application.Run(appContext);
+
       //Application.Run(new Views.MainForm());
       //Application.Run(new Views.PreferencesForm());
+    }
+
+    /// <summary>Check for previous instance</summary>
+    /// <returns></returns>
+    private static bool HasPrevInstance()
+    {
+      const string appName = "ToolsHub-{AC52F444-759A-4681-9D5D-1E234502B5E1}";
+      bool createdNew;
+      _mutex = new Mutex(true, appName, out createdNew);
+      if (!createdNew)
+        return true;
+      else
+        return false;
+    }
+
+    /// <summary>Load application settings</summary>
+    /// <returns>False if settings file does not exist</returns>
+    private static void LoadSettings()
+    {
+      //TODO: Load application settings
+      //// Load application settings
+      //Settings = new AppSettings();
+      //Settings.InitializeDefaults();
+      //Settings = Settings.Load();
+      //
+      //if (System.IO.File.Exists())
     }
 
     #region Add-ins
@@ -48,7 +88,7 @@ namespace Xeno.ToolsHub
 
       Mono.Addins.AddinManager.Initialize(".");
       Mono.Addins.AddinManager.Registry.Rebuild(null);  // Rebuild registry when debugging
-      Mono.Addins.AddinManager.AddExtensionNodeHandler(Helpers.ExtensionPaths.OnStartupAddinsPath, OnStartupAddins_ExtensionHandler);
+      Mono.Addins.AddinManager.AddExtensionNodeHandler(Config.ExtensionPaths.OnStartupAddinsPath, OnStartupAddins_ExtensionHandler);
     }
 
     private static void OnAddinLoaded(object sender, Mono.Addins.AddinEventArgs args)

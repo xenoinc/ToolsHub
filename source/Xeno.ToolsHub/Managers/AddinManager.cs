@@ -9,7 +9,7 @@
 using System;
 using System.Collections.Generic;
 using Xeno.ToolsHub.ExtensionModel;
-using Xeno.ToolsHub.Helpers;
+using Xeno.ToolsHub.Config;
 
 namespace Xeno.ToolsHub.Managers
 {
@@ -36,7 +36,7 @@ namespace Xeno.ToolsHub.Managers
       try
       {
         addins = (PreferenceAddin[])Mono.Addins.AddinManager.GetExtensionObjects(
-          Helpers.ExtensionPaths.PreferencePath, typeof(PreferenceAddin));
+          Config.ExtensionPaths.PreferencePath, typeof(PreferenceAddin));
       }
       catch(Exception ex)
       {
@@ -49,7 +49,7 @@ namespace Xeno.ToolsHub.Managers
 
     private void InitAddins()
     {
-      Helpers.Log.Info("Initialize Mono.Addins");
+      Config.Log.Info("Initialize Mono.Addins");
     }
   }
 }
