@@ -24,11 +24,15 @@ Copyright Xeno Innovations, Inc. 2018
     Alt names for 'OnStartupAddins': "StartupAddins", "AppInitialize", ApplicationAddins
   -->
 
-  <ExtensionPoint Path="/ToolsHub/OnStartupAddins">
+  <ExtensionPoint Path="/ToolsHub/OnStartup">
     <ExtensionNode Name="OnStartupAddin" ObjectType="Xeno.ToolsHub.ExtensionModel.ApplicationAddin" />
   </ExtensionPoint>
-
+  
   <!--
+  <ExtensionPoint Path="/ToolsHub/Utility">
+    <ExtensionNode Name="UtilityAddin" ObjectType="Xeno.ToolsHub.ExtensionModel.UtilityAddin" />
+  </ExtensionPoint>
+
   NOT IMPLEMENTED:
   <ExtensionPoint Path="/ToolsHub/OnSystemShutdown">
     <ExtensionNode Name="OnSystemShutdownAddin" ObjectType="xxx" />

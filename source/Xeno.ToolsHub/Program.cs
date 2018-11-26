@@ -58,8 +58,16 @@ namespace Xeno.ToolsHub
     private static bool HasPrevInstance()
     {
       const string appName = "ToolsHub-{AC52F444-759A-4681-9D5D-1E234502B5E1}";
+      string dbg = string.Empty;
       bool createdNew;
-      _mutex = new Mutex(true, appName, out createdNew);
+
+      // Allows us to run from VS and 
+      if (Helpers.IsDebugging)
+      {
+        dbg = "-IsDebugging";
+      }
+
+      _mutex = new Mutex(true, appName + dbg, out createdNew);
       if (!createdNew)
         return true;
       else

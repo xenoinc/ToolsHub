@@ -11,10 +11,12 @@ namespace Xeno.ToolsHub.Config
   public class ExtensionPaths
   {
     // Application directives
-    public const string OnStartupAddinsPath = "/ToolsHub/OnStartupAddins";
+    public const string OnStartupAddinsPath = "/ToolsHub/OnStartup";
     public const string SystemShutdownPath = "/ToolsHub/OnSystemShutdown";
     //public const string AppReadyPath = "/ToolsHub/OnAppReady";
     //public const string AppShutdownPath = "/ToolsHub/OnAppShutdown";
+
+    public const string UtilityPath = "/ToolsHub/Utility";
 
     // Internal add-ins
     public const string SystemTrayPath = "/ToolsHub/SystemTray";

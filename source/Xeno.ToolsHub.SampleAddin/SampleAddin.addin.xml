@@ -24,14 +24,14 @@ Copyright Xeno Innovations, Inc. 2018
     <Addin Id="ToolsHub" Version="1.0" />
   </Dependencies>
 
-  <Extension Path="/ToolsHub/OnStartupAddins">
-    <ApplicationAddin Type="Xeno.ToolsHub.SampleAddin.Sample" />
+  <Extension Path="/ToolsHub/OnStartup">
+    <OnStartupAddin Type="Xeno.ToolsHub.SampleAddin.Sample" />
   </Extension>
 
+  <!--
   <Extension Path="/ToolsHub/SystemTray">
     <SystemTrayAddin type="Xeno.ToolsHub.SampleAddin.SysTrayAddin" />
   </Extension>
-  <!--
   <Extension Path="/ToolsHub/AddinPreferences">
     <ApplicationAddin Type="Xeno.ToolsHub.SampleAddin.SamplePreferences" />
   </Extension>
