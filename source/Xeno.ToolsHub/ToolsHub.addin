@@ -21,10 +21,6 @@ Copyright Xeno Innovations, Inc. 2018
   </Runtime>
 
   <ExtensionPoint Path="/ToolsHub/OnStartup">
-    <ExtensionNode Name="ApplicationAddin" ObjectType="Xeno.ToolsHub.ExtensionModel.ApplicationAddin" />
+    <ExtensionNode Name="UtilityAddin" ObjectType="Xeno.ToolsHub.ExtensionModel.ApplicationAddin" />
   </ExtensionPoint>
-
-  <Extension Path="/ToolsHub/OnStartup">
-    <ApplicationAddin type="SomeShit" />
-  </Extension>
 </Addin>

@@ -8,7 +8,7 @@
 
 namespace Xeno.ToolsHub.ExtensionModel
 {
-  [Mono.Addins.TypeExtensionPoint(Path = Config.ExtensionPaths.SystemShutdownPath, NodeName = "SystemShutdownAddin")]
+//  [Mono.Addins.TypeExtensionPoint(Path = Config.ExtensionPaths.SystemShutdownPath, NodeName = "SystemShutdownAddin")]
   public interface ISystemShutdownExtension : IBaseExtension
   {
   }

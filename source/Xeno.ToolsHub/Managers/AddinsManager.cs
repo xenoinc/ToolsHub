@@ -18,7 +18,7 @@ namespace Xeno.ToolsHub.Managers
     /// <summary>
     ///   Key = TypeExtensionNode.Id
     /// </summary>
-    private Dictionary<string, ApplicationAddin> _appAddins;
+    private Dictionary<string, UtilityAddin> _appAddins;
 
     public AddinsManager() : this("")
     {
@@ -28,7 +28,7 @@ namespace Xeno.ToolsHub.Managers
     /// <param name="configDir">Add-ins configuration directory</param>
     public AddinsManager(string configDir)
     {
-      _appAddins = new Dictionary<string, ApplicationAddin>();
+      _appAddins = new Dictionary<string, UtilityAddin>();
 
       InitMonoAddins();
     }
@@ -113,11 +113,11 @@ namespace Xeno.ToolsHub.Managers
       //IStartupExtension ext = (IStartupExtension)args.ExtensionObject;
       //ext.Run();
 
-      ApplicationAddin addin;
+      UtilityAddin addin;
       if (args.Change == Mono.Addins.ExtensionChange.Add)
       {
         // Load add-in
-        addin = extNode.GetInstance(typeof(ApplicationAddin)) as ApplicationAddin;
+        addin = extNode.GetInstance(typeof(UtilityAddin)) as UtilityAddin;
         if (addin != null)
         {
           try

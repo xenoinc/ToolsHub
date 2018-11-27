@@ -13,7 +13,7 @@ using Xeno.ToolsHub.ExtensionModel;
 
 namespace Xeno.ToolsHub.SampleAddin
 {
-  public class Sample : ApplicationAddin
+  public class Sample : UtilityAddin
   {
     private bool _initialized = false;
 

@@ -6,12 +6,10 @@
  *  Unused, therefore obsolete for now
  */
 
-//using Mono.Addins;
-
-//namespace Xeno.ToolsHub.ExtensionModel
-//{
-//  [TypeExtensionPoint(Path = Config.ExtensionPaths.OnStartupAddinsPath, NodeName = "OnStartupAddins")]
-//  public interface IStartupExtension : IBaseExtension
-//  {
-//  }
-//}
+namespace Xeno.ToolsHub.ExtensionModel
+{
+  [Mono.Addins.TypeExtensionPoint(Path = Config.ExtensionPaths.OnStartupAddinsPath, NodeName = "OnStartup")]
+  public interface IStartupExtension : IBaseExtension
+  {
+  }
+}

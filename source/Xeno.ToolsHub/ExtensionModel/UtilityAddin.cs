@@ -11,7 +11,7 @@ namespace Xeno.ToolsHub.ExtensionModel
   /// <summary>
   ///   Add notes as to what this extension does for your add-in
   /// </summary>
-  public abstract class ApplicationAddin : AbstractAddin
+  public abstract class UtilityAddin : AbstractAddin
   {
     public abstract bool Initialized { get; }
 
