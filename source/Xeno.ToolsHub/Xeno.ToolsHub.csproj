@@ -63,7 +63,7 @@
     <Compile Include="LocalAddins\Shortcuts\ShortcutsSidebar.cs" />
     <Compile Include="LocalAddins\Shortcuts\ShortcutsSysTray.cs" />
     <Compile Include="MainHandler.cs" />
-    <Compile Include="Managers\AddinManager.cs" />
+    <Compile Include="Managers\AddinsManager.cs" />
     <Compile Include="Managers\SystemTray\ISysTray.cs" />
     <Compile Include="Managers\SystemTray\SysTrayAddin.cs" />
     <Compile Include="Managers\SystemTray\TrayItem.cs">
@@ -163,7 +163,12 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="SysTrayMenu.addin.xml" />
+    <None Include="SysTrayMenu.addin.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ToolsHub.bak">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -7,8 +7,9 @@
  */
 
 using System;
-using Xeno.ToolsHub.ExtensionModel;
+using System.Windows.Forms;
 using Xeno.ToolsHub.Config;
+using Xeno.ToolsHub.ExtensionModel;
 
 namespace Xeno.ToolsHub.SampleAddin
 {
@@ -23,12 +24,16 @@ namespace Xeno.ToolsHub.SampleAddin
       _initialized = true;
 
       Log.Debug("Sample add-in initializing");
+      MessageBox.Show("Samples Init!");
+
       throw new NotImplementedException();
     }
 
     public override void Shutdown()
     {
       Log.Debug("Sample add-in shutting down");
+      MessageBox.Show("Samples Shutdown!");
+
       throw new NotImplementedException();
     }
   }

@@ -16,19 +16,20 @@ namespace Xeno.ToolsHub.Views
 {
   public partial class PreferencesForm : Form
   {
-    private readonly AddinManager _addinManager;
+    private readonly AddinsManager _addinManager;
 
     private Panel[] _addinPanel;
 
-    public PreferencesForm() : this(new ToolsManager())
+    public PreferencesForm() : this(new AddinsManager())
     {
     }
 
-    public PreferencesForm(ToolsManager toolsManager)
+    public PreferencesForm(AddinsManager addinsManager)
     {
       InitializeComponent();
 
-      _addinManager = toolsManager.AddinManager;
+      //OLD CODE: _addinManager = toolssManager.AddinManager;
+      _addinManager = addinsManager;
 
       InitAddinManager();
 

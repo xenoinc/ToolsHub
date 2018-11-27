@@ -7,7 +7,7 @@ Copyright Xeno Innovations, Inc. 2018
  * Description:
  *  
 -->
-<Addin Id="VeraCryptAddin"
+<Addin Id="SampleAddin"
        Namespace="ToolsHub"
        Name="Sample Add-in"
        Version="1.0"
@@ -16,18 +16,19 @@ Copyright Xeno Innovations, Inc. 2018
        Category="Tools"
        DefaultEnabled="false"
        xmlns="https://github.com/mono/mono-addins/MonoAddins.xsd">
+<!--
   <Runtime>
     <Import assembly="SampleAddin.dll" />
   </Runtime>
 
   <Dependencies>
-    <Addin Id="ToolsHub" Version="1.0" />
+    <Addin Id="ToolsHub" Version="0.1" />
   </Dependencies>
 
   <Extension Path="/ToolsHub/OnStartup">
     <OnStartupAddin Type="Xeno.ToolsHub.SampleAddin.Sample" />
   </Extension>
-
+-->
   <!--
   <Extension Path="/ToolsHub/SystemTray">
     <SystemTrayAddin type="Xeno.ToolsHub.SampleAddin.SysTrayAddin" />
