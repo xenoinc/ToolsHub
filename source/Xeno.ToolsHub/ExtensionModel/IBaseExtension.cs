@@ -12,6 +12,6 @@ namespace Xeno.ToolsHub.ExtensionModel
   {
     string Title { get; }
 
-    void Run();
+    void Execute();
   }
 }

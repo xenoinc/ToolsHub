@@ -3,13 +3,13 @@
  * Author:  Damian Suess
  * File:    ISystemShutdownExtension.cs
  * Description:
- *
+ *  Unused, therefore obsolete for now
  */
 
-namespace Xeno.ToolsHub.ExtensionModel
-{
+//namespace Xeno.ToolsHub.ExtensionModel
+//{
 //  [Mono.Addins.TypeExtensionPoint(Path = Config.ExtensionPaths.SystemShutdownPath, NodeName = "SystemShutdownAddin")]
-  public interface ISystemShutdownExtension : IBaseExtension
-  {
-  }
-}
+//  public interface ISystemShutdownExtension : IBaseExtension
+//  {
+//  }
+//}
