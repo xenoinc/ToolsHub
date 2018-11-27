@@ -15,6 +15,8 @@ namespace Xeno.ToolsHub.Managers
 {
   public class AddinsManager
   {
+    //private static readonly Log _log = myLogger.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
     /// <summary>
     ///   Key = TypeExtensionNode.Id
     /// </summary>
@@ -55,7 +57,7 @@ namespace Xeno.ToolsHub.Managers
 
     private void InitMonoAddins()
     {
-      Log.Info("Initialize Mono.Addins");
+      Log.Info("Initializing Mono.Addins");
 
       Mono.Addins.AddinManager.AddinLoaded += OnMonoAddinLoaded;
       Mono.Addins.AddinManager.AddinUnloaded += OnMonoAddinUnloaded;
@@ -68,8 +70,16 @@ namespace Xeno.ToolsHub.Managers
       else
         Mono.Addins.AddinManager.Registry.Update();
 
-      // EventHandlers for ExtensionNodes
-      Mono.Addins.AddinManager.AddExtensionNodeHandler(ExtensionPaths.OnStartupAddinsPath, OnStartupAddins_ExtensionHandler);
+      try
+      {
+        // EventHandlers for ExtensionNodes
+        Mono.Addins.AddinManager.AddExtensionNodeHandler(ExtensionPaths.OnStartupAddinsPath, OnStartupAddins_ExtensionHandler);
+      }
+      catch (Exception ex)
+      {
+        Log.Error("Could not register one or more ExtensionPoints. Possibly could not find XML manifest.");
+        Log.Error("Exception: " + ex.Message + Environment.NewLine + ex.StackTrace);
+      }
     }
 
     private void OnMonoAddinLoaded(object sender, Mono.Addins.AddinEventArgs args)
@@ -87,12 +97,12 @@ namespace Xeno.ToolsHub.Managers
 
     private void OnMonoAddinUnloaded(object sender, Mono.Addins.AddinEventArgs args)
     {
-      Log.Debug($"OnAddinUnloaded: {args.AddinId}");
+      Log.Debug($"Add-in Id: {args.AddinId}");
     }
 
     private void OnStartupAddins_ExtensionHandler(object sender, Mono.Addins.ExtensionNodeEventArgs args)
     {
-      Log.Debug("OnStartupAddins_ExtensionHandler - Entering");
+      Log.Debug("Entering");
 
       Mono.Addins.TypeExtensionNode extNode = args.ExtensionNode as Mono.Addins.TypeExtensionNode;
 
@@ -108,10 +118,9 @@ namespace Xeno.ToolsHub.Managers
       Log.Debug($"  ToString- '{extNode.ToString()}'");
       Log.Debug($"  TypeName- '{extNode.TypeName}'");
 
-
       // Execute via class interface definition of extension path
       //IStartupExtension ext = (IStartupExtension)args.ExtensionObject;
-      //ext.Run();
+      //ext.Execute();
 
       UtilityAddin addin;
       if (args.Change == Mono.Addins.ExtensionChange.Add)

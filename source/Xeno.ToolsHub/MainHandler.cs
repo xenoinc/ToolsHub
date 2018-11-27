@@ -11,6 +11,7 @@
 
 using System.Windows.Forms;
 using Microsoft.Win32;
+using Xeno.ToolsHub.Config;
 using Xeno.ToolsHub.Managers;
 
 // [assembly: Mono.Addins.AddinRoot("ToolsHub", "1.0")]
@@ -29,6 +30,7 @@ namespace Xeno.ToolsHub
 
     public MainHandler()
     {
+      Log.Debug("ToolsHub initializing..");
       // 1. Listen for system events
       // 2. Initialize SystemTray (add-in) handler
       // 3. Initialize Sidebar (add-in) handler
@@ -104,7 +106,7 @@ namespace Xeno.ToolsHub
       //{
       //  ISystemShutdownExtension ext = (ISystemShutdownExtension)node.CreateInstance();
       //  Log.Debug($"  Running add-in titled, '{ext.Title}'");
-      //  ext.Run();
+      //  ext.Execute();
       //}
       //
       //if (Program.AbortShutdown == true)

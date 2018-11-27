@@ -28,8 +28,10 @@ namespace Xeno.ToolsHub
     [STAThread]
     private static void Main()
     {
+      Log.Debug("Starting system");
       if (HasPrevInstance())
       {
+        Log.Debug("App already running. Goodbye!");
         return;
       }
 
@@ -70,6 +72,7 @@ namespace Xeno.ToolsHub
     /// <returns>False if settings file does not exist</returns>
     private static void LoadAppSettings()
     {
+      Log.Debug("Loading app settings");
       //TODO: Load application settings
       //// Load application settings
       //Settings = new AppSettings();
