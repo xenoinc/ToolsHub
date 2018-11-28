@@ -32,7 +32,7 @@ namespace Xeno.ToolsHub.Managers
     {
       _appAddins = new Dictionary<string, UtilityAddin>();
 
-      InitMonoAddins();
+      InitAddins();
     }
 
     public event EventHandler OnApplicationAddinListChanged;
@@ -55,7 +55,7 @@ namespace Xeno.ToolsHub.Managers
       return addins;
     }
 
-    private void InitMonoAddins()
+    private void InitAddins()
     {
       Log.Info("Initializing Mono.Addins");
 
@@ -70,15 +70,33 @@ namespace Xeno.ToolsHub.Managers
       else
         Mono.Addins.AddinManager.Registry.Update();
 
-      try
+      InitExtensions(true);
+    }
+
+    /// <summary>
+    ///   Used for debugging Mono.Addins
+    /// </summary>
+    /// <param name="safely"></param>
+    private void InitExtensions(bool safely = true)
+    {
+      if (!safely)
       {
-        // EventHandlers for ExtensionNodes
         Mono.Addins.AddinManager.AddExtensionNodeHandler(ExtensionPaths.OnStartupAddinsPath, OnStartupAddins_ExtensionHandler);
       }
-      catch (Exception ex)
+      else
       {
-        Log.Error("Could not register one or more ExtensionPoints. Possibly could not find XML manifest.");
-        Log.Error("Exception: " + ex.Message + Environment.NewLine + ex.StackTrace);
+        try
+        {
+          // EventHandlers for ExtensionNodes
+          Mono.Addins.AddinManager.AddExtensionNodeHandler(ExtensionPaths.OnStartupAddinsPath, OnStartupAddins_ExtensionHandler);
+        }
+        catch (Exception ex)
+        {
+          Log.Error("Could not register one or more ExtensionPoints. Possibly could not find XML manifest.");
+          Log.Error("Exception: " + ex.Message + Environment.NewLine + ex.StackTrace);
+
+          throw new Exception("Unable to add extension handler.", ex);
+        }
       }
     }
 
