@@ -70,7 +70,21 @@ namespace Xeno.ToolsHub.Managers
       else
         Mono.Addins.AddinManager.Registry.Update();
 
-      InitExtensions(true);
+      //InitExtensions(true);
+
+      try
+      {
+        // EventHandlers for ExtensionNodes
+        Mono.Addins.AddinManager.AddExtensionNodeHandler("/TestApp33/StartupHandler", OnStartupAddins_ExtensionHandler);
+      }
+      catch (Exception ex)
+      {
+        Log.Error("Could not register one or more ExtensionPoints. Possibly could not find XML manifest.");
+        Log.Error("Exception: " + ex.Message + Environment.NewLine + ex.StackTrace);
+
+        // System.Windows.Forms.MessageBox.Show("BoOOO!!");
+        throw new Exception("Unable to add extension handler.", ex);
+      }
     }
 
     /// <summary>

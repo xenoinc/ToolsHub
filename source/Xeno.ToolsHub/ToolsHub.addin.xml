@@ -1,0 +1,18 @@
+﻿<Addin id="TestApp33"
+       namespace="TestApp33"
+       version="1.0"
+       isroot="true"
+       compatVersion="1.0">
+
+  <Runtime>
+    <Import Assembly="ToolsHub.exe" />
+  </Runtime>
+
+  <ExtensionPoint path="/TestApp33/StartupHandler">
+    <ExtensionNode name="StartupHandler" objectType="Xeno.ToolsHub.ExtensionModel.IStartupExtension" />
+  </ExtensionPoint>
+
+  <Extension path="/TestApp33/StartupHandler">
+    <StartupHandler type="Xeno.ToolsHub.LocalAddins.StartupAddin" />
+  </Extension>
+</Addin>

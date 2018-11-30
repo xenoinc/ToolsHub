@@ -59,6 +59,7 @@
     <Compile Include="LocalAddins\Shortcuts\ShortcutAddin.cs" />
     <Compile Include="LocalAddins\Shortcuts\ShortcutsSidebar.cs" />
     <Compile Include="LocalAddins\Shortcuts\ShortcutsSysTray.cs" />
+    <Compile Include="LocalAddins\StartupAddin.cs" />
     <Compile Include="MainHandler.cs" />
     <Compile Include="Managers\AddinsManager.cs" />
     <Compile Include="Managers\SystemTray\ISysTray.cs" />
@@ -152,7 +153,7 @@
     <None Include="Resources\AppIcon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ToolsHub.addin">
+    <EmbeddedResource Include="ToolsHub.addin.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
@@ -160,12 +161,7 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="SysTrayMenu.addin.xml">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\libs\Mono.Addins\Mono.Addins.csproj">
+    <ProjectReference Include="..\..\libs\Mono.Addins\Mono.Addins\Mono.Addins.csproj">
       <Project>{91dd5a2d-9fe3-4c3c-9253-876141874dad}</Project>
       <Name>Mono.Addins</Name>
     </ProjectReference>

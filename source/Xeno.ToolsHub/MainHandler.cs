@@ -14,7 +14,7 @@ using Microsoft.Win32;
 using Xeno.ToolsHub.Config;
 using Xeno.ToolsHub.Managers;
 
-// [assembly: Mono.Addins.AddinRoot("ToolsHub", "1.0")]
+//[assembly: Mono.Addins.AddinRoot("ToolsHub", "1.0")]
 
 namespace Xeno.ToolsHub
 {
