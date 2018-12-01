@@ -12,7 +12,7 @@
             <xs:sequence>
               <xs:element name="Import" minOccurs="0" maxOccurs="unbounded">
                 <xs:complexType>
-                  <xs:attribute name="Assembly" type="xs:string" use="required" />
+                  <xs:attribute name="assembly" type="xs:string" use="required" />
                 </xs:complexType>
               </xs:element>
             </xs:sequence>
@@ -23,8 +23,8 @@
             <xs:sequence>
               <xs:element name="Addin" maxOccurs="unbounded">
                 <xs:complexType>
-                  <xs:attribute name="Id" type="xs:string" use="required" />
-                  <xs:attribute name="Version" type="xs:decimal" use="required" />
+                  <xs:attribute name="id" type="xs:string" use="required" />
+                  <xs:attribute name="version" type="xs:decimal" use="required" />
                 </xs:complexType>
               </xs:element>
             </xs:sequence>
@@ -32,8 +32,8 @@
         </xs:element>
         <xs:element name="ConditionType" minOccurs="0" maxOccurs="unbounded">
           <xs:complexType>
-            <xs:attribute name="Id" type="xs:string" use="required" />
-            <xs:attribute name="Type" type="xs:string" use="required" />
+            <xs:attribute name="id" type="xs:string" use="required" />
+            <xs:attribute name="type" type="xs:string" use="required" />
           </xs:complexType>
         </xs:element>
         <xs:element name="ExtensionPoint" minOccurs="0" maxOccurs="unbounded">
@@ -41,36 +41,36 @@
             <xs:sequence>
               <xs:element name="ExtensionNode">
                 <xs:complexType>
-                  <xs:attribute name="Name" type="xs:string" use="required" />
-                  <xs:attribute name="ObjectType" type="xs:string" use="optional" />
-                  <xs:attribute name="Type" type="xs:string" use="optional" />
+                  <xs:attribute name="name" type="xs:string" use="required" />
+                  <xs:attribute name="objectType" type="xs:string" use="optional" />
+                  <xs:attribute name="type" type="xs:string" use="optional" />
                 </xs:complexType>
               </xs:element>
             </xs:sequence>
-            <xs:attribute name="Path" type="xs:string" use="required" />
-            <xs:attribute name="Name" type="xs:string" use="optional" />
+            <xs:attribute name="path" type="xs:string" use="required" />
+            <xs:attribute name="name" type="xs:string" use="optional" />
           </xs:complexType>
         </xs:element>
         <xs:element name="Extension" minOccurs="0" maxOccurs="unbounded">
           <xs:complexType>
-            <xs:attribute name="Path" type="xs:string" use="required" />
+            <xs:attribute name="path" type="xs:string" use="required" />
           </xs:complexType>
         </xs:element>
       </xs:sequence>
-      <xs:attribute name="Id" type="xs:string" use="required" />
-      <xs:attribute name="Namespace" type="xs:string" use="required" />
-      <xs:attribute name="Name" type="xs:string" use="optional" />
-      <xs:attribute name="Version" type="xs:decimal" use="required" />
-      <xs:attribute name="CompatVersion" type="xs:decimal" use="optional" />
-      <xs:attribute name="Author" type="xs:string" use="optional" />
-      <xs:attribute name="Url" type="xs:string" use="optional" />
-      <xs:attribute name="Copyright" type="xs:string" use="optional" />
-      <xs:attribute name="Description" type="xs:string" use="optional" />
-      <xs:attribute name="Category" type="xs:string" use="optional" />
-      <xs:attribute name="BasePath" type="xs:string" use="optional" />
-      <xs:attribute name="IsRoot" type="xs:boolean" use="optional" />
-      <xs:attribute name="DefaultEnabled" type="xs:boolean" use="optional" />
-      <xs:attribute name="Flags" type="xs:string" use="optional" />
+      <xs:attribute name="id" type="xs:string" use="required" />
+      <xs:attribute name="namespace" type="xs:string" use="required" />
+      <xs:attribute name="name" type="xs:string" use="optional" />
+      <xs:attribute name="version" type="xs:decimal" use="required" />
+      <xs:attribute name="compatVersion" type="xs:decimal" use="optional" />
+      <xs:attribute name="author" type="xs:string" use="optional" />
+      <xs:attribute name="url" type="xs:string" use="optional" />
+      <xs:attribute name="copyright" type="xs:string" use="optional" />
+      <xs:attribute name="description" type="xs:string" use="optional" />
+      <xs:attribute name="category" type="xs:string" use="optional" />
+      <xs:attribute name="basePath" type="xs:string" use="optional" />
+      <xs:attribute name="isRoot" type="xs:boolean" use="optional" />
+      <xs:attribute name="defaultEnabled" type="xs:boolean" use="optional" />
+      <xs:attribute name="flags" type="xs:string" use="optional" />
     </xs:complexType>
   </xs:element>
 </xs:schema>

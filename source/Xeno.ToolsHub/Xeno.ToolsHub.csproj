@@ -59,7 +59,8 @@
     <Compile Include="LocalAddins\Shortcuts\ShortcutAddin.cs" />
     <Compile Include="LocalAddins\Shortcuts\ShortcutsSidebar.cs" />
     <Compile Include="LocalAddins\Shortcuts\ShortcutsSysTray.cs" />
-    <Compile Include="LocalAddins\StartupAddin.cs" />
+    <Compile Include="LocalAddins\StartupAddins\SampleStartupAddin.cs" />
+    <Compile Include="LocalAddins\UtilityAddins\SampleUtilityAddin.cs" />
     <Compile Include="MainHandler.cs" />
     <Compile Include="Managers\AddinsManager.cs" />
     <Compile Include="Managers\SystemTray\ISysTray.cs" />
@@ -73,7 +74,7 @@
     <Compile Include="ExtensionModel\AddinPreferenceFactory.cs" />
     <Compile Include="ExtensionModel\UtilityAddin.cs" />
     <Compile Include="ExtensionModel\IBaseExtension.cs" />
-    <Compile Include="ExtensionModel\IStartupExtension.cs" />
+    <Compile Include="ExtensionModel\IOnStartupExtension.cs" />
     <Compile Include="ExtensionModel\ISystemShutdownExtension.cs" />
     <Compile Include="ExtensionModel\PreferenceAddin.cs" />
     <Compile Include="Config\ExtensionPaths.cs" />

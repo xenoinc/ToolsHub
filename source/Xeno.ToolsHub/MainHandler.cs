@@ -18,6 +18,9 @@ using Xeno.ToolsHub.Managers;
 
 namespace Xeno.ToolsHub
 {
+  /// <summary>
+  /// Main application handler. We don't need a GUI form, but do need WndProc
+  /// </summary>
   public class MainHandler : ApplicationContext
   {
     //private NotifyIcon _trayIcon = new NotifyIcon();
@@ -40,11 +43,16 @@ namespace Xeno.ToolsHub
 
       InitSystemEvents();
 
+      // Consider moving this as it's own add-in host
       InitSystemTray();
 
       InitWndProc();
 
+      // Consider moving this as it's own add-in host
       //InitSideBar();
+
+      // We're done loading
+      InitOnLoadedAddins();
 
 #if DEBUG
       DebugTests();
@@ -71,6 +79,12 @@ namespace Xeno.ToolsHub
       _addinsManager = new AddinsManager();
     }
 
+    private void InitOnLoadedAddins()
+    {
+      // Run free-floating utility add-ins
+      _addinsManager.LoadUtilityAddins();
+    }
+
     private void InitSystemEvents()
     {
       // https://msdn.microsoft.com/en-us/library/microsoft.win32.systemevents.aspx
@@ -84,6 +98,7 @@ namespace Xeno.ToolsHub
       _sysTray = new Managers.SystemTray.SystemTrayManager();
     }
 
+    /// <summary>We have a GUI form, but do need WndProc for wiring up things</summary>
     private void InitWndProc()
     {
       _wndProc = new Managers.WndProcManager("ToolsHub");

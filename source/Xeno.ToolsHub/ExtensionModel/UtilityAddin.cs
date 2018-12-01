@@ -1,9 +1,9 @@
 ﻿/* Copyright Xeno Innovations, Inc. 2018
  * Date:    2018-7-18
  * Author:  Damian Suess
- * File:    ApplicationAddin.cs
+ * File:    UtilityAddin.cs
  * Description:
- *  Base application addin class
+ *  Base application add-in class which is disposable
  */
 
 namespace Xeno.ToolsHub.ExtensionModel
@@ -13,9 +13,11 @@ namespace Xeno.ToolsHub.ExtensionModel
   /// </summary>
   public abstract class UtilityAddin : AbstractAddin
   {
-    public abstract bool Initialized { get; }
+    public abstract bool IsInitialized { get; }
 
     public abstract void Initialize();
+
+    public abstract void Execute();
 
     public abstract void Shutdown();
   }

@@ -1,18 +1,32 @@
-﻿<Addin id="TestApp33"
-       namespace="TestApp33"
-       version="1.0"
-       isroot="true"
-       compatVersion="1.0">
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Addin id="ToolsHub"
+       namespace="ToolsHub"       
+       version="0.2"
+       compatVersion="0.2"
+       author="Damian Suess"
+       copyright="Xeno Innovations, Inc. 2018"
+       description="Customizable Desktop Launcher"
+       isRoot="true">
 
   <Runtime>
     <Import Assembly="ToolsHub.exe" />
   </Runtime>
 
-  <ExtensionPoint path="/TestApp33/StartupHandler">
-    <ExtensionNode name="StartupHandler" objectType="Xeno.ToolsHub.ExtensionModel.IStartupExtension" />
+  <!-- Define Extension Points -->
+  <ExtensionPoint path="/ToolsHub/OnStartup">
+    <ExtensionNode name="OnStartupAddin" objectType="Xeno.ToolsHub.ExtensionModel.IOnStartupExtension" />
   </ExtensionPoint>
 
-  <Extension path="/TestApp33/StartupHandler">
-    <StartupHandler type="Xeno.ToolsHub.LocalAddins.StartupAddin" />
+  <ExtensionPoint path="/ToolsHub/Utility">
+    <ExtensionNode name="UtilityAddin" objectType="Xeno.ToolsHub.ExtensionModel.UtilityAddin" />
+  </ExtensionPoint>
+
+  <!-- Call our add-in -->
+  <Extension path="/ToolsHub/OnStartup">
+    <OnStartupAddin type="Xeno.ToolsHub.LocalAddins.StartupAddins.SampleStartupAddin" />
+  </Extension>
+
+  <Extension path="/ToolsHub/Utility">
+    <UtilityAddin type="Xeno.ToolsHub.LocalAddins.UtilityAddins.SampleUtilityAddin" />
   </Extension>
 </Addin>
