@@ -1,26 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Addin Id="ShortcutsAddin"
-       Namespace="ToolsHub"
-       Name="Shortcuts quick launcher"
-       Version="1.0"
-       Author="Damian Suess"
-       Description="Quickly launch your shortcuts from sys-tray and future, sidebar"
-       Category="Accessability"
-       DefaultEnabled="true"
-       xmlns="https://github.com/mono/mono-addins/MonoAddins.xsd">
-  <!--<Runtime>
-    <Import Assembly="Xeno.ToolsHub.exe" />
-  </Runtime>-->
+<ExtensionModel>
+  <!-- Shortcuts extension manifest -->
 
+  <!--
   <Dependencies>
-    <Addin Id="ToolsHub" Version="1.0" />
+    <Addin Id="ToolsHub" Version="0.2" />
   </Dependencies>
 
-  <Extension Path="/ToolsHub/ApplicationAddins">
-    <ApplicationAddin Type="Xeno.ToolsHub.LocalAddins.Shortcuts.ShortcutsAddin" />
+  <Extension Path="/ToolsHub/UtilityAddin">
+    <UtilityAddin Type="Xeno.ToolsHub.LocalAddins.Shortcuts.ShortcutsAddin" />
   </Extension>
 
-  <!--<Extension Path="/ToolsHub/AddinPreferences">
-    <ApplicationAddin Type="Xeno.ToolsHub.VeraCryptAddin.VeraCryptPreferences" />
-  </Extension>-->
-</Addin>
+  <Extension Path="/ToolsHub/AddinPreferences">
+    <PreferencesAddin Type="Xeno.ToolsHub.VeraCryptAddin.VeraCryptPreferences" />
+  </Extension>
+
+-->
+</ExtensionModel>

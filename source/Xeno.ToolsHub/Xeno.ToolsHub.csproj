@@ -133,9 +133,9 @@
     <EmbeddedResource Include="Views\Preferences\PreferencesForm.resx">
       <DependentUpon>PreferencesForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MonoAddins.xsd">
+    <None Include="MonoAddins.xsd">
       <SubType>Designer</SubType>
-    </EmbeddedResource>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -168,7 +168,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="LocalAddins\Shortcuts\Shortcuts.addin" />
+    <EmbeddedResource Include="LocalAddins\Shortcuts\Shortcuts.addin">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

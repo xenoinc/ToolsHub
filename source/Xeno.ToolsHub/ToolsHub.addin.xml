@@ -8,7 +8,7 @@ Copyright Xeno Innovations, Inc. 2018
  *  Mono.Addins configuration for ToolsHub application
 -->
 <Addin id="ToolsHub"
-       namespace="ToolsHub"       
+       namespace="ToolsHub"
        version="0.2"
        compatVersion="0.2"
        author="Damian Suess"
@@ -25,6 +25,10 @@ Copyright Xeno Innovations, Inc. 2018
     <ExtensionNode name="OnStartupAddin" objectType="Xeno.ToolsHub.ExtensionModel.IOnStartupExtension" />
   </ExtensionPoint>
 
+  <ExtensionPoint path="/ToolsHub/Utility">
+    <ExtensionNode name="UtilityAddin" objectType="Xeno.ToolsHub.ExtensionModel.UtilityAddin" />
+  </ExtensionPoint>
+
   <!--
   <ExtensionPoint Path="/ToolsHub/OnSystemShutdownAddins">
     <ExtensionNode Name="OnSystemShutdownAddin" ObjectType="Xeno.ToolsHub.ExtensionModel.ApplicationAddin" />
@@ -34,10 +38,6 @@ Copyright Xeno Innovations, Inc. 2018
     <ExtensionNode Name="SysTray" Type="Xeno.ToolsHub.Managers.SystemTray.SysTrayExtensionNode" />
   </ExtensionPoint>
   -->
-
-  <ExtensionPoint path="/ToolsHub/Utility">
-    <ExtensionNode name="UtilityAddin" objectType="Xeno.ToolsHub.ExtensionModel.UtilityAddin" />
-  </ExtensionPoint>
 
   <!-- Call our add-in -->
   <Extension path="/ToolsHub/OnStartup">
