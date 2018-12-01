@@ -31,10 +31,10 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\AppIcon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Mono.Addins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mono.Addins.1.3.8\lib\net45\Mono.Addins.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -59,8 +59,10 @@
     <Compile Include="LocalAddins\Shortcuts\ShortcutsAddin.cs" />
     <Compile Include="LocalAddins\Shortcuts\ShortcutsSidebar.cs" />
     <Compile Include="LocalAddins\Shortcuts\ShortcutsSysTray.cs" />
+    <Compile Include="LocalAddins\StartupAddins\SampleStartupAddin.cs" />
+    <Compile Include="LocalAddins\UtilityAddins\SampleUtilityAddin.cs" />
     <Compile Include="MainHandler.cs" />
-    <Compile Include="Managers\AddinManager.cs" />
+    <Compile Include="Managers\AddinsManager.cs" />
     <Compile Include="Managers\SystemTray\ISysTray.cs" />
     <Compile Include="Managers\SystemTray\SysTrayAddin.cs" />
     <Compile Include="Managers\SystemTray\TrayItem.cs">
@@ -70,9 +72,9 @@
     <Compile Include="Managers\ToolsManager.cs" />
     <Compile Include="ExtensionModel\AbstractAddin.cs" />
     <Compile Include="ExtensionModel\AddinPreferenceFactory.cs" />
-    <Compile Include="ExtensionModel\ApplicationAddin.cs" />
+    <Compile Include="ExtensionModel\UtilityAddin.cs" />
     <Compile Include="ExtensionModel\IBaseExtension.cs" />
-    <Compile Include="ExtensionModel\IStartupExtension.cs" />
+    <Compile Include="ExtensionModel\IOnStartupExtension.cs" />
     <Compile Include="ExtensionModel\ISystemShutdownExtension.cs" />
     <Compile Include="ExtensionModel\PreferenceAddin.cs" />
     <Compile Include="Config\ExtensionPaths.cs" />
@@ -160,7 +162,10 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="SysTrayMenu.addin.xml" />
+    <ProjectReference Include="..\..\libs\Mono.Addins\Mono.Addins\Mono.Addins.csproj">
+      <Project>{91dd5a2d-9fe3-4c3c-9253-876141874dad}</Project>
+      <Name>Mono.Addins</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="LocalAddins\Shortcuts\Shortcuts.addin" />

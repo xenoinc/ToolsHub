@@ -55,25 +55,25 @@ namespace Xeno.ToolsHub.Managers.SystemTray
     public void OnClick(object sender, EventArgs e)
     {
       int index = -1;
-      string tag = "", text = "";
+      string target = "", text = "";
 
       if (sender.GetType() == typeof(TrayItem))
       {
         TrayItem item = (TrayItem)sender;
         index = item.Index;
-        tag = item.Tag.ToString();
+        target = item.Tag.ToString(); // Get target path/url. If method, it's blank
         text = item.Text;
 
         Log.Debug($"TrayItem.OnClickDefault: Executing tag from, " +
-                  $"[ndx={index}] [text={text}] [tag={tag}]");
+                  $"[ndx={index}] [text={text}] [tag={target}]");
 
-        if (_routedMethod != null && tag != "")
+        if (_routedMethod != null)
         {
-          _routedMethod.Invoke(tag);
+          _routedMethod.Invoke(target);
         }
-        else if (tag != "")
+        else if (target != "")
         {
-          System.Diagnostics.Process.Start(tag);
+          System.Diagnostics.Process.Start(target);
         }
         else
         {

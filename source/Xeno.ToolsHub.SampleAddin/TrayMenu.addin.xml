@@ -3,7 +3,7 @@
   Description:
     Sample SystemTray sub-menu item set
 -->
-
+<!--
 <ExtensionModel>
   <Extension Path="/ToolsHub/SysTray">
     <SysTray id="SampleAddin" Text="Sample Add-in">
@@ -12,3 +12,4 @@
     </SysTray>
   </Extension>
 </ExtensionModel>
+-->

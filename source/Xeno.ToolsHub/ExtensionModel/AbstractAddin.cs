@@ -12,7 +12,7 @@ namespace Xeno.ToolsHub.ExtensionModel
 {
   public abstract class AbstractAddin : IDisposable
   {
-    private bool disposing = false;
+    private bool _disposing = false;
 
     ~AbstractAddin()
     {
@@ -23,13 +23,13 @@ namespace Xeno.ToolsHub.ExtensionModel
     {
       get
       {
-        return disposing;
+        return _disposing;
       }
     }
 
     public void Dispose()
     {
-      disposing = true;
+      _disposing = true;
       Dispose(true);
 
       GC.SuppressFinalize(this);

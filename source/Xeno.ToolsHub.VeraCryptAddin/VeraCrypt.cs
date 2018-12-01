@@ -12,7 +12,7 @@ using Xeno.ToolsHub.Config;
 
 namespace Xeno.ToolsHub.VeraCryptAddin
 {
-  public class VeraCrypt : ApplicationAddin
+  public class VeraCrypt : UtilityAddin
   {
     private bool _initialized = false;
 

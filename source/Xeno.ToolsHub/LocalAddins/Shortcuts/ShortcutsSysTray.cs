@@ -54,7 +54,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
         int ndx = 0;
         foreach (ShortcutItem shortcut in shortcuts)
         {
-          var subItem = new Managers.SystemTray.TrayItem(shortcut.Title, shortcut.Target, true, MethodRouter);
+          var subItem = new Managers.SystemTray.TrayItem(shortcut.Title, shortcut.Target, true, OnExecuteShortcut);
           menu.MenuItems.Add(ndx, subItem);
           ndx++;
         }
@@ -63,7 +63,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
       return menu;
     }
 
-    public int MethodRouter(string target)
+    public int OnExecuteShortcut(string target)
     {
       Log.Debug($"Executing MyMethod with target, '{target}'");
 
@@ -78,11 +78,19 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
 
       Log.Debug($"Generating a test, {ShortcutsFile}");
 
+      string pth1 = System.IO.Path.GetDirectoryName(Application.ExecutablePath);
+      //string pth2 = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+
+      string managePath = Path.Combine(pth1, ShortcutsFile);
+
       var items = new ShortcutItems
       {
         new ShortcutItem { Title = "Dev", Target = @"C:\dev" },
         new ShortcutItem { Title = "Lab", Target = @"C:\work\lab" },
         new ShortcutItem { Title = "Docs", Target = @"C:\work\docs" },
+        new ShortcutItem { Title = "X-Drive", Target = @"X:\" },
+        new ShortcutItem { Title = "-", Target = "" },
+        new ShortcutItem { Title = "Manage Shortcuts", Target = managePath },
       };
 
       Helpers.FileSerialize(items, LocalShortcutsPath, true);

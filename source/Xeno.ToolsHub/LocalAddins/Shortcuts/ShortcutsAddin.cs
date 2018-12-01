@@ -17,16 +17,21 @@ using Xeno.ToolsHub.ExtensionModel;
 
 namespace Xeno.ToolsHub.LocalAddins.Shortcuts
 {
-  public class ShortcutsAddin : ApplicationAddin
+  public class ShortcutsAddin : UtilityAddin
   {
     private bool _initialized = false;
 
-    public override bool Initialized => _initialized;
+    public override bool IsInitialized => _initialized;
 
     public override void Initialize()
     {
       Log.Debug("Shortcuts add-in initializing...");
       _initialized = true;
+    }
+
+    public override void Execute()
+    {
+      throw new NotImplementedException();
     }
 
     public override void Shutdown()
