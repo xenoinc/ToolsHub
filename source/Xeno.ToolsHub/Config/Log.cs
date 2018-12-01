@@ -58,8 +58,11 @@ namespace Xeno.ToolsHub.Config
     }
 
     public static void Logger(Level level, string message, params object[] args)
-    {      
-      System.Diagnostics.Debug.Print($"[{FormatTime()}] [{level.ToString()}] [{message}]");
+    {
+      string method = (new System.Diagnostics.StackTrace()).GetFrame(2).GetMethod().Name;
+      string text = $"[{FormatTime()}] [{level.ToString()}] [{method}] [{message}]";
+
+      System.Diagnostics.Debug.Print(">> " + text);
 
       // TODO: use this when ready
       //if (!_muted && level >= _logLevel)
@@ -84,7 +87,7 @@ namespace Xeno.ToolsHub.Config
 
     private static string FormatTime()
     {
-      string time = string.Format("[{0:00}:{1:00}:{2:00}.{3:000}]",
+      string time = string.Format("{0:00}:{1:00}:{2:00}.{3:000}",
                      DateTime.Now.Hour,
                      DateTime.Now.Minute,
                      DateTime.Now.Second,

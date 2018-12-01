@@ -8,13 +8,15 @@ Copyright Xeno Innovations, Inc. 2018
  *  
 -->
 
+<!--
 <ExtensionModel>
   <Extension Path="/ToolsHub/SystemTray">
     <SysTray Id="Test1" Text="Test Item 1" />
     <SysTray Id="Test2" Text="Test Item 2" />
     <SysTray Id="Test3" Text="Test Item 3 - with command">
-      <!-- sub-item commands go here -->
+      --><!-- sub-item commands go here --><!--
       <Command Id="AboutCmd" Text="Exec command" />
     </SysTray>
   </Extension>
 </ExtensionModel>
+-->

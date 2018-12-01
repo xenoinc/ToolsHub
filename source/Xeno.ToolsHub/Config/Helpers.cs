@@ -14,6 +14,9 @@ namespace Xeno.ToolsHub.Config
 {
   public static class Helpers
   {
+    /// <summary>Is someone debugging us</summary>
+    public static bool IsDebugging => System.Diagnostics.Debugger.IsAttached;
+
     /// <summary>
     ///   Execute on UI thread asynchronously (don't wait for completion)
     /// </summary>
@@ -65,7 +68,6 @@ namespace Xeno.ToolsHub.Config
     {
       return JsonConvert.DeserializeObject<T>(File.ReadAllText(fileName));
     }
-
 
     /// <summary>Save object in JSON format</summary>
     /// <param name="o">Object to serialize</param>

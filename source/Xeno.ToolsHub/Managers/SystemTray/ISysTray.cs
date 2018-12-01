@@ -6,9 +6,7 @@
  *
  */
 
-using Mono.Addins;
-
-[assembly: ExtensionPoint("/ToolsHub/SysTray")]
+// [assembly: Mono.Addins.ExtensionPoint("/ToolsHub/SysTray")]
 
 namespace Xeno.ToolsHub.Managers.SystemTray
 {

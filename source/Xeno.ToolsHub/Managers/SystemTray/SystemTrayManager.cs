@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using Xeno.ToolsHub.Config;
 using Xeno.ToolsHub.LocalAddins.Shortcuts;
 
 namespace Xeno.ToolsHub.Managers.SystemTray
@@ -35,8 +36,19 @@ namespace Xeno.ToolsHub.Managers.SystemTray
     {
       get
       {
-        // TODO: Load custom icon here
-        return Properties.Resources.AppIcon;
+        if (Helpers.IsDebugging)
+        {
+          System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(16, 16);
+          using (System.Drawing.Graphics gfx = System.Drawing.Graphics.FromImage(bmp))
+            gfx.FillEllipse(System.Drawing.Brushes.Red, 0, 0, 16, 16);
+
+          return System.Drawing.Icon.FromHandle(bmp.GetHicon());
+        }
+        else
+        {
+          // TODO: Load custom icon from settings/extension
+          return Properties.Resources.AppIcon;
+        }
       }
     }
 
@@ -51,8 +63,14 @@ namespace Xeno.ToolsHub.Managers.SystemTray
 
     private void InitTrayMenu()
     {
+      string dbgTag = string.Empty;
+      if (Helpers.IsDebugging)
+      {
+        dbgTag = " (DEBUG)";
+      }
+
       List<MenuItem> menuBuilder = new List<MenuItem>();
-      menuBuilder.Add(new MenuItem("ToolsHub", OnMenuProperties));
+      menuBuilder.Add(new MenuItem("ToolsHub" + dbgTag, OnMenuProperties));
       menuBuilder.Add(new MenuItem("-"));
 
       List<MenuItem> epMenus = new List<MenuItem>();
