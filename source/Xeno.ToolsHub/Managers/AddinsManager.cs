@@ -117,6 +117,7 @@ namespace Xeno.ToolsHub.Managers
       {
         // EventHandlers for ExtensionNodes
         Mono.Addins.AddinManager.AddExtensionNodeHandler(ExtensionPaths.OnStartupPath, OnStartupAddins_ExtensionHandler);
+        Mono.Addins.AddinManager.AddExtensionNodeHandler(ExtensionPaths.SystemTrayPath, OnUtilityAddins_ExtensionHandler);
         Mono.Addins.AddinManager.AddExtensionNodeHandler(ExtensionPaths.UtilityPath, OnUtilityAddins_ExtensionHandler);
       }
       catch (Exception ex)

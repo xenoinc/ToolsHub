@@ -1,11 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <!--
 Copyright Xeno Innovations, Inc. 2018
- * Date:    2018-7-18
- * Author:  Damian Suess
- * File:    ToolsHub.addin.xml
- * Description:
- *  Mono.Addins configuration for ToolsHub application
+ToolsHub add-in manifest
 -->
 <Addin id="ToolsHub"
        namespace="ToolsHub"
@@ -25,6 +21,14 @@ Copyright Xeno Innovations, Inc. 2018
     <ExtensionNode name="OnStartupAddin" objectType="Xeno.ToolsHub.ExtensionModel.IOnStartupExtension" />
   </ExtensionPoint>
 
+  <ExtensionPoint Path="/ToolsHub/SystemTray">
+    <ExtensionNode Name="SysTrayAddin" objectType="Xeno.ToolsHub.Managers.SystemTray.SysTrayAddin" />
+  </ExtensionPoint>
+  
+  <!--<ExtensionPoint Path="/ToolsHub/SystemTray">
+    <ExtensionNode Name="SysTrayAddin" objectType="Xeno.ToolsHub.ExtensionModel.ISystemTrayExtension" />
+  </ExtensionPoint>-->
+
   <ExtensionPoint path="/ToolsHub/Utility">
     <ExtensionNode name="UtilityAddin" objectType="Xeno.ToolsHub.ExtensionModel.UtilityAddin" />
   </ExtensionPoint>
@@ -33,13 +37,9 @@ Copyright Xeno Innovations, Inc. 2018
   <ExtensionPoint Path="/ToolsHub/OnSystemShutdownAddins">
     <ExtensionNode Name="OnSystemShutdownAddin" ObjectType="Xeno.ToolsHub.ExtensionModel.ApplicationAddin" />
   </ExtensionPoint>
-  
-  <ExtensionPoint Path="/ToolsHub/SystemTray">
-    <ExtensionNode Name="SysTray" Type="Xeno.ToolsHub.Managers.SystemTray.SysTrayExtensionNode" />
-  </ExtensionPoint>
-  -->
+    -->
 
-  <!-- Call our add-in -->
+  <!-- Call our add-ins -->  
   <Extension path="/ToolsHub/OnStartup">
     <OnStartupAddin type="Xeno.ToolsHub.LocalAddins.StartupAddins.SampleStartupAddin" />
   </Extension>

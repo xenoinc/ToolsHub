@@ -112,9 +112,31 @@ namespace Xeno.ToolsHub.Managers.SystemTray
 
     private List<MenuItem> LoadMenuFromExtensionPoint()
     {
-      //TODO: Uncomment below and implement
+      Log.Debug("Entering");
 
       List<MenuItem> addinItems = new List<MenuItem>();
+      Mono.Addins.ExtensionNodeList nodes = Mono.Addins.AddinManager.GetExtensionNodes(ExtensionPaths.SystemTrayPath);
+
+      Log.Debug($"Found '{nodes.Count}' items ...");
+      foreach ( Mono.Addins.ExtensionNode node in nodes)
+      {
+        Mono.Addins.TypeExtensionNode typeNode = node as Mono.Addins.TypeExtensionNode;
+        try
+        {
+          SysTrayAddin addin = typeNode.CreateInstance() as SysTrayAddin;
+          Log.Debug($"SysTrayAdd-in [{addin.ToString()}]");
+
+          addinItems = addin.MenuItems();
+
+        }
+        catch(Exception ex)
+        {
+          Log.Error("Couldn't create SysTrayAddin instance: " + ex.Message);
+        }
+      }
+
+      return addinItems;
+
       //string pth = Config.ExtensionPaths.SystemTrayPath;
       //Mono.Addins.ExtensionNodeList nodes = Mono.Addins.AddinManager.GetExtensionNodes(pth);
       //
@@ -137,8 +159,6 @@ namespace Xeno.ToolsHub.Managers.SystemTray
       //    Log.Error($"Couldn't create a NoteAddin instance: {e.Message}");
       //  }
       //}
-      //
-      return addinItems;
     }
 
     ///// <summary>Load tray menu items from config file</summary>

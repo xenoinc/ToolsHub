@@ -56,11 +56,12 @@
     <Compile Include="ExtensionModel\Command\CommandAttribute.cs" />
     <Compile Include="ExtensionModel\Command\ICommand.cs" />
     <Compile Include="Config\Settings\AppSettings.cs" />
-    <Compile Include="LocalAddins\Shortcuts\ShortcutsAddin.cs" />
-    <Compile Include="LocalAddins\Shortcuts\ShortcutsSidebar.cs" />
+    <Compile Include="ExtensionModel\ISystemTrayExtension.cs" />
+    <Compile Include="LocalAddins\Shortcuts\ShortcutsSysTrayAddin.cs" />
+    <Compile Include="LocalAddins\Shortcuts\ShortcutsSidebarAddin.cs" />
     <Compile Include="LocalAddins\Shortcuts\ShortcutsSysTray.cs" />
-    <Compile Include="LocalAddins\StartupAddins\SampleStartupAddin.cs" />
-    <Compile Include="LocalAddins\UtilityAddins\SampleUtilityAddin.cs" />
+    <Compile Include="LocalAddins\SampleStartup\SampleStartupAddin.cs" />
+    <Compile Include="LocalAddins\SampleUtility\SampleUtilityAddin.cs" />
     <Compile Include="MainHandler.cs" />
     <Compile Include="Managers\AddinsManager.cs" />
     <Compile Include="Managers\SystemTray\ISysTray.cs" />
@@ -168,9 +169,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="LocalAddins\Shortcuts\Shortcuts.addin">
+    <None Include="LocalAddins\Shortcuts\Shortcuts.addin">
       <SubType>Designer</SubType>
-    </EmbeddedResource>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

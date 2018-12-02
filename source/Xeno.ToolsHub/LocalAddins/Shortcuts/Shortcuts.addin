@@ -1,19 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ExtensionModel>
-  <!-- Shortcuts extension manifest -->
-
-  <!--
+  
+  <!-- Shortcuts extension manifest
   <Dependencies>
     <Addin Id="ToolsHub" Version="0.2" />
   </Dependencies>
-
-  <Extension Path="/ToolsHub/UtilityAddin">
-    <UtilityAddin Type="Xeno.ToolsHub.LocalAddins.Shortcuts.ShortcutsAddin" />
+  -->
+  
+  <Extension Path="/ToolsHub/SystemTray">
+    <SysTrayAddin Type="Xeno.ToolsHub.LocalAddins.Shortcuts.ShortcutsSysTrayAddin" />
   </Extension>
 
+  <!--
   <Extension Path="/ToolsHub/AddinPreferences">
-    <PreferencesAddin Type="Xeno.ToolsHub.VeraCryptAddin.VeraCryptPreferences" />
+    <PreferencesAddin Type="Xeno.ToolsHub.LocalAddins.Shortcuts.ShortcutsPreferences" />
   </Extension>
-
--->
+  -->
 </ExtensionModel>

@@ -20,7 +20,7 @@ namespace Xeno.ToolsHub.Config
     public const string UtilityPath = "/ToolsHub/Utility";
 
     // Internal add-ins
-    //public const string SystemTrayPath = "/ToolsHub/SystemTray";
+    public const string SystemTrayPath = "/ToolsHub/SystemTray";
     //public const string SidebarPath = "/ToolsHub/Sidebar";
     public const string PreferencePath = "/ToolsHub/PreferencePage";
   }

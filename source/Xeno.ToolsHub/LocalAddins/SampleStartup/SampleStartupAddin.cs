@@ -8,7 +8,7 @@
 
 using Xeno.ToolsHub.Config;
 
-namespace Xeno.ToolsHub.LocalAddins.StartupAddins
+namespace Xeno.ToolsHub.LocalAddins.SampleStartup
 {
   public class SampleStartupAddin : ExtensionModel.IOnStartupExtension
   {
