@@ -19,7 +19,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
   //  NodeName = "SysTrayAddin",
   //  Path = "/ToolsHub/SystemTray")]
   public class ShortcutsSysTrayAddin
-    : Xeno.ToolsHub.Managers.SystemTray.SysTrayAddin // ExtensionModel.ISystemTrayExtension
+    : Xeno.ToolsHub.ExtensionModel.SystemTray.SysTrayAddin // ExtensionModel.ISystemTrayExtension
   {
     public ShortcutsSysTrayAddin()
     {

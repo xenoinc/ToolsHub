@@ -18,10 +18,8 @@ namespace Xeno.ToolsHub.Managers
   {
     //private static readonly Log _log = myLogger.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-    /// <summary>
-    ///   Key = TypeExtensionNode.Id
-    /// </summary>
-    private Dictionary<string, UtilityAddin> _appAddins;
+    /// <remarks>Key = TypeExtensionNode.Id</remarks
+    private Dictionary<string, UtilityAddin> _utilityAddins;
 
     public AddinsManager() : this("")
     {
@@ -31,7 +29,7 @@ namespace Xeno.ToolsHub.Managers
     /// <param name="configDir">Add-ins configuration directory</param>
     public AddinsManager(string configDir)
     {
-      _appAddins = new Dictionary<string, UtilityAddin>();
+      _utilityAddins = new Dictionary<string, UtilityAddin>();
 
       InitAddins();
     }

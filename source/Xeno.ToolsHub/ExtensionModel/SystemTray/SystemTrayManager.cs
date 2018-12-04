@@ -7,7 +7,6 @@
  *
  * TODO:
  *  [ ] Load custom icon
- *  [ ] Add methods to load add-in sub menus
  *  [ ] Ability to add/rmv menu items at will
  *
  * Reference:
@@ -19,7 +18,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using Xeno.ToolsHub.Config;
 
-namespace Xeno.ToolsHub.Managers.SystemTray
+namespace Xeno.ToolsHub.ExtensionModel.SystemTray
 {
   public class SystemTrayManager : ApplicationContext
   {
@@ -74,16 +73,6 @@ namespace Xeno.ToolsHub.Managers.SystemTray
 
       List<MenuItem> epMenus = new List<MenuItem>();
 
-      // Test items
-      //epMenus = LoadMenuForTests();
-      //if (epMenus.Count > 0)
-      //  menuBuilder.AddRange(epMenus);
-      //
-      // Load Shortcuts from JSON [Obsolete]
-      //epMenus = LoadMenuShortcuts();
-      //if (epMenus.Count > 0)
-      //  menuBuilder.AddRange(epMenus);
-
       // Load add-in menus
       epMenus = LoadMenuFromExtensionPoint();
       if (epMenus.Count > 0)
@@ -94,20 +83,6 @@ namespace Xeno.ToolsHub.Managers.SystemTray
 
       _trayMenu = menuBuilder.ToArray();
     }
-
-    ///// <summary>Load tray menu items from config file</summary>
-    ///// <remarks>TEMP code only. Future we'll use Addins</remarks>
-    //[Obsolete("we should be using Add-ins, not manually adding things")]
-    //private List<MenuItem> LoadMenuShortcuts()
-    //{
-    //  List<MenuItem> addinItems = new List<MenuItem>();
-    //
-    //  ShortcutsLoader shortcutMenu = new ShortcutsLoader();
-    //  var subSet = shortcutMenu.LoadAsMenuItems();
-    //  addinItems.Add(subSet);
-    //
-    //  return addinItems;
-    //}
 
     private List<MenuItem> LoadMenuFromExtensionPoint()
     {
@@ -135,33 +110,6 @@ namespace Xeno.ToolsHub.Managers.SystemTray
 
       return addinItems;
     }
-
-    ///// <summary>Load tray menu items from config file</summary>
-    //private List<MenuItem> LoadMenuForTests()
-    //{
-    //  List<MenuItem> addinItems = new List<MenuItem>();
-    //
-    //  // TODO:
-    //  //  1. Read config file
-    //  //  2. Return submenu
-    //
-    //  // foreach (var items in LoadAddinsForSysTray()) { }
-    //
-    //  // Dummy data
-    //  var addin1 = new MenuItem("Test Manual-1");
-    //  addin1.MenuItems.Add(0, new SystemTray.TrayItem("SubItem 1", "tag_addin1-Sub1", true));
-    //  addin1.MenuItems.Add(1, new SystemTray.TrayItem("SubItem 2", "tag_addin1-Sub2"));
-    //  addin1.MenuItems.Add(2, new SystemTray.TrayItem("SubItem 3", "tag_addin1-Sub3"));
-    //
-    //  var addin2 = new MenuItem("Test Manual-2");
-    //  addin2.MenuItems.Add(new SystemTray.TrayItem("A2: SubItem 1", "tag_addin2-sub1"));
-    //  addin2.MenuItems.Add(new SystemTray.TrayItem("A2: SubItem 2", "tag_addin2-sub2"));
-    //
-    //  addinItems.Add(addin1);
-    //  addinItems.Add(addin2);
-    //
-    //  return addinItems;
-    //}
 
     /// <summary>Redraw systray menu from memory</summary>
     private void RedrawTrayNotifacation()

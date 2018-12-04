@@ -9,7 +9,7 @@
 using System.Windows.Forms;
 using Mono.Addins;
 
-namespace Xeno.ToolsHub.Managers.SystemTray
+namespace Xeno.ToolsHub.ExtensionModel.SystemTray
 {
   //[ExtensionNode("SysTray")]  // or "TrayMenu"
   //[ExtensionNodeChild(typeof(SysTrayExtensionNode))]

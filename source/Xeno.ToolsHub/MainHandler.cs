@@ -27,7 +27,7 @@ namespace Xeno.ToolsHub
     //PreferencesForm prefWnd = new PreferencesForm();
     //MenuItem configMenuItem
 
-    private Managers.SystemTray.SystemTrayManager _sysTray;
+    private ExtensionModel.SystemTray.SystemTrayManager _sysTray;
     private Managers.WndProcManager _wndProc;
     private AddinsManager _addinsManager;
 
@@ -39,11 +39,11 @@ namespace Xeno.ToolsHub
       // 3. Initialize Sidebar (add-in) handler
       // 4. Initialize Application add-in manager
 
-      InitMonoAddins();
+      InitAddinsManager();
 
       InitSystemEvents();
 
-      // Consider moving this as it's own add-in host
+      // Consider moving this as it's own add-in host as a Utility
       InitSystemTray();
 
       InitWndProc();
@@ -74,7 +74,7 @@ namespace Xeno.ToolsHub
     {
     }
 
-    private void InitMonoAddins()
+    private void InitAddinsManager()
     {
       _addinsManager = new AddinsManager();
     }
@@ -95,7 +95,7 @@ namespace Xeno.ToolsHub
     private void InitSystemTray()
     {
       // Consider adding this into a container
-      _sysTray = new Managers.SystemTray.SystemTrayManager();
+      _sysTray = new ExtensionModel.SystemTray.SystemTrayManager();
     }
 
     /// <summary>We have a GUI form, but do need WndProc for wiring up things</summary>
