@@ -16,14 +16,14 @@ Copyright Xeno Innovations, Inc. 2018
        Category="Tools"
        DefaultEnabled="false"
        xmlns="https://github.com/mono/mono-addins/MonoAddins.xsd">
+  <!--
   <Runtime>
     <Import Assembly="VeraCrypt.dll" />
   </Runtime>
 
   <Dependencies>
-    <Addin Id="ToolsHub" Version="1.0" />
+    <Addin Id="ToolsHub" Version="0.1" />
   </Dependencies>
-
   <Extension Path="/ToolsHub/ApplicationAddins">
     <ApplicationAddin Type="Xeno.ToolsHub.VeraCryptAddin.VeraCrypt" />
   </Extension>
@@ -31,4 +31,5 @@ Copyright Xeno Innovations, Inc. 2018
   <Extension Path="/ToolsHub/AddinPreferences">
     <ApplicationAddin Type="Xeno.ToolsHub.VeraCryptAddin.VeraCryptPreferences" />
   </Extension>
+  -->
 </Addin>

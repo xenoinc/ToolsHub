@@ -11,32 +11,35 @@ Flexible tools launcher desktop app which is "_not your average extensible sideb
 | **Develop** | <img src="https://ci.appveyor.com/api/projects/status/github/DamianSuess/ToolsHub?branch=develop&svg=true" alt="Project Badge" /> |
 
 
+## Active Features
+* Launch app from System Tray
+* Add-on extensions via [Mono.Addins](https://github.com/mono/mono-addins)
 
 
-
-## Future Features
-* Add-on containers via Mono.Addins
+### Future Features
 * Safely send shutdown signals to your add-ons
 * Launch app from Sidebar (_i.e. RocketDock, ObjectDock_)
-* Launch app from System Tray
 * Launch app on system startup
 
 ## Coding
-The framework relies on Mono.Addins for extending to add new features. With that, there are key ``endpoints`` you can attach to.
+The framework relies on [Mono.Addins](https://github.com/mono/mono-addins) for extending to add new features. We provide a list of key [extension points](https://github.com/xenoinc/ToolsHub/wiki/Addin-ExtensionPoints) you can attach to.
 
 ### Endpoints
-* OnStart
-* OnShutdown
+* ``OnStart`` - _Called when ToolsHub starts up_
+* ``OnSystemShutdown`` - _Called when Windows sends it's shutdown signal_
+* ``Utility`` - _Disposable add-ins called after ToolsHub is fully launced_
 
 
 ## Use case
-### VeraCrypt
-* **Status:** wip
-* Auto-mount drives on startup
-* Safely dismount drive on system shutdown to guard against corruption
+### SystemTray Launcher
+* **Status:** Ready
+* Launch shortcuts (_apps, folders, urls_) directly from SystemTray
 
 ### Sidebar Launcher
 * **Status:** _n/a_
+* (_i.e. RocketDock, ObjectDock_)
 
-### SystemTray Launcher
-* **Status:** _n/a_
+### VeraCrypt
+* **Status:** WiP
+* Auto-mount drives on startup
+* Safely dismount drive on system shutdown to guard against corruption

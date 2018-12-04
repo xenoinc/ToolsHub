@@ -12,7 +12,7 @@ using Xeno.ToolsHub.Config;
 
 namespace Xeno.ToolsHub.VeraCryptAddin
 {
-  public class VeraCrypt : ApplicationAddin
+  public class VeraCrypt : UtilityAddin
   {
     private bool _initialized = false;
 
@@ -30,9 +30,8 @@ namespace Xeno.ToolsHub.VeraCryptAddin
 
     public override void Initialize()
     {
-      _initialized = true;
-
       Log.Debug("VeraCrypt add-in initializing");
+      _initialized = true;
       throw new NotImplementedException();
     }
 

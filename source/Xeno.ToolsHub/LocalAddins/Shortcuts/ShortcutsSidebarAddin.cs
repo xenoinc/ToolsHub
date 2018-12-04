@@ -10,9 +10,9 @@
 
 namespace Xeno.ToolsHub.LocalAddins.Shortcuts
 {
-  internal class ShortcutsSidebar
+  internal class ShortcutsSidebarAddin
   {
-    public ShortcutsSidebar()
+    public ShortcutsSidebarAddin()
     {
       throw new System.NotImplementedException();
     }

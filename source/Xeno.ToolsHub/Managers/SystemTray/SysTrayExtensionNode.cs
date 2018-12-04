@@ -13,6 +13,14 @@ namespace Xeno.ToolsHub.Managers.SystemTray
 {
   //[ExtensionNode("SysTray")]  // or "TrayMenu"
   //[ExtensionNodeChild(typeof(SysTrayExtensionNode))]
+  //
+  //or
+  //
+  //<ExtensionPoint Path = "/ToolsHub/SystemTray" >
+  //  < ExtensionNode Name="SysTrayAddin" Type="Xeno.ToolsHub.ExtensionModel.ISystemTrayExtension" />
+  //  <!--<ExtensionNode Name = "SysTrayAddin" Type="Xeno.ToolsHub.Managers.SystemTray.SysTrayExtensionNode" />-->
+  //</ExtensionPoint>
+
   internal class SysTrayExtensionNode : TypeExtensionNode
   {
     [NodeAttribute("Text")]
