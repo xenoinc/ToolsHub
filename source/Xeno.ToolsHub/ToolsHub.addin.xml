@@ -21,13 +21,10 @@ ToolsHub add-in manifest
     <ExtensionNode name="OnStartupAddin" objectType="Xeno.ToolsHub.ExtensionModel.IOnStartupExtension" />
   </ExtensionPoint>
 
-  <ExtensionPoint Path="/ToolsHub/SystemTray">
-    <ExtensionNode Name="SysTrayAddin" objectType="Xeno.ToolsHub.Managers.SystemTray.SysTrayAddin" />
+  <ExtensionPoint path="/ToolsHub/SystemTray">
+    <ExtensionNode name="SysTrayAddin" objectType="Xeno.ToolsHub.Managers.SystemTray.SysTrayAddin" />
+    <!--<ExtensionNode name="SysTrayAddin" objectType="Xeno.ToolsHub.ExtensionModel.ISystemTrayExtension" />-->
   </ExtensionPoint>
-  
-  <!--<ExtensionPoint Path="/ToolsHub/SystemTray">
-    <ExtensionNode Name="SysTrayAddin" objectType="Xeno.ToolsHub.ExtensionModel.ISystemTrayExtension" />
-  </ExtensionPoint>-->
 
   <ExtensionPoint path="/ToolsHub/Utility">
     <ExtensionNode name="UtilityAddin" objectType="Xeno.ToolsHub.ExtensionModel.UtilityAddin" />

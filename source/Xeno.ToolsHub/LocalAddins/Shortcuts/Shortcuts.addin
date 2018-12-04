@@ -1,19 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ExtensionModel>
   
-  <!-- Shortcuts extension manifest
-  <Dependencies>
-    <Addin Id="ToolsHub" Version="0.2" />
-  </Dependencies>
-  -->
-  
-  <Extension Path="/ToolsHub/SystemTray">
-    <SysTrayAddin Type="Xeno.ToolsHub.LocalAddins.Shortcuts.ShortcutsSysTrayAddin" />
+  <!-- Shortcuts extension manifest -->
+  <Extension path="/ToolsHub/SystemTray">
+    <SysTrayAddin type="Xeno.ToolsHub.LocalAddins.Shortcuts.ShortcutsSysTrayAddin" />
   </Extension>
 
   <!--
-  <Extension Path="/ToolsHub/AddinPreferences">
-    <PreferencesAddin Type="Xeno.ToolsHub.LocalAddins.Shortcuts.ShortcutsPreferences" />
+  <Extension path="/ToolsHub/AddinPreferences">
+    <PreferencesAddin type="Xeno.ToolsHub.LocalAddins.Shortcuts.ShortcutsPreferences" />
   </Extension>
   -->
 </ExtensionModel>

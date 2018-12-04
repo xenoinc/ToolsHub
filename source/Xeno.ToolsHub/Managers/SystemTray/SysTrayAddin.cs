@@ -12,7 +12,7 @@ using Xeno.ToolsHub.ExtensionModel;
 
 namespace Xeno.ToolsHub.Managers.SystemTray
 {
-  [Mono.Addins.TypeExtensionPoint(Path = "/ToolsHub/SystemTray", NodeName = "SysTrayAddin")]
+  //[Mono.Addins.TypeExtensionPoint(Path = "/ToolsHub/SystemTray", NodeName = "SysTrayAddin")]
   public abstract class SysTrayAddin : AbstractAddin
   {
     public abstract bool IsInitialized { get; }

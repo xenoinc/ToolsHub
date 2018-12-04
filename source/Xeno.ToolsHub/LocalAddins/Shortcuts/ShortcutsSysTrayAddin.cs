@@ -14,12 +14,17 @@ using System.Windows.Forms;
 
 namespace Xeno.ToolsHub.LocalAddins.Shortcuts
 {
-  [Mono.Addins.Extension(
-    Id = "ShortcutsAddinBoom",
-    NodeName = "SysTrayAddin",
-    Path = "/ToolsHub/SystemTray")]
-  public class ShortcutsSysTrayAddin : Xeno.ToolsHub.Managers.SystemTray.SysTrayAddin // ExtensionModel.ISystemTrayExtension
+  //[Mono.Addins.Extension(
+  //  Id = "ShortcutsAddinBoom",
+  //  NodeName = "SysTrayAddin",
+  //  Path = "/ToolsHub/SystemTray")]
+  public class ShortcutsSysTrayAddin
+    : Xeno.ToolsHub.Managers.SystemTray.SysTrayAddin // ExtensionModel.ISystemTrayExtension
   {
+    public ShortcutsSysTrayAddin()
+    {
+    }
+
     public string Title => "Shortcuts Add-in";
 
     public override bool IsInitialized => true;
