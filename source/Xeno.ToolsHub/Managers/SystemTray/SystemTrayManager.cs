@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using Xeno.ToolsHub.Config;
-using Xeno.ToolsHub.LocalAddins.Shortcuts;
 
 namespace Xeno.ToolsHub.Managers.SystemTray
 {
@@ -79,11 +78,11 @@ namespace Xeno.ToolsHub.Managers.SystemTray
       //epMenus = LoadMenuForTests();
       //if (epMenus.Count > 0)
       //  menuBuilder.AddRange(epMenus);
-
+      //
       // Load Shortcuts from JSON [Obsolete]
-      epMenus = LoadMenuShortcuts();
-      if (epMenus.Count > 0)
-        menuBuilder.AddRange(epMenus);
+      //epMenus = LoadMenuShortcuts();
+      //if (epMenus.Count > 0)
+      //  menuBuilder.AddRange(epMenus);
 
       // Load add-in menus
       epMenus = LoadMenuFromExtensionPoint();
@@ -96,19 +95,19 @@ namespace Xeno.ToolsHub.Managers.SystemTray
       _trayMenu = menuBuilder.ToArray();
     }
 
-    /// <summary>Load tray menu items from config file</summary>
-    /// <remarks>TEMP code only. Future we'll use Addins</remarks>
-    [Obsolete("we should be using Add-ins, not manually adding things")]
-    private List<MenuItem> LoadMenuShortcuts()
-    {
-      List<MenuItem> addinItems = new List<MenuItem>();
-
-      ShortcutsSysTray shortcutMenu = new ShortcutsSysTray();
-      var subSet = shortcutMenu.LoadAsMenuItems();
-      addinItems.Add(subSet);
-
-      return addinItems;
-    }
+    ///// <summary>Load tray menu items from config file</summary>
+    ///// <remarks>TEMP code only. Future we'll use Addins</remarks>
+    //[Obsolete("we should be using Add-ins, not manually adding things")]
+    //private List<MenuItem> LoadMenuShortcuts()
+    //{
+    //  List<MenuItem> addinItems = new List<MenuItem>();
+    //
+    //  ShortcutsLoader shortcutMenu = new ShortcutsLoader();
+    //  var subSet = shortcutMenu.LoadAsMenuItems();
+    //  addinItems.Add(subSet);
+    //
+    //  return addinItems;
+    //}
 
     private List<MenuItem> LoadMenuFromExtensionPoint()
     {
@@ -118,7 +117,7 @@ namespace Xeno.ToolsHub.Managers.SystemTray
       Mono.Addins.ExtensionNodeList nodes = Mono.Addins.AddinManager.GetExtensionNodes(ExtensionPaths.SystemTrayPath);
 
       Log.Debug($"Found '{nodes.Count}' items ...");
-      foreach ( Mono.Addins.ExtensionNode node in nodes)
+      foreach (Mono.Addins.ExtensionNode node in nodes)
       {
         Mono.Addins.TypeExtensionNode typeNode = node as Mono.Addins.TypeExtensionNode;
         try
@@ -127,38 +126,14 @@ namespace Xeno.ToolsHub.Managers.SystemTray
           Log.Debug($"SysTrayAdd-in [{addin.ToString()}]");
 
           addinItems = addin.MenuItems();
-
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
           Log.Error("Couldn't create SysTrayAddin instance: " + ex.Message);
         }
       }
 
       return addinItems;
-
-      //string pth = Config.ExtensionPaths.SystemTrayPath;
-      //Mono.Addins.ExtensionNodeList nodes = Mono.Addins.AddinManager.GetExtensionNodes(pth);
-      //
-      //Log.Debug($"LoadMenuFromExtensionPoint ({nodes.Count} items found)...");
-      //foreach (Mono.Addins.ExtensionNode node in nodes)
-      //{
-      //  Mono.Addins.TypeExtensionNode typeNode = node as Mono.Addins.TypeExtensionNode;
-      //
-      //  // SysTrayAddin
-      //  try
-      //  {
-      //    SysTrayAddin addin = typeNode.CreateInstance() as SysTrayAddin;
-      //    Log.Debug($"LoadMenuFromExtensionPoint: addin[{addin.ToString()}]");
-      //
-      //    // Keep track of the addins added to each note
-      //    //AttachAddin(type_node.Id, note, n_addin);
-      //  }
-      //  catch (Exception e)
-      //  {
-      //    Log.Error($"Couldn't create a NoteAddin instance: {e.Message}");
-      //  }
-      //}
     }
 
     ///// <summary>Load tray menu items from config file</summary>
