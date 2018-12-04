@@ -10,7 +10,7 @@ using System;
 using Xeno.ToolsHub.Config;
 using Xeno.ToolsHub.ExtensionModel;
 
-namespace Xeno.ToolsHub.LocalAddins.UtilityAddins
+namespace Xeno.ToolsHub.LocalAddins.SampleUtility
 {
   public class SampleUtilityAddin : UtilityAddin
   {

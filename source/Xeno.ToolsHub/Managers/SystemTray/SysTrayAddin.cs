@@ -6,15 +6,19 @@
  *  SystemTray add-in
  */
 
+using System.Collections.Generic;
+using System.Windows.Forms;
 using Xeno.ToolsHub.ExtensionModel;
 
 namespace Xeno.ToolsHub.Managers.SystemTray
 {
-  public class SysTrayAddin : AbstractAddin
+  //[Mono.Addins.TypeExtensionPoint(Path = "/ToolsHub/SystemTray", NodeName = "SysTrayAddin")]
+  public abstract class SysTrayAddin : AbstractAddin
   {
-    public SysTrayAddin()
-    {
-      ;
-    }
+    public abstract bool IsInitialized { get; }
+
+    public abstract void Initialize();
+
+    public abstract List<MenuItem> MenuItems();
   }
 }

@@ -1,6 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--
+Copyright Xeno Innovations, Inc. 2018
+ToolsHub add-in manifest
+-->
 <Addin id="ToolsHub"
-       namespace="ToolsHub"       
+       namespace="ToolsHub"
        version="0.2"
        compatVersion="0.2"
        author="Damian Suess"
@@ -17,11 +21,22 @@
     <ExtensionNode name="OnStartupAddin" objectType="Xeno.ToolsHub.ExtensionModel.IOnStartupExtension" />
   </ExtensionPoint>
 
+  <ExtensionPoint path="/ToolsHub/SystemTray">
+    <ExtensionNode name="SysTrayAddin" objectType="Xeno.ToolsHub.Managers.SystemTray.SysTrayAddin" />
+    <!--<ExtensionNode name="SysTrayAddin" objectType="Xeno.ToolsHub.ExtensionModel.ISystemTrayExtension" />-->
+  </ExtensionPoint>
+
   <ExtensionPoint path="/ToolsHub/Utility">
     <ExtensionNode name="UtilityAddin" objectType="Xeno.ToolsHub.ExtensionModel.UtilityAddin" />
   </ExtensionPoint>
 
-  <!-- Call our add-in -->
+  <!--
+  <ExtensionPoint Path="/ToolsHub/OnSystemShutdownAddins">
+    <ExtensionNode Name="OnSystemShutdownAddin" ObjectType="Xeno.ToolsHub.ExtensionModel.ApplicationAddin" />
+  </ExtensionPoint>
+    -->
+
+  <!-- Call our add-ins -->  
   <Extension path="/ToolsHub/OnStartup">
     <OnStartupAddin type="Xeno.ToolsHub.LocalAddins.StartupAddins.SampleStartupAddin" />
   </Extension>
