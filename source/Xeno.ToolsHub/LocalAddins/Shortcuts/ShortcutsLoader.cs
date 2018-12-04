@@ -36,7 +36,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
       {
         Log.Debug($"Missing local '{ShortcutsFile}' file");
 
-        var item = new Managers.SystemTray.TrayItem("Create test JSON...", "", true, OnJsonGenerator);
+        var item = new ExtensionModel.SystemTray.TrayItem("Create test JSON...", "", true, OnJsonGenerator);
         menu.MenuItems.Add(0, item);
       }
       else
@@ -47,7 +47,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
         int ndx = 0;
         foreach (ShortcutItem shortcut in shortcuts)
         {
-          var subItem = new Managers.SystemTray.TrayItem(shortcut.Title, shortcut.Target, true, OnExecuteShortcut);
+          var subItem = new ExtensionModel.SystemTray.TrayItem(shortcut.Title, shortcut.Target, true, OnExecuteShortcut);
           menu.MenuItems.Add(ndx, subItem);
           ndx++;
         }

@@ -8,7 +8,7 @@
 
 // [assembly: Mono.Addins.ExtensionPoint("/ToolsHub/SysTray")]
 
-namespace Xeno.ToolsHub.Managers.SystemTray
+namespace Xeno.ToolsHub.ExtensionModel.SystemTray
 {
   public interface ISysTray
   {

@@ -64,12 +64,12 @@
     <Compile Include="LocalAddins\SampleUtility\SampleUtilityAddin.cs" />
     <Compile Include="MainHandler.cs" />
     <Compile Include="Managers\AddinsManager.cs" />
-    <Compile Include="Managers\SystemTray\ISysTray.cs" />
-    <Compile Include="Managers\SystemTray\SysTrayAddin.cs" />
-    <Compile Include="Managers\SystemTray\TrayItem.cs">
+    <Compile Include="ExtensionModel\SystemTray\ISysTray.cs" />
+    <Compile Include="ExtensionModel\SystemTray\SysTrayAddin.cs" />
+    <Compile Include="ExtensionModel\SystemTray\TrayItem.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Managers\SystemTray\SysTrayExtensionNode.cs" />
+    <Compile Include="ExtensionModel\SystemTray\SysTrayExtensionNode.cs" />
     <Compile Include="Managers\ToolsManager.cs" />
     <Compile Include="ExtensionModel\AbstractAddin.cs" />
     <Compile Include="ExtensionModel\AddinPreferenceFactory.cs" />
@@ -81,7 +81,7 @@
     <Compile Include="Config\ExtensionPaths.cs" />
     <Compile Include="Config\Log.cs" />
     <Compile Include="Managers\SidebarManager.cs" />
-    <Compile Include="Managers\SystemTray\SystemTrayManager.cs" />
+    <Compile Include="ExtensionModel\SystemTray\SystemTrayManager.cs" />
     <Compile Include="Config\Settings\AddinSettings.cs" />
     <Compile Include="Managers\WndProcManager.cs" />
     <Compile Include="LocalAddins\Shortcuts\ShortcutItem.cs" />
@@ -159,9 +159,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\..\libs\Mono.Addins\Mono.Addins\Mono.Addins.csproj">
       <Project>{91dd5a2d-9fe3-4c3c-9253-876141874dad}</Project>

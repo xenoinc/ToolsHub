@@ -8,9 +8,8 @@
 
 using System.Collections.Generic;
 using System.Windows.Forms;
-using Xeno.ToolsHub.ExtensionModel;
 
-namespace Xeno.ToolsHub.Managers.SystemTray
+namespace Xeno.ToolsHub.ExtensionModel.SystemTray
 {
   //[Mono.Addins.TypeExtensionPoint(Path = "/ToolsHub/SystemTray", NodeName = "SysTrayAddin")]
   public abstract class SysTrayAddin : AbstractAddin
