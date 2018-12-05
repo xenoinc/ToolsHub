@@ -36,6 +36,19 @@ namespace Xeno.ToolsHub.Managers
 
     public event EventHandler OnApplicationAddinListChanged;
 
+    /// <summary>Get all add-ins found in system</summary>
+    /// <returns></returns>
+    public List<Mono.Addins.Addin> GetAllAddins()
+    {
+      List<Mono.Addins.Addin> addinList = new List<Mono.Addins.Addin>();
+      Mono.Addins.Addin[] addinArray = Mono.Addins.AddinManager.Registry.GetAddins();
+
+      if (addinArray != null)
+        addinList = new List<Mono.Addins.Addin>(addinArray);
+
+      return addinList;
+    }
+
     public PreferencePageExtension[] GetPreferenceAddins()
     {
       //TODO: Currently not in use

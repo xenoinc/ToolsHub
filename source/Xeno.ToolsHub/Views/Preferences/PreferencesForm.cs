@@ -8,9 +8,9 @@
 
 using System;
 using System.Windows.Forms;
-using Xeno.ToolsHub.Managers;
-using Xeno.ToolsHub.ExtensionModel;
 using Xeno.ToolsHub.Config;
+using Xeno.ToolsHub.ExtensionModel;
+using Xeno.ToolsHub.Managers;
 
 namespace Xeno.ToolsHub.Views
 {
@@ -51,7 +51,7 @@ namespace Xeno.ToolsHub.Views
 
     private void InitAddinManager()
     {
-      Views.Preferences.AddinManagerCtrl ctrl = new Preferences.AddinManagerCtrl();
+      Views.Preferences.AddinManagerCtrl ctrl = new Preferences.AddinManagerCtrl(_addinManager);
       ctrl.Dock = DockStyle.Fill;
       tabPage2.Controls.Add(ctrl);
 
@@ -72,11 +72,11 @@ namespace Xeno.ToolsHub.Views
         {
           string title = "";
           System.Windows.Forms.Panel panel;
-          if (addin.GetPreferenceAddin(this, out title, out panel))
-          {
-            // insert into treeView
-            // Add into _addinPanel
-          }
+          //if (addin.GetPreferenceAddin(this, out title, out panel))
+          //{
+          //  // insert into treeView
+          //  // Add into _addinPanel
+          //}
         }
         catch (Exception ex)
         {

@@ -24,9 +24,11 @@ namespace Xeno.ToolsHub.ExtensionModel.SystemTray
   {
     private MenuItem[] _trayMenu;
     private NotifyIcon _trayNotify = new NotifyIcon();
+    private MainHandler _mainHandler;
 
-    public SystemTrayManager()
+    public SystemTrayManager(MainHandler mainHandler)
     {
+      _mainHandler = mainHandler;
       Refresh();
     }
 
@@ -56,7 +58,16 @@ namespace Xeno.ToolsHub.ExtensionModel.SystemTray
     {
       //TODO: Create a singleton or IoC pattern to call Refresh() from outside
       InitTrayMenu();
-      RedrawTrayNotifacation();
+      DrawTrayNotifacation();
+    }
+
+    /// <summary>Redraw systray menu from memory</summary>
+    private void DrawTrayNotifacation()
+    {
+      _trayNotify.Icon = ApplicationIcon;
+      _trayNotify.ContextMenu = new ContextMenu(_trayMenu);
+      _trayNotify.DoubleClick += new EventHandler(OnMenuDoubleClick);
+      _trayNotify.Visible = true;
     }
 
     private void InitTrayMenu()
@@ -111,15 +122,6 @@ namespace Xeno.ToolsHub.ExtensionModel.SystemTray
       return addinItems;
     }
 
-    /// <summary>Redraw systray menu from memory</summary>
-    private void RedrawTrayNotifacation()
-    {
-      _trayNotify.Icon = ApplicationIcon;
-      _trayNotify.ContextMenu = new ContextMenu(_trayMenu);
-      _trayNotify.DoubleClick += new EventHandler(OnMenuDoubleClick);
-      _trayNotify.Visible = true;
-    }
-
     #endregion Menu Renderer
 
     #region Local Menu - Event Handlers
@@ -144,7 +146,7 @@ namespace Xeno.ToolsHub.ExtensionModel.SystemTray
 
     private void OnMenuProperties(object sender, EventArgs e)
     {
-      Form p = new Views.PreferencesForm();
+      Form p = new Views.PreferencesForm(_mainHandler.Addins);
       p.Show();
     }
 

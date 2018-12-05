@@ -95,7 +95,7 @@ namespace Xeno.ToolsHub
     private void InitSystemTray()
     {
       // Consider adding this into a container
-      _sysTray = new ExtensionModel.SystemTray.SystemTrayManager();
+      _sysTray = new ExtensionModel.SystemTray.SystemTrayManager(this);
     }
 
     /// <summary>We have a GUI form, but do need WndProc for wiring up things</summary>
