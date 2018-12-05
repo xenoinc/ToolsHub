@@ -19,16 +19,15 @@ namespace Xeno.ToolsHub.LocalAddins.SampleUtility
     public SampleUtilityAddin()
     {
       _initialized = true;
-      Log.Debug("Utility Sample (internal add-in) initialized");
+      Log.Debug("SampleXml internal Utility add-in, initialized!");
     }
 
     public override bool IsInitialized => _initialized;
 
     public override void Execute()
     {
-      Log.Debug("Utility Sample (internal) executed");
-
-      //System.Windows.Forms.MessageBox.Show("Utility Sample (internal) executed!");
+      Log.Debug("SampleXml internal Utility add-in, executed!");
+      //System.Windows.Forms.MessageBox.Show("SampleXml internal Utility add-in, executed!");
     }
 
     public override void Shutdown()

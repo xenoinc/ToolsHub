@@ -1,9 +1,9 @@
 ﻿/* Copyright Xeno Innovations, Inc. 2018
  * Date:    2018-10-3
  * Author:  Damian Suess
- * File:    SampleXmlUtility.cs
+ * File:    AddinUtilityHandler.cs
  * Description:
- *  Sample Utility add-in
+ *  SampleXml Utility extension
  */
 
 using System.Windows.Forms;
@@ -12,11 +12,11 @@ using Xeno.ToolsHub.ExtensionModel;
 
 namespace Xeno.ToolsHub.SampleXmlAddin
 {
-  public class SampleXmlUtility : UtilityAddin
+  public class AddinUtilityHandler : UtilityAddin
   {
     private bool _initialized = false;
 
-    public SampleXmlUtility()
+    public AddinUtilityHandler()
     {
       _initialized = true;
 

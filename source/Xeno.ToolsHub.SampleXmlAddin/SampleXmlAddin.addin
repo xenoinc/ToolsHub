@@ -7,30 +7,31 @@ Copyright Xeno Innovations, Inc. 2018
  * Description:
  *  Sample add-in using an XML manifest
 -->
-<Addin id="SampleXmlAddin"
-       namespace="ToolsHub"
-       name="Sample Add-in"
+<Addin namespace="ToolsHub"
+       id="ToolsHub"
        version="1.0"
+       name="Sample Add-in"
        author="Damian Suess"
+       copyright="Xeno Innovations, Inc. 2018"
        description="Quick sample add-in project."
-       category="Tools"
+       category="Sample"
        defaultEnabled="false">
-<!-- xmlns="https://github.com/mono/mono-addins/MonoAddins.xsd" -->
-  
+  <!-- xmlns="https://github.com/mono/mono-addins/MonoAddins.xsd" -->
+
   <Runtime>
     <Import assembly="SampleXmlAddin.dll" />
   </Runtime>
 
   <Dependencies>
-    <Addin id="ToolsHub" version="0.2" />
+    <Addin id="ToolsHub" version="0.3" />
   </Dependencies>
 
-  <!--<Extension path="/ToolsHub/OnStartup">
-    <OnStartupAddin type="Xeno.ToolsHub.SampleXmlAddin.Sample" />
-  </Extension>-->
+  <Extension path="/ToolsHub/OnStartup">
+    <OnStartupAddin type="Xeno.ToolsHub.SampleXmlAddin.SampleXmlOnStart" />
+  </Extension>
 
   <Extension path="/ToolsHub/Utility">
-    <OnStartupAddin type="Xeno.ToolsHub.SampleXmlAddin.SampleXmlUtility" />
+    <UtilityAddin type="Xeno.ToolsHub.SampleXmlAddin.SampleXmlUtility" />
   </Extension>
 
   <!--

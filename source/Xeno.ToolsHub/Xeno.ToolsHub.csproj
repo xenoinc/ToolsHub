@@ -78,7 +78,7 @@
     <Compile Include="ExtensionModel\IOnStartupExtension.cs" />
     <Compile Include="ExtensionModel\ISystemShutdownExtension.cs" />
     <Compile Include="ExtensionModel\PreferenceAddin.cs" />
-    <Compile Include="Config\ExtensionPaths.cs" />
+    <Compile Include="ExtensionModel\Constants.cs" />
     <Compile Include="Config\Log.cs" />
     <Compile Include="Managers\SidebarManager.cs" />
     <Compile Include="ExtensionModel\SystemTray\SystemTrayManager.cs" />
