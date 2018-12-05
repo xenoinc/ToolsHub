@@ -16,6 +16,12 @@ namespace Xeno.ToolsHub.LocalAddins.SampleUtility
   {
     private bool _initialized = false;
 
+    public SampleUtilityAddin()
+    {
+      _initialized = true;
+      Log.Debug("Utility Sample (internal add-in) initialized");
+    }
+
     public override bool IsInitialized => _initialized;
 
     public override void Execute()
@@ -23,12 +29,6 @@ namespace Xeno.ToolsHub.LocalAddins.SampleUtility
       Log.Debug("Utility Sample (internal) executed");
 
       //System.Windows.Forms.MessageBox.Show("Utility Sample (internal) executed!");
-    }
-
-    public override void Initialize()
-    {
-      _initialized = true;
-      Log.Debug("Utility Sample (internal add-in) initialized");
     }
 
     public override void Shutdown()

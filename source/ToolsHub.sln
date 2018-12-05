@@ -16,7 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Addons", "Addons", "{AE268E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VeraCryptAddin", "Xeno.ToolsHub.VeraCryptAddin\VeraCryptAddin.csproj", "{0F5782C4-CD0E-4CE0-8C5D-9B3E95FDF13D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleAddin", "Xeno.ToolsHub.SampleAddin\SampleAddin.csproj", "{D6EEB528-ACF4-4235-BAED-8D52AB64035B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleXmlAddin", "Xeno.ToolsHub.SampleXmlAddin\SampleXmlAddin.csproj", "{D6EEB528-ACF4-4235-BAED-8D52AB64035B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mono.Addins", "..\libs\Mono.Addins\Mono.Addins\Mono.Addins.csproj", "{91DD5A2D-9FE3-4C3C-9253-876141874DAD}"
 EndProject

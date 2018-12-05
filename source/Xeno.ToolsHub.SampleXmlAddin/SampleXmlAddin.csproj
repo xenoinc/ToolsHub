@@ -7,8 +7,8 @@
     <ProjectGuid>{D6EEB528-ACF4-4235-BAED-8D52AB64035B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Xeno.ToolsHub.SampleAddin</RootNamespace>
-    <AssemblyName>SampleAddin</AssemblyName>
+    <RootNamespace>Xeno.ToolsHub.SampleXmlAddin</RootNamespace>
+    <AssemblyName>SampleXmlAddin</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -42,7 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Sample.cs" />
+    <Compile Include="SampleXmlUtility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SysTrayHandlers\HelloCommand.cs" />
   </ItemGroup>
@@ -56,10 +56,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="SampleAddin.addin.xml" />
-    <EmbeddedResource Include="TrayMenu.addin.xml">
+    <Content Include="SampleXmlAddin.addin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TrayMenu.addin">
       <SubType>Designer</SubType>
-    </EmbeddedResource>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -8,7 +8,7 @@
 
 using System.Windows.Forms;
 
-namespace Xeno.ToolsHub.SampleAddin.SysTrayHandlers
+namespace Xeno.ToolsHub.SampleXmlAddin.SysTrayHandlers
 {
   // [Command("Hello", Id = "SampleHelloCommand")]
   public class HelloCommand //: ICommand

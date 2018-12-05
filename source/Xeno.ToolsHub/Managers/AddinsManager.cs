@@ -84,16 +84,19 @@ namespace Xeno.ToolsHub.Managers
     {
       try
       {
-        addin.Initialize();
+        // Removed for now until needed
+        // addin.Initialize();
+
+        // TODO: Add add-in to managed list for later callings
+        if (addin.IsInitialized)
+          addin.Execute();
+        else
+          Log.Debug("Add-in not initialized; not executing.");
       }
       catch (Exception ex)
       {
         Log.Error($"Error while attempting to initialize UtilityAddin, Id: '{addinId}', TypeName: '{addinTypeName}': {ex.Message}");
       }
-
-      // TODO: Add add-in to managed list for later callings
-      if (addin.IsInitialized)
-        addin.Execute();
     }
 
     private void InitAddins()
