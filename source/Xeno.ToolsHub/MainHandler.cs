@@ -52,7 +52,7 @@ namespace Xeno.ToolsHub
       //InitSideBar();
 
       // We're done loading
-      InitOnLoadedAddins();
+      InitUtilityAddins();
 
 #if DEBUG
       DebugTests();
@@ -79,7 +79,7 @@ namespace Xeno.ToolsHub
       _addinsManager = new AddinsManager();
     }
 
-    private void InitOnLoadedAddins()
+    private void InitUtilityAddins()
     {
       // Run free-floating utility add-ins
       _addinsManager.LoadUtilityAddins();

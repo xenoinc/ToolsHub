@@ -70,6 +70,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ExtensionModel\SystemTray\SysTrayExtensionNode.cs" />
+    <Compile Include="Managers\PreferencePageManager.cs" />
     <Compile Include="Managers\ToolsManager.cs" />
     <Compile Include="ExtensionModel\AbstractAddin.cs" />
     <Compile Include="ExtensionModel\AddinPreferenceFactory.cs" />
@@ -77,7 +78,7 @@
     <Compile Include="ExtensionModel\IBaseExtension.cs" />
     <Compile Include="ExtensionModel\IOnStartupExtension.cs" />
     <Compile Include="ExtensionModel\ISystemShutdownExtension.cs" />
-    <Compile Include="ExtensionModel\PreferenceAddin.cs" />
+    <Compile Include="ExtensionModel\PreferencePageExtension.cs" />
     <Compile Include="ExtensionModel\Constants.cs" />
     <Compile Include="Config\Log.cs" />
     <Compile Include="Managers\SidebarManager.cs" />

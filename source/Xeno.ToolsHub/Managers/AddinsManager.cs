@@ -36,20 +36,20 @@ namespace Xeno.ToolsHub.Managers
 
     public event EventHandler OnApplicationAddinListChanged;
 
-    public PreferenceAddin[] GetPreferenceAddins()
+    public PreferencePageExtension[] GetPreferenceAddins()
     {
       //TODO: Currently not in use
-      PreferenceAddin[] addins;
+      PreferencePageExtension[] addins;
 
       try
       {
-        addins = (PreferenceAddin[])Mono.Addins.AddinManager.GetExtensionObjects(
-          ExtensionPath.PreferencePage, typeof(PreferenceAddin));
+        addins = (PreferencePageExtension[])Mono.Addins.AddinManager.GetExtensionObjects(
+          ExtensionPath.PreferencePage, typeof(PreferencePageExtension));
       }
       catch (Exception ex)
       {
         Log.Warn($"No perferenceAddins found '{ex.Message}'");
-        addins = new PreferenceAddin[0];
+        addins = new PreferencePageExtension[0];
       }
 
       return addins;
@@ -118,7 +118,8 @@ namespace Xeno.ToolsHub.Managers
       {
         // EventHandlers for ExtensionNodes
         Mono.Addins.AddinManager.AddExtensionNodeHandler(ExtensionPath.OnStartup, OnStartupAddins_ExtensionHandler);
-        Mono.Addins.AddinManager.AddExtensionNodeHandler(ExtensionPath.SystemTray, OnUtilityAddins_ExtensionHandler);
+        //Mono.Addins.AddinManager.AddExtensionNodeHandler(ExtensionPath.PreferencePage, OnPreferencesAddins_ExtensionHandler);
+        Mono.Addins.AddinManager.AddExtensionNodeHandler(ExtensionPath.SystemTray, OnSystemTrayAddins_ExtensionHandler);
         Mono.Addins.AddinManager.AddExtensionNodeHandler(ExtensionPath.Utility, OnUtilityAddins_ExtensionHandler);
       }
       catch (Exception ex)
@@ -167,6 +168,14 @@ namespace Xeno.ToolsHub.Managers
 
       // Push event changed out to listeners
       OnApplicationAddinListChanged?.Invoke(sender, args);
+    }
+
+    private void OnPreferencesAddins_ExtensionHandler(object sender, ExtensionNodeEventArgs args)
+    {
+    }
+
+    private void OnSystemTrayAddins_ExtensionHandler(object sender, ExtensionNodeEventArgs args)
+    {
     }
 
     private void OnUtilityAddins_ExtensionHandler(object sender, ExtensionNodeEventArgs args)

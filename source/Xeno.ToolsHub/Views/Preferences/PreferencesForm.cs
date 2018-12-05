@@ -64,7 +64,7 @@ namespace Xeno.ToolsHub.Views
 
     private void InitAddins()
     {
-      foreach (PreferenceAddin addin in _addinManager.GetPreferenceAddins())
+      foreach (PreferencePageExtension addin in _addinManager.GetPreferenceAddins())
       {
         string name = addin.GetType().Name;
         Log.Debug($"Adding preference add-in: '{name}");
