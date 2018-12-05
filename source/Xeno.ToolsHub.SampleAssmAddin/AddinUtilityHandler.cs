@@ -6,12 +6,12 @@
  *
  */
 
-using System;
 using Xeno.ToolsHub.Config;
 using Xeno.ToolsHub.ExtensionModel;
 
-namespace SampleAssmAddin
+namespace Xeno.ToolsHub.SampleAssmAddin
 {
+  [Mono.Addins.Extension(NodeName = ExtensionName.UtilityAddin, Path = ExtensionPath.Utility)]
   public class AddinUtilityHandler : UtilityAddin
   {
     private bool _initialized = false;
@@ -19,22 +19,28 @@ namespace SampleAssmAddin
     public AddinUtilityHandler()
     {
       _initialized = true;
-      Log.Debug("SampleAssm external Utility add-in, initialized");
+      Log.Debug("External SampleAssm Utility add-in: Initialized");
 
-      System.Windows.Forms.MessageBox.Show("SampleAssm external Utility add-in, initialized!");
+      //if (Helpers.IsDebugging)
+      //  System.Windows.Forms.MessageBox.Show("External SampleAssm Utility add-in: Initialized!");
     }
 
     public override bool IsInitialized => _initialized;
 
     public override void Execute()
     {
-      Log.Debug("SampleAssm external Utility add-in, executed!");
-      System.Windows.Forms.MessageBox.Show("SampleAssm external Utility add-in, executed!");
+      Log.Debug("External SampleAssm Utility add-in: Executed!");
+
+      //if (Helpers.IsDebugging)
+      //  System.Windows.Forms.MessageBox.Show("External SampleAssm Utility add-in: Executed!");
     }
 
     public override void Shutdown()
     {
-      throw new NotImplementedException();
+      Log.Debug("External SampleAssm Utility add-in: Shutting down!");
+
+      //if (Helpers.IsDebugging)
+      //  System.Windows.Forms.MessageBox.Show("External SampleAssm Utility add-in: Shutting down!");
     }
   }
 }

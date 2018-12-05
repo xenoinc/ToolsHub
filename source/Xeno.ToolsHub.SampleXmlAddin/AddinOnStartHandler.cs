@@ -14,17 +14,21 @@ namespace Xeno.ToolsHub.SampleXmlAddin
   {
     public AddinOnStartHandler()
     {
-      this.Title = "SampleXml external OnStart add-in";
-      Log.Debug("SampleXml external OnStart, initialized");
+      this.Title = "External SampleXml OnStart add-in";
+      Log.Debug("External SampleXml OnStart add-in: Initialized!");
+
+      //if (Helpers.IsDebugging)
+      //  System.Windows.Forms.MessageBox.Show("External SampleXml OnStart add-in: Initialized!");
     }
 
     public string Title { get; }
 
     public void Execute()
     {
-      Log.Debug("SampleXml external OnStart, executed");
+      Log.Debug("External SampleXml OnStart add-in: Executed");
 
-      //System.Windows.Forms.MessageBox.Show("OnStart Sample (internal add-in) executed!");
+      //if (Helpers.IsDebugging)
+      //  System.Windows.Forms.MessageBox.Show("External SampleXml OnStart add-in: Executed!");
     }
   }
 }

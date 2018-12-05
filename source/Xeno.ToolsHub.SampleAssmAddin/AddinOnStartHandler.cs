@@ -6,42 +6,31 @@
  *  SampleAssembly OnStart extension
  */
 
-using Mono.Addins;
 using Xeno.ToolsHub.Config;
 using Xeno.ToolsHub.ExtensionModel;
 
-//[assembly: Addin(
-//  Id = "",
-//  Namespace = "",
-//  Category = "Sample",
-//  CompatVersion = "0.3",
-//  EnabledByDefault = true,
-//  Version = "0.3", Flags = Mono.Addins.Description.AddinFlags.None,
-//  Url = "https://github.com/xenoinc/ToolsHub")]
-
-[assembly: Addin]
-[assembly: AddinDependency("XenoInnovations.ToolsHub", "0.3")]
-
 namespace Xeno.ToolsHub.SampleAssmAddin
 {
-  [Extension(NodeName = ExtensionName.OnStartupAddin, Path = ExtensionPath.OnStartup)]
+  [Mono.Addins.Extension(NodeName = ExtensionName.OnStartupAddin, Path = ExtensionPath.OnStartup)]
   public class AddinOnStartHandler : ExtensionModel.IOnStartupExtension
   {
     public AddinOnStartHandler()
     {
-      this.Title = "SampleAssm external OnStartup add-in";
-      Log.Debug("SampleAssm external OnStartup, initialized");
+      this.Title = "External SampleAssm OnStartup add-in";
+      Log.Debug("External SampleAssm OnStartup, initialized");
 
-      System.Windows.Forms.MessageBox.Show("SampleAssm external OnStartup, initialized!");
+      //if (Helpers.IsDebugging)
+      //  System.Windows.Forms.MessageBox.Show("External SampleAssm OnStartup, initialized!");
     }
 
     public string Title { get; }
 
     public void Execute()
     {
-      Log.Debug("SampleAssm external OnStartup, executed");
+      Log.Debug("External SampleAssm OnStartup, executed");
 
-      System.Windows.Forms.MessageBox.Show("SampleAssm external OnStartup, executed!");
+      //if (Helpers.IsDebugging)
+      //  System.Windows.Forms.MessageBox.Show("External SampleAssm OnStartup, executed!");
     }
   }
 }

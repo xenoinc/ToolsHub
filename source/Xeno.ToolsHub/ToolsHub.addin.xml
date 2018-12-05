@@ -36,7 +36,7 @@ ToolsHub add-in manifest
   </ExtensionPoint>
     -->
 
-  <!-- Call our add-ins -->  
+  <!-- Call our add-ins -->
   <Extension path="/ToolsHub/OnStartup">
     <OnStartupAddin type="Xeno.ToolsHub.LocalAddins.SampleStartup.SampleStartupAddin" />
   </Extension>

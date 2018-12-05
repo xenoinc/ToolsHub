@@ -1,21 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <!--
 Copyright Xeno Innovations, Inc. 2018
- * Date:    2018-10-3
+ * Date:    2018-10-03
  * Author:  Damian Suess
- * File:    SampleAddin.addin.xml
+ * File:    SampleXmlAddin.addin
  * Description:
  *  Sample add-in using an XML manifest
+ *
+ *  Note: keep namespace in the root node blank, but fully define in dependencies.
 -->
-<Addin namespace="ToolsHub"
-       id="ToolsHub"
+<Addin namespace=""
+       id="ExternalSampleXmlAddin"
        version="1.0"
-       name="Sample Add-in"
+       name="Sample External XML Add-in"
        author="Damian Suess"
        copyright="Xeno Innovations, Inc. 2018"
-       description="Quick sample add-in project."
+       description="Quick sample external add-in project."
        category="Sample"
-       defaultEnabled="false">
+       defaultEnabled="true"
+       isRoot="false">
   <!-- xmlns="https://github.com/mono/mono-addins/MonoAddins.xsd" -->
 
   <Runtime>
@@ -23,23 +26,24 @@ Copyright Xeno Innovations, Inc. 2018
   </Runtime>
 
   <Dependencies>
-    <Addin id="ToolsHub" version="0.3" />
+    <Addin id="XenoInnovations.ToolsHub" version="0.3" />
   </Dependencies>
 
   <Extension path="/ToolsHub/OnStartup">
-    <OnStartupAddin type="Xeno.ToolsHub.SampleXmlAddin.SampleXmlOnStart" />
+    <OnStartupAddin type="Xeno.ToolsHub.SampleXmlAddin.AddinOnStartHandler" />
   </Extension>
 
   <Extension path="/ToolsHub/Utility">
-    <UtilityAddin type="Xeno.ToolsHub.SampleXmlAddin.SampleXmlUtility" />
+    <UtilityAddin type="Xeno.ToolsHub.SampleXmlAddin.AddinUtilityHandler" />
   </Extension>
 
   <!--
   <Extension Path="/ToolsHub/SystemTray">
-    <SystemTrayAddin type="Xeno.ToolsHub.SampleAddin.SysTrayAddin" />
+    <SystemTrayAddin type="Xeno.ToolsHub.SampleXmlAddin.AddinSysTrayHandler" />
   </Extension>
+
   <Extension path="/ToolsHub/AddinPreferences">
-    <ApplicationAddin type="Xeno.ToolsHub.SampleAddin.SamplePreferences" />
+    <ApplicationAddin type="Xeno.ToolsHub.SampleXmlAddin.AddinPreferencesHandler" />
   </Extension>
   -->
 </Addin>
