@@ -3,10 +3,10 @@
 Copyright Xeno Innovations, Inc. 2018
 ToolsHub add-in manifest
 -->
-<Addin id="ToolsHub"
-       namespace="ToolsHub"
-       version="0.2"
-       compatVersion="0.2"
+<Addin namespace="XenoInnovations"
+       id="ToolsHub"
+       version="0.3"
+       compatVersion="0.3"
        author="Damian Suess"
        copyright="Xeno Innovations, Inc. 2018"
        description="Customizable Desktop Launcher"
@@ -36,7 +36,7 @@ ToolsHub add-in manifest
   </ExtensionPoint>
     -->
 
-  <!-- Call our add-ins -->  
+  <!-- Call our add-ins -->
   <Extension path="/ToolsHub/OnStartup">
     <OnStartupAddin type="Xeno.ToolsHub.LocalAddins.SampleStartup.SampleStartupAddin" />
   </Extension>

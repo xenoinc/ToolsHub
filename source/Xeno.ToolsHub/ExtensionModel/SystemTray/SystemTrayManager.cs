@@ -89,7 +89,7 @@ namespace Xeno.ToolsHub.ExtensionModel.SystemTray
       Log.Debug("Entering");
 
       List<MenuItem> addinItems = new List<MenuItem>();
-      Mono.Addins.ExtensionNodeList nodes = Mono.Addins.AddinManager.GetExtensionNodes(ExtensionPaths.SystemTrayPath);
+      Mono.Addins.ExtensionNodeList nodes = Mono.Addins.AddinManager.GetExtensionNodes(ExtensionPath.SystemTray);
 
       Log.Debug($"Found '{nodes.Count}' items ...");
       foreach (Mono.Addins.ExtensionNode node in nodes)

@@ -44,7 +44,7 @@ namespace Xeno.ToolsHub.Managers
       try
       {
         addins = (PreferenceAddin[])Mono.Addins.AddinManager.GetExtensionObjects(
-          ExtensionPaths.PreferencePath, typeof(PreferenceAddin));
+          ExtensionPath.PreferencePage, typeof(PreferenceAddin));
       }
       catch (Exception ex)
       {
@@ -58,7 +58,7 @@ namespace Xeno.ToolsHub.Managers
     /// <summary>Load utility add-ins</summary>
     public void LoadUtilityAddins()
     {
-      Mono.Addins.ExtensionNodeList nodes = Mono.Addins.AddinManager.GetExtensionNodes(ExtensionPaths.UtilityPath);
+      Mono.Addins.ExtensionNodeList nodes = Mono.Addins.AddinManager.GetExtensionNodes(ExtensionPath.Utility);
       foreach (Mono.Addins.ExtensionNode node in nodes)
       {
         Mono.Addins.TypeExtensionNode typeNode = node as Mono.Addins.TypeExtensionNode;
@@ -84,16 +84,19 @@ namespace Xeno.ToolsHub.Managers
     {
       try
       {
-        addin.Initialize();
+        // Removed for now until needed
+        // addin.Initialize();
+
+        // TODO: Add add-in to managed list for later callings
+        if (addin.IsInitialized)
+          addin.Execute();
+        else
+          Log.Debug("Add-in not initialized; not executing.");
       }
       catch (Exception ex)
       {
         Log.Error($"Error while attempting to initialize UtilityAddin, Id: '{addinId}', TypeName: '{addinTypeName}': {ex.Message}");
       }
-
-      // TODO: Add add-in to managed list for later callings
-      if (addin.IsInitialized)
-        addin.Execute();
     }
 
     private void InitAddins()
@@ -114,9 +117,9 @@ namespace Xeno.ToolsHub.Managers
       try
       {
         // EventHandlers for ExtensionNodes
-        Mono.Addins.AddinManager.AddExtensionNodeHandler(ExtensionPaths.OnStartupPath, OnStartupAddins_ExtensionHandler);
-        Mono.Addins.AddinManager.AddExtensionNodeHandler(ExtensionPaths.SystemTrayPath, OnUtilityAddins_ExtensionHandler);
-        Mono.Addins.AddinManager.AddExtensionNodeHandler(ExtensionPaths.UtilityPath, OnUtilityAddins_ExtensionHandler);
+        Mono.Addins.AddinManager.AddExtensionNodeHandler(ExtensionPath.OnStartup, OnStartupAddins_ExtensionHandler);
+        Mono.Addins.AddinManager.AddExtensionNodeHandler(ExtensionPath.SystemTray, OnUtilityAddins_ExtensionHandler);
+        Mono.Addins.AddinManager.AddExtensionNodeHandler(ExtensionPath.Utility, OnUtilityAddins_ExtensionHandler);
       }
       catch (Exception ex)
       {
@@ -155,7 +158,7 @@ namespace Xeno.ToolsHub.Managers
       Log.Debug("Entering");
 
       Mono.Addins.TypeExtensionNode extNode = args.ExtensionNode as Mono.Addins.TypeExtensionNode;
-      PrintInfo(ExtensionPaths.OnStartupPath, args, extNode);
+      PrintInfo(ExtensionPath.OnStartup, args, extNode);
 
       // Execute via class interface definition of extension path
       // IOnStartupExtension ext = (IOnStartupExtension)args.ExtensionObject;
