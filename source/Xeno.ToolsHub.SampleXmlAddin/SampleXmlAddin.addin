@@ -37,13 +37,13 @@ Copyright Xeno Innovations, Inc. 2018
     <UtilityAddin type="Xeno.ToolsHub.SampleXmlAddin.AddinUtilityHandler" />
   </Extension>
 
+  <Extension path="/ToolsHub/PreferencePage">
+    <PreferencePageAddin type="Xeno.ToolsHub.SampleXmlAddin.AddinPreferenceHandler" />
+  </Extension>
+
   <!--
   <Extension Path="/ToolsHub/SystemTray">
     <SystemTrayAddin type="Xeno.ToolsHub.SampleXmlAddin.AddinSysTrayHandler" />
-  </Extension>
-
-  <Extension path="/ToolsHub/AddinPreferences">
-    <ApplicationAddin type="Xeno.ToolsHub.SampleXmlAddin.AddinPreferencesHandler" />
   </Extension>
   -->
 </Addin>

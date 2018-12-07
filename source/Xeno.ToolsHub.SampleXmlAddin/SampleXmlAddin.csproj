@@ -33,6 +33,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -43,7 +44,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddinOnStartHandler.cs" />
+    <Compile Include="AddinPreferenceHandler.cs" />
     <Compile Include="AddinUtilityHandler.cs" />
+    <Compile Include="PreferencePageCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PreferencePageCtrl.Designer.cs">
+      <DependentUpon>PreferencePageCtrl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AddinSysTrayHandler.cs" />
   </ItemGroup>
@@ -63,6 +71,11 @@
     <Content Include="TrayMenu.addin">
       <SubType>Designer</SubType>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="PreferencePageCtrl.resx">
+      <DependentUpon>PreferencePageCtrl.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -11,9 +11,11 @@ using Xeno.ToolsHub.ExtensionModel;
 
 namespace Xeno.ToolsHub.SampleAssmAddin
 {
-  [Mono.Addins.Extension(NodeName = ExtensionName.UtilityAddin, Path = ExtensionPath.Utility)]
+  [Mono.Addins.Extension(NodeName = ExtensionName.PreferencePageAddin, Path = ExtensionPath.PreferencePage)]
   public class PreferencePageHandler : PreferencePageExtension
   {
+    public override string Title { get { return "Sample Ext-Assm"; } }
+
     public override UserControl InitializePage()
     {
       return new PreferencePageControl();

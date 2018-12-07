@@ -49,23 +49,39 @@ namespace Xeno.ToolsHub.Managers
       return addinList;
     }
 
-    public PreferencePageExtension[] GetPreferenceAddins()
+    public List<PreferencePageExtension> GetPreferenceAddins()
     {
-      //TODO: Currently not in use
-      PreferencePageExtension[] addins;
-
-      try
+      List<PreferencePageExtension> pages = new List<PreferencePageExtension>();
+      Mono.Addins.ExtensionNodeList nodes = Mono.Addins.AddinManager.GetExtensionNodes(ExtensionPath.PreferencePage);
+      foreach (Mono.Addins.ExtensionNode node in nodes)
       {
-        addins = (PreferencePageExtension[])Mono.Addins.AddinManager.GetExtensionObjects(
-          ExtensionPath.PreferencePage, typeof(PreferencePageExtension));
-      }
-      catch (Exception ex)
-      {
-        Log.Warn($"No perferenceAddins found '{ex.Message}'");
-        addins = new PreferencePageExtension[0];
+        Mono.Addins.TypeExtensionNode typeNode = node as Mono.Addins.TypeExtensionNode;
+        try
+        {
+          PreferencePageExtension page = typeNode.CreateInstance() as PreferencePageExtension;
+          pages.Add(page);
+        }
+        catch (Exception ex)
+        {
+          Log.Error("Couldn't create PreferencePage: " + ex.Message);
+        }
       }
 
-      return addins;
+      return pages;
+
+      //PreferencePageExtension[] addins;
+      //try
+      //{
+      //  addins = (PreferencePageExtension[])Mono.Addins.AddinManager.GetExtensionObjects(
+      //    ExtensionPath.PreferencePage, typeof(PreferencePageExtension));
+      //}
+      //catch (Exception ex)
+      //{
+      //  Log.Warn($"No perferenceAddins found '{ex.Message}'");
+      //  addins = new PreferencePageExtension[0];
+      //}
+      //
+      //return addins;
     }
 
     /// <summary>Load utility add-ins</summary>

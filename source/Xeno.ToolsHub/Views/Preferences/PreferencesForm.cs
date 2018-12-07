@@ -7,6 +7,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using Xeno.ToolsHub.Config;
 using Xeno.ToolsHub.ExtensionModel;
@@ -18,7 +19,7 @@ namespace Xeno.ToolsHub.Views
   {
     private readonly AddinsManager _addinManager;
 
-    private Panel[] _addinPanel;
+    private Dictionary<string, PreferencePageExtension> _addinPanel;
 
     public PreferencesForm() : this(new AddinsManager())
     {
@@ -28,8 +29,8 @@ namespace Xeno.ToolsHub.Views
     {
       InitializeComponent();
 
-      //OLD CODE: _addinManager = toolssManager.AddinManager;
       _addinManager = addinsManager;
+      _addinPanel = new Dictionary<string, PreferencePageExtension>();
 
       InitAddinManager();
 
@@ -64,14 +65,22 @@ namespace Xeno.ToolsHub.Views
 
     private void InitAddins()
     {
-      foreach (PreferencePageExtension addin in _addinManager.GetPreferenceAddins())
+      foreach (PreferencePageExtension page in _addinManager.GetPreferenceAddins())
       {
-        string name = addin.GetType().Name;
-        Log.Debug($"Adding preference add-in: '{name}");
+        string name = string.Empty;
         try
         {
-          string title = "";
-          System.Windows.Forms.Panel panel;
+          name = page.GetType().Name;
+          string title = page.Title;
+
+          _addinPanel.Add(page.Title, page);
+
+          TreeAddinList.Nodes.Add(title);
+
+          Log.Debug($"Adding preference add-in: '{name}");
+
+          //string title = "";
+          //System.Windows.Forms.Panel panel;
           //if (addin.GetPreferenceAddin(this, out title, out panel))
           //{
           //  // insert into treeView
@@ -91,7 +100,7 @@ namespace Xeno.ToolsHub.Views
       throw new NotImplementedException();
     }
 
-    private void OptionsForm_Load(object sender, EventArgs e)
+    private void PreferencesForm_Load(object sender, EventArgs e)
     {
     }
   }

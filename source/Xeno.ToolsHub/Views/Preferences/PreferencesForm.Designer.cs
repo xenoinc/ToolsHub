@@ -133,7 +133,7 @@ namespace Xeno.ToolsHub.Views
       this.Controls.Add(this.BtnOk);
       this.Name = "PreferencesForm";
       this.Text = "OptionsForm";
-      this.Load += new System.EventHandler(this.OptionsForm_Load);
+      this.Load += new System.EventHandler(this.PreferencesForm_Load);
       this.tabControl1.ResumeLayout(false);
       this.tabPage1.ResumeLayout(false);
       this.ResumeLayout(false);

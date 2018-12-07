@@ -10,6 +10,8 @@ namespace Xeno.ToolsHub.ExtensionModel
 {
   public abstract class PreferencePageExtension
   {
+    public abstract string Title { get; }
+
     public abstract System.Windows.Forms.UserControl InitializePage();
 
     //public abstract bool GetPreferenceAddin(object parentDialog,
