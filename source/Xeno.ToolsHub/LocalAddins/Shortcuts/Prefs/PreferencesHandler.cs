@@ -1,21 +1,21 @@
 ﻿/* Copyright Xeno Innovations, Inc. 2018
- * Date:    2018-12-7
+ * Date:    2018-12-11
  * Author:  Damian Suess
- * File:    AddinPreferenceHandler.cs
+ * File:    PreferencesHandler.cs
  * Description:
- *
+ *  Add-in handler for PreferencePage
  */
 
 using System.Windows.Forms;
 using Xeno.ToolsHub.ExtensionModel;
 
-namespace Xeno.ToolsHub.SampleXmlAddin
+namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
 {
-  public class AddinPreferenceHandler : PreferencePageExtension
+  public class PreferencesHandler : PreferencePageExtension
   {
     private PreferencePageCtrl _page;
 
-    public override string Title { get { return "Sample Ext-XML"; } }
+    public override string Title => "Shortcuts";
 
     public override Control Page => _page;
 
@@ -27,6 +27,7 @@ namespace Xeno.ToolsHub.SampleXmlAddin
 
     public override void OnSave()
     {
+      _page.Save(); // Save settings was initiated
     }
   }
 }

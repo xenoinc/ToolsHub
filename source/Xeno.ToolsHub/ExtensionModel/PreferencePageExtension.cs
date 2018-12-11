@@ -6,13 +6,21 @@
  *
  */
 
+using System.Windows.Forms;
+
 namespace Xeno.ToolsHub.ExtensionModel
 {
   public abstract class PreferencePageExtension
   {
+    public string Id;
+
     public abstract string Title { get; }
 
+    public abstract Control Page { get; }
+
     public abstract System.Windows.Forms.UserControl InitializePage();
+
+    public abstract void OnSave();
 
     //public abstract bool GetPreferenceAddin(object parentDialog,
     //                                        out string titleText,

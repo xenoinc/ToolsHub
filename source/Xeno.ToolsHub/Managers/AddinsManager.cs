@@ -59,6 +59,7 @@ namespace Xeno.ToolsHub.Managers
         try
         {
           PreferencePageExtension page = typeNode.CreateInstance() as PreferencePageExtension;
+          page.Id = node.Id;
           pages.Add(page);
         }
         catch (Exception ex)

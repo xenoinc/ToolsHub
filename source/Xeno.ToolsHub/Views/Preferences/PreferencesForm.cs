@@ -19,7 +19,7 @@ namespace Xeno.ToolsHub.Views
   {
     private readonly AddinsManager _addinManager;
 
-    private Dictionary<string, PreferencePageExtension> _addinPanel;
+    private Dictionary<string, PreferencePageExtension> _addinPanels;
 
     public PreferencesForm() : this(new AddinsManager())
     {
@@ -30,7 +30,7 @@ namespace Xeno.ToolsHub.Views
       InitializeComponent();
 
       _addinManager = addinsManager;
-      _addinPanel = new Dictionary<string, PreferencePageExtension>();
+      _addinPanels = new Dictionary<string, PreferencePageExtension>();
 
       InitAddinManager();
 
@@ -67,15 +67,23 @@ namespace Xeno.ToolsHub.Views
     {
       foreach (PreferencePageExtension page in _addinManager.GetPreferenceAddins())
       {
+        string id = string.Empty;
         string name = string.Empty;
+        string title = string.Empty;
         try
         {
+          id = page.Id;
           name = page.GetType().Name;
-          string title = page.Title;
+          title = page.Title;
 
-          _addinPanel.Add(page.Title, page);
+          _addinPanels.Add(page.Id, page);
 
-          TreeAddinList.Nodes.Add(title);
+          TreeNode node = new TreeNode(title)
+          {
+            Tag = id
+          };
+
+          AddinTree.Nodes.Add(node);
 
           Log.Debug($"Adding preference add-in: '{name}");
 
@@ -102,6 +110,41 @@ namespace Xeno.ToolsHub.Views
 
     private void PreferencesForm_Load(object sender, EventArgs e)
     {
+    }
+
+    private void AddinTree_AfterSelect(object sender, TreeViewEventArgs e)
+    {
+      string id = e.Node.Tag.ToString();
+      ShowPage(id);
+    }
+
+    private void ShowPage(string addinId)
+    {
+      foreach (var addin in _addinPanels)
+      {
+        Log.Debug($"Parsing panel, {addin.Key}");
+
+        var page = addin.Value;
+        if (page.Id == addinId)
+        {
+          var pp = page.Page;
+
+          //PanelAddinPrefsView.Controls.Cast<Control>().ForEach(i => i.Dispose());
+          PanelAddinPrefsView.Controls.Clear();
+          PanelAddinPrefsView.Controls.Add(pp);
+
+          //PanelAddinPrefsView.Dock = DockStyle.Fill;
+          //PanelAddinPrefsView.Show();
+          break;
+        }
+      }
+
+      //SubForm objForm = SubForm.InstanceForm();
+      //objForm.TopLevel = false;
+      //pnlSubSystem.Controls.Add(objForm);
+      //objForm.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+      //objForm.Dock = DockStyle.Fill;
+      //objForm.Show();
     }
   }
 }

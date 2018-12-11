@@ -40,7 +40,7 @@ namespace Xeno.ToolsHub.Views
       this.BtnCancel = new System.Windows.Forms.Button();
       this.tabControl1 = new System.Windows.Forms.TabControl();
       this.tabPage1 = new System.Windows.Forms.TabPage();
-      this.TreeAddinList = new System.Windows.Forms.TreeView();
+      this.AddinTree = new System.Windows.Forms.TreeView();
       this.PanelAddinPrefsView = new System.Windows.Forms.Panel();
       this.tabPage2 = new System.Windows.Forms.TabPage();
       this.tabControl1.SuspendLayout();
@@ -84,7 +84,7 @@ namespace Xeno.ToolsHub.Views
       // 
       // tabPage1
       // 
-      this.tabPage1.Controls.Add(this.TreeAddinList);
+      this.tabPage1.Controls.Add(this.AddinTree);
       this.tabPage1.Controls.Add(this.PanelAddinPrefsView);
       this.tabPage1.Location = new System.Drawing.Point(4, 22);
       this.tabPage1.Name = "tabPage1";
@@ -94,14 +94,15 @@ namespace Xeno.ToolsHub.Views
       this.tabPage1.Text = "Preferences";
       this.tabPage1.UseVisualStyleBackColor = true;
       // 
-      // TreeAddinList
+      // AddinTree
       // 
-      this.TreeAddinList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+      this.AddinTree.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-      this.TreeAddinList.Location = new System.Drawing.Point(6, 6);
-      this.TreeAddinList.Name = "TreeAddinList";
-      this.TreeAddinList.Size = new System.Drawing.Size(161, 237);
-      this.TreeAddinList.TabIndex = 5;
+      this.AddinTree.Location = new System.Drawing.Point(6, 6);
+      this.AddinTree.Name = "AddinTree";
+      this.AddinTree.Size = new System.Drawing.Size(161, 237);
+      this.AddinTree.TabIndex = 5;
+      this.AddinTree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.AddinTree_AfterSelect);
       // 
       // PanelAddinPrefsView
       // 
@@ -145,7 +146,7 @@ namespace Xeno.ToolsHub.Views
     private System.Windows.Forms.Button BtnCancel;
     private System.Windows.Forms.TabControl tabControl1;
     private System.Windows.Forms.TabPage tabPage1;
-    private System.Windows.Forms.TreeView TreeAddinList;
+    private System.Windows.Forms.TreeView AddinTree;
     private System.Windows.Forms.Panel PanelAddinPrefsView;
     private System.Windows.Forms.TabPage tabPage2;
   }

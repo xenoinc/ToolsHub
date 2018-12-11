@@ -57,6 +57,13 @@
     <Compile Include="ExtensionModel\Command\ICommand.cs" />
     <Compile Include="Config\Settings\AppSettings.cs" />
     <Compile Include="ExtensionModel\ISystemTrayExtension.cs" />
+    <Compile Include="LocalAddins\Shortcuts\Prefs\PreferencePageCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LocalAddins\Shortcuts\Prefs\PreferencePageCtrl.Designer.cs">
+      <DependentUpon>PreferencePageCtrl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LocalAddins\Shortcuts\Prefs\PreferencesHandler.cs" />
     <Compile Include="LocalAddins\Shortcuts\ShortcutsSysTrayAddin.cs" />
     <Compile Include="LocalAddins\Shortcuts\ShortcutsSidebarAddin.cs" />
     <Compile Include="LocalAddins\Shortcuts\ShortcutsLoader.cs" />
@@ -113,6 +120,9 @@
       <DependentUpon>PreferencesForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\SidebarForm.cs" />
+    <EmbeddedResource Include="LocalAddins\Shortcuts\Prefs\PreferencePageCtrl.resx">
+      <DependentUpon>PreferencePageCtrl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </EmbeddedResource>
