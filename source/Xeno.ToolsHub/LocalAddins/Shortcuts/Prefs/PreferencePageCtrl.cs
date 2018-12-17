@@ -9,18 +9,24 @@
 using System;
 using System.Windows.Forms;
 using Xeno.ToolsHub.Config;
+using Xeno.ToolsHub.ExtensionModel.Preferences;
 
 namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
 {
-  public partial class PreferencePageCtrl : UserControl
+  public partial class PreferencePageCtrl : UserControl, IPreferencePageForm
   {
+    private bool _isModified = false;
+
     public PreferencePageCtrl()
     {
       InitializeComponent();
     }
 
-    public void Save()
+    public bool IsModified => _isModified;
+
+    public void OnSave()
     {
+      _isModified = false;
       Log.Debug("Saving shortcuts.json... (not implemented)");
     }
 

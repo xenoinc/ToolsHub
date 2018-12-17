@@ -43,9 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddinOnStartHandler.cs" />
-    <Compile Include="AddinPreferenceHandler.cs" />
-    <Compile Include="AddinUtilityHandler.cs" />
+    <Compile Include="OnStartHandler.cs" />
+    <Compile Include="PreferenceHandler.cs" />
+    <Compile Include="UtilityHandler.cs" />
     <Compile Include="PreferencePageCtrl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -53,7 +53,7 @@
       <DependentUpon>PreferencePageCtrl.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="AddinSysTrayHandler.cs" />
+    <Compile Include="SysTrayHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.md" />

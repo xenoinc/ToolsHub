@@ -8,6 +8,7 @@
 
 using System.Windows.Forms;
 using Xeno.ToolsHub.ExtensionModel;
+using Xeno.ToolsHub.ExtensionModel.Preferences;
 
 namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
 {
@@ -19,15 +20,16 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
 
     public override Control Page => _page;
 
-    public override UserControl InitializePage()
+    public override bool IsModified => _page.IsModified;
+
+    public override void InitializePage()
     {
       _page = new PreferencePageCtrl();
-      return _page;
     }
 
     public override void OnSave()
     {
-      _page.Save(); // Save settings was initiated
+      _page.OnSave(); // Save settings was initiated
     }
   }
 }

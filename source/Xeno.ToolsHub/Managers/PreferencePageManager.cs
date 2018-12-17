@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using Xeno.ToolsHub.Config;
 using Xeno.ToolsHub.ExtensionModel;
+using Xeno.ToolsHub.ExtensionModel.Preferences;
 
 namespace Xeno.ToolsHub.Managers
 {

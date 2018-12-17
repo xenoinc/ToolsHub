@@ -8,14 +8,22 @@
 
 using System;
 using System.Windows.Forms;
+using Xeno.ToolsHub.ExtensionModel.Preferences;
 
 namespace Xeno.ToolsHub.SampleAssmAddin
 {
-  public partial class PreferencePageControl : UserControl
+  public partial class SampleAssmPreferencesCtrl : UserControl, IPreferencePageForm
   {
-    public PreferencePageControl()
+    public SampleAssmPreferencesCtrl()
     {
       InitializeComponent();
+    }
+
+    public bool IsModified { get; }
+
+    public void OnSave()
+    {
+      throw new NotImplementedException();
     }
 
     private void button1_Click(object sender, EventArgs e)

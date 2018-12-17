@@ -8,27 +8,29 @@
 
 using System.Windows.Forms;
 using Xeno.ToolsHub.ExtensionModel;
+using Xeno.ToolsHub.ExtensionModel.Preferences;
 
 namespace Xeno.ToolsHub.SampleAssmAddin
 {
   [Mono.Addins.Extension(NodeName = ExtensionName.PreferencePageAddin, Path = ExtensionPath.PreferencePage)]
-  public class PreferencePageHandler : PreferencePageExtension
+  public class SampleAssmPreferenceHandler : PreferencePageExtension
   {
-    private PreferencePageControl _page;
+    private SampleAssmPreferencesCtrl _page;
 
     public override Control Page => _page;
 
     public override string Title { get { return "Sample Ext-Assm"; } }
 
-    public override UserControl InitializePage()
+    public override bool IsModified => _page.IsModified;
+
+    public override void InitializePage()
     {
-      _page = new PreferencePageControl();
-      return _page;
+      _page = new SampleAssmPreferencesCtrl();
     }
 
     public override void OnSave()
     {
-      throw new System.NotImplementedException();
+      _page.OnSave();
     }
   }
 }

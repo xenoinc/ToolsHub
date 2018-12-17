@@ -22,7 +22,7 @@ ToolsHub add-in manifest
   </ExtensionPoint>
 
   <ExtensionPoint path="/ToolsHub/PreferencePage">
-    <ExtensionNode name="PreferencePageAddin" objectType="Xeno.ToolsHub.ExtensionModel.PreferencePageExtension" />
+    <ExtensionNode name="PreferencePageAddin" objectType="Xeno.ToolsHub.ExtensionModel.Preferences.PreferencePageExtension" />
   </ExtensionPoint>
 
   <ExtensionPoint path="/ToolsHub/SystemTray">

@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using Xeno.ToolsHub.Config;
-using Xeno.ToolsHub.ExtensionModel;
+using Xeno.ToolsHub.ExtensionModel.Preferences;
 using Xeno.ToolsHub.Managers;
 
 namespace Xeno.ToolsHub.Views
@@ -19,7 +19,7 @@ namespace Xeno.ToolsHub.Views
   {
     private readonly AddinsManager _addinManager;
 
-    private Dictionary<string, PreferencePageExtension> _addinPanels;
+    private Dictionary<string, PreferencePageExtension> _addinPages;
 
     public PreferencesForm() : this(new AddinsManager())
     {
@@ -30,11 +30,11 @@ namespace Xeno.ToolsHub.Views
       InitializeComponent();
 
       _addinManager = addinsManager;
-      _addinPanels = new Dictionary<string, PreferencePageExtension>();
+      _addinPages = new Dictionary<string, PreferencePageExtension>();
 
       InitAddinManager();
 
-      InitAddins();
+      RefreshTreeView();
 
       _addinManager.OnApplicationAddinListChanged += OnAppAddinListChanged;
     }
@@ -47,6 +47,7 @@ namespace Xeno.ToolsHub.Views
     private void BtnOk_Click(object sender, EventArgs e)
     {
       // loop through each add-in and save
+      SavePreferences();
       this.Close();
     }
 
@@ -63,7 +64,11 @@ namespace Xeno.ToolsHub.Views
       //myForm.Show();
     }
 
-    private void InitAddins()
+    private void SavePreferences()
+    {
+    }
+
+    private void RefreshTreeView()
     {
       foreach (PreferencePageExtension page in _addinManager.GetPreferenceAddins())
       {
@@ -76,7 +81,7 @@ namespace Xeno.ToolsHub.Views
           name = page.GetType().Name;
           title = page.Title;
 
-          _addinPanels.Add(page.Id, page);
+          _addinPages.Add(page.Id, page);
 
           TreeNode node = new TreeNode(title)
           {
@@ -120,7 +125,7 @@ namespace Xeno.ToolsHub.Views
 
     private void ShowPage(string addinId)
     {
-      foreach (var addin in _addinPanels)
+      foreach (var addin in _addinPages)
       {
         Log.Debug($"Parsing panel, {addin.Key}");
 
@@ -128,13 +133,13 @@ namespace Xeno.ToolsHub.Views
         if (page.Id == addinId)
         {
           var pp = page.Page;
+          pp.Dock = DockStyle.Fill;
 
           //PanelAddinPrefsView.Controls.Cast<Control>().ForEach(i => i.Dispose());
           PanelAddinPrefsView.Controls.Clear();
-          PanelAddinPrefsView.Controls.Add(pp);
 
-          //PanelAddinPrefsView.Dock = DockStyle.Fill;
-          //PanelAddinPrefsView.Show();
+          PanelAddinPrefsView.Controls.Add(pp);
+          PanelAddinPrefsView.Show();
           break;
         }
       }

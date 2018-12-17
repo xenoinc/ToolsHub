@@ -46,12 +46,12 @@
     <Compile Include="AddinAssembly.cs" />
     <Compile Include="AddinOnStartHandler.cs" />
     <Compile Include="AddinUtilityHandler.cs" />
-    <Compile Include="PreferencePageHandler.cs" />
-    <Compile Include="PreferencePageControl.cs">
+    <Compile Include="SampleAssmPreferenceHandler.cs" />
+    <Compile Include="SampleAssmPreferencesCtrl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="PreferencePageControl.Designer.cs">
-      <DependentUpon>PreferencePageControl.cs</DependentUpon>
+    <Compile Include="SampleAssmPreferencesCtrl.Designer.cs">
+      <DependentUpon>SampleAssmPreferencesCtrl.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -66,8 +66,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="PreferencePageControl.resx">
-      <DependentUpon>PreferencePageControl.cs</DependentUpon>
+    <EmbeddedResource Include="SampleAssmPreferencesCtrl.resx">
+      <DependentUpon>SampleAssmPreferencesCtrl.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

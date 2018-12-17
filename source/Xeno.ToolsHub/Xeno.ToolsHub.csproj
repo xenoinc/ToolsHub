@@ -56,6 +56,7 @@
     <Compile Include="ExtensionModel\Command\CommandAttribute.cs" />
     <Compile Include="ExtensionModel\Command\ICommand.cs" />
     <Compile Include="Config\Settings\AppSettings.cs" />
+    <Compile Include="ExtensionModel\Preferences\IPreferencePageForm.cs" />
     <Compile Include="ExtensionModel\ISystemTrayExtension.cs" />
     <Compile Include="LocalAddins\Shortcuts\Prefs\PreferencePageCtrl.cs">
       <SubType>UserControl</SubType>
@@ -85,7 +86,7 @@
     <Compile Include="ExtensionModel\IBaseExtension.cs" />
     <Compile Include="ExtensionModel\IOnStartupExtension.cs" />
     <Compile Include="ExtensionModel\ISystemShutdownExtension.cs" />
-    <Compile Include="ExtensionModel\PreferencePageExtension.cs" />
+    <Compile Include="ExtensionModel\Preferences\PreferencePageExtension.cs" />
     <Compile Include="ExtensionModel\Constants.cs" />
     <Compile Include="Config\Log.cs" />
     <Compile Include="Managers\SidebarManager.cs" />

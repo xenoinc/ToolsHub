@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using Mono.Addins;
 using Xeno.ToolsHub.Config;
 using Xeno.ToolsHub.ExtensionModel;
+using Xeno.ToolsHub.ExtensionModel.Preferences;
 
 namespace Xeno.ToolsHub.Managers
 {
@@ -59,6 +60,7 @@ namespace Xeno.ToolsHub.Managers
         try
         {
           PreferencePageExtension page = typeNode.CreateInstance() as PreferencePageExtension;
+          page.InitializePage();
           page.Id = node.Id;
           pages.Add(page);
         }
@@ -69,20 +71,6 @@ namespace Xeno.ToolsHub.Managers
       }
 
       return pages;
-
-      //PreferencePageExtension[] addins;
-      //try
-      //{
-      //  addins = (PreferencePageExtension[])Mono.Addins.AddinManager.GetExtensionObjects(
-      //    ExtensionPath.PreferencePage, typeof(PreferencePageExtension));
-      //}
-      //catch (Exception ex)
-      //{
-      //  Log.Warn($"No perferenceAddins found '{ex.Message}'");
-      //  addins = new PreferencePageExtension[0];
-      //}
-      //
-      //return addins;
     }
 
     /// <summary>Load utility add-ins</summary>

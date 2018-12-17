@@ -8,7 +8,7 @@
 
 namespace Xeno.ToolsHub.SampleAssmAddin
 {
-  partial class PreferencePageControl
+  partial class SampleAssmPreferencesCtrl
   {
     /// <summary> 
     /// Required designer variable.

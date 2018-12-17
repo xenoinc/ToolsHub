@@ -7,6 +7,6 @@
   </Extension>
 
   <Extension path="/ToolsHub/PreferencePage">
-    <PreferencePageAddin type="Xeno.ToolsHub.LocalAddins.Shortcuts.ShortcutsPreferences" />
+    <PreferencePageAddin type="Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs.PreferencesHandler" />
   </Extension>
 </ExtensionModel>

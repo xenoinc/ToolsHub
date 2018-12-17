@@ -3,26 +3,27 @@
  * Author:  Damian Suess
  * File:    PreferencePageCtrl.cs
  * Description:
- *  
+ *
  */
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using Xeno.ToolsHub.ExtensionModel.Preferences;
 
 namespace Xeno.ToolsHub.SampleXmlAddin
 {
-  public partial class PreferencePageCtrl : UserControl
+  public partial class PreferencePageCtrl : UserControl, IPreferencePageForm
   {
     public PreferencePageCtrl()
     {
       InitializeComponent();
+    }
+
+    public bool IsModified { get; }
+
+    public void OnSave()
+    {
+      throw new NotImplementedException();
     }
   }
 }
