@@ -16,7 +16,7 @@ namespace Xeno.ToolsHub.VeraCryptAddin
   {
     private bool _initialized = false;
 
-    public override bool Initialized => _initialized;
+    public override bool IsInitialized => _initialized;
 
     public static void SettingSave(string setting, string value)
     {
@@ -28,7 +28,7 @@ namespace Xeno.ToolsHub.VeraCryptAddin
       return Xeno.ToolsHub.Config.Settings.AddinSettings.Load("VeraCrypt", setting, defaultValue);
     }
 
-    public override void Initialize()
+    public override void Execute()
     {
       Log.Debug("VeraCrypt add-in initializing");
       _initialized = true;
