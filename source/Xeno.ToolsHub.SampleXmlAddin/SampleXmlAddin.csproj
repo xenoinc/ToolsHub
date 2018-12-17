@@ -45,6 +45,12 @@
   <ItemGroup>
     <Compile Include="OnStartHandler.cs" />
     <Compile Include="PreferenceHandler.cs" />
+    <Compile Include="SampleXmlPerferencePage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SampleXmlPerferencePage.Designer.cs">
+      <DependentUpon>SampleXmlPerferencePage.cs</DependentUpon>
+    </Compile>
     <Compile Include="UtilityHandler.cs" />
     <Compile Include="PreferencePageCtrl.cs">
       <SubType>UserControl</SubType>
@@ -75,6 +81,9 @@
   <ItemGroup>
     <EmbeddedResource Include="PreferencePageCtrl.resx">
       <DependentUpon>PreferencePageCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SampleXmlPerferencePage.resx">
+      <DependentUpon>SampleXmlPerferencePage.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

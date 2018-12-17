@@ -65,6 +65,12 @@
       <DependentUpon>PreferencePageCtrl.cs</DependentUpon>
     </Compile>
     <Compile Include="LocalAddins\Shortcuts\Prefs\PreferencesHandler.cs" />
+    <Compile Include="LocalAddins\Shortcuts\Prefs\ShortcutsPreferences.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LocalAddins\Shortcuts\Prefs\ShortcutsPreferences.Designer.cs">
+      <DependentUpon>ShortcutsPreferences.cs</DependentUpon>
+    </Compile>
     <Compile Include="LocalAddins\Shortcuts\ShortcutsSysTrayAddin.cs" />
     <Compile Include="LocalAddins\Shortcuts\ShortcutsSidebarAddin.cs" />
     <Compile Include="LocalAddins\Shortcuts\ShortcutsLoader.cs" />
@@ -123,6 +129,9 @@
     <Compile Include="Views\SidebarForm.cs" />
     <EmbeddedResource Include="LocalAddins\Shortcuts\Prefs\PreferencePageCtrl.resx">
       <DependentUpon>PreferencePageCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LocalAddins\Shortcuts\Prefs\ShortcutsPreferences.resx">
+      <DependentUpon>ShortcutsPreferences.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
