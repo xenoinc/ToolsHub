@@ -67,7 +67,7 @@
     </Compile>
     <Compile Include="LocalAddins\Shortcuts\ShortcutsSysTrayAddin.cs" />
     <Compile Include="LocalAddins\Shortcuts\ShortcutsSidebarAddin.cs" />
-    <Compile Include="LocalAddins\Shortcuts\ShortcutsLoader.cs" />
+    <Compile Include="LocalAddins\Shortcuts\ShortcutsManager.cs" />
     <Compile Include="LocalAddins\SampleStartup\SampleStartupAddin.cs" />
     <Compile Include="LocalAddins\SampleUtility\SampleUtilityAddin.cs" />
     <Compile Include="MainHandler.cs" />

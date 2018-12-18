@@ -12,6 +12,10 @@ namespace Xeno.ToolsHub.ExtensionModel.Preferences
   {
     bool IsModified { get; }
 
-    void OnSave();
+    bool OnSave();
+
+    /// <summary>Save preference page</summary>
+    /// <param name="cancelFlag">If true, request to cancel the save process or discard faulted changes</param>
+    //void OnSave2(out bool cancelFlag = false, out string message);
   }
 }

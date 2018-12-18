@@ -28,11 +28,12 @@ namespace Xeno.ToolsHub.VeraCryptAddin
 
     public bool IsModified => throw new NotImplementedException();
 
-    public void OnSave()
+    public bool OnSave()
     {
       VeraCryptAddin.VeraCrypt.SettingSave("AutoDismountSignout", chkDismountSignout.Checked ? "1" : "0");
       VeraCryptAddin.VeraCrypt.SettingSave("AutoDismountShutdown", chkDismountShutdown.Checked ? "1" : "0");
       _isModified = false;
+      return true;
     }
 
     private void chkDismountShutdown_CheckedChanged(object sender, EventArgs e)

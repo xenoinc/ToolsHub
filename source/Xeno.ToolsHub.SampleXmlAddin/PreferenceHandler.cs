@@ -1,7 +1,7 @@
 ﻿/* Copyright Xeno Innovations, Inc. 2018
  * Date:    2018-12-7
  * Author:  Damian Suess
- * File:    AddinPreferenceHandler.cs
+ * File:    PreferenceHandler.cs
  * Description:
  *  Sample XML Add-in Preference Page handler
  */
@@ -15,9 +15,9 @@ namespace Xeno.ToolsHub.SampleXmlAddin
   {
     private PerferencePage _page;
 
-    public override string Title { get { return "Sample Ext-XML"; } }
-
     public override Form Page => _page;
+
+    public override string Title => "Sample Ext-XML";
 
     public override bool IsModified => _page.IsModified;
 

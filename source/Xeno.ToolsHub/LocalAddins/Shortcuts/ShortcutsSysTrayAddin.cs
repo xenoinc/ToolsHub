@@ -25,9 +25,9 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
     {
     }
 
-    public string Title => "Shortcuts Add-in";
-
     public override bool IsInitialized => true;
+
+    public string Title => "Shortcuts Add-in";
 
     public void Execute()
     {
@@ -39,7 +39,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
 
     public override List<MenuItem> MenuItems()
     {
-      ShortcutsLoader shortcutTray = new ShortcutsLoader();
+      ShortcutsManager shortcutTray = new ShortcutsManager();
       var item = shortcutTray.LoadAsMenuItems();
 
       var items = new List<MenuItem>();

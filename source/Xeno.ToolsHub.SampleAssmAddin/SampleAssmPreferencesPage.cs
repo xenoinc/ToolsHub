@@ -22,10 +22,11 @@ namespace Xeno.ToolsHub.SampleAssmAddin
 
     public bool IsModified { get; }
 
-    public void OnSave()
+    public bool OnSave()
     {
       Log.Debug("Mock save, SampleAssm's settings. " +
         "This shouldn't ever get hit because we never modify anything");
+      return true;
     }
 
     private void SampleAssmPreferencesPage_Load(object sender, EventArgs e)
