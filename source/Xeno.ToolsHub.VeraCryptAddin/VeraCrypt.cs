@@ -7,8 +7,8 @@
  */
 
 using System;
-using Xeno.ToolsHub.ExtensionModel;
 using Xeno.ToolsHub.Config;
+using Xeno.ToolsHub.ExtensionModel;
 
 namespace Xeno.ToolsHub.VeraCryptAddin
 {
@@ -32,12 +32,18 @@ namespace Xeno.ToolsHub.VeraCryptAddin
     {
       Log.Debug("VeraCrypt add-in initializing");
       _initialized = true;
+
+      //TODO: Auto-mount virtual drives
+
       throw new NotImplementedException();
     }
 
     public override void Shutdown()
     {
       Log.Debug("VeraCrypt add-in shutting down");
+
+      // Auto-dismount virtual drives
+
       throw new NotImplementedException();
     }
   }

@@ -7,24 +7,23 @@
  */
 
 using System.Windows.Forms;
-using Xeno.ToolsHub.ExtensionModel;
 using Xeno.ToolsHub.ExtensionModel.Preferences;
 
 namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
 {
   public class PreferencesHandler : PreferencePageExtension
   {
-    private PreferencePageCtrl _page;
+    private ShortcutsPreferences _page;
 
     public override string Title => "Shortcuts";
 
-    public override Control Page => _page;
+    public override Form Page => _page;
 
     public override bool IsModified => _page.IsModified;
 
     public override void InitializePage()
     {
-      _page = new PreferencePageCtrl();
+      _page = new ShortcutsPreferences();
     }
 
     public override void OnSave()

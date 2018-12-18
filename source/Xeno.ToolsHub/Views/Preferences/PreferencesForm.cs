@@ -29,6 +29,8 @@ namespace Xeno.ToolsHub.Views
     {
       InitializeComponent();
 
+      AddinTree.Sort();
+
       _addinManager = addinsManager;
       _addinPages = new Dictionary<string, PreferencePageExtension>();
 
@@ -66,6 +68,14 @@ namespace Xeno.ToolsHub.Views
 
     private void SavePreferences()
     {
+      foreach (var addinPage in _addinPages)
+      {
+        var page = addinPage.Value;
+        if (page.IsModified)
+        {
+          page.OnSave();
+        }
+      }
     }
 
     private void RefreshTreeView()
@@ -106,6 +116,13 @@ namespace Xeno.ToolsHub.Views
           Log.Error($"{ex.Message}:\n{ex.StackTrace}");
         }
       }
+
+      // Auto-select first item
+      if (AddinTree.Nodes.Count > 0)
+      {
+        var firstNode = AddinTree.Nodes[0];
+        AddinTree.SelectedNode = firstNode;
+      }
     }
 
     private void OnAppAddinListChanged(object sender, EventArgs e)
@@ -129,27 +146,38 @@ namespace Xeno.ToolsHub.Views
       {
         Log.Debug($"Parsing panel, {addin.Key}");
 
-        var page = addin.Value;
-        if (page.Id == addinId)
+        if (addin.Value.Id == addinId)
         {
-          var pp = page.Page;
-          pp.Dock = DockStyle.Fill;
+          var page = addin.Value.Page;
+          if (page.GetType().BaseType == typeof(Form))
+          {
+            LblPageTitle.Text = page.Text;
 
-          //PanelAddinPrefsView.Controls.Cast<Control>().ForEach(i => i.Dispose());
-          PanelAddinPrefsView.Controls.Clear();
+            page.TopLevel = false;
+            PanelAddinPrefsView.Controls.Clear();
+            PanelAddinPrefsView.Controls.Add(page);
+            page.FormBorderStyle = FormBorderStyle.None;
+            page.Dock = DockStyle.Fill;
+            page.Show();
+          }
+          else if (page.GetType().BaseType == typeof(UserControl))
+          {
+            LblPageTitle.Text = addin.Value.Title;
 
-          PanelAddinPrefsView.Controls.Add(pp);
-          PanelAddinPrefsView.Show();
+            page.Dock = DockStyle.Fill;
+            // PanelAddinPrefsView.Controls.Cast<Control>().ForEach(i => i.Dispose());
+            PanelAddinPrefsView.Controls.Clear();
+            PanelAddinPrefsView.Controls.Add(page);
+            PanelAddinPrefsView.Show();
+          }
+          else
+          {
+            Log.Error($"Preference page id:'{addinId}' is of an unsupported type.");
+          }
+
           break;
         }
       }
-
-      //SubForm objForm = SubForm.InstanceForm();
-      //objForm.TopLevel = false;
-      //pnlSubSystem.Controls.Add(objForm);
-      //objForm.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-      //objForm.Dock = DockStyle.Fill;
-      //objForm.Show();
     }
   }
 }

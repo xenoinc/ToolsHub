@@ -8,7 +8,7 @@
 
 namespace Xeno.ToolsHub.SampleXmlAddin
 {
-  partial class SampleXmlPerferencePage
+  partial class PerferencePage
   {
     /// <summary>
     /// Required designer variable.
@@ -81,7 +81,7 @@ namespace Xeno.ToolsHub.SampleXmlAddin
             this.lblIsModified.TabIndex = 6;
             this.lblIsModified.Text = "False";
             // 
-            // SampleXmlPerferencePage
+            // PerferencePage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -90,8 +90,8 @@ namespace Xeno.ToolsHub.SampleXmlAddin
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button1);
-            this.Name = "SampleXmlPerferencePage";
-            this.Text = "SampleXmlPerferencePage";
+            this.Name = "PerferencePage";
+            this.Text = "Sample Add-in (External XML)";
             this.Load += new System.EventHandler(this.SampleXmlPerferencePage_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

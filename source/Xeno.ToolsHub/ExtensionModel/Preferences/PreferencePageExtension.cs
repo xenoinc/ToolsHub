@@ -18,7 +18,7 @@ namespace Xeno.ToolsHub.ExtensionModel.Preferences
     public abstract string Title { get; }
 
     /// <summary>Preference Page</summary>
-    public abstract Control Page { get; }
+    public abstract Form Page { get; }
 
     /// <summary>Used by the OnSave feature to trigger if we need to save page changes or not</summary>
     public abstract bool IsModified { get; }

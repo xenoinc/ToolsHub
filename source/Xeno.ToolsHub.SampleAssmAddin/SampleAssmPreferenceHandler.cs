@@ -12,12 +12,14 @@ using Xeno.ToolsHub.ExtensionModel.Preferences;
 
 namespace Xeno.ToolsHub.SampleAssmAddin
 {
-  [Mono.Addins.Extension(NodeName = ExtensionName.PreferencePageAddin, Path = ExtensionPath.PreferencePage)]
+  [Mono.Addins.Extension(
+    NodeName = ExtensionName.PreferencePageAddin,
+    Path = ExtensionPath.PreferencePage)]
   public class SampleAssmPreferenceHandler : PreferencePageExtension
   {
-    private SampleAssmPreferencesCtrl _page;
+    private SampleAssmPreferencesPage _page;
 
-    public override Control Page => _page;
+    public override Form Page => _page;
 
     public override string Title { get { return "Sample Ext-Assm"; } }
 
@@ -25,7 +27,7 @@ namespace Xeno.ToolsHub.SampleAssmAddin
 
     public override void InitializePage()
     {
-      _page = new SampleAssmPreferencesCtrl();
+      _page = new SampleAssmPreferencesPage();
     }
 
     public override void OnSave()

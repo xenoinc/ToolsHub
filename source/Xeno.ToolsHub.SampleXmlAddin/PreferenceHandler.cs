@@ -13,17 +13,17 @@ namespace Xeno.ToolsHub.SampleXmlAddin
 {
   public class PreferenceHandler : PreferencePageExtension
   {
-    private PreferencePageCtrl _page;
+    private PerferencePage _page;
 
     public override string Title { get { return "Sample Ext-XML"; } }
 
-    public override Control Page => _page;
+    public override Form Page => _page;
 
     public override bool IsModified => _page.IsModified;
 
     public override void InitializePage()
     {
-      _page = new PreferencePageCtrl();
+      _page = new PerferencePage();
     }
 
     public override void OnSave()

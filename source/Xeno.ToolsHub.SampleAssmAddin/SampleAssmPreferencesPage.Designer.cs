@@ -78,7 +78,7 @@ namespace Xeno.ToolsHub.SampleAssmAddin
             this.Controls.Add(this.BtnTest2);
             this.Controls.Add(this.BtnTest1);
             this.Name = "SampleAssmPreferencesPage";
-            this.Text = "SampleAssmPreferencesPage";
+            this.Text = "Sample Add-in (External Assm)";
             this.Load += new System.EventHandler(this.SampleAssmPreferencesPage_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

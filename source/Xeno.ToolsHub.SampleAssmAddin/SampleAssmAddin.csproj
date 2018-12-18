@@ -47,12 +47,6 @@
     <Compile Include="AddinOnStartHandler.cs" />
     <Compile Include="AddinUtilityHandler.cs" />
     <Compile Include="SampleAssmPreferenceHandler.cs" />
-    <Compile Include="SampleAssmPreferencesCtrl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="SampleAssmPreferencesCtrl.Designer.cs">
-      <DependentUpon>SampleAssmPreferencesCtrl.cs</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SampleAssmPreferencesPage.cs">
       <SubType>Form</SubType>
@@ -63,7 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\libs\Mono.Addins\Mono.Addins\Mono.Addins.csproj">
-      <Project>{91DD5A2D-9FE3-4C3C-9253-876141874DAD}</Project>
+      <Project>{91dd5a2d-9fe3-4c3c-9253-876141874dad}</Project>
       <Name>Mono.Addins</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xeno.ToolsHub\Xeno.ToolsHub.csproj">
@@ -72,9 +66,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="SampleAssmPreferencesCtrl.resx">
-      <DependentUpon>SampleAssmPreferencesCtrl.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="SampleAssmPreferencesPage.resx">
       <DependentUpon>SampleAssmPreferencesPage.cs</DependentUpon>
     </EmbeddedResource>

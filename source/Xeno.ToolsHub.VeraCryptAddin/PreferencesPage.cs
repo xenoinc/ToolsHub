@@ -1,22 +1,24 @@
 ﻿/* Copyright Xeno Innovations, Inc. 2018
- * Date:    2018-8-13
+ * Date:    2018-12-17
  * Author:  Damian Suess
- * File:    VeraCryptPreferencesView.cs
+ * File:    PreferencesPage.cs
  * Description:
- *
+ *  Sample XML Add-in Preference Page handler
  */
 
 using System;
 using System.Windows.Forms;
+using Xeno.ToolsHub.ExtensionModel.Preferences;
 
 namespace Xeno.ToolsHub.VeraCryptAddin
 {
-  public partial class VeraCryptPreferencesView : UserControl
+  public partial class PreferencesPage : Form, IPreferencePageForm
   {
-    public VeraCryptPreferencesView()
+    private bool _isModified = false;
+
+    public PreferencesPage()
     {
       InitializeComponent();
-
       var shutdown = Xeno.ToolsHub.Config.Settings.AddinSettings.Load("VeraCrypt", "AutoDismountShutdown", "0");
       var logoff = Xeno.ToolsHub.Config.Settings.AddinSettings.Load("VeraCrypt", "AutoDismountSignout", "0");
 
@@ -24,16 +26,27 @@ namespace Xeno.ToolsHub.VeraCryptAddin
       chkDismountSignout.Checked = (logoff == "1" ? true : false);
     }
 
+    public bool IsModified => throw new NotImplementedException();
+
+    public void OnSave()
+    {
+      VeraCryptAddin.VeraCrypt.SettingSave("AutoDismountSignout", chkDismountSignout.Checked ? "1" : "0");
+      VeraCryptAddin.VeraCrypt.SettingSave("AutoDismountShutdown", chkDismountShutdown.Checked ? "1" : "0");
+      _isModified = false;
+    }
+
     private void chkDismountShutdown_CheckedChanged(object sender, EventArgs e)
     {
-      string value = chkDismountShutdown.Checked ? "1" : "0";
-      VeraCryptAddin.VeraCrypt.SettingSave("AutoDismountShutdown", value);
+      _isModified = true;
     }
 
     private void chkDismountSignout_CheckedChanged(object sender, EventArgs e)
     {
-      string value = chkDismountShutdown.Checked ? "1" : "0";
-      VeraCryptAddin.VeraCrypt.SettingSave("AutoDismountSignout", value);
+      _isModified = true;
+    }
+
+    private void PreferencesPage_Load(object sender, EventArgs e)
+    {
     }
   }
 }

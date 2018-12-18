@@ -98,6 +98,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
             this.TxtRawFile.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.TxtRawFile.Size = new System.Drawing.Size(357, 219);
             this.TxtRawFile.TabIndex = 0;
+            this.TxtRawFile.TextChanged += new System.EventHandler(this.TxtRawFile_TextChanged);
             // 
             // tabPage2
             // 
@@ -176,7 +177,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
             this.ClientSize = new System.Drawing.Size(401, 294);
             this.Controls.Add(this.tabControl1);
             this.Name = "ShortcutsPreferences";
-            this.Text = "ShortcutsPreferences";
+            this.Text = "Shortcuts Manager";
             this.Load += new System.EventHandler(this.ShortcutsPreferences_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);

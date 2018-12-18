@@ -8,15 +8,16 @@
 
 using System;
 using System.Windows.Forms;
+using Xeno.ToolsHub.Config;
 using Xeno.ToolsHub.ExtensionModel.Preferences;
 
 namespace Xeno.ToolsHub.SampleXmlAddin
 {
-  public partial class SampleXmlPerferencePage : Form, IPreferencePageForm
+  public partial class PerferencePage : Form, IPreferencePageForm
   {
     private bool _isModified = false;
 
-    public SampleXmlPerferencePage()
+    public PerferencePage()
     {
       InitializeComponent();
     }
@@ -25,6 +26,8 @@ namespace Xeno.ToolsHub.SampleXmlAddin
 
     public void OnSave()
     {
+      Log.Debug("Mock save, SampleXML's settings.");
+
       _isModified = false;
       lblIsModified.Text = "False";
     }

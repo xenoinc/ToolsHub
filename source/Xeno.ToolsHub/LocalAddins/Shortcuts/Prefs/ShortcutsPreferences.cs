@@ -31,5 +31,10 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
     private void ShortcutsPreferences_Load(object sender, EventArgs e)
     {
     }
+
+    private void TxtRawFile_TextChanged(object sender, EventArgs e)
+    {
+      _isModified = true;
+    }
   }
 }

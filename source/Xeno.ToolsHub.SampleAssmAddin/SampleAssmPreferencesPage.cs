@@ -8,6 +8,7 @@
 
 using System;
 using System.Windows.Forms;
+using Xeno.ToolsHub.Config;
 using Xeno.ToolsHub.ExtensionModel.Preferences;
 
 namespace Xeno.ToolsHub.SampleAssmAddin
@@ -23,7 +24,8 @@ namespace Xeno.ToolsHub.SampleAssmAddin
 
     public void OnSave()
     {
-      throw new NotImplementedException();
+      Log.Debug("Mock save, SampleAssm's settings. " +
+        "This shouldn't ever get hit because we never modify anything");
     }
 
     private void SampleAssmPreferencesPage_Load(object sender, EventArgs e)
