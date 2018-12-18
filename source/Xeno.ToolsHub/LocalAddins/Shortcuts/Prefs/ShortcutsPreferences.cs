@@ -8,6 +8,7 @@
 
 using System;
 using System.Windows.Forms;
+using Xeno.ToolsHub.Config;
 using Xeno.ToolsHub.ExtensionModel.Preferences;
 
 namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
@@ -16,25 +17,60 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
   {
     private bool _isModified = false;
 
+    private ShortcutsManager _shortcuts = new ShortcutsManager();
+
     public ShortcutsPreferences()
     {
       InitializeComponent();
     }
 
-    public bool IsModified => _isModified;
-
-    public void OnSave()
+    public bool IsModified
     {
-      _isModified = false;
+      get { return _isModified; }
+      set
+      {
+        if (_isModified != value)
+        {
+          _isModified = value;
+          LblModified.Visible = value;
+        }
+      }
+    }
+
+    public bool OnSave()
+    {
+      string json = TxtRawFile.Text;
+      string errMsg = "";
+
+      IsModified = false;
+
+      if (_shortcuts.ValidateJson(json, out errMsg))
+      {
+        _shortcuts.Save(json);
+        return true;
+      }
+      else
+      {
+        Log.Error("Your JSON formatting is bad, and you should feel bad too!" + Environment.NewLine + errMsg);
+        return false;
+      }
+
+    }
+
+    private void LoadShortcutsFile()
+    {
+      TxtRawFile.Text = _shortcuts.LoadAsText();
     }
 
     private void ShortcutsPreferences_Load(object sender, EventArgs e)
     {
+      LoadShortcutsFile();
     }
 
     private void TxtRawFile_TextChanged(object sender, EventArgs e)
     {
-      _isModified = true;
+      IsModified = true;
+      LblModified.Visible = true;
     }
   }
 }

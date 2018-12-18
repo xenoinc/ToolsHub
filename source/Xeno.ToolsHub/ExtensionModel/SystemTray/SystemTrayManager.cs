@@ -22,15 +22,30 @@ namespace Xeno.ToolsHub.ExtensionModel.SystemTray
 {
   public class SystemTrayManager : ApplicationContext
   {
-    private MenuItem[] _trayMenu;
-    private NotifyIcon _trayNotify = new NotifyIcon();
-    private MainHandler _mainHandler;
-
     public SystemTrayManager(MainHandler mainHandler)
     {
       _mainHandler = mainHandler;
-      Refresh();
+      MenuRefresh();
     }
+
+    public void AlertBubble(string message, string title)
+    {
+      //TODO: Use Xamarin's MessageSender and subscribe when to show balloon
+      _trayNotify.BalloonTipTitle = message;
+      _trayNotify.BalloonTipText = title;
+      _trayNotify.ShowBalloonTip(1000);
+    }
+
+    public void MenuRefresh()
+    {
+      //TODO: Create a singleton or IoC pattern to call Refresh() from outside
+      InitTrayMenu();
+      DrawTrayNotifacation();
+    }
+
+    private MenuItem[] _trayMenu;
+    private NotifyIcon _trayNotify = new NotifyIcon();
+    private MainHandler _mainHandler;
 
     private System.Drawing.Icon ApplicationIcon
     {
@@ -50,15 +65,6 @@ namespace Xeno.ToolsHub.ExtensionModel.SystemTray
           return Properties.Resources.AppIcon;
         }
       }
-    }
-
-    #region Menu Renderer
-
-    public void Refresh()
-    {
-      //TODO: Create a singleton or IoC pattern to call Refresh() from outside
-      InitTrayMenu();
-      DrawTrayNotifacation();
     }
 
     /// <summary>Redraw systray menu from memory</summary>
@@ -122,10 +128,6 @@ namespace Xeno.ToolsHub.ExtensionModel.SystemTray
       return addinItems;
     }
 
-    #endregion Menu Renderer
-
-    #region Local Menu - Event Handlers
-
     private void OnMenuAbout(object sender, EventArgs e)
     {
       Form f = new Views.AboutForm();
@@ -149,7 +151,5 @@ namespace Xeno.ToolsHub.ExtensionModel.SystemTray
       Form p = new Views.PreferencesForm(_mainHandler.Addins);
       p.Show();
     }
-
-    #endregion Local Menu - Event Handlers
   }
 }

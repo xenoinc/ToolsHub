@@ -24,12 +24,13 @@ namespace Xeno.ToolsHub.SampleXmlAddin
 
     public bool IsModified => _isModified;
 
-    public void OnSave()
+    public bool OnSave()
     {
       Log.Debug("Mock save, SampleXML's settings.");
 
       _isModified = false;
       lblIsModified.Text = "False";
+      return true;
     }
 
     private void SampleXmlPerferencePage_Load(object sender, EventArgs e)

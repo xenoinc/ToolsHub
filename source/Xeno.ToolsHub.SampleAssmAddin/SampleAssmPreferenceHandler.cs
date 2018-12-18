@@ -1,9 +1,9 @@
 ﻿/* Copyright Xeno Innovations, Inc. 2018
  * Date:    2018-12-5
  * Author:  Damian Suess
- * File:    PreferencePageHandler.cs
+ * File:    SampleAssmPreferenceHandler.cs
  * Description:
- *
+ *  Sample Preference Page handler
  */
 
 using System.Windows.Forms;

@@ -9,6 +9,7 @@
  *    - Add shortcuts links to system tray 'Shortcuts' sub-menu
  */
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
@@ -16,15 +17,15 @@ using Xeno.ToolsHub.Config;
 
 namespace Xeno.ToolsHub.LocalAddins.Shortcuts
 {
-  public class ShortcutsLoader
+  public class ShortcutsManager
   {
-    public ShortcutsLoader()
+    public ShortcutsManager()
     {
     }
 
-    private string ShortcutsFile => "shortcuts.json";
-
     private string LocalShortcutsPath => Path.Combine(Constants.LocalFolder, ShortcutsFile);
+
+    private string ShortcutsFile => "shortcuts.json";
 
     /// <summary>Load shortcuts into systray from config file</summary>
     /// <returns>Menu item</returns>
@@ -54,6 +55,20 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
       }
 
       return menu;
+    }
+
+    /// <summary>Load shortcuts JSON file into memory</summary>
+    /// <returns>File contents</returns>
+    public string LoadAsText()
+    {
+      string buffer = string.Empty;
+
+      if (System.IO.File.Exists(LocalShortcutsPath))
+      {
+        buffer = File.ReadAllText(LocalShortcutsPath);
+      }
+
+      return buffer;
     }
 
     public int OnExecuteShortcut(string target)
@@ -91,6 +106,33 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
       //TODO: Managers.SystemTray.SystemTrayManager.Refresh();
 
       return 0;
+    }
+
+    public void Save(string rawJson)
+    {
+      File.WriteAllText(LocalShortcutsPath, rawJson);
+    }
+
+    /// <summary>
+    ///   Validate JSON text and report errors if any
+    /// </summary>
+    /// <param name="rawJson">JSON in</param>
+    /// <param name="errMessage">Error message if any found</param>
+    /// <returns>Returns true if JSON format is solid</returns>
+    public bool ValidateJson(string rawJson, out string errMessage)
+    {
+      try
+      {
+        var obj = Newtonsoft.Json.Linq.JToken.Parse(rawJson);
+        errMessage = "";
+        return true;
+      }
+      catch (Exception ex)
+      {
+        errMessage = ex.Message;
+      }
+
+      return false;
     }
   }
 }
