@@ -9,12 +9,12 @@
 using Xeno.ToolsHub.Config;
 using Xeno.ToolsHub.ExtensionModel;
 
-namespace Xeno.ToolsHub.SampleAssmAddin
+namespace Xeno.ToolsHub.SampleAssmAddin.Handlers
 {
   [Mono.Addins.Extension(NodeName = ExtensionName.OnStartupAddin, Path = ExtensionPath.OnStartup)]
-  public class AddinOnStartHandler : ExtensionModel.IOnStartupExtension
+  public class OnStartHandler : ExtensionModel.IOnStartupExtension
   {
-    public AddinOnStartHandler()
+    public OnStartHandler()
     {
       this.Title = "External SampleAssm OnStartup add-in";
       Log.Debug("External SampleAssm OnStartup, initialized");

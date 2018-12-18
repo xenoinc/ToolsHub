@@ -11,7 +11,7 @@ using System.Windows.Forms;
 using Xeno.ToolsHub.Config;
 using Xeno.ToolsHub.ExtensionModel.Preferences;
 
-namespace Xeno.ToolsHub.SampleXmlAddin
+namespace Xeno.ToolsHub.SampleXmlAddin.Views
 {
   public partial class PerferencePage : Form, IPreferencePageForm
   {

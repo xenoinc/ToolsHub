@@ -8,7 +8,7 @@
 
 using Xeno.ToolsHub.Config;
 
-namespace Xeno.ToolsHub.SampleXmlAddin
+namespace Xeno.ToolsHub.SampleXmlAddin.Handlers
 {
   public class OnStartHandler : ExtensionModel.IOnStartupExtension
   {

@@ -9,7 +9,7 @@
 using Xeno.ToolsHub.Config;
 using Xeno.ToolsHub.ExtensionModel;
 
-namespace Xeno.ToolsHub.SampleXmlAddin
+namespace Xeno.ToolsHub.SampleXmlAddin.Handlers
 {
   public class UtilityHandler : UtilityAddin
   {

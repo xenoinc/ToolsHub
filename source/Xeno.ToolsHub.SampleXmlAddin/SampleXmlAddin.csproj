@@ -43,17 +43,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="OnStartHandler.cs" />
-    <Compile Include="PreferenceHandler.cs" />
-    <Compile Include="PerferencePage.cs">
+    <Compile Include="Handlers\OnStartHandler.cs" />
+    <Compile Include="Handlers\PreferenceHandler.cs" />
+    <Compile Include="Views\PerferencePage.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PerferencePage.Designer.cs">
+    <Compile Include="Views\PerferencePage.Designer.cs">
       <DependentUpon>PerferencePage.cs</DependentUpon>
     </Compile>
-    <Compile Include="UtilityHandler.cs" />
+    <Compile Include="Handlers\UtilityHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SysTrayHandler.cs" />
+    <Compile Include="Handlers\SysTrayHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.md" />
@@ -68,14 +68,15 @@
     <Content Include="SampleXmlAddin.addin">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TrayMenu.addin">
+    <EmbeddedResource Include="TrayMenu.addin">
       <SubType>Designer</SubType>
-    </Content>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="PerferencePage.resx">
+    <EmbeddedResource Include="Views\PerferencePage.resx">
       <DependentUpon>PerferencePage.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
