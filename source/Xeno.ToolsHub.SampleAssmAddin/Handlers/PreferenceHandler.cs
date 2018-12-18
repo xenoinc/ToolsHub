@@ -8,7 +8,6 @@
 
 using System.Windows.Forms;
 using Xeno.ToolsHub.ExtensionModel;
-using Xeno.ToolsHub.ExtensionModel.Preferences;
 using Xeno.ToolsHub.SampleAssmAddin.Views;
 
 namespace Xeno.ToolsHub.SampleAssmAddin.Handlers
@@ -16,22 +15,24 @@ namespace Xeno.ToolsHub.SampleAssmAddin.Handlers
   [Mono.Addins.Extension(
     NodeName = ExtensionName.PreferencePageAddin,
     Path = ExtensionPath.PreferencePage)]
-  public class PreferenceHandler : PreferencePageExtension
+  public class PreferenceHandler : IPreferencePageExtension
   {
     private PreferencesPage _page;
 
-    public override Form Page => _page;
+    public string Id { get; set; }
 
-    public override string Title { get { return "Sample Ext-Assm"; } }
+    public Form Page => _page;
 
-    public override bool IsModified => _page.IsModified;
+    public string Title { get { return "Sample Ext-Assm"; } }
 
-    public override void InitializePage()
+    public bool IsModified => _page.IsModified;
+
+    public void InitializePage()
     {
       _page = new PreferencesPage();
     }
 
-    public override void OnSave()
+    public void OnSave()
     {
       _page.OnSave();
     }

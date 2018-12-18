@@ -7,27 +7,29 @@
  */
 
 using System.Windows.Forms;
-using Xeno.ToolsHub.ExtensionModel.Preferences;
+using Xeno.ToolsHub.ExtensionModel;
 using Xeno.ToolsHub.SampleXmlAddin.Views;
 
 namespace Xeno.ToolsHub.SampleXmlAddin.Handlers
 {
-  public class PreferenceHandler : PreferencePageExtension
+  public class PreferenceHandler : IPreferencePageExtension
   {
     private PerferencePage _page;
 
-    public override Form Page => _page;
+    public string Id { get; set; }
 
-    public override string Title => "Sample Ext-XML";
+    public Form Page => _page;
 
-    public override bool IsModified => _page.IsModified;
+    public string Title => "Sample Ext-XML";
 
-    public override void InitializePage()
+    public bool IsModified => _page.IsModified;
+
+    public void InitializePage()
     {
       _page = new PerferencePage();
     }
 
-    public override void OnSave()
+    public void OnSave()
     {
       _page.OnSave();
     }

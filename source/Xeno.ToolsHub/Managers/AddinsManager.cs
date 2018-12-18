@@ -11,7 +11,6 @@ using System.Collections.Generic;
 using Mono.Addins;
 using Xeno.ToolsHub.Config;
 using Xeno.ToolsHub.ExtensionModel;
-using Xeno.ToolsHub.ExtensionModel.Preferences;
 
 namespace Xeno.ToolsHub.Managers
 {
@@ -50,16 +49,16 @@ namespace Xeno.ToolsHub.Managers
       return addinList;
     }
 
-    public List<PreferencePageExtension> GetPreferenceAddins()
+    public List<IPreferencePageExtension> GetPreferenceAddins()
     {
-      List<PreferencePageExtension> pages = new List<PreferencePageExtension>();
+      List<IPreferencePageExtension> pages = new List<IPreferencePageExtension>();
       Mono.Addins.ExtensionNodeList nodes = Mono.Addins.AddinManager.GetExtensionNodes(ExtensionPath.PreferencePage);
       foreach (Mono.Addins.ExtensionNode node in nodes)
       {
         Mono.Addins.TypeExtensionNode typeNode = node as Mono.Addins.TypeExtensionNode;
         try
         {
-          PreferencePageExtension page = typeNode.CreateInstance() as PreferencePageExtension;
+          IPreferencePageExtension page = typeNode.CreateInstance() as IPreferencePageExtension;
           page.InitializePage();
           page.Id = node.Id;
           pages.Add(page);

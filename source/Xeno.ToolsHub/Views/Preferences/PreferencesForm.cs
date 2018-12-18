@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using Xeno.ToolsHub.Config;
-using Xeno.ToolsHub.ExtensionModel.Preferences;
+using Xeno.ToolsHub.ExtensionModel;
 using Xeno.ToolsHub.Managers;
 
 namespace Xeno.ToolsHub.Views
@@ -19,7 +19,7 @@ namespace Xeno.ToolsHub.Views
   {
     private readonly AddinsManager _addinManager;
 
-    private Dictionary<string, PreferencePageExtension> _addinPages;
+    private Dictionary<string, IPreferencePageExtension> _addinPages;
 
     public PreferencesForm() : this(new AddinsManager())
     {
@@ -32,7 +32,7 @@ namespace Xeno.ToolsHub.Views
       AddinTree.Sort();
 
       _addinManager = addinsManager;
-      _addinPages = new Dictionary<string, PreferencePageExtension>();
+      _addinPages = new Dictionary<string, IPreferencePageExtension>();
 
       InitAddinManager();
 
@@ -80,7 +80,7 @@ namespace Xeno.ToolsHub.Views
 
     private void RefreshTreeView()
     {
-      foreach (PreferencePageExtension page in _addinManager.GetPreferenceAddins())
+      foreach (IPreferencePageExtension page in _addinManager.GetPreferenceAddins())
       {
         string id = string.Empty;
         string name = string.Empty;

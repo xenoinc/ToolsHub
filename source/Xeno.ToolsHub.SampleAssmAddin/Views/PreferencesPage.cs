@@ -9,7 +9,7 @@
 using System;
 using System.Windows.Forms;
 using Xeno.ToolsHub.Config;
-using Xeno.ToolsHub.ExtensionModel.Preferences;
+using Xeno.ToolsHub.ExtensionModel;
 
 namespace Xeno.ToolsHub.SampleAssmAddin.Views
 {
