@@ -6,17 +6,16 @@
  *  SampleXml Utility extension
  */
 
-using System.Windows.Forms;
 using Xeno.ToolsHub.Config;
 using Xeno.ToolsHub.ExtensionModel;
 
 namespace Xeno.ToolsHub.SampleXmlAddin
 {
-  public class AddinUtilityHandler : UtilityAddin
+  public class UtilityHandler : UtilityAddin
   {
     private bool _initialized = false;
 
-    public AddinUtilityHandler()
+    public UtilityHandler()
     {
       _initialized = true;
 

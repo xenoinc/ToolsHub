@@ -10,9 +10,9 @@ using Xeno.ToolsHub.Config;
 
 namespace Xeno.ToolsHub.SampleXmlAddin
 {
-  public class AddinOnStartHandler : ExtensionModel.IOnStartupExtension
+  public class OnStartHandler : ExtensionModel.IOnStartupExtension
   {
-    public AddinOnStartHandler()
+    public OnStartHandler()
     {
       this.Title = "External SampleXml OnStart add-in";
       Log.Debug("External SampleXml OnStart add-in: Initialized!");

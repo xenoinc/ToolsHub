@@ -51,11 +51,15 @@ namespace Xeno.ToolsHub.Views.Preferences
       this.ListAddins.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+      this.ListAddins.FullRowSelect = true;
+      this.ListAddins.GridLines = true;
       this.ListAddins.Location = new System.Drawing.Point(0, 16);
+      this.ListAddins.MultiSelect = false;
       this.ListAddins.Name = "ListAddins";
       this.ListAddins.Size = new System.Drawing.Size(243, 301);
       this.ListAddins.TabIndex = 0;
       this.ListAddins.UseCompatibleStateImageBehavior = false;
+      this.ListAddins.View = System.Windows.Forms.View.List;
       // 
       // label1
       // 
@@ -140,6 +144,7 @@ namespace Xeno.ToolsHub.Views.Preferences
       this.Controls.Add(this.ListAddins);
       this.Name = "AddinManagerCtrl";
       this.Size = new System.Drawing.Size(381, 320);
+      this.Load += new System.EventHandler(this.AddinManagerCtrl_Load);
       this.ResumeLayout(false);
       this.PerformLayout();
 

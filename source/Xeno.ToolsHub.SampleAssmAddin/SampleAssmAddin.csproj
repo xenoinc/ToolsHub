@@ -33,6 +33,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -45,17 +46,29 @@
     <Compile Include="AddinAssembly.cs" />
     <Compile Include="AddinOnStartHandler.cs" />
     <Compile Include="AddinUtilityHandler.cs" />
+    <Compile Include="SampleAssmPreferenceHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SampleAssmPreferencesPage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SampleAssmPreferencesPage.Designer.cs">
+      <DependentUpon>SampleAssmPreferencesPage.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\libs\Mono.Addins\Mono.Addins\Mono.Addins.csproj">
-      <Project>{91DD5A2D-9FE3-4C3C-9253-876141874DAD}</Project>
+      <Project>{91dd5a2d-9fe3-4c3c-9253-876141874dad}</Project>
       <Name>Mono.Addins</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xeno.ToolsHub\Xeno.ToolsHub.csproj">
       <Project>{01d40bbe-da31-41e7-808e-67afcc50e698}</Project>
       <Name>Xeno.ToolsHub</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SampleAssmPreferencesPage.resx">
+      <DependentUpon>SampleAssmPreferencesPage.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

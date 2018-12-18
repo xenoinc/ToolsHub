@@ -7,8 +7,8 @@
  */
 
 using System;
-using Xeno.ToolsHub.ExtensionModel;
 using Xeno.ToolsHub.Config;
+using Xeno.ToolsHub.ExtensionModel;
 
 namespace Xeno.ToolsHub.VeraCryptAddin
 {
@@ -16,7 +16,7 @@ namespace Xeno.ToolsHub.VeraCryptAddin
   {
     private bool _initialized = false;
 
-    public override bool Initialized => _initialized;
+    public override bool IsInitialized => _initialized;
 
     public static void SettingSave(string setting, string value)
     {
@@ -28,16 +28,22 @@ namespace Xeno.ToolsHub.VeraCryptAddin
       return Xeno.ToolsHub.Config.Settings.AddinSettings.Load("VeraCrypt", setting, defaultValue);
     }
 
-    public override void Initialize()
+    public override void Execute()
     {
       Log.Debug("VeraCrypt add-in initializing");
       _initialized = true;
+
+      //TODO: Auto-mount virtual drives
+
       throw new NotImplementedException();
     }
 
     public override void Shutdown()
     {
       Log.Debug("VeraCrypt add-in shutting down");
+
+      // Auto-dismount virtual drives
+
       throw new NotImplementedException();
     }
   }

@@ -56,7 +56,15 @@
     <Compile Include="ExtensionModel\Command\CommandAttribute.cs" />
     <Compile Include="ExtensionModel\Command\ICommand.cs" />
     <Compile Include="Config\Settings\AppSettings.cs" />
+    <Compile Include="ExtensionModel\Preferences\IPreferencePageForm.cs" />
     <Compile Include="ExtensionModel\ISystemTrayExtension.cs" />
+    <Compile Include="LocalAddins\Shortcuts\Prefs\PreferencesHandler.cs" />
+    <Compile Include="LocalAddins\Shortcuts\Prefs\ShortcutsPreferences.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LocalAddins\Shortcuts\Prefs\ShortcutsPreferences.Designer.cs">
+      <DependentUpon>ShortcutsPreferences.cs</DependentUpon>
+    </Compile>
     <Compile Include="LocalAddins\Shortcuts\ShortcutsSysTrayAddin.cs" />
     <Compile Include="LocalAddins\Shortcuts\ShortcutsSidebarAddin.cs" />
     <Compile Include="LocalAddins\Shortcuts\ShortcutsLoader.cs" />
@@ -70,14 +78,14 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ExtensionModel\SystemTray\SysTrayExtensionNode.cs" />
+    <Compile Include="Managers\PreferencePageManager.cs" />
     <Compile Include="Managers\ToolsManager.cs" />
     <Compile Include="ExtensionModel\AbstractAddin.cs" />
-    <Compile Include="ExtensionModel\AddinPreferenceFactory.cs" />
     <Compile Include="ExtensionModel\UtilityAddin.cs" />
     <Compile Include="ExtensionModel\IBaseExtension.cs" />
     <Compile Include="ExtensionModel\IOnStartupExtension.cs" />
     <Compile Include="ExtensionModel\ISystemShutdownExtension.cs" />
-    <Compile Include="ExtensionModel\PreferenceAddin.cs" />
+    <Compile Include="ExtensionModel\Preferences\PreferencePageExtension.cs" />
     <Compile Include="ExtensionModel\Constants.cs" />
     <Compile Include="Config\Log.cs" />
     <Compile Include="Managers\SidebarManager.cs" />
@@ -112,6 +120,9 @@
       <DependentUpon>PreferencesForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\SidebarForm.cs" />
+    <EmbeddedResource Include="LocalAddins\Shortcuts\Prefs\ShortcutsPreferences.resx">
+      <DependentUpon>ShortcutsPreferences.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </EmbeddedResource>

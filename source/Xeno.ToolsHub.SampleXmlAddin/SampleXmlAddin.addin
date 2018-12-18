@@ -30,20 +30,20 @@ Copyright Xeno Innovations, Inc. 2018
   </Dependencies>
 
   <Extension path="/ToolsHub/OnStartup">
-    <OnStartupAddin type="Xeno.ToolsHub.SampleXmlAddin.AddinOnStartHandler" />
+    <OnStartupAddin type="Xeno.ToolsHub.SampleXmlAddin.OnStartHandler" />
   </Extension>
 
   <Extension path="/ToolsHub/Utility">
-    <UtilityAddin type="Xeno.ToolsHub.SampleXmlAddin.AddinUtilityHandler" />
+    <UtilityAddin type="Xeno.ToolsHub.SampleXmlAddin.UtilityHandler" />
+  </Extension>
+
+  <Extension path="/ToolsHub/PreferencePage">
+    <PreferencePageAddin type="Xeno.ToolsHub.SampleXmlAddin.PreferenceHandler" />
   </Extension>
 
   <!--
   <Extension Path="/ToolsHub/SystemTray">
-    <SystemTrayAddin type="Xeno.ToolsHub.SampleXmlAddin.AddinSysTrayHandler" />
-  </Extension>
-
-  <Extension path="/ToolsHub/AddinPreferences">
-    <ApplicationAddin type="Xeno.ToolsHub.SampleXmlAddin.AddinPreferencesHandler" />
+    <SystemTrayAddin type="Xeno.ToolsHub.SampleXmlAddin.SysTrayHandler" />
   </Extension>
   -->
 </Addin>

@@ -33,6 +33,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -42,10 +43,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddinOnStartHandler.cs" />
-    <Compile Include="AddinUtilityHandler.cs" />
+    <Compile Include="OnStartHandler.cs" />
+    <Compile Include="PreferenceHandler.cs" />
+    <Compile Include="PerferencePage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PerferencePage.Designer.cs">
+      <DependentUpon>PerferencePage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UtilityHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="AddinSysTrayHandler.cs" />
+    <Compile Include="SysTrayHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.md" />
@@ -63,6 +71,11 @@
     <Content Include="TrayMenu.addin">
       <SubType>Designer</SubType>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="PerferencePage.resx">
+      <DependentUpon>PerferencePage.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

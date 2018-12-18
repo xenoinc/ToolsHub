@@ -24,11 +24,20 @@ Flexible tools launcher desktop app which is "_not your average extensible sideb
 ## Coding
 The framework relies on [Mono.Addins](https://github.com/mono/mono-addins) for extending to add new features. We provide a list of key [extension points](https://github.com/xenoinc/ToolsHub/wiki/Addin-ExtensionPoints) you can attach to.
 
-### Endpoints
-* ``OnStart`` - _Called when ToolsHub starts up_
-* ``OnSystemShutdown`` - _Called when Windows sends it's shutdown signal_
-* ``Utility`` - _Disposable add-ins called after ToolsHub is fully launced_
+### Cloning
 
+From a fresh start:
+
+``git clone --recurse-submodules https://github.com/xenoinc/ToolsHub.git``
+
+
+If closed and forgot the submodule:
+
+``git submodule update --init --recursive``
+
+
+### How to contribute
+Read our wiki to learn how to help and make your own add-in.
 
 ## Use case
 ### SystemTray Launcher

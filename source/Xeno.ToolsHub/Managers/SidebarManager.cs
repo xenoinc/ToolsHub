@@ -6,15 +6,15 @@
  *  Manager for Sidebar icon add-ins
  */
 
-using System;
-
-namespace Xeno.ToolsHub.Managers
-{
-  public class SidebarManager
-  {
-    public SidebarManager()
-    {
-      throw new NotImplementedException();
-    }
-  }
-}
+//using System;
+//
+//namespace Xeno.ToolsHub.Managers
+//{
+//  public class SidebarManager
+//  {
+//    public SidebarManager()
+//    {
+//      throw new NotImplementedException();
+//    }
+//  }
+//}

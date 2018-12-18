@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using Mono.Addins;
 using Xeno.ToolsHub.Config;
 using Xeno.ToolsHub.ExtensionModel;
+using Xeno.ToolsHub.ExtensionModel.Preferences;
 
 namespace Xeno.ToolsHub.Managers
 {
@@ -36,23 +37,40 @@ namespace Xeno.ToolsHub.Managers
 
     public event EventHandler OnApplicationAddinListChanged;
 
-    public PreferenceAddin[] GetPreferenceAddins()
+    /// <summary>Get all add-ins found in system</summary>
+    /// <returns></returns>
+    public List<Mono.Addins.Addin> GetAllAddins()
     {
-      //TODO: Currently not in use
-      PreferenceAddin[] addins;
+      List<Mono.Addins.Addin> addinList = new List<Mono.Addins.Addin>();
+      Mono.Addins.Addin[] addinArray = Mono.Addins.AddinManager.Registry.GetAddins();
 
-      try
+      if (addinArray != null)
+        addinList = new List<Mono.Addins.Addin>(addinArray);
+
+      return addinList;
+    }
+
+    public List<PreferencePageExtension> GetPreferenceAddins()
+    {
+      List<PreferencePageExtension> pages = new List<PreferencePageExtension>();
+      Mono.Addins.ExtensionNodeList nodes = Mono.Addins.AddinManager.GetExtensionNodes(ExtensionPath.PreferencePage);
+      foreach (Mono.Addins.ExtensionNode node in nodes)
       {
-        addins = (PreferenceAddin[])Mono.Addins.AddinManager.GetExtensionObjects(
-          ExtensionPath.PreferencePage, typeof(PreferenceAddin));
-      }
-      catch (Exception ex)
-      {
-        Log.Warn($"No perferenceAddins found '{ex.Message}'");
-        addins = new PreferenceAddin[0];
+        Mono.Addins.TypeExtensionNode typeNode = node as Mono.Addins.TypeExtensionNode;
+        try
+        {
+          PreferencePageExtension page = typeNode.CreateInstance() as PreferencePageExtension;
+          page.InitializePage();
+          page.Id = node.Id;
+          pages.Add(page);
+        }
+        catch (Exception ex)
+        {
+          Log.Error("Couldn't create PreferencePage: " + ex.Message);
+        }
       }
 
-      return addins;
+      return pages;
     }
 
     /// <summary>Load utility add-ins</summary>
@@ -118,7 +136,8 @@ namespace Xeno.ToolsHub.Managers
       {
         // EventHandlers for ExtensionNodes
         Mono.Addins.AddinManager.AddExtensionNodeHandler(ExtensionPath.OnStartup, OnStartupAddins_ExtensionHandler);
-        Mono.Addins.AddinManager.AddExtensionNodeHandler(ExtensionPath.SystemTray, OnUtilityAddins_ExtensionHandler);
+        //Mono.Addins.AddinManager.AddExtensionNodeHandler(ExtensionPath.PreferencePage, OnPreferencesAddins_ExtensionHandler);
+        Mono.Addins.AddinManager.AddExtensionNodeHandler(ExtensionPath.SystemTray, OnSystemTrayAddins_ExtensionHandler);
         Mono.Addins.AddinManager.AddExtensionNodeHandler(ExtensionPath.Utility, OnUtilityAddins_ExtensionHandler);
       }
       catch (Exception ex)
@@ -167,6 +186,14 @@ namespace Xeno.ToolsHub.Managers
 
       // Push event changed out to listeners
       OnApplicationAddinListChanged?.Invoke(sender, args);
+    }
+
+    private void OnPreferencesAddins_ExtensionHandler(object sender, ExtensionNodeEventArgs args)
+    {
+    }
+
+    private void OnSystemTrayAddins_ExtensionHandler(object sender, ExtensionNodeEventArgs args)
+    {
     }
 
     private void OnUtilityAddins_ExtensionHandler(object sender, ExtensionNodeEventArgs args)

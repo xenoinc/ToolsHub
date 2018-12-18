@@ -12,6 +12,8 @@ namespace Xeno.ToolsHub.ExtensionModel
   {
     public const string OnStartupAddin = "OnStartupAddin";
 
+    public const string PreferencePageAddin = "PreferencePageAddin";
+
     public const string SysTrayAddin = "SysTrayAddin";
 
     public const string UtilityAddin = "UtilityAddin";
