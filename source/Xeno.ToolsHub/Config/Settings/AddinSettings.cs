@@ -3,15 +3,17 @@
  * Author:  Damian Suess
  * File:    Settings.cs
  * Description:
- *  Add-in Settings manager
+ *  OLD METHOD!  Add-in Settings manager
  *
  *  Current an in-memory test
  */
 
+using System;
 using System.Collections.Generic;
 
 namespace Xeno.ToolsHub.Config.Settings
 {
+  [Obsolete]
   public static class AddinSettings
   {
     private static Dictionary<string, string> _settings = new Dictionary<string, string>();

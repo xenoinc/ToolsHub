@@ -8,7 +8,7 @@
 
 using System;
 using System.Windows.Forms;
-using Xeno.ToolsHub.ExtensionModel.Preferences;
+using Xeno.ToolsHub.ExtensionModel;
 
 namespace Xeno.ToolsHub.VeraCryptAddin
 {

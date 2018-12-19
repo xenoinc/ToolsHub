@@ -7,24 +7,26 @@
  */
 
 using System.Windows.Forms;
-using Xeno.ToolsHub.ExtensionModel.Preferences;
+using Xeno.ToolsHub.ExtensionModel;
 
 namespace Xeno.ToolsHub.VeraCryptAddin
 {
-  public class VeraCryptPreferencesHandler : PreferencePageExtension
+  public class VeraCryptPreferencesHandler : IPreferencePageExtension
   {
-    public override string Title => throw new System.NotImplementedException();
+    public string Title => throw new System.NotImplementedException();
 
-    public override Form Page => throw new System.NotImplementedException();
+    public Form Page => throw new System.NotImplementedException();
 
-    public override bool IsModified => throw new System.NotImplementedException();
+    public bool IsModified => throw new System.NotImplementedException();
 
-    public override void InitializePage()
+    public string Id { get; set; }
+
+    public void InitializePage()
     {
       throw new System.NotImplementedException();
     }
 
-    public override void OnSave()
+    public void OnSave()
     {
       throw new System.NotImplementedException();
     }
