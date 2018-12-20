@@ -53,7 +53,6 @@
   <ItemGroup>
     <Compile Include="Config\Constants.cs" />
     <Compile Include="Config\Helpers.cs" />
-    <Compile Include="Config\Settings\Properties.cs" />
     <Compile Include="ExtensionModel\Command\CommandAttribute.cs" />
     <Compile Include="ExtensionModel\Command\ICommand.cs" />
     <Compile Include="Config\Settings\AppSettings.cs" />
@@ -88,12 +87,13 @@
     <Compile Include="ExtensionModel\ISystemShutdownExtension.cs" />
     <Compile Include="ExtensionModel\IPreferencePageExtension.cs" />
     <Compile Include="ExtensionModel\Constants.cs" />
-    <Compile Include="Config\Log.cs" />
+    <Compile Include="Services\Log.cs" />
     <Compile Include="Managers\SidebarManager.cs" />
     <Compile Include="ExtensionModel\SystemTray\SystemTrayManager.cs" />
     <Compile Include="Config\Settings\AddinSettings.cs" />
     <Compile Include="Managers\WndProcManager.cs" />
     <Compile Include="LocalAddins\Shortcuts\ShortcutItem.cs" />
+    <Compile Include="Services\PropertyService\PropertyBag.cs" />
     <Compile Include="Views\AboutForm.cs">
       <SubType>Form</SubType>
     </Compile>

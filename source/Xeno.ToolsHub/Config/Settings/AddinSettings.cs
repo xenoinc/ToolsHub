@@ -13,7 +13,7 @@ using System.Collections.Generic;
 
 namespace Xeno.ToolsHub.Config.Settings
 {
-  [Obsolete]
+  // [Obsolete]
   public static class AddinSettings
   {
     private static Dictionary<string, string> _settings = new Dictionary<string, string>();

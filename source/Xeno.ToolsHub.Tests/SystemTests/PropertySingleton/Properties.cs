@@ -1,15 +1,16 @@
 ﻿/* Copyright Xeno Innovations, Inc. 2018
- * Date:    2018-12-18
+ * Date:    2018-12-19
  * Author:  Damian Suess
  * File:    Properties.cs
  * Description:
- *
+ *  
  */
 
 using System;
 using System.Collections.Generic;
+using Xeno.ToolsHub.Config;
 
-namespace Xeno.ToolsHub.Config.Settings
+namespace Xeno.ToolsHub.Tests.SystemTests.PropertySingleton
 {
   public class Properties
   {
