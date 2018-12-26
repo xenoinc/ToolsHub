@@ -3,19 +3,40 @@
  * Author:  Damian Suess
  * File:    PropertyService.cs
  * Description:
- *  Singleton property service (temporary)
+ *  Property collection for an entity.
+ *  We're wrapping Dictionary<> as class, Items (cleaner)
+ *
+ *  Tried wrapping Dict in PropBag, however it wouldn't serialize Id
  */
-
-using System.Collections.Generic;
 
 namespace Xeno.ToolsHub.Services.PropertyService
 {
+  using System.Collections.Generic;
+
   public class PropertyBag
   {
-    public string AddinGuid { get; set; }
+    public PropertyBag(string guid)
+    {
+      this.Id = guid;
+      this.Properties = new Items();
+    }
 
-    public Dictionary<string, string> Properties = new Dictionary<string, string>();
+    /// <summary>Gets or sets property key and value</summary>
+    public Items Properties { get; set; }
 
-    // public Dictionary<string, object> Properties = new Dictionary<string, object>();
+    /// <summary>Gets or sets owner of the properties (GUID)</summary>
+    public string Id { get; set; }
+
+    public void Add(string key, string value)
+    {
+      this.Properties.Add(key, value);
+    }
+
+    public class Items : Dictionary<string, string>
+    {
+      public Items()
+      {
+      }
+    }
   }
 }

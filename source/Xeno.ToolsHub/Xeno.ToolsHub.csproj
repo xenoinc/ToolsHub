@@ -94,6 +94,7 @@
     <Compile Include="Managers\WndProcManager.cs" />
     <Compile Include="LocalAddins\Shortcuts\ShortcutItem.cs" />
     <Compile Include="Services\PropertyService\PropertyBag.cs" />
+    <Compile Include="Services\PropertyService\PropertyStore.cs" />
     <Compile Include="Views\AboutForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -171,7 +172,10 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\libs\Mono.Addins\Mono.Addins\Mono.Addins.csproj">
       <Project>{91dd5a2d-9fe3-4c3c-9253-876141874dad}</Project>
