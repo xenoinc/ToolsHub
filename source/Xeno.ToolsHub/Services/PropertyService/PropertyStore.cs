@@ -22,7 +22,8 @@ namespace Xeno.ToolsHub.Services.PropertyService
 
     public void Add(PropertyBag propertyBag)
     {
-      this.PropertyBags.Add(propertyBag);
+      if (!this.PropertyBags.Contains(propertyBag))
+        this.PropertyBags.Add(propertyBag);
     }
 
     public PropertyBag Find(string guid)
@@ -30,9 +31,7 @@ namespace Xeno.ToolsHub.Services.PropertyService
       foreach (var bag in this.PropertyBags)
       {
         if (bag.Id == guid)
-        {
           return bag;
-        }
       }
 
       return null;
@@ -48,7 +47,6 @@ namespace Xeno.ToolsHub.Services.PropertyService
 
     public void Load()
     {
-
     }
   }
 }

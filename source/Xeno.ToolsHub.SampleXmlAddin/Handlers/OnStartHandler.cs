@@ -6,10 +6,10 @@
  *  SampleXml OnStart extension
  */
 
-using Xeno.ToolsHub.Config;
-
 namespace Xeno.ToolsHub.SampleXmlAddin.Handlers
 {
+  using Xeno.ToolsHub.Config;
+
   public class OnStartHandler : ExtensionModel.IOnStartupExtension
   {
     public OnStartHandler()
@@ -17,8 +17,8 @@ namespace Xeno.ToolsHub.SampleXmlAddin.Handlers
       this.Title = "External SampleXml OnStart add-in";
       Log.Debug("External SampleXml OnStart add-in: Initialized!");
 
-      //if (Helpers.IsDebugging)
-      //  System.Windows.Forms.MessageBox.Show("External SampleXml OnStart add-in: Initialized!");
+      ////if (Helpers.IsDebugging)
+      ////  System.Windows.Forms.MessageBox.Show("External SampleXml OnStart add-in: Initialized!");
     }
 
     public string Title { get; }
@@ -27,8 +27,8 @@ namespace Xeno.ToolsHub.SampleXmlAddin.Handlers
     {
       Log.Debug("External SampleXml OnStart add-in: Executed");
 
-      //if (Helpers.IsDebugging)
-      //  System.Windows.Forms.MessageBox.Show("External SampleXml OnStart add-in: Executed!");
+      ////if (Helpers.IsDebugging)
+      ////  System.Windows.Forms.MessageBox.Show("External SampleXml OnStart add-in: Executed!");
     }
   }
 }
