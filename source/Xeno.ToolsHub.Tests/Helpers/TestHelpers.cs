@@ -12,13 +12,13 @@ namespace Xeno.ToolsHub.Tests.SystemTests
   using Microsoft.VisualStudio.TestTools.UnitTesting;
   using Xeno.ToolsHub.Config;
 
-  public static class SystemTestHelpers
+  public static class TestHelpers
   {
     /// <summary>Clear and create test folder</summary>
     public static void PrepareTestsFolder()
     {
       // WARNING: ONLY USE TEST!!
-      Helpers.StorageMethod = StorageMethod.Test;
+      Helpers.StorageMethod = StorageMethod.Unknown;
 
       try
       {

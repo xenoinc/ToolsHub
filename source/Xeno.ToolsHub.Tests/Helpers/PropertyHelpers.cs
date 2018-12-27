@@ -6,7 +6,7 @@
  *  Helpers
  */
 
-namespace Xeno.ToolsHub.Tests.SystemTests.PropertyTests
+namespace Xeno.ToolsHub.Tests.Helpers
 {
   using System.Collections.Generic;
   using Xeno.ToolsHub.Services.PropertyService;
@@ -38,9 +38,9 @@ namespace Xeno.ToolsHub.Tests.SystemTests.PropertyTests
       return bags;
     }
 
-    public static PropertiesStore CreateStore()
+    public static PropertiesManager CreateStore()
     {
-      var store = new PropertiesStore()
+      var store = new PropertiesManager()
       {
         PropertyBags = new List<Properties>()
         {

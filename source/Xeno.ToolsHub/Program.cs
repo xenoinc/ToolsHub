@@ -3,24 +3,26 @@
  * Author:  Damian Suess
  * File:    Program.cs
  * Description:
- *
+ *  Main entry point
  */
-
-using System;
-using System.Threading;
-using System.Windows.Forms;
-using Xeno.ToolsHub.Config;
 
 namespace Xeno.ToolsHub
 {
+  using System;
+  using System.Threading;
+  using System.Windows.Forms;
+  using Xeno.ToolsHub.Config;
+
   internal static class Program
   {
-    public static bool AbortShutdown = false;
-
-    /// <summary>global singleton</summary>
-    public static Config.Settings.AppSettings Settings;
-
     private static Mutex _mutex = null;
+
+    public static bool AbortShutdown { get; set; }
+
+    /// <summary>Gets or sets global singleton</summary>
+    /// <value>System settings</value>
+    // public static Config.Settings.AppSettings Settings { get; set; }
+    public static Services.PropertyService.PropertiesManager Settings { get; set; }
 
     /// <summary>
     /// The main entry point for the application.
@@ -38,13 +40,14 @@ namespace Xeno.ToolsHub
       Application.EnableVisualStyles();
       Application.SetCompatibleTextRenderingDefault(false);
 
+      AbortShutdown = false;
       LoadAppSettings();
 
       var appContext = new MainHandler();
       Application.Run(appContext);
 
-      //Application.Run(new Views.MainForm());
-      //Application.Run(new Views.PreferencesForm());
+      // Application.Run(new Views.MainForm());
+      // Application.Run(new Views.PreferencesForm());
     }
 
     /// <summary>Check for previous instance</summary>
@@ -69,17 +72,45 @@ namespace Xeno.ToolsHub
     }
 
     /// <summary>Load application settings</summary>
-    /// <returns>False if settings file does not exist</returns>
     private static void LoadAppSettings()
     {
+      // Load settings file here according to priority
+      // 1) Check if a current directory file exists
+      // 2) Check if local user file exists
+      // 3) Check if all users file exists
+      // 4) Default: Ask user which mode to use
       Log.Debug("Loading app settings");
-      //TODO: Load application settings
-      //// Load application settings
-      //Settings = new AppSettings();
-      //Settings.InitializeDefaults();
-      //Settings = Settings.Load();
-      //
-      //if (System.IO.File.Exists())
+
+      string portable = System.IO.Path.Combine(Helpers.GetStoragePath(StorageMethod.PortableApp), Constants.SettingsFile);
+      string allUsers = System.IO.Path.Combine(Helpers.GetStoragePath(StorageMethod.AllUsers), Constants.SettingsFile);
+      string singleUser = System.IO.Path.Combine(Helpers.GetStoragePath(StorageMethod.SingleUser), Constants.SettingsFile);
+
+      if (System.IO.File.Exists(portable))
+      {
+        Helpers.StorageMethod = StorageMethod.PortableApp;
+      }
+      else if (System.IO.File.Exists(allUsers))
+      {
+        Helpers.StorageMethod = StorageMethod.AllUsers;
+      }
+      else if (System.IO.File.Exists(allUsers))
+      {
+        Helpers.StorageMethod = StorageMethod.SingleUser;
+      }
+      else
+      {
+        // Assume new install; Prompt user which storage method they'd like
+        Helpers.StorageMethod = StorageMethod.PortableApp;
+        throw new NotImplementedException();
+      }
+
+      ////TODO: Load application settings
+      ////// Load application settings
+      ////Settings = new AppSettings();
+      ////Settings.InitializeDefaults();
+      ////Settings = Settings.Load();
+      ////
+      ////if (System.IO.File.Exists())
     }
   }
 }

@@ -1,7 +1,7 @@
 ﻿/* Copyright Xeno Innovations, Inc. 2018
  * Date:    2018-12-26
  * Author:  Damian Suess
- * File:    PropertyStore.cs
+ * File:    PropertiesManager.cs
  * Description:
  *  Housing store for all add-in properties
  */
@@ -13,14 +13,14 @@ namespace Xeno.ToolsHub.Services.PropertyService
   using Newtonsoft.Json;
   using Xeno.ToolsHub.Config;
 
-  public class PropertiesStore
+  public class PropertiesManager
   {
-    public PropertiesStore()
+    public PropertiesManager()
       : this(string.Empty)
     {
     }
 
-    public PropertiesStore(string settingsFile)
+    public PropertiesManager(string settingsFile)
     {
       this.PropertyBags = new List<Properties>();
       this.SettingsFile = settingsFile;
@@ -28,6 +28,8 @@ namespace Xeno.ToolsHub.Services.PropertyService
 
     public List<Properties> PropertyBags { get; set; }
 
+    /// <summary>Gets or sets the settings file</summary>
+    /// <value>Full path to ToolsHub.json</value>
     public string SettingsFile { get; set; }
 
     /// <summary>Add new property bag to list</summary>

@@ -57,13 +57,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SystemTests\PropertyTests\PropertyBagTests.cs" />
+    <Compile Include="SystemTests\HelperTests.cs" />
+    <Compile Include="SystemTests\PropertyTests\PropertiesTests.cs" />
     <Compile Include="Prototypes\PropertySingleton\IPropertyService.cs" />
     <Compile Include="Prototypes\PropertySingleton\Properties.cs" />
     <Compile Include="Prototypes\PropertySingleton\PropertyService.cs" />
-    <Compile Include="SystemTests\PropertyTests\PropertyHelpers.cs" />
-    <Compile Include="SystemTests\PropertyTests\PropertyStoreTests.cs" />
-    <Compile Include="SystemTests\SystemTestHelpers.cs" />
+    <Compile Include="Helpers\PropertyHelpers.cs" />
+    <Compile Include="SystemTests\PropertyTests\PropertiesManagerTests.cs" />
+    <Compile Include="Helpers\TestHelpers.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

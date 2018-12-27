@@ -96,7 +96,7 @@
     <Compile Include="Managers\WndProcManager.cs" />
     <Compile Include="LocalAddins\Shortcuts\ShortcutItem.cs" />
     <Compile Include="Services\PropertyService\Properties.cs" />
-    <Compile Include="Services\PropertyService\PropertiesStore.cs" />
+    <Compile Include="Services\PropertyService\PropertiesManager.cs" />
     <Compile Include="Views\AboutForm.cs">
       <SubType>Form</SubType>
     </Compile>

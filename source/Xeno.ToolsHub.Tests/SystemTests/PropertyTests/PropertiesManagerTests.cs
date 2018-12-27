@@ -1,7 +1,7 @@
 ﻿/* Copyright Xeno Innovations, Inc. 2018
  * Date:    2018-12-26
  * Author:  Damian Suess
- * File:    PropertyStore.cs
+ * File:    PropertiesManagerTests.cs
  * Description:
  *  Tests for the main property store
  */
@@ -12,26 +12,27 @@ namespace Xeno.ToolsHub.Tests.SystemTests.PropertyTests
   using Newtonsoft.Json;
   using Xeno.ToolsHub.Config;
   using Xeno.ToolsHub.Services.PropertyService;
+  using Xeno.ToolsHub.Tests.Helpers;
 
   [TestClass]
-  public class PropertyStoreTests
+  public class PropertiesManagerTests
   {
     [TestInitialize]
     public void TestInit()
     {
-      SystemTestHelpers.PrepareTestsFolder();
+      TestHelpers.PrepareTestsFolder();
     }
 
     [TestCleanup]
     public void TestCleanup()
     {
-      SystemTestHelpers.CleanTestsFolder();
+      TestHelpers.CleanTestsFolder();
     }
 
     [TestMethod]
     public void CreateSingleBagStoreTest()
     {
-      var store = new PropertiesStore();
+      var store = new PropertiesManager();
 
       var guid = System.Guid.NewGuid().ToString();
       store.Add(new Properties(guid)

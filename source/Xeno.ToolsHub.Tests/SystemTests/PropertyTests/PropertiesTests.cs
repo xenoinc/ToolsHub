@@ -16,9 +16,10 @@ namespace Xeno.ToolsHub.Tests.SystemTests.PropertyTests
   using Newtonsoft.Json;
   using Xeno.ToolsHub.Config;
   using Xeno.ToolsHub.Services.PropertyService;
+  using Xeno.ToolsHub.Tests.Helpers;
 
   [TestClass]
-  public class PropertyBagTests
+  public class PropertiesTests
   {
     [TestMethod]
     public void CanCreateBagsTest()

@@ -10,9 +10,10 @@ namespace Xeno.ToolsHub.Config
 {
   public enum StorageMethod
   {
-    Portable,
-    InstallSingleUser,
-    InstallAllUsers,
-    Test
+    Unknown,
+    PortableApp,
+    SingleUser,
+    AllUsers,
+    UnitTest
   }
 }
