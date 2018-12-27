@@ -6,22 +6,53 @@
  *  Global helper methods. Code does not necessarily rely on other internal classes
  */
 
-using System;
-using System.IO;
-using Newtonsoft.Json;
-
 namespace Xeno.ToolsHub.Config
 {
+  using System;
+  using Newtonsoft.Json;
+
   public static class Helpers
   {
-    /// <summary>Is someone debugging us</summary>
+    /// <summary>Gets a value indicating whether we're in debug mode or not</summary>
+    /// <value>True or false</value>
     public static bool IsDebugging => System.Diagnostics.Debugger.IsAttached;
+
+    public static StorageMethod StorageMethod { get; set; }
+
+    /// <summary>Get default storage path</summary>
+    /// <param name="fileName">OPTIONA: File name to include inpath</param>
+    /// <returns>Folder path to base storage or with included file</returns>
+    public static string StoragePath(string fileName = "")
+    {
+      string pth = string.Empty;
+
+      switch (StorageMethod)
+      {
+        case StorageMethod.Test:
+          pth = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "ToolsHubTests");
+          break;
+
+        case StorageMethod.InstallAllUsers:
+        case StorageMethod.InstallSingleUser:
+        case StorageMethod.Portable:
+        default:
+          //// pth = System.IO.Path.GetDirectoryName(Application.ExecutablePath);
+          pth = System.IO.Directory.GetCurrentDirectory();
+          break;
+      }
+
+      // Append file to path
+      if (!string.IsNullOrEmpty(fileName))
+        pth = System.IO.Path.Combine(pth, fileName);
+
+      return pth;
+    }
 
     /// <summary>
     ///   Execute on UI thread asynchronously (don't wait for completion)
     /// </summary>
-    /// <param name="control"></param>
-    /// <param name="code"></param>
+    /// <param name="control">Parent object</param>
+    /// <param name="code">Code to execute</param>
     /// <example>
     ///   Store.ExecuteThread(this, () =>
     ///   {
@@ -35,6 +66,7 @@ namespace Xeno.ToolsHub.Config
         control.BeginInvoke(code);
         return;
       }
+
       code.Invoke();
     }
 
@@ -42,8 +74,8 @@ namespace Xeno.ToolsHub.Config
     ///   Execute on UI thread synchronously (waiting for completion before continuing).
     ///   Use this if we're reading back data from GUI thread, like text or something.
     /// </summary>
-    /// <param name="control"></param>
-    /// <param name="code"></param>
+    /// <param name="control">Parent</param>
+    /// <param name="code">Code to execute</param>
     /// <example>
     ///   Store.ExecuteThread(this, () =>
     ///   {
@@ -57,16 +89,17 @@ namespace Xeno.ToolsHub.Config
         control.Invoke(code);
         return;
       }
+
       code.Invoke();
     }
 
     /// <summary>Load JSON file into object</summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="fileName"></param>
-    /// <returns></returns>
+    /// <typeparam name="T">Object type</typeparam>
+    /// <param name="fileName">File name</param>
+    /// <returns>Object file to convert JSON to</returns>
     public static T FileDeserialize<T>(string fileName)
     {
-      return JsonConvert.DeserializeObject<T>(File.ReadAllText(fileName));
+      return JsonConvert.DeserializeObject<T>(System.IO.File.ReadAllText(fileName));
     }
 
     /// <summary>Save object in JSON format</summary>
@@ -76,10 +109,10 @@ namespace Xeno.ToolsHub.Config
     /// <returns>JSON output data</returns>
     public static string FileSerialize(object o, string fileName = null, bool indent = true)
     {
-      Formatting format = (indent) ? Formatting.Indented : Formatting.None;
+      Formatting format = indent ? Formatting.Indented : Formatting.None;
       string data = JsonConvert.SerializeObject(o, format);
       if (fileName != null)
-        File.WriteAllText(fileName, data);
+        System.IO.File.WriteAllText(fileName, data);
       return data;
     }
   }

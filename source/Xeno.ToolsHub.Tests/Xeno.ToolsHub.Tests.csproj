@@ -53,15 +53,17 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SystemTests\PropertyJson\PropertyBagTests.cs" />
+    <Compile Include="SystemTests\PropertyTests\PropertyBagTests.cs" />
     <Compile Include="Prototypes\PropertySingleton\IPropertyService.cs" />
     <Compile Include="Prototypes\PropertySingleton\Properties.cs" />
     <Compile Include="Prototypes\PropertySingleton\PropertyService.cs" />
-    <Compile Include="SystemTests\PropertyJson\PropertyHelpers.cs" />
-    <Compile Include="SystemTests\PropertyJson\PropertyStoreTests.cs" />
+    <Compile Include="SystemTests\PropertyTests\PropertyHelpers.cs" />
+    <Compile Include="SystemTests\PropertyTests\PropertyStoreTests.cs" />
+    <Compile Include="SystemTests\SystemTestHelpers.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

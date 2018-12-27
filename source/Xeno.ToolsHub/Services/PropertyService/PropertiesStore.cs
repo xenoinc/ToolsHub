@@ -10,6 +10,7 @@ namespace Xeno.ToolsHub.Services.PropertyService
 {
   using System;
   using System.Collections.Generic;
+  using Newtonsoft.Json;
   using Xeno.ToolsHub.Config;
 
   public class PropertiesStore
@@ -58,6 +59,13 @@ namespace Xeno.ToolsHub.Services.PropertyService
       return null;
     }
 
+    /// <summary>Remove all properties in the store</summary>
+    public void Clear()
+    {
+      PropertyBags.Clear();
+    }
+
+    /// <summary>Save the stored properties</summary>
     public void Save()
     {
       try
@@ -65,7 +73,11 @@ namespace Xeno.ToolsHub.Services.PropertyService
         if (string.IsNullOrEmpty(SettingsFile))
           return;
 
-        Helpers.FileSerialize(PropertyBags, this.SettingsFile, true);
+        //// Helpers.FileSerialize(PropertyBags, this.SettingsFile, true);
+
+        string data = JsonConvert.SerializeObject(PropertyBags, Formatting.Indented);
+        if (this.SettingsFile != null)
+          System.IO.File.WriteAllText(this.SettingsFile, data);
       }
       catch (Exception ex)
       {
@@ -73,6 +85,7 @@ namespace Xeno.ToolsHub.Services.PropertyService
       }
     }
 
+    /// <summary>Load properties file into memory</summary>
     public void Load()
     {
       try

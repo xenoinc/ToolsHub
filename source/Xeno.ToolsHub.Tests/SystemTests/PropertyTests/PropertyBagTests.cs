@@ -9,7 +9,7 @@
  *  - https://stackoverflow.com/questions/22123619/replacing-only-a-certain-part-of-a-json-object
  */
 
-namespace Xeno.ToolsHub.Tests.SystemTests.PropertyJson
+namespace Xeno.ToolsHub.Tests.SystemTests.PropertyTests
 {
   using System.Collections.Generic;
   using Microsoft.VisualStudio.TestTools.UnitTesting;

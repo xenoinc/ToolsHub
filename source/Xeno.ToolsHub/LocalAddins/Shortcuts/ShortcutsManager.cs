@@ -9,14 +9,14 @@
  *    - Add shortcuts links to system tray 'Shortcuts' sub-menu
  */
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Windows.Forms;
-using Xeno.ToolsHub.Config;
-
 namespace Xeno.ToolsHub.LocalAddins.Shortcuts
 {
+  using System;
+  using System.Collections.Generic;
+  using System.IO;
+  using System.Windows.Forms;
+  using Xeno.ToolsHub.Config;
+
   public class ShortcutsManager
   {
     public ShortcutsManager()

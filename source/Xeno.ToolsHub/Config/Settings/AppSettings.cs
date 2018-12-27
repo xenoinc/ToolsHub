@@ -6,10 +6,10 @@
  *  Application settings
  */
 
-using System;
-
 namespace Xeno.ToolsHub.Config.Settings
 {
+  using System;
+
   public class AppSettings
   {
     public void InitializeDefaults()

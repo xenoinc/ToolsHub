@@ -8,12 +8,12 @@
  *  Current an in-memory test
  */
 
-using System;
-using System.Collections.Generic;
-
 namespace Xeno.ToolsHub.Config.Settings
 {
-  // [Obsolete]
+  using System;
+  using System.Collections.Generic;
+
+  [Obsolete]
   public static class AddinSettings
   {
     private static Dictionary<string, string> _settings = new Dictionary<string, string>();

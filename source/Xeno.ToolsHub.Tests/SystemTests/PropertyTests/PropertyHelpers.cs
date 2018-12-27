@@ -6,7 +6,7 @@
  *  Helpers
  */
 
-namespace Xeno.ToolsHub.Tests.SystemTests.PropertyJson
+namespace Xeno.ToolsHub.Tests.SystemTests.PropertyTests
 {
   using System.Collections.Generic;
   using Xeno.ToolsHub.Services.PropertyService;

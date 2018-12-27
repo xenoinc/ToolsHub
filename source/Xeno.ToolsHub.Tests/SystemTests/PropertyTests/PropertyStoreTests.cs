@@ -6,7 +6,7 @@
  *  Tests for the main property store
  */
 
-namespace Xeno.ToolsHub.Tests.SystemTests.PropertyJson
+namespace Xeno.ToolsHub.Tests.SystemTests.PropertyTests
 {
   using Microsoft.VisualStudio.TestTools.UnitTesting;
   using Newtonsoft.Json;
@@ -16,6 +16,18 @@ namespace Xeno.ToolsHub.Tests.SystemTests.PropertyJson
   [TestClass]
   public class PropertyStoreTests
   {
+    [TestInitialize]
+    public void TestInit()
+    {
+      SystemTestHelpers.PrepareTestsFolder();
+    }
+
+    [TestCleanup]
+    public void TestCleanup()
+    {
+      SystemTestHelpers.CleanTestsFolder();
+    }
+
     [TestMethod]
     public void CreateSingleBagStoreTest()
     {
@@ -68,12 +80,22 @@ namespace Xeno.ToolsHub.Tests.SystemTests.PropertyJson
     }
 
     [TestMethod]
-    public void SavePropertiesFileTests()
+    public void SaveClearAndLoadPropertiesFileTest()
     {
       var store = PropertyHelpers.CreateStore();
-      store.SettingsFile = System.Guid.NewGuid().ToString();
-      // make a path thingy here
+      store.SettingsFile = Helpers.StoragePath("Properties.json");
 
+      Log.Debug($"Tmp Path: {store.SettingsFile}");
+
+      store.Save();
+      store.Clear();
+      Assert.AreEqual(store.PropertyBags.Count, 0);
+
+      store.Load();
+      Assert.AreNotEqual(store.PropertyBags.Count, 0);
+
+      string json = JsonConvert.SerializeObject(store.PropertyBags, Formatting.Indented);
+      Log.Debug(json);
     }
   }
 }
