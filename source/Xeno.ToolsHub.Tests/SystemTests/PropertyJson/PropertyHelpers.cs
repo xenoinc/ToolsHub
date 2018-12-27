@@ -13,11 +13,11 @@ namespace Xeno.ToolsHub.Tests.SystemTests.PropertyJson
 
   public static class PropertyHelpers
   {
-    public static PropertyBag CreateBag(string addinGuid)
+    public static Properties CreateBag(string addinGuid)
     {
-      return new PropertyBag(addinGuid)
+      return new Properties(addinGuid)
       {
-        Properties = new PropertyBag.Items
+        Items = new Properties.ItemCollection
         {
           { "Key1", "True" },
           { "Key2", "False" },
@@ -26,9 +26,9 @@ namespace Xeno.ToolsHub.Tests.SystemTests.PropertyJson
       };
     }
 
-    public static List<PropertyBag> CreateBags(int num = 3)
+    public static List<Properties> CreateBags(int num = 3)
     {
-      var bags = new List<PropertyBag>();
+      var bags = new List<Properties>();
 
       for (var ndx = 0; ndx < num; ndx++)
       {
@@ -38,23 +38,23 @@ namespace Xeno.ToolsHub.Tests.SystemTests.PropertyJson
       return bags;
     }
 
-    public static PropertyStore CreateStore()
+    public static PropertiesStore CreateStore()
     {
-      var store = new PropertyStore()
+      var store = new PropertiesStore()
       {
-        PropertyBags = new List<PropertyBag>()
+        PropertyBags = new List<Properties>()
         {
-          new PropertyBag("GUID1")
+          new Properties("GUID1")
           {
-            Properties = new PropertyBag.Items
+            Items = new Properties.ItemCollection
             {
               { "A-Key1", "A-Value1" },
               { "A-Key2", "A-Value2" }
             }
           },
-          new PropertyBag("GUID2")
+          new Properties("GUID2")
           {
-            Properties = new PropertyBag.Items
+            Items = new Properties.ItemCollection
             {
               { "B-Key1", "B-Value1" },
               { "B-Key2", "B-Value2" },

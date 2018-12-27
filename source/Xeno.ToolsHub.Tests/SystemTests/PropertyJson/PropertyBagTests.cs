@@ -32,15 +32,15 @@ namespace Xeno.ToolsHub.Tests.SystemTests.PropertyJson
     public void Create1PropertyAndSerializationTest()
     {
       string guid = System.Guid.NewGuid().ToString();
-      PropertyBag bag1 = new PropertyBag(guid)
+      Properties bag1 = new Properties(guid)
       {
-        Properties = new PropertyBag.Items { { "key1", "value" } }
+        Items = new Properties.ItemCollection { { "key1", "value" } }
       };
 
       string json = JsonConvert.SerializeObject(bag1, Formatting.Indented);
       Log.Debug(json);
 
-      var bag2 = JsonConvert.DeserializeObject<PropertyBag>(json);
+      var bag2 = JsonConvert.DeserializeObject<Properties>(json);
 
       Assert.IsNotNull(bag2);
       Assert.AreEqual(guid, bag2.Id);
@@ -53,9 +53,9 @@ namespace Xeno.ToolsHub.Tests.SystemTests.PropertyJson
       var bag2 = PropertyHelpers.CreateBag("GUID-2");
       var bag3 = PropertyHelpers.CreateBag("GUID-3");
 
-      var bags1 = new List<PropertyBag>() { bag1, bag2, bag3 };
+      var bags1 = new List<Properties>() { bag1, bag2, bag3 };
       var json = JsonConvert.SerializeObject(bags1, Formatting.Indented);
-      var bags2 = JsonConvert.DeserializeObject<List<PropertyBag>>(json);
+      var bags2 = JsonConvert.DeserializeObject<List<Properties>>(json);
 
       Log.Debug(json);
 

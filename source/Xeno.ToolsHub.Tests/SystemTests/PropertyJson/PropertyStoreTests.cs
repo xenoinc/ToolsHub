@@ -19,12 +19,12 @@ namespace Xeno.ToolsHub.Tests.SystemTests.PropertyJson
     [TestMethod]
     public void CreateSingleBagStoreTest()
     {
-      var store = new PropertyStore();
+      var store = new PropertiesStore();
 
       var guid = System.Guid.NewGuid().ToString();
-      store.Add(new PropertyBag(guid)
+      store.Add(new Properties(guid)
       {
-        Properties = new PropertyBag.Items
+        Items = new Properties.ItemCollection
         {
           { "key1", "value1" },
           { "key2", "value2" }
@@ -33,11 +33,11 @@ namespace Xeno.ToolsHub.Tests.SystemTests.PropertyJson
 
       var bag = store.Find(guid);
 
-      Assert.IsTrue(bag.Properties.ContainsKey("key1"));
-      Assert.IsTrue(bag.Properties.ContainsKey("key2"));
+      Assert.IsTrue(bag.Items.ContainsKey("key1"));
+      Assert.IsTrue(bag.Items.ContainsKey("key2"));
 
-      Assert.AreEqual(bag.Properties["key1"], "value1");
-      Assert.AreNotEqual(bag.Properties["key2"], "value1");
+      Assert.AreEqual(bag.Items["key1"], "value1");
+      Assert.AreNotEqual(bag.Items["key2"], "value1");
     }
 
     [TestMethod]
@@ -62,9 +62,18 @@ namespace Xeno.ToolsHub.Tests.SystemTests.PropertyJson
       json = JsonConvert.SerializeObject(tempBag1, Formatting.Indented);
       Log.Debug(json);
 
-      var value = tempBag1.Properties["A-NewKey3"];
+      var value = tempBag1.Items["A-NewKey3"];
       Assert.IsNotNull(value);
       Assert.AreEqual("A-NewValue3", value);
+    }
+
+    [TestMethod]
+    public void SavePropertiesFileTests()
+    {
+      var store = PropertyHelpers.CreateStore();
+      store.SettingsFile = System.Guid.NewGuid().ToString();
+      // make a path thingy here
+
     }
   }
 }

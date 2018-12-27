@@ -1,5 +1,12 @@
+﻿/* Copyright Xeno Innovations, Inc. 2018
+ * Date:    2018-12-27
+ * Author:  Damian Suess
+ * File:    AssemblyInfo.cs
+ * Description:
+ *
+ */
+
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("Xeno.ToolsHub.Tests")]
@@ -10,9 +17,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-
 [assembly: ComVisible(false)]
-
 [assembly: Guid("e47834de-8778-4b90-af7f-c8a1564d2fae")]
 
 // [assembly: AssemblyVersion("1.0.*")]
