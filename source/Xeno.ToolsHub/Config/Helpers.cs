@@ -17,63 +17,16 @@ namespace Xeno.ToolsHub.Config
     /// <value>True or false</value>
     public static bool IsDebugging => System.Diagnostics.Debugger.IsAttached;
 
-    /// <summary>Gets or sets the app's default storage method</summary>
-    /// <value>The app's default storage method</value>
-    public static StorageMethod StorageMethod { get; set; }
-
-    /// <summary>Get default storage path</summary>
-    /// <param name="fileName">OPTIONA: File name to include inpath</param>
-    /// <returns>Folder path to base storage or with included file</returns>
-    public static string StoragePath(string fileName = "")
+    public static string Base64Encode(string plainText)
     {
-      string pth = string.Empty;
-      pth = GetStoragePath(StorageMethod);
-
-      // Append file to path
-      if (!string.IsNullOrEmpty(fileName))
-        pth = System.IO.Path.Combine(pth, fileName);
-
-      return pth;
+      var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
+      return System.Convert.ToBase64String(plainTextBytes);
     }
 
-    /// <summary>Gets a specified storage path</summary>
-    /// <param name="storageMethod">Method of storage</param>
-    /// <returns>Directory path based on storage method</returns>
-    public static string GetStoragePath(StorageMethod storageMethod)
+    public static string Base64Decode(string base64EncodedData)
     {
-      string path = string.Empty;
-
-      //// -- Sample --
-      //// Linux / Mac:
-      ////  C:\Users\USERNAME\Documents\
-      ////  path = Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
-
-      switch (storageMethod)
-      {
-        case StorageMethod.PortableApp:
-          path = System.IO.Directory.GetCurrentDirectory();
-          break;
-
-        case StorageMethod.AllUsers:
-          path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.CommonApplicationData);
-          path = System.IO.Path.Combine(path, "XI", "ToolsHub");
-          break;
-
-        case StorageMethod.SingleUser:
-          // We're using local over roaming because we don't want settings uploaded to server if user is on a domain.
-          path = Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData);
-          path = System.IO.Path.Combine(path, "XI", "ToolsHub");
-          break;
-
-        case StorageMethod.Unknown:
-        case StorageMethod.UnitTest:
-        default:
-          //// pth = System.IO.Path.GetDirectoryName(Application.ExecutablePath);
-          path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "ToolsHubTests");
-          break;
-      }
-
-      return path;
+      var base64EncodedBytes = System.Convert.FromBase64String(base64EncodedData);
+      return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
     }
 
     /// <summary>
@@ -142,6 +95,46 @@ namespace Xeno.ToolsHub.Config
       if (fileName != null)
         System.IO.File.WriteAllText(fileName, data);
       return data;
+    }
+
+    /// <summary>Gets a specified storage path</summary>
+    /// <param name="storageMethod">Method of storage</param>
+    /// <returns>Directory path based on storage method</returns>
+    public static string GetStorageFolder(StorageMethod storageMethod)
+    {
+      string path = string.Empty;
+
+      //// -- Sample --
+      //// Linux / Mac:
+      ////  C:\Users\USERNAME\Documents\
+      ////  path = Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
+
+      switch (storageMethod)
+      {
+        case StorageMethod.PortableApp:
+          path = System.IO.Directory.GetCurrentDirectory();
+          break;
+
+        case StorageMethod.AllUsers:
+          path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.CommonApplicationData);
+          path = System.IO.Path.Combine(path, "XI", "ToolsHub");
+          break;
+
+        case StorageMethod.SingleUser:
+          // We're using local over roaming because we don't want settings uploaded to server if user is on a domain.
+          path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData);
+          path = System.IO.Path.Combine(path, "XI", "ToolsHub");
+          break;
+
+        case StorageMethod.Unknown:
+        case StorageMethod.UnitTest:
+        default:
+          //// pth = System.IO.Path.GetDirectoryName(Application.ExecutablePath);
+          path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "ToolsHubTests");
+          break;
+      }
+
+      return path;
     }
   }
 }

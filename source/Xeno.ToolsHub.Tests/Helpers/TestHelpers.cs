@@ -18,11 +18,11 @@ namespace Xeno.ToolsHub.Tests.SystemTests
     public static void PrepareTestsFolder()
     {
       // WARNING: ONLY USE TEST!!
-      Helpers.StorageMethod = StorageMethod.Unknown;
+      Managers.Settings.StorageMethod = StorageMethod.Unknown;
 
       try
       {
-        System.IO.Directory.CreateDirectory(Helpers.StoragePath());
+        System.IO.Directory.CreateDirectory(Helpers.GetStorageFolder(StorageMethod.UnitTest));
       }
       catch (Exception ex)
       {
@@ -35,8 +35,8 @@ namespace Xeno.ToolsHub.Tests.SystemTests
     {
       try
       {
-        if (System.IO.Directory.Exists(Helpers.StoragePath()))
-          System.IO.Directory.Delete(Helpers.StoragePath(), true);
+        if (System.IO.Directory.Exists(Helpers.GetStorageFolder(StorageMethod.UnitTest)))
+          System.IO.Directory.Delete(Helpers.GetStorageFolder(StorageMethod.UnitTest), true);
       }
       catch (Exception ex)
       {

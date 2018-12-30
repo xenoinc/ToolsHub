@@ -38,9 +38,9 @@ namespace Xeno.ToolsHub.Tests.Helpers
       return bags;
     }
 
-    public static PropertiesManager CreateStore()
+    public static PropertiesStore CreateStore()
     {
-      var store = new PropertiesManager()
+      var store = new PropertiesStore()
       {
         PropertyBags = new List<Properties>()
         {

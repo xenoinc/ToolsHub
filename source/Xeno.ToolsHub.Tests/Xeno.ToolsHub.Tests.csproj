@@ -63,7 +63,7 @@
     <Compile Include="Prototypes\PropertySingleton\Properties.cs" />
     <Compile Include="Prototypes\PropertySingleton\PropertyService.cs" />
     <Compile Include="Helpers\PropertyHelpers.cs" />
-    <Compile Include="SystemTests\PropertyTests\PropertiesManagerTests.cs" />
+    <Compile Include="SystemTests\PropertyTests\PropertiesStoreTests.cs" />
     <Compile Include="Helpers\TestHelpers.cs" />
   </ItemGroup>
   <ItemGroup>

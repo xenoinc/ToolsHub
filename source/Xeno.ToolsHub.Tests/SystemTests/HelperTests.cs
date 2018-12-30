@@ -20,23 +20,23 @@ namespace Xeno.ToolsHub.Tests.SystemTests
     {
       string path = string.Empty;
 
-      path = Helpers.GetStoragePath(StorageMethod.AllUsers);
+      path = Helpers.GetStorageFolder(StorageMethod.AllUsers);
       Assert.IsNotNull(path);
       Log.Debug($"AllUsers: {path}");
 
-      path = Helpers.GetStoragePath(StorageMethod.SingleUser);
+      path = Helpers.GetStorageFolder(StorageMethod.SingleUser);
       Assert.IsNotNull(path);
       Log.Debug($"SingleUser: {path}");
 
-      path = Helpers.GetStoragePath(StorageMethod.PortableApp);
+      path = Helpers.GetStorageFolder(StorageMethod.PortableApp);
       Assert.IsNotNull(path);
       Log.Debug($"PortableApp: {path}");
 
-      path = Helpers.GetStoragePath(StorageMethod.Unknown);
+      path = Helpers.GetStorageFolder(StorageMethod.Unknown);
       Assert.IsNotNull(path);
       Log.Debug($"Unknown: {path}");
 
-      path = Helpers.GetStoragePath(StorageMethod.UnitTest);
+      path = Helpers.GetStorageFolder(StorageMethod.UnitTest);
       Assert.IsNotNull(path);
       Log.Debug($"UnitTest: {path}");
     }

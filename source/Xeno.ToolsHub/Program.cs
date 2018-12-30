@@ -12,6 +12,7 @@ namespace Xeno.ToolsHub
   using System.Threading;
   using System.Windows.Forms;
   using Xeno.ToolsHub.Config;
+  using Xeno.ToolsHub.Managers;
 
   internal static class Program
   {
@@ -22,7 +23,7 @@ namespace Xeno.ToolsHub
     /// <summary>Gets or sets global singleton</summary>
     /// <value>System settings</value>
     // public static Config.Settings.AppSettings Settings { get; set; }
-    public static Services.PropertyService.PropertiesManager Settings { get; set; }
+    public static Services.PropertyService.PropertiesStore Settings { get; set; }
 
     /// <summary>
     /// The main entry point for the application.
@@ -81,26 +82,26 @@ namespace Xeno.ToolsHub
       // 4) Default: Ask user which mode to use
       Log.Debug("Loading app settings");
 
-      string portable = System.IO.Path.Combine(Helpers.GetStoragePath(StorageMethod.PortableApp), Constants.SettingsFile);
-      string allUsers = System.IO.Path.Combine(Helpers.GetStoragePath(StorageMethod.AllUsers), Constants.SettingsFile);
-      string singleUser = System.IO.Path.Combine(Helpers.GetStoragePath(StorageMethod.SingleUser), Constants.SettingsFile);
+      string portable = System.IO.Path.Combine(Helpers.GetStorageFolder(StorageMethod.PortableApp), Constants.SettingsFile);
+      string allUsers = System.IO.Path.Combine(Helpers.GetStorageFolder(StorageMethod.AllUsers), Constants.SettingsFile);
+      string singleUser = System.IO.Path.Combine(Helpers.GetStorageFolder(StorageMethod.SingleUser), Constants.SettingsFile);
 
       if (System.IO.File.Exists(portable))
       {
-        Helpers.StorageMethod = StorageMethod.PortableApp;
+        Managers.Settings.StorageMethod = StorageMethod.PortableApp;
       }
       else if (System.IO.File.Exists(allUsers))
       {
-        Helpers.StorageMethod = StorageMethod.AllUsers;
+        Managers.Settings.StorageMethod = StorageMethod.AllUsers;
       }
       else if (System.IO.File.Exists(allUsers))
       {
-        Helpers.StorageMethod = StorageMethod.SingleUser;
+        Managers.Settings.StorageMethod = StorageMethod.SingleUser;
       }
       else
       {
         // Assume new install; Prompt user which storage method they'd like
-        Helpers.StorageMethod = StorageMethod.PortableApp;
+        Managers.Settings.StorageMethod = StorageMethod.PortableApp;
         throw new NotImplementedException();
       }
 
