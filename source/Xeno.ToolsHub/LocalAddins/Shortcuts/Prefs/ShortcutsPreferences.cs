@@ -27,6 +27,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
     public bool IsModified
     {
       get { return _isModified; }
+
       set
       {
         if (_isModified != value)

@@ -98,11 +98,5 @@ namespace Xeno.ToolsHub.Tests.SystemTests
       string json = JsonConvert.SerializeObject(store.PropertyBags, Formatting.Indented);
       Log.Debug(json);
     }
-
-    [TestMethod]
-    public void SaveJsonInJsonTest()
-    {
-      var store = PropertyHelpers.SamplePropertiesStore();
-    }
   }
 }

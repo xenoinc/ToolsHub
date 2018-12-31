@@ -51,6 +51,13 @@ namespace Xeno.ToolsHub.Managers
       }
     }
 
+    public static string ToString => JsonConvert.SerializeObject(_propStore.PropertyBags, Formatting.Indented);
+
+    public static void Clear()
+    {
+      _propStore.ClearAll();
+    }
+
     /// <summary>Get settings value</summary>
     /// <param name="propertyId">Property unique Id</param>
     /// <param name="key">Key name</param>
@@ -61,9 +68,32 @@ namespace Xeno.ToolsHub.Managers
       return _propStore.GetValue(propertyId, key, defValue);
     }
 
-    public static void SetValue(string title, string name, string value)
+    /// <summary>Get JSON object</summary>
+    /// <typeparam name="T">Type of object</typeparam>
+    /// <param name="propertyId">Property unique Id</param>
+    /// <param name="key">Key name</param>
+    /// <returns>Setting object</returns>
+    public static T GetObject<T>(string propertyId, string key)
     {
-      _propStore.SetValue(title, name, value);
+      try
+      {
+        string json = GetValue(propertyId, key, string.Empty);
+        return JsonConvert.DeserializeObject<T>(json);
+      }
+      catch (Exception ex)
+      {
+        throw ex;
+      }
+    }
+
+    public static void SetValue(string propertyId, string name, string value)
+    {
+      _propStore.SetValue(propertyId, name, value);
+    }
+
+    public static void SetObject(string propertyId, string key, object o)
+    {
+      _propStore.SetValue(propertyId, key, JsonConvert.SerializeObject(_propStore.PropertyBags, Formatting.None));
     }
 
     /// <summary>Load properties file into memory</summary>

@@ -18,7 +18,7 @@ namespace Xeno.ToolsHub.Tests.SystemTests
     public static void PrepareTestsFolder()
     {
       // WARNING: ONLY USE TEST!!
-      Managers.Settings.StorageMethod = StorageMethod.Unknown;
+      Managers.Settings.StorageMethod = StorageMethod.UnitTest;
 
       try
       {

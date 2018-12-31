@@ -65,6 +65,7 @@
     <Compile Include="Helpers\PropertyHelpers.cs" />
     <Compile Include="SystemTests\PropertiesStoreTests.cs" />
     <Compile Include="Helpers\TestHelpers.cs" />
+    <Compile Include="SystemTests\ShortcutsTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

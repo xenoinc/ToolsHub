@@ -15,6 +15,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
   using System.Collections.Generic;
   using System.IO;
   using System.Windows.Forms;
+  using Newtonsoft.Json;
   using Xeno.ToolsHub.Config;
   using Xeno.ToolsHub.Services.Logging;
 
@@ -102,11 +103,15 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
         new ShortcutItem { Title = "Manage Shortcuts", Target = managePath },
       };
 
-      Helpers.FileSerialize(items, LocalShortcutsPath, true);
+      SaveObject(items);
 
-      //TODO: Managers.SystemTray.SystemTrayManager.Refresh();
-
+      // TODO: Managers.SystemTray.SystemTrayManager.Refresh();
       return 0;
+    }
+
+    public void SaveObject(object o)
+    {
+      Save(JsonConvert.SerializeObject(o, Formatting.Indented));
     }
 
     public void Save(string rawJson)

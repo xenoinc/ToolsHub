@@ -97,6 +97,13 @@ namespace Xeno.ToolsHub.Config
       return data;
     }
 
+    /// <summary>Generate a new GUID</summary>
+    /// <returns>GUID/UUID string</returns>
+    public static string GenerateGuid()
+    {
+      return System.Guid.NewGuid().ToString();
+    }
+
     /// <summary>Gets a specified storage path</summary>
     /// <param name="storageMethod">Method of storage</param>
     /// <returns>Directory path based on storage method</returns>
