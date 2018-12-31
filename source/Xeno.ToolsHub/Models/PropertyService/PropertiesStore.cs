@@ -42,7 +42,7 @@ namespace Xeno.ToolsHub.Models.PropertyService
 
     /// <summary>Find a property collection based on Id</summary>
     /// <param name="propertyId">Unique Id of collection</param>
-    /// <returns>PropertyBag</returns>
+    /// <returns>PropertyBag or null if empty</returns>
     public Properties Find(string propertyId)
     {
       foreach (var bag in this.PropertyBags)

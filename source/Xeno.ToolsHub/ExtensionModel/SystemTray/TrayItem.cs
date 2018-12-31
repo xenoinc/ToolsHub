@@ -7,7 +7,6 @@
  *  Used by, SystemTrayManager
  */
 
-
 namespace Xeno.ToolsHub.ExtensionModel.SystemTray
 {
   using System;
@@ -18,28 +17,28 @@ namespace Xeno.ToolsHub.ExtensionModel.SystemTray
   {
     private Func<string, int> _routedMethod;
 
-    public TrayItem(string text, string tag) : this(text, tag, true)
+    public TrayItem(string text, string tag)
+      : this(text, tag, true)
     {
     }
 
     /// <summary>
-    ///   Create a SysTray item which will use, Process.Start(tag) by default
+    ///   Initializes a new instance of the <see cref="TrayItem"/> class which will use, Process.Start(tag) by default
     /// </summary>
-    /// <param name="text"></param>
-    /// <param name="tag"></param>
-    /// <param name="enabled"></param>
+    /// <param name="text">Display text</param>
+    /// <param name="tag">Executing target</param>
+    /// <param name="enabled">Is menu item enabled</param>
     public TrayItem(string text, string tag, bool enabled)
       : this(text, tag, enabled, null)
     {
     }
 
     /// <summary>
-    ///   Create SysTray item whose Click action is handled by calling add-in
-    /// </summary>
-    /// <param name="text"></param>
-    /// <param name="tagTarget"></param>
-    /// <param name="enabled"></param>
-    /// <param name="routedMethod"></param>
+    ///   Initializes a new instance of the <see cref="TrayItem"/> class whose Click action is handled by calling add-in</summary>
+    /// <param name="text">Display text</param>
+    /// <param name="tagTarget">Executing target</param>
+    /// <param name="enabled">Is menu item enabled</param>
+    /// <param name="routedMethod">Embedded executable code</param>
     public TrayItem(string text, string tagTarget, bool enabled, Func<string, int> routedMethod)
     {
       Text = text;
@@ -78,7 +77,7 @@ namespace Xeno.ToolsHub.ExtensionModel.SystemTray
         }
         else
         {
-          //TODO: Display notification icon bubble with error message
+          // TODO: Display notification icon bubble with error message
           Log.Error("Unspecified tag detected!");
         }
       }
@@ -88,8 +87,8 @@ namespace Xeno.ToolsHub.ExtensionModel.SystemTray
       }
 
       // Below are suggestions for using ICommand
-      //TODO: (for now) Execute tag as Shortcut's "target" to launch app & such
-      //TODO: Send back to add-in so it can execute it's command
+      // TODO: (for now) Execute tag as Shortcut's "target" to launch app & such
+      // TODO: Send back to add-in so it can execute it's command
     }
 
     public void OnSelect(object sender, EventArgs e)
@@ -108,7 +107,7 @@ namespace Xeno.ToolsHub.ExtensionModel.SystemTray
       string dbg = $"TrayItem.OnSelect: [ndx={index}] [text={text}] [tag={tag}]";
       Log.Debug(dbg);
 
-      //TODO: Send back to add-in
+      // TODO: Send back to add-in
     }
   }
 }

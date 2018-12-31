@@ -21,18 +21,29 @@ namespace Xeno.ToolsHub.Tests.SystemTests
     public void Initialize()
     {
       TestHelpers.PrepareTestsFolder();
+      Settings.Clear();
     }
 
     [TestCleanup]
     public void Cleanup()
     {
+      Settings.Clear();
       TestHelpers.CleanTestsFolder();
+    }
+
+    [TestMethod]
+    public void LoadMissingShortcutsTest()
+    {
+      Settings.Clear();
+      ShortcutItems items = Settings.GetObject<ShortcutItems>("RandomCrap", "InvalidKey");
+
+      Assert.AreEqual(items, null);
     }
 
     [TestMethod]
     public void SaveJsonInJsonTest()
     {
-      Settings.PropertiesStore.ClearAll();
+      Settings.Clear();
 
       Settings.SetValue("MyTitle", "MyKey", "MyValue");
       string testValue = Settings.GetValue("MyTitle", "MyKey", string.Empty);
