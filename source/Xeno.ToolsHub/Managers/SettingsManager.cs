@@ -18,13 +18,21 @@ namespace Xeno.ToolsHub.Managers
   using Xeno.ToolsHub.Models.PropertyService;
   using Xeno.ToolsHub.Services.Logging;
 
-  public static class Settings
+  public class SettingsManager
   {
-    private static readonly string _fileName = "ToolsHub.json";
+    private PropertiesStore _propStore = new PropertiesStore();
 
-    private static PropertiesStore _propStore = new PropertiesStore();
+    public SettingsManager()
+      : this(StorageMethod.Unknown)
+    {
+    }
 
-    public static PropertiesStore PropertiesStore
+    public SettingsManager(StorageMethod storageMethod)
+    {
+      StorageMethod = storageMethod;
+    }
+
+    public PropertiesStore PropertiesStore
     {
       get { return _propStore; }
       set { _propStore = value; }
@@ -32,11 +40,11 @@ namespace Xeno.ToolsHub.Managers
 
     /// <summary>Gets or sets the app's default storage method</summary>
     /// <value>The app's default storage method</value>
-    public static StorageMethod StorageMethod { get; set; }
+    public StorageMethod StorageMethod { get; set; }
 
     /// <summary>Gets the settings file</summary>
     /// <value>Full path to ToolsHub.json</value>
-    public static string SettingsFilePath
+    public string SettingsFilePath
     {
       get
       {
@@ -44,16 +52,16 @@ namespace Xeno.ToolsHub.Managers
         pth = Helpers.GetStorageFolder(StorageMethod);
 
         // Append file to path
-        if (!string.IsNullOrEmpty(_fileName))
-          pth = System.IO.Path.Combine(pth, _fileName);
+        if (!string.IsNullOrEmpty(Constants.SettingsFile))
+          pth = System.IO.Path.Combine(pth, Constants.SettingsFile);
 
         return pth;
       }
     }
 
-    public static new string ToString => JsonConvert.SerializeObject(_propStore.PropertyBags, Formatting.Indented);
+    public new string ToString => JsonConvert.SerializeObject(_propStore.PropertyBags, Formatting.Indented);
 
-    public static void Clear()
+    public void Clear()
     {
       _propStore.ClearAll();
     }
@@ -63,7 +71,7 @@ namespace Xeno.ToolsHub.Managers
     /// <param name="propertyId">Property unique Id</param>
     /// <param name="key">Key name</param>
     /// <returns>Setting object</returns>
-    public static T GetObject<T>(string propertyId, string key)
+    public T GetObject<T>(string propertyId, string key)
     {
       try
       {
@@ -83,25 +91,25 @@ namespace Xeno.ToolsHub.Managers
     /// <param name="key">Key name</param>
     /// <param name="defValue">Default value</param>
     /// <returns>Setting's value</returns>
-    public static string GetValue(string propertyId, string key, string defValue = "")
+    public string GetValue(string propertyId, string key, string defValue = "")
     {
       return _propStore.GetValue(propertyId, key, defValue);
     }
 
-    public static void SetObject(string propertyId, string key, object o)
+    public void SetObject(string propertyId, string key, object o)
     {
       string data = JsonConvert.SerializeObject(o, Formatting.None);
       data = Helpers.Base64Encode(data);
       _propStore.SetValue(propertyId, key, data);
     }
 
-    public static void SetValue(string propertyId, string name, string value)
+    public void SetValue(string propertyId, string key, string value)
     {
-      _propStore.SetValue(propertyId, name, value);
+      _propStore.SetValue(propertyId, key, value);
     }
 
     /// <summary>Load properties file into memory</summary>
-    public static void LoadFile()
+    public void LoadFile()
     {
       try
       {
@@ -118,7 +126,7 @@ namespace Xeno.ToolsHub.Managers
     }
 
     /// <summary>Save the stored properties</summary>
-    public static void SaveFile()
+    public void SaveFile()
     {
       try
       {

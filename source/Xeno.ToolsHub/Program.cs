@@ -22,8 +22,7 @@ namespace Xeno.ToolsHub
 
     /// <summary>Gets or sets global singleton</summary>
     /// <value>System settings</value>
-    //// Hey dumbass, you're loading the wrong thing! we changed this to Managers.Settings
-    ////public static Models.PropertyService.PropertiesStore Settings { get; set; }
+    public static Xeno.ToolsHub.Managers.SettingsManager Settings { get; set; }
 
     /// <summary>
     /// The main entry point for the application.
@@ -72,39 +71,36 @@ namespace Xeno.ToolsHub
         return false;
     }
 
-    /// <summary>Load application settings</summary>
+    /// <summary>Loads settings file according to priority</summary>
     private static void LoadAppSettings()
     {
-      // Load settings file here according to priority
-      // 1) Check if a current directory file exists
-      // 2) Check if local user file exists
-      // 3) Check if all users file exists
-      // 4) Default: Ask user which mode to use
       Log.Debug("Loading app settings");
 
       string portable = System.IO.Path.Combine(Helpers.GetStorageFolder(StorageMethod.PortableApp), Constants.SettingsFile);
       string allUsers = System.IO.Path.Combine(Helpers.GetStorageFolder(StorageMethod.AllUsers), Constants.SettingsFile);
       string singleUser = System.IO.Path.Combine(Helpers.GetStorageFolder(StorageMethod.SingleUser), Constants.SettingsFile);
 
+      Settings = new Managers.SettingsManager(StorageMethod.Unknown);
+
       if (System.IO.File.Exists(portable))
       {
-        Managers.Settings.StorageMethod = StorageMethod.PortableApp;
+        Settings.StorageMethod = StorageMethod.PortableApp;
       }
       else if (System.IO.File.Exists(allUsers))
       {
-        Managers.Settings.StorageMethod = StorageMethod.AllUsers;
+        Settings.StorageMethod = StorageMethod.AllUsers;
       }
       else if (System.IO.File.Exists(allUsers))
       {
-        Managers.Settings.StorageMethod = StorageMethod.SingleUser;
+        Settings.StorageMethod = StorageMethod.SingleUser;
       }
       else
       {
-        // Assume new install; Prompt user which storage method they'd like
-        Managers.Settings.StorageMethod = StorageMethod.PortableApp;
+        // TODO: New install: Ask user which mode to use
+        Settings.StorageMethod = StorageMethod.PortableApp;
       }
 
-      Managers.Settings.LoadFile();
+      Settings.LoadFile();
     }
   }
 }
