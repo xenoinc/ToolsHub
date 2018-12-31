@@ -26,27 +26,36 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
 
     public ShortcutsManager()
     {
+      //Settings.LoadFile();
+      string test = Settings.GetValue("ShortcutsAddin", "ShortcutItems");
+
       var shortcuts = Settings.GetObject<ShortcutItems>(ShortcutsAddinId, ShortcutItemsKey);
       this.ShortcutItems = shortcuts == null ? new ShortcutItems() : shortcuts;
     }
 
-    private ShortcutItems ShortcutItems { get; set; }
+    public ShortcutItems ShortcutItems { get; set; }
 
     /// <summary>Load shortcuts into systray from config file</summary>
     /// <returns>Menu item</returns>
-    public MenuItem LoadAsMenuItems()
+    public List<MenuItem> LoadAsMenuItems()
     {
-      var menu = new MenuItem("Shortcuts");
+      List<MenuItem> shortcutItems = new List<MenuItem>();
 
       ShortcutItems shortcuts = Settings.GetObject<ShortcutItems>(ShortcutsAddinId, ShortcutItemsKey);
       if (shortcuts == null)
       {
         Log.Debug($"No shortcuts found. Loading default");
-        var item = new ExtensionModel.SystemTray.TrayItem("Create test JSON...", "", true, OnJsonGenerator);
+        var item = new ExtensionModel.SystemTray.TrayItem("Create test JSON...", "", true, OnGenerateSampleShortcuts);
+
+        MenuItem menu = new MenuItem("Shortcuts");
         menu.MenuItems.Add(0, item);
+        shortcutItems.Add(menu);
       }
       else
       {
+        // TODO: Let the user decide if they want a parent-menu item or not; fornow, make one
+        MenuItem menu = new MenuItem("Shortcuts");
+
         List<MenuItem> items = new List<MenuItem>();
         int ndx = 0;
         foreach (ShortcutItem shortcut in shortcuts)
@@ -55,16 +64,11 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
           menu.MenuItems.Add(ndx, subItem);
           ndx++;
         }
+
+        shortcutItems.Add(menu);
       }
 
-      return menu;
-    }
-
-    /// <summary>ShortcutItems as text</summary>
-    /// <returns>JSON format of ShortcutItems</returns>
-    public override string ToString()
-    {
-      return JsonConvert.SerializeObject(ShortcutItems, Formatting.Indented);
+      return shortcutItems;
     }
 
     public int OnExecuteShortcut(string target)
@@ -75,11 +79,10 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
       return 0;
     }
 
-    public int OnJsonGenerator(string target)
+    public int OnGenerateSampleShortcuts(string target)
     {
       // TODO: 1. Open dialog to create custom shorts
       // TODO: 2. Force SysTray to refresh itself
-
       Log.Debug($"Generating a sample ShortcutItems");
 
       ////string pth1 = System.IO.Path.GetDirectoryName(Application.ExecutablePath);
@@ -87,29 +90,32 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
 
       var items = new ShortcutItems
       {
-        new ShortcutItem { Title = "Dev", Target = @"C:\dev" },
-        new ShortcutItem { Title = "Lab", Target = @"C:\work\lab" },
-        new ShortcutItem { Title = "Docs", Target = @"C:\work\docs" },
+        new ShortcutItem { Title = "Work", Target = @"C:\work" },
+        // new ShortcutItem { Title = "Lab", Target = @"C:\work\lab" },
+        // new ShortcutItem { Title = "Docs", Target = @"C:\work\docs" },
         new ShortcutItem { Title = "X-Drive", Target = @"X:\" },
-        // new ShortcutItem { Title = "-", Target = "" },
-        // new ShortcutItem { Title = "Manage Shortcuts", Target = managePath },
       };
 
-      SaveObject(items);
+      ShortcutItems = items;
+      Save();
 
       // TODO: Managers.SystemTray.SystemTrayManager.Refresh();
       return 0;
     }
 
-    public void SaveObject(object o)
+    /// <summary>Inform parent objects to refresh</summary>
+    public void Refresh()
     {
-      Save(JsonConvert.SerializeObject(o, Formatting.Indented));
+      // TODO: Inform parents (SysTray/Sidebar) to refresh
+      // This may require MessagingCenter
     }
 
-    public void Save(string rawJson)
+    public void Save()
     {
       Settings.SetObject(ShortcutsAddinId, ShortcutItemsKey, ShortcutItems);
       Settings.SaveFile();
+
+      Refresh();
     }
 
     /// <summary>
@@ -132,6 +138,13 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
       }
 
       return false;
+    }
+
+    /// <summary>ShortcutItems as text</summary>
+    /// <returns>JSON format of ShortcutItems</returns>
+    public override string ToString()
+    {
+      return JsonConvert.SerializeObject(ShortcutItems, Formatting.Indented);
     }
   }
 }

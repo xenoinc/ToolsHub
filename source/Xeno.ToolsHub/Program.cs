@@ -22,8 +22,8 @@ namespace Xeno.ToolsHub
 
     /// <summary>Gets or sets global singleton</summary>
     /// <value>System settings</value>
-    // public static Config.Settings.AppSettings Settings { get; set; }
-    public static Models.PropertyService.PropertiesStore Settings { get; set; }
+    //// Hey dumbass, you're loading the wrong thing! we changed this to Managers.Settings
+    ////public static Models.PropertyService.PropertiesStore Settings { get; set; }
 
     /// <summary>
     /// The main entry point for the application.
@@ -102,16 +102,9 @@ namespace Xeno.ToolsHub
       {
         // Assume new install; Prompt user which storage method they'd like
         Managers.Settings.StorageMethod = StorageMethod.PortableApp;
-        throw new NotImplementedException();
       }
 
-      ////TODO: Load application settings
-      ////// Load application settings
-      ////Settings = new AppSettings();
-      ////Settings.InitializeDefaults();
-      ////Settings = Settings.Load();
-      ////
-      ////if (System.IO.File.Exists())
+      Managers.Settings.LoadFile();
     }
   }
 }

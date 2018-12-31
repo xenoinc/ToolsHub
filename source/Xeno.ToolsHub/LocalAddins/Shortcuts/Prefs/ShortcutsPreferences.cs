@@ -40,14 +40,17 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
 
     public bool OnSave()
     {
-      string json = TxtRawFile.Text;
       string errMsg = "";
+      string json = TxtRawFile.Text;
 
       IsModified = false;
 
       if (_shortcuts.ValidateJson(json, out errMsg))
       {
-        _shortcuts.Save(json);
+        _shortcuts.ShortcutItems = Newtonsoft.Json.JsonConvert.DeserializeObject<ShortcutItems>(json);
+        _shortcuts.Save();
+        _shortcuts.Refresh();
+
         return true;
       }
       else

@@ -40,11 +40,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
     public override List<MenuItem> MenuItems()
     {
       ShortcutsManager shortcutTray = new ShortcutsManager();
-      var item = shortcutTray.LoadAsMenuItems();
-
-      var items = new List<MenuItem>();
-      items.Add(item);
-
+      var items = shortcutTray.LoadAsMenuItems();
       return items;
     }
   }
