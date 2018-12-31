@@ -3,10 +3,10 @@
  * Author:  Damian Suess
  * File:    PropertiesManager.cs
  * Description:
- *  Housing store for all add-in properties
+ *  Housing store for all add-in properties.
  */
 
-namespace Xeno.ToolsHub.Services.PropertyService
+namespace Xeno.ToolsHub.Models.PropertyService
 {
   using System.Collections.Generic;
 

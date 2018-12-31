@@ -7,12 +7,13 @@
  *  Used by, SystemTrayManager
  */
 
-using System;
-using System.Windows.Forms;
-using Xeno.ToolsHub.Config;
 
 namespace Xeno.ToolsHub.ExtensionModel.SystemTray
 {
+  using System;
+  using System.Windows.Forms;
+  using Xeno.ToolsHub.Services.Logging;
+
   public class TrayItem : MenuItem
   {
     private Func<string, int> _routedMethod;

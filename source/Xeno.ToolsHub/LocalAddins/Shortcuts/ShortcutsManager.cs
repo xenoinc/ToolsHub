@@ -16,6 +16,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
   using System.IO;
   using System.Windows.Forms;
   using Xeno.ToolsHub.Config;
+  using Xeno.ToolsHub.Services.Logging;
 
   public class ShortcutsManager
   {

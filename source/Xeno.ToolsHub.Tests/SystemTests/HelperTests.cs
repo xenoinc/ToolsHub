@@ -11,6 +11,7 @@ namespace Xeno.ToolsHub.Tests.SystemTests
   using System.Linq;
   using Microsoft.VisualStudio.TestTools.UnitTesting;
   using Xeno.ToolsHub.Config;
+  using Xeno.ToolsHub.Services.Logging;
 
   [TestClass]
   public class HelperTests

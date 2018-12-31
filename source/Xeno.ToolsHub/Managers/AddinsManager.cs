@@ -6,14 +6,15 @@
  *  Manager for system wide add-ins
  */
 
-using System;
-using System.Collections.Generic;
-using Mono.Addins;
-using Xeno.ToolsHub.Config;
-using Xeno.ToolsHub.ExtensionModel;
-
 namespace Xeno.ToolsHub.Managers
 {
+  using System;
+  using System.Collections.Generic;
+  using Mono.Addins;
+  using Xeno.ToolsHub.Config;
+  using Xeno.ToolsHub.ExtensionModel;
+  using Xeno.ToolsHub.Services.Logging;
+
   public class AddinsManager
   {
     //private static readonly Log _log = myLogger.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);

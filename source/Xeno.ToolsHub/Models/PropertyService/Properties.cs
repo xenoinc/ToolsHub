@@ -9,7 +9,7 @@
  *  Tried wrapping Dict<> in Properties, however it wouldn't serialize Id
  */
 
-namespace Xeno.ToolsHub.Services.PropertyService
+namespace Xeno.ToolsHub.Models.PropertyService
 {
   using System.Collections.Generic;
 

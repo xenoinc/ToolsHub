@@ -6,15 +6,15 @@
  *
  */
 
-using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
-using Xeno.ToolsHub.Config;
-using Xeno.ToolsHub.ExtensionModel;
-using Xeno.ToolsHub.Managers;
-
 namespace Xeno.ToolsHub.Views
 {
+  using System;
+  using System.Collections.Generic;
+  using System.Windows.Forms;
+  using Xeno.ToolsHub.ExtensionModel;
+  using Xeno.ToolsHub.Managers;
+  using Xeno.ToolsHub.Services.Logging;
+
   public partial class PreferencesForm : Form
   {
     private readonly AddinsManager _addinManager;

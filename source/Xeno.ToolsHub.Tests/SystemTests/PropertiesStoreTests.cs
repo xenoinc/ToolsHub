@@ -6,12 +6,12 @@
  *  Tests for the main property store
  */
 
-namespace Xeno.ToolsHub.Tests.SystemTests.PropertyTests
+namespace Xeno.ToolsHub.Tests.SystemTests
 {
   using Microsoft.VisualStudio.TestTools.UnitTesting;
   using Newtonsoft.Json;
-  using Xeno.ToolsHub.Config;
-  using Xeno.ToolsHub.Services.PropertyService;
+  using Xeno.ToolsHub.Models.PropertyService;
+  using Xeno.ToolsHub.Services.Logging;
   using Xeno.ToolsHub.Tests.Helpers;
 
   [TestClass]
@@ -56,7 +56,7 @@ namespace Xeno.ToolsHub.Tests.SystemTests.PropertyTests
     [TestMethod]
     public void PostAddItemTest()
     {
-      var store = PropertyHelpers.CreateStore();
+      var store = PropertyHelpers.SamplePropertiesStore();
       var bag1 = store.Find("GUID1");
       var bagBad = store.Find("InvalidGUID");
 
@@ -80,24 +80,29 @@ namespace Xeno.ToolsHub.Tests.SystemTests.PropertyTests
       Assert.AreEqual("A-NewValue3", value);
     }
 
-    // TODO: FIX ME
-    ////[TestMethod]
-    ////public void SaveClearAndLoadPropertiesFileTest()
-    ////{
-    ////  var store = PropertyHelpers.CreateStore();
-    ////  store.SettingsFile = Managers.Settings.StoragePath("Properties.json");
-    ////
-    ////  Log.Debug($"Tmp Path: {store.SettingsFile}");
-    ////
-    ////  store.SaveFile();
-    ////  store.ClearAll();
-    ////  Assert.AreEqual(store.PropertyBags.Count, 0);
-    ////
-    ////  store.LoadFile();
-    ////  Assert.AreNotEqual(store.PropertyBags.Count, 0);
-    ////
-    ////  string json = JsonConvert.SerializeObject(store.PropertyBags, Formatting.Indented);
-    ////  Log.Debug(json);
-    ////}
+    [TestMethod]
+    public void SaveClearAndLoadPropertiesFileTest()
+    {
+      Log.Debug($"Tmp Path: {Managers.Settings.SettingsFilePath}");
+
+      var store = PropertyHelpers.SamplePropertiesStore();
+      Managers.Settings.PropertiesStore = store;
+
+      Managers.Settings.SaveFile();
+      store.ClearAll();
+      Assert.AreEqual(store.PropertyBags.Count, 0);
+
+      Managers.Settings.LoadFile();
+      Assert.AreNotEqual(store.PropertyBags.Count, 0);
+
+      string json = JsonConvert.SerializeObject(store.PropertyBags, Formatting.Indented);
+      Log.Debug(json);
+    }
+
+    [TestMethod]
+    public void SaveJsonInJsonTest()
+    {
+      var store = PropertyHelpers.SamplePropertiesStore();
+    }
   }
 }

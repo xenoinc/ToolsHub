@@ -6,11 +6,11 @@
  *
  */
 
-using Xeno.ToolsHub.Config;
-using Xeno.ToolsHub.ExtensionModel;
-
 namespace Xeno.ToolsHub.SampleAssmAddin.Handlers
 {
+  using Xeno.ToolsHub.ExtensionModel;
+  using Xeno.ToolsHub.Services.Logging;
+
   [Mono.Addins.Extension(NodeName = ExtensionName.UtilityAddin, Path = ExtensionPath.Utility)]
   public class UtilityHandler : UtilityAddin
   {

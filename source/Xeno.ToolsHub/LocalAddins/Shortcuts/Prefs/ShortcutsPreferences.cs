@@ -6,13 +6,13 @@
  *  Shortcuts preference window
  */
 
-using System;
-using System.Windows.Forms;
-using Xeno.ToolsHub.Config;
-using Xeno.ToolsHub.ExtensionModel;
-
 namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
 {
+  using System;
+  using System.Windows.Forms;
+  using Xeno.ToolsHub.ExtensionModel;
+  using Xeno.ToolsHub.Services.Logging;
+
   public partial class ShortcutsPreferences : Form, IPreferencePageForm
   {
     private bool _isModified = false;
@@ -54,7 +54,6 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
         Log.Error("Your JSON formatting is bad, and you should feel bad too!" + Environment.NewLine + errMsg);
         return false;
       }
-
     }
 
     private void LoadShortcutsFile()

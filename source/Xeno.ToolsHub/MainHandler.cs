@@ -15,8 +15,8 @@ namespace Xeno.ToolsHub
 {
   using System.Windows.Forms;
   using Microsoft.Win32;
-  using Xeno.ToolsHub.Config;
   using Xeno.ToolsHub.Managers;
+  using Xeno.ToolsHub.Services.Logging;
 
   /// <summary>
   /// Main application handler. We don't need a GUI form, but do need WndProc

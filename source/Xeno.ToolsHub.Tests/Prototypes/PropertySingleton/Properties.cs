@@ -10,7 +10,7 @@ namespace Xeno.ToolsHub.Tests.SystemTests.PropertySingleton
 {
   using System;
   using System.Collections.Generic;
-  using Xeno.ToolsHub.Config;
+  using Xeno.ToolsHub.Services.Logging;
 
   public class Properties
   {

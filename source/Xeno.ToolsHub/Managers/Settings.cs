@@ -15,7 +15,8 @@ namespace Xeno.ToolsHub.Managers
   using System.Collections.Generic;
   using Newtonsoft.Json;
   using Xeno.ToolsHub.Config;
-  using Xeno.ToolsHub.Services.PropertyService;
+  using Xeno.ToolsHub.Models.PropertyService;
+  using Xeno.ToolsHub.Services.Logging;
 
   public static class Settings
   {
@@ -23,13 +24,19 @@ namespace Xeno.ToolsHub.Managers
 
     private static PropertiesStore _propStore = new PropertiesStore();
 
+    public static PropertiesStore PropertiesStore
+    {
+      get { return _propStore; }
+      set { _propStore = value; }
+    }
+
     /// <summary>Gets or sets the app's default storage method</summary>
     /// <value>The app's default storage method</value>
     public static StorageMethod StorageMethod { get; set; }
 
     /// <summary>Gets the settings file</summary>
     /// <value>Full path to ToolsHub.json</value>
-    public static string SettingsFileName
+    public static string SettingsFilePath
     {
       get
       {
@@ -43,21 +50,6 @@ namespace Xeno.ToolsHub.Managers
         return pth;
       }
     }
-
-    /////// <summary>Get default storage path</summary>
-    /////// <param name="fileName">OPTIONA: File name to include inpath</param>
-    /////// <returns>Folder path to base storage or with included file</returns>
-    ////public static string SettingsFile(string fileName = "")
-    ////{
-    ////  string pth = string.Empty;
-    ////  pth = GetStorageFolder(StorageMethod);
-    ////
-    ////  // Append file to path
-    ////  if (!string.IsNullOrEmpty(fileName))
-    ////    pth = System.IO.Path.Combine(pth, fileName);
-    ////
-    ////  return pth;
-    ////}
 
     /// <summary>Get settings value</summary>
     /// <param name="propertyId">Property unique Id</param>
@@ -79,15 +71,15 @@ namespace Xeno.ToolsHub.Managers
     {
       try
       {
-        if (!string.IsNullOrEmpty(SettingsFileName))
+        if (!string.IsNullOrEmpty(SettingsFilePath))
         {
           _propStore.PropertyBags = JsonConvert.DeserializeObject<List<Properties>>(
-            System.IO.File.ReadAllText(SettingsFileName));
+            System.IO.File.ReadAllText(SettingsFilePath));
         }
       }
       catch (Exception ex)
       {
-        Log.Error($"Error loading properties file, '{SettingsFileName}'. Exception: {ex.Message}");
+        Log.Error($"Error loading properties file, '{SettingsFilePath}'. Exception: {ex.Message}");
       }
     }
 
@@ -96,16 +88,16 @@ namespace Xeno.ToolsHub.Managers
     {
       try
       {
-        if (string.IsNullOrEmpty(SettingsFileName))
+        if (string.IsNullOrEmpty(SettingsFilePath))
           return;
 
         string data = JsonConvert.SerializeObject(_propStore.PropertyBags, Formatting.Indented);
-        if (SettingsFileName != null)
-          System.IO.File.WriteAllText(SettingsFileName, data);
+        if (SettingsFilePath != null)
+          System.IO.File.WriteAllText(SettingsFilePath, data);
       }
       catch (Exception ex)
       {
-        Log.Error($"Error saving properties file, '{SettingsFileName}'. Exception: {ex.Message}");
+        Log.Error($"Error saving properties file, '{SettingsFilePath}'. Exception: {ex.Message}");
       }
     }
   }

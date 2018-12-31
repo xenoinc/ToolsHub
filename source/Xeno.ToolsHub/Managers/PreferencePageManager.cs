@@ -6,13 +6,13 @@
  *
  */
 
-using System;
-using System.Collections.Generic;
-using Xeno.ToolsHub.Config;
-using Xeno.ToolsHub.ExtensionModel;
-
 namespace Xeno.ToolsHub.Managers
 {
+  using System;
+  using System.Collections.Generic;
+  using Xeno.ToolsHub.ExtensionModel;
+  using Xeno.ToolsHub.Services.Logging;
+
   public class PreferencePageManager
   {
     private Dictionary<string, IPreferencePageExtension> _preferencePages;

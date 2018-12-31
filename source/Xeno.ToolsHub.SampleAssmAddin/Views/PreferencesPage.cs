@@ -6,13 +6,13 @@
  *
  */
 
-using System;
-using System.Windows.Forms;
-using Xeno.ToolsHub.Config;
-using Xeno.ToolsHub.ExtensionModel;
-
 namespace Xeno.ToolsHub.SampleAssmAddin.Views
 {
+  using System;
+  using System.Windows.Forms;
+  using Xeno.ToolsHub.ExtensionModel;
+  using Xeno.ToolsHub.Services.Logging;
+
   public partial class PreferencesPage : Form, IPreferencePageForm
   {
     public PreferencesPage()

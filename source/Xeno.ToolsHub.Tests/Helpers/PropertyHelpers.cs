@@ -9,7 +9,7 @@
 namespace Xeno.ToolsHub.Tests.Helpers
 {
   using System.Collections.Generic;
-  using Xeno.ToolsHub.Services.PropertyService;
+  using Xeno.ToolsHub.Models.PropertyService;
 
   public static class PropertyHelpers
   {
@@ -38,7 +38,7 @@ namespace Xeno.ToolsHub.Tests.Helpers
       return bags;
     }
 
-    public static PropertiesStore CreateStore()
+    public static PropertiesStore SamplePropertiesStore()
     {
       var store = new PropertiesStore()
       {

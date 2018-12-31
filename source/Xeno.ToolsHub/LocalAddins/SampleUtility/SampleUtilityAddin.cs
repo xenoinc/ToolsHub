@@ -6,12 +6,12 @@
  *  Sample utility, complete with deconstructor
  */
 
-using System;
-using Xeno.ToolsHub.Config;
-using Xeno.ToolsHub.ExtensionModel;
-
 namespace Xeno.ToolsHub.LocalAddins.SampleUtility
 {
+  using System;
+  using Xeno.ToolsHub.ExtensionModel;
+  using Xeno.ToolsHub.Services.Logging;
+
   public class SampleUtilityAddin : UtilityAddin
   {
     private bool _initialized = false;

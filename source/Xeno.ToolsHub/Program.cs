@@ -12,7 +12,7 @@ namespace Xeno.ToolsHub
   using System.Threading;
   using System.Windows.Forms;
   using Xeno.ToolsHub.Config;
-  using Xeno.ToolsHub.Managers;
+  using Xeno.ToolsHub.Services.Logging;
 
   internal static class Program
   {
@@ -23,7 +23,7 @@ namespace Xeno.ToolsHub
     /// <summary>Gets or sets global singleton</summary>
     /// <value>System settings</value>
     // public static Config.Settings.AppSettings Settings { get; set; }
-    public static Services.PropertyService.PropertiesStore Settings { get; set; }
+    public static Models.PropertyService.PropertiesStore Settings { get; set; }
 
     /// <summary>
     /// The main entry point for the application.

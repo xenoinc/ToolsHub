@@ -8,7 +8,7 @@
 
 namespace Xeno.ToolsHub.SampleXmlAddin.Handlers
 {
-  using Xeno.ToolsHub.Config;
+  using Xeno.ToolsHub.Services.Logging;
 
   public class OnStartHandler : ExtensionModel.IOnStartupExtension
   {

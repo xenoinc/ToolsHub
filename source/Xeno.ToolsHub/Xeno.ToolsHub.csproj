@@ -88,7 +88,10 @@
     <Compile Include="ExtensionModel\ISystemShutdownExtension.cs" />
     <Compile Include="ExtensionModel\IPreferencePageExtension.cs" />
     <Compile Include="ExtensionModel\Constants.cs" />
-    <Compile Include="Models\Log.cs" />
+    <Compile Include="Services\Logging\ConsoleLogger.cs" />
+    <Compile Include="Services\Logging\FileLogger.cs" />
+    <Compile Include="Services\Logging\ILogger.cs" />
+    <Compile Include="Services\Logging\Log.cs" />
     <Compile Include="Managers\SidebarManager.cs" />
     <Compile Include="ExtensionModel\SystemTray\SystemTrayManager.cs" />
     <Compile Include="Managers\Settings.cs" />

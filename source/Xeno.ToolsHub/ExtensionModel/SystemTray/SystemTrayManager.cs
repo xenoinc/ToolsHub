@@ -17,35 +17,23 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using Xeno.ToolsHub.Config;
+using Xeno.ToolsHub.Services.Logging;
 
 namespace Xeno.ToolsHub.ExtensionModel.SystemTray
 {
   public class SystemTrayManager : ApplicationContext
   {
+    private MenuItem[] _trayMenu;
+
+    private NotifyIcon _trayNotify = new NotifyIcon();
+
+    private MainHandler _mainHandler;
+
     public SystemTrayManager(MainHandler mainHandler)
     {
       _mainHandler = mainHandler;
       MenuRefresh();
     }
-
-    public void AlertBubble(string message, string title)
-    {
-      //TODO: Use Xamarin's MessageSender and subscribe when to show balloon
-      _trayNotify.BalloonTipTitle = message;
-      _trayNotify.BalloonTipText = title;
-      _trayNotify.ShowBalloonTip(1000);
-    }
-
-    public void MenuRefresh()
-    {
-      //TODO: Create a singleton or IoC pattern to call Refresh() from outside
-      InitTrayMenu();
-      DrawTrayNotifacation();
-    }
-
-    private MenuItem[] _trayMenu;
-    private NotifyIcon _trayNotify = new NotifyIcon();
-    private MainHandler _mainHandler;
 
     private System.Drawing.Icon ApplicationIcon
     {
@@ -65,6 +53,21 @@ namespace Xeno.ToolsHub.ExtensionModel.SystemTray
           return Properties.Resources.AppIcon;
         }
       }
+    }
+
+    public void AlertBubble(string message, string title)
+    {
+      //TODO: Use Xamarin's MessageSender and subscribe when to show balloon
+      _trayNotify.BalloonTipTitle = message;
+      _trayNotify.BalloonTipText = title;
+      _trayNotify.ShowBalloonTip(1000);
+    }
+
+    public void MenuRefresh()
+    {
+      //TODO: Create a singleton or IoC pattern to call Refresh() from outside
+      InitTrayMenu();
+      DrawTrayNotifacation();
     }
 
     /// <summary>Redraw systray menu from memory</summary>

@@ -6,11 +6,11 @@
  *  SampleXml Utility extension
  */
 
-using Xeno.ToolsHub.Config;
-using Xeno.ToolsHub.ExtensionModel;
-
 namespace Xeno.ToolsHub.SampleXmlAddin.Handlers
 {
+  using Xeno.ToolsHub.ExtensionModel;
+  using Xeno.ToolsHub.Services.Logging;
+
   public class UtilityHandler : UtilityAddin
   {
     private bool _initialized = false;
