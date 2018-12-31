@@ -26,10 +26,10 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
 
     public ShortcutsManager()
     {
-      //Settings.LoadFile();
-      string test = Settings.GetValue("ShortcutsAddin", "ShortcutItems");
+      //Settings.LoadFile();      
+      string test = Program.Settings.GetValue("ShortcutsAddin", "ShortcutItems");
 
-      var shortcuts = Settings.GetObject<ShortcutItems>(ShortcutsAddinId, ShortcutItemsKey);
+      var shortcuts = Program.Settings.GetObject<ShortcutItems>(ShortcutsAddinId, ShortcutItemsKey);
       this.ShortcutItems = shortcuts == null ? new ShortcutItems() : shortcuts;
     }
 
@@ -41,7 +41,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
     {
       List<MenuItem> shortcutItems = new List<MenuItem>();
 
-      ShortcutItems shortcuts = Settings.GetObject<ShortcutItems>(ShortcutsAddinId, ShortcutItemsKey);
+      ShortcutItems shortcuts = Program.Settings.GetObject<ShortcutItems>(ShortcutsAddinId, ShortcutItemsKey);
       if (shortcuts == null)
       {
         Log.Debug($"No shortcuts found. Loading default");
@@ -83,23 +83,19 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
     {
       // TODO: 1. Open dialog to create custom shorts
       // TODO: 2. Force SysTray to refresh itself
-      Log.Debug($"Generating a sample ShortcutItems");
 
-      ////string pth1 = System.IO.Path.GetDirectoryName(Application.ExecutablePath);
-      ////string pth2 = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+      Log.Debug($"Generating a sample ShortcutItems");
 
       var items = new ShortcutItems
       {
-        new ShortcutItem { Title = "Work", Target = @"C:\work" },
-        // new ShortcutItem { Title = "Lab", Target = @"C:\work\lab" },
-        // new ShortcutItem { Title = "Docs", Target = @"C:\work\docs" },
-        new ShortcutItem { Title = "X-Drive", Target = @"X:\" },
+        new ShortcutItem { Title = "C-Drive", Target = @"C:\" },
+        new ShortcutItem { Title = "D-Drive", Target = @"D:\" },
       };
 
       ShortcutItems = items;
       Save();
 
-      // TODO: Managers.SystemTray.SystemTrayManager.Refresh();
+      // TODO: MessageSender to refresh SysTray - Managers.SystemTray.SystemTrayManager.Refresh();
       return 0;
     }
 
@@ -112,8 +108,8 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
 
     public void Save()
     {
-      Settings.SetObject(ShortcutsAddinId, ShortcutItemsKey, ShortcutItems);
-      Settings.SaveFile();
+      Program.Settings.SetObject(ShortcutsAddinId, ShortcutItemsKey, ShortcutItems);
+      Program.Settings.SaveFile();
 
       Refresh();
     }

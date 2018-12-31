@@ -17,11 +17,9 @@ namespace Xeno.ToolsHub.Tests.SystemTests
     /// <summary>Clear and create test folder</summary>
     public static void PrepareTestsFolder()
     {
-      // WARNING: ONLY USE TEST!!
-      Managers.Settings.StorageMethod = StorageMethod.UnitTest;
-
       try
       {
+        // WARNING: ONLY USE StorageMethod.UnitTest!!
         System.IO.Directory.CreateDirectory(Helpers.GetStorageFolder(StorageMethod.UnitTest));
       }
       catch (Exception ex)

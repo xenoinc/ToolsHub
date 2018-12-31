@@ -17,25 +17,27 @@ namespace Xeno.ToolsHub.Tests.SystemTests
   [TestClass]
   public class ShortcutsTests
   {
+    private SettingsManager _settings = new SettingsManager(Config.StorageMethod.UnitTest);
+
     [TestInitialize]
     public void Initialize()
     {
       TestHelpers.PrepareTestsFolder();
-      Settings.Clear();
+      _settings.Clear();
     }
 
     [TestCleanup]
     public void Cleanup()
     {
-      Settings.Clear();
+      _settings.Clear();
       TestHelpers.CleanTestsFolder();
     }
 
     [TestMethod]
     public void LoadMissingShortcutsTest()
     {
-      Settings.Clear();
-      ShortcutItems items = Settings.GetObject<ShortcutItems>("RandomCrap", "InvalidKey");
+      _settings.Clear();
+      ShortcutItems items = _settings.GetObject<ShortcutItems>("RandomCrap", "InvalidKey");
 
       Assert.AreEqual(items, null);
     }
@@ -43,13 +45,13 @@ namespace Xeno.ToolsHub.Tests.SystemTests
     [TestMethod]
     public void SaveJsonInJsonTest()
     {
-      Settings.Clear();
+      _settings.Clear();
 
-      Settings.SetValue("MyTitle", "MyKey", "MyValue");
-      string testValue = Settings.GetValue("MyTitle", "MyKey", string.Empty);
+      _settings.SetValue("MyTitle", "MyKey", "MyValue");
+      string testValue = _settings.GetValue("MyTitle", "MyKey", string.Empty);
       Assert.AreEqual(testValue, "MyValue");
 
-      Settings.SaveFile();
+      _settings.SaveFile();
 
       // Strap-on a new JSON element
       var items = new ShortcutItems
@@ -64,22 +66,22 @@ namespace Xeno.ToolsHub.Tests.SystemTests
 
       string json = JsonConvert.SerializeObject(items, Formatting.None);
 
-      Settings.SetValue("MyJsonTest", "TestShortcuts", json);
-      Settings.SaveFile();
+      _settings.SetValue("MyJsonTest", "TestShortcuts", json);
+      _settings.SaveFile();
 
-      string storedJson = Settings.GetValue("MyJsonTest", "TestShortcuts", string.Empty);
+      string storedJson = _settings.GetValue("MyJsonTest", "TestShortcuts", string.Empty);
       Assert.AreEqual(json, storedJson);
 
       // Log.Debug(storedJson);
-      Log.Debug("BEFORE:" + System.Environment.NewLine + Settings.ToString);
+      Log.Debug("BEFORE:" + System.Environment.NewLine + _settings.ToString);
 
       // Clean the slate and re-load
-      Settings.SaveFile();
-      Settings.Clear();
-      Settings.LoadFile();
+      _settings.SaveFile();
+      _settings.Clear();
+      _settings.LoadFile();
 
-      ShortcutItems items2 = Settings.GetObject<ShortcutItems>("MyJsonTest", "TestShortcuts");
-      Log.Debug(Settings.ToString);
+      ShortcutItems items2 = _settings.GetObject<ShortcutItems>("MyJsonTest", "TestShortcuts");
+      Log.Debug(_settings.ToString);
 
       Assert.IsNotNull(items2);
       Assert.AreEqual(items2.Count, 6);

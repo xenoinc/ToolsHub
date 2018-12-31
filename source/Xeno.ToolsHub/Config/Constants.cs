@@ -12,7 +12,7 @@ namespace Xeno.ToolsHub.Config
 
   public static class Constants
   {
-    public static string SettingsFile => "ToolsHub.json";
+    public static string SettingsFile => "ToolsHub.db";
 
     public static string LocalSettingsPath => Path.Combine(LocalFolder, SettingsFile);
 

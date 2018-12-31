@@ -10,6 +10,7 @@ namespace Xeno.ToolsHub.Tests.SystemTests
 {
   using Microsoft.VisualStudio.TestTools.UnitTesting;
   using Newtonsoft.Json;
+  using Xeno.ToolsHub.Managers;
   using Xeno.ToolsHub.Models.PropertyService;
   using Xeno.ToolsHub.Services.Logging;
   using Xeno.ToolsHub.Tests.Helpers;
@@ -17,6 +18,8 @@ namespace Xeno.ToolsHub.Tests.SystemTests
   [TestClass]
   public class PropertiesStoreTests
   {
+    private SettingsManager _settings = new SettingsManager(Config.StorageMethod.UnitTest);
+
     [TestInitialize]
     public void TestInit()
     {
@@ -83,16 +86,16 @@ namespace Xeno.ToolsHub.Tests.SystemTests
     [TestMethod]
     public void SaveClearAndLoadPropertiesFileTest()
     {
-      Log.Debug($"Tmp Path: {Managers.Settings.SettingsFilePath}");
+      Log.Debug($"Tmp Path: {_settings.SettingsFilePath}");
 
       var store = PropertyHelpers.SamplePropertiesStore();
-      Managers.Settings.PropertiesStore = store;
+      _settings.PropertiesStore = store;
 
-      Managers.Settings.SaveFile();
+      _settings.SaveFile();
       store.ClearAll();
       Assert.AreEqual(store.PropertyBags.Count, 0);
 
-      Managers.Settings.LoadFile();
+      _settings.LoadFile();
       Assert.AreNotEqual(store.PropertyBags.Count, 0);
 
       string json = JsonConvert.SerializeObject(store.PropertyBags, Formatting.Indented);

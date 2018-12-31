@@ -20,12 +20,12 @@ namespace Xeno.ToolsHub.VeraCryptAddin
 
     public static void SettingSave(string setting, string value)
     {
-      Xeno.ToolsHub.Managers.Settings.SetValue("VeraCrypt", setting, value);
+      Xeno.ToolsHub.Services.SettingsService.SetValue("VeraCrypt", setting, value);
     }
 
     public static string SettingLoad(string setting, string defaultValue)
     {
-      return Xeno.ToolsHub.Managers.Settings.GetValue("VeraCrypt", setting, defaultValue);
+      return Xeno.ToolsHub.Services.SettingsService.GetValue("VeraCrypt", setting, defaultValue);
     }
 
     public override void Execute()
