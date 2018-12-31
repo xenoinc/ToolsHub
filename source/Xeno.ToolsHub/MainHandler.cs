@@ -9,24 +9,20 @@
  *  [ ] Use IoC to manage managers. (i.e. AutoFac)
  */
 
-using System.Windows.Forms;
-using Microsoft.Win32;
-using Xeno.ToolsHub.Config;
-using Xeno.ToolsHub.Managers;
-
-//[assembly: Mono.Addins.AddinRoot("ToolsHub", "1.0")]
+////[assembly: Mono.Addins.AddinRoot("ToolsHub", "1.0")]
 
 namespace Xeno.ToolsHub
 {
+  using System.Windows.Forms;
+  using Microsoft.Win32;
+  using Xeno.ToolsHub.Managers;
+  using Xeno.ToolsHub.Services.Logging;
+
   /// <summary>
   /// Main application handler. We don't need a GUI form, but do need WndProc
   /// </summary>
   public class MainHandler : ApplicationContext
   {
-    //private NotifyIcon _trayIcon = new NotifyIcon();
-    //PreferencesForm prefWnd = new PreferencesForm();
-    //MenuItem configMenuItem
-
     private ExtensionModel.SystemTray.SystemTrayManager _sysTray;
     private Managers.WndProcManager _wndProc;
     private AddinsManager _addinsManager;
@@ -34,11 +30,11 @@ namespace Xeno.ToolsHub
     public MainHandler()
     {
       Log.Debug("ToolsHub initializing..");
+
       // 1. Listen for system events
       // 2. Initialize SystemTray (add-in) handler
       // 3. Initialize Sidebar (add-in) handler
       // 4. Initialize Application add-in manager
-
       InitAddinsManager();
 
       InitSystemEvents();
@@ -49,7 +45,7 @@ namespace Xeno.ToolsHub
       InitWndProc();
 
       // Consider moving this as it's own add-in host
-      //InitSideBar();
+      // InitSideBar();
 
       // We're done loading
       InitUtilityAddins();
@@ -65,9 +61,9 @@ namespace Xeno.ToolsHub
 
     private void Application_ApplicationExit(object sender, System.EventArgs e)
     {
-      //TODO: Inform add-ins of closing application
-      //TODO: Clean up any additional resources
-      //throw new System.NotImplementedException();
+      // TODO: Inform add-ins of closing application
+      // TODO: Clean up any additional resources
+      // throw new System.NotImplementedException();
     }
 
     private void DebugTests()

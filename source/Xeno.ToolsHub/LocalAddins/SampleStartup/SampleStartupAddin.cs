@@ -6,10 +6,10 @@
  *  Sample OnStartup add-in
  */
 
-using Xeno.ToolsHub.Config;
-
 namespace Xeno.ToolsHub.LocalAddins.SampleStartup
 {
+  using Xeno.ToolsHub.Services.Logging;
+
   public class SampleStartupAddin : ExtensionModel.IOnStartupExtension
   {
     public SampleStartupAddin()

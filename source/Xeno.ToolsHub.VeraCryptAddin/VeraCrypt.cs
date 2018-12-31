@@ -6,12 +6,12 @@
  *  Entry point to VeraCrypt add-in
  */
 
-using System;
-using Xeno.ToolsHub.Config;
-using Xeno.ToolsHub.ExtensionModel;
-
 namespace Xeno.ToolsHub.VeraCryptAddin
 {
+  using System;
+  using Xeno.ToolsHub.ExtensionModel;
+  using Xeno.ToolsHub.Services.Logging;
+
   public class VeraCrypt : UtilityAddin
   {
     private bool _initialized = false;
@@ -20,12 +20,12 @@ namespace Xeno.ToolsHub.VeraCryptAddin
 
     public static void SettingSave(string setting, string value)
     {
-      Xeno.ToolsHub.Config.Settings.AddinSettings.Save("VeraCrypt", setting, value);
+      Xeno.ToolsHub.Managers.Settings.SetValue("VeraCrypt", setting, value);
     }
 
     public static string SettingLoad(string setting, string defaultValue)
     {
-      return Xeno.ToolsHub.Config.Settings.AddinSettings.Load("VeraCrypt", setting, defaultValue);
+      return Xeno.ToolsHub.Managers.Settings.GetValue("VeraCrypt", setting, defaultValue);
     }
 
     public override void Execute()
@@ -33,8 +33,7 @@ namespace Xeno.ToolsHub.VeraCryptAddin
       Log.Debug("VeraCrypt add-in initializing");
       _initialized = true;
 
-      //TODO: Auto-mount virtual drives
-
+      // TODO: Auto-mount virtual drives
       throw new NotImplementedException();
     }
 
@@ -43,7 +42,6 @@ namespace Xeno.ToolsHub.VeraCryptAddin
       Log.Debug("VeraCrypt add-in shutting down");
 
       // Auto-dismount virtual drives
-
       throw new NotImplementedException();
     }
   }

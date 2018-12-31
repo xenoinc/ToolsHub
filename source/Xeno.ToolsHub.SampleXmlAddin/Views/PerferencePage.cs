@@ -6,13 +6,13 @@
  *
  */
 
-using System;
-using System.Windows.Forms;
-using Xeno.ToolsHub.Config;
-using Xeno.ToolsHub.ExtensionModel.Preferences;
-
-namespace Xeno.ToolsHub.SampleXmlAddin
+namespace Xeno.ToolsHub.SampleXmlAddin.Views
 {
+  using System;
+  using System.Windows.Forms;
+  using Xeno.ToolsHub.ExtensionModel;
+  using Xeno.ToolsHub.Services.Logging;
+
   public partial class PerferencePage : Form, IPreferencePageForm
   {
     private bool _isModified = false;

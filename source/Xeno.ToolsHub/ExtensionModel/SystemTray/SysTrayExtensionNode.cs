@@ -11,15 +11,15 @@ using Mono.Addins;
 
 namespace Xeno.ToolsHub.ExtensionModel.SystemTray
 {
-  //[ExtensionNode("SysTray")]  // or "TrayMenu"
-  //[ExtensionNodeChild(typeof(SysTrayExtensionNode))]
+  // [ExtensionNode("SysTray")]  // or "TrayMenu"
+  // [ExtensionNodeChild(typeof(SysTrayExtensionNode))]
   //
-  //or
+  // or
   //
-  //<ExtensionPoint Path = "/ToolsHub/SystemTray" >
+  // <ExtensionPoint Path = "/ToolsHub/SystemTray" >
   //  < ExtensionNode Name="SysTrayAddin" Type="Xeno.ToolsHub.ExtensionModel.ISystemTrayExtension" />
   //  <!--<ExtensionNode Name = "SysTrayAddin" Type="Xeno.ToolsHub.Managers.SystemTray.SysTrayExtensionNode" />-->
-  //</ExtensionPoint>
+  // </ExtensionPoint>
 
   internal class SysTrayExtensionNode : TypeExtensionNode
   {
@@ -32,7 +32,7 @@ namespace Xeno.ToolsHub.ExtensionModel.SystemTray
       foreach (var child in ChildNodes)
       {
         ;
-        //menuItem.MenuItems.Add(child.CreateMenuItem());
+        // menuItem.MenuItems.Add(child.CreateMenuItem());
       }
 
       return menuItem;

@@ -7,6 +7,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		CodeMaid.config = CodeMaid.config
+		stylecop.json = stylecop.json
+		stylecop.ruleset = stylecop.ruleset
 		ToolsHub.sln.licenseheader = ToolsHub.sln.licenseheader
 	EndProjectSection
 EndProject
@@ -27,6 +29,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mono.Addins.Setup", "..\libs\Mono.Addins\Mono.Addins.Setup\Mono.Addins.Setup.csproj", "{A85C9721-C054-4BD8-A1F3-0227615F0A36}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleAssmAddin", "Xeno.ToolsHub.SampleAssmAddin\SampleAssmAddin.csproj", "{D7C7DBE9-5AEB-4B1C-99C0-722F5AEF16E2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xeno.ToolsHub.Tests", "Xeno.ToolsHub.Tests\Xeno.ToolsHub.Tests.csproj", "{E47834DE-8778-4B90-AF7F-C8A1564D2FAE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -62,6 +66,10 @@ Global
 		{D7C7DBE9-5AEB-4B1C-99C0-722F5AEF16E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7C7DBE9-5AEB-4B1C-99C0-722F5AEF16E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7C7DBE9-5AEB-4B1C-99C0-722F5AEF16E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E47834DE-8778-4B90-AF7F-C8A1564D2FAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E47834DE-8778-4B90-AF7F-C8A1564D2FAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E47834DE-8778-4B90-AF7F-C8A1564D2FAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E47834DE-8778-4B90-AF7F-C8A1564D2FAE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

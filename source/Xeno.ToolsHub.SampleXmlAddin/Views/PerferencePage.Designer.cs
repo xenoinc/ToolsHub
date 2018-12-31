@@ -6,7 +6,7 @@
  *  
  */
 
-namespace Xeno.ToolsHub.SampleXmlAddin
+namespace Xeno.ToolsHub.SampleXmlAddin.Views
 {
   partial class PerferencePage
   {

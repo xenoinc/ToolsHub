@@ -6,21 +6,20 @@
  *
  */
 
-using System;
-using System.Collections.Generic;
-using Xeno.ToolsHub.Config;
-using Xeno.ToolsHub.ExtensionModel;
-using Xeno.ToolsHub.ExtensionModel.Preferences;
-
 namespace Xeno.ToolsHub.Managers
 {
+  using System;
+  using System.Collections.Generic;
+  using Xeno.ToolsHub.ExtensionModel;
+  using Xeno.ToolsHub.Services.Logging;
+
   public class PreferencePageManager
   {
-    private Dictionary<string, PreferencePageExtension> _preferencePages;
+    private Dictionary<string, IPreferencePageExtension> _preferencePages;
 
     public PreferencePageManager()
     {
-      _preferencePages = new Dictionary<string, PreferencePageExtension>();
+      _preferencePages = new Dictionary<string, IPreferencePageExtension>();
 
       ReloadPages();
     }

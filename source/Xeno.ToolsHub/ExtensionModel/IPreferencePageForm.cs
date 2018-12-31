@@ -6,7 +6,7 @@
  *  Preference page form interface. Not required, but for best-practice
  */
 
-namespace Xeno.ToolsHub.ExtensionModel.Preferences
+namespace Xeno.ToolsHub.ExtensionModel
 {
   public interface IPreferencePageForm
   {

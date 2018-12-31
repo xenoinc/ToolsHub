@@ -1,21 +1,21 @@
 ﻿/* Copyright Xeno Innovations, Inc. 2018
  * Date:    2018-12-17
  * Author:  Damian Suess
- * File:    SampleAssmPreferencesPage.cs
+ * File:    PreferencesPage.cs
  * Description:
  *
  */
 
-using System;
-using System.Windows.Forms;
-using Xeno.ToolsHub.Config;
-using Xeno.ToolsHub.ExtensionModel.Preferences;
-
-namespace Xeno.ToolsHub.SampleAssmAddin
+namespace Xeno.ToolsHub.SampleAssmAddin.Views
 {
-  public partial class SampleAssmPreferencesPage : Form, IPreferencePageForm
+  using System;
+  using System.Windows.Forms;
+  using Xeno.ToolsHub.ExtensionModel;
+  using Xeno.ToolsHub.Services.Logging;
+
+  public partial class PreferencesPage : Form, IPreferencePageForm
   {
-    public SampleAssmPreferencesPage()
+    public PreferencesPage()
     {
       InitializeComponent();
     }

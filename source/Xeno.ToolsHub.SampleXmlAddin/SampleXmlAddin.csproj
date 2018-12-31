@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>..\stylecop.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -43,19 +44,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="OnStartHandler.cs" />
-    <Compile Include="PreferenceHandler.cs" />
-    <Compile Include="PerferencePage.cs">
+    <Compile Include="Handlers\OnStartHandler.cs" />
+    <Compile Include="Handlers\PreferenceHandler.cs" />
+    <Compile Include="Views\PerferencePage.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PerferencePage.Designer.cs">
+    <Compile Include="Views\PerferencePage.Designer.cs">
       <DependentUpon>PerferencePage.cs</DependentUpon>
     </Compile>
-    <Compile Include="UtilityHandler.cs" />
+    <Compile Include="Handlers\UtilityHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SysTrayHandler.cs" />
+    <Compile Include="Handlers\SysTrayHandler.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="ReadMe.md" />
   </ItemGroup>
   <ItemGroup>
@@ -68,14 +70,18 @@
     <Content Include="SampleXmlAddin.addin">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TrayMenu.addin">
+    <EmbeddedResource Include="TrayMenu.addin">
       <SubType>Designer</SubType>
-    </Content>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="PerferencePage.resx">
+    <EmbeddedResource Include="Views\PerferencePage.resx">
       <DependentUpon>PerferencePage.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

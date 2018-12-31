@@ -6,9 +6,9 @@
  *  
  */
 
-namespace Xeno.ToolsHub.SampleAssmAddin
+namespace Xeno.ToolsHub.SampleAssmAddin.Views
 {
-  partial class SampleAssmPreferencesPage
+  partial class PreferencesPage
   {
     /// <summary>
     /// Required designer variable.

@@ -6,17 +6,17 @@
  *
  */
 
-using Xeno.ToolsHub.Config;
-using Xeno.ToolsHub.ExtensionModel;
-
-namespace Xeno.ToolsHub.SampleAssmAddin
+namespace Xeno.ToolsHub.SampleAssmAddin.Handlers
 {
+  using Xeno.ToolsHub.ExtensionModel;
+  using Xeno.ToolsHub.Services.Logging;
+
   [Mono.Addins.Extension(NodeName = ExtensionName.UtilityAddin, Path = ExtensionPath.Utility)]
-  public class AddinUtilityHandler : UtilityAddin
+  public class UtilityHandler : UtilityAddin
   {
     private bool _initialized = false;
 
-    public AddinUtilityHandler()
+    public UtilityHandler()
     {
       _initialized = true;
       Log.Debug("External SampleAssm Utility add-in: Initialized");

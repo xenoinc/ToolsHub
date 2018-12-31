@@ -9,14 +9,16 @@
  *    - Add shortcuts links to system tray 'Shortcuts' sub-menu
  */
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Windows.Forms;
-using Xeno.ToolsHub.Config;
-
 namespace Xeno.ToolsHub.LocalAddins.Shortcuts
 {
+  using System;
+  using System.Collections.Generic;
+  using System.IO;
+  using System.Windows.Forms;
+  using Newtonsoft.Json;
+  using Xeno.ToolsHub.Config;
+  using Xeno.ToolsHub.Services.Logging;
+
   public class ShortcutsManager
   {
     public ShortcutsManager()
@@ -101,11 +103,15 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
         new ShortcutItem { Title = "Manage Shortcuts", Target = managePath },
       };
 
-      Helpers.FileSerialize(items, LocalShortcutsPath, true);
+      SaveObject(items);
 
-      //TODO: Managers.SystemTray.SystemTrayManager.Refresh();
-
+      // TODO: Managers.SystemTray.SystemTrayManager.Refresh();
       return 0;
+    }
+
+    public void SaveObject(object o)
+    {
+      Save(JsonConvert.SerializeObject(o, Formatting.Indented));
     }
 
     public void Save(string rawJson)
