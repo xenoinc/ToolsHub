@@ -59,7 +59,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
 
     private void LoadShortcutsFile()
     {
-      TxtRawFile.Text = _shortcuts.LoadAsText();
+      TxtRawFile.Text = _shortcuts.ToString();
     }
 
     private void ShortcutsPreferences_Load(object sender, EventArgs e)

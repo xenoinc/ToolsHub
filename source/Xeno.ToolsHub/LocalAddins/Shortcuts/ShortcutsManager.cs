@@ -13,21 +13,24 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
 {
   using System;
   using System.Collections.Generic;
-  using System.IO;
   using System.Windows.Forms;
   using Newtonsoft.Json;
-  using Xeno.ToolsHub.Config;
+  using Xeno.ToolsHub.Managers;
   using Xeno.ToolsHub.Services.Logging;
 
   public class ShortcutsManager
   {
+    public const string ShortcutsAddinId = "ShortcutsAddin";
+
+    public const string ShortcutItemsKey = "ShortcutItems";
+
     public ShortcutsManager()
     {
+      var shortcuts = Settings.GetObject<ShortcutItems>(ShortcutsAddinId, ShortcutItemsKey);
+      this.ShortcutItems = shortcuts == null ? new ShortcutItems() : shortcuts;
     }
 
-    private string LocalShortcutsPath => Path.Combine(Constants.LocalFolder, ShortcutsFile);
-
-    private string ShortcutsFile => "shortcuts.json";
+    private ShortcutItems ShortcutItems { get; set; }
 
     /// <summary>Load shortcuts into systray from config file</summary>
     /// <returns>Menu item</returns>
@@ -35,17 +38,15 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
     {
       var menu = new MenuItem("Shortcuts");
 
-      if (!System.IO.File.Exists(LocalShortcutsPath))
+      ShortcutItems shortcuts = Settings.GetObject<ShortcutItems>(ShortcutsAddinId, ShortcutItemsKey);
+      if (shortcuts == null)
       {
-        Log.Debug($"Missing local '{ShortcutsFile}' file");
-
+        Log.Debug($"No shortcuts found. Loading default");
         var item = new ExtensionModel.SystemTray.TrayItem("Create test JSON...", "", true, OnJsonGenerator);
         menu.MenuItems.Add(0, item);
       }
       else
       {
-        var shortcuts = Helpers.FileDeserialize<ShortcutItems>(LocalShortcutsPath);
-
         List<MenuItem> items = new List<MenuItem>();
         int ndx = 0;
         foreach (ShortcutItem shortcut in shortcuts)
@@ -59,18 +60,11 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
       return menu;
     }
 
-    /// <summary>Load shortcuts JSON file into memory</summary>
-    /// <returns>File contents</returns>
-    public string LoadAsText()
+    /// <summary>ShortcutItems as text</summary>
+    /// <returns>JSON format of ShortcutItems</returns>
+    public override string ToString()
     {
-      string buffer = string.Empty;
-
-      if (System.IO.File.Exists(LocalShortcutsPath))
-      {
-        buffer = File.ReadAllText(LocalShortcutsPath);
-      }
-
-      return buffer;
+      return JsonConvert.SerializeObject(ShortcutItems, Formatting.Indented);
     }
 
     public int OnExecuteShortcut(string target)
@@ -83,15 +77,13 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
 
     public int OnJsonGenerator(string target)
     {
-      //TODO: 1. Open dialog to create custom shorts
-      //TODO: 2. Force SysTray to refresh itself
+      // TODO: 1. Open dialog to create custom shorts
+      // TODO: 2. Force SysTray to refresh itself
 
-      Log.Debug($"Generating a test, {ShortcutsFile}");
+      Log.Debug($"Generating a sample ShortcutItems");
 
-      string pth1 = System.IO.Path.GetDirectoryName(Application.ExecutablePath);
-      //string pth2 = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
-
-      string managePath = Path.Combine(pth1, ShortcutsFile);
+      ////string pth1 = System.IO.Path.GetDirectoryName(Application.ExecutablePath);
+      ////string pth2 = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
 
       var items = new ShortcutItems
       {
@@ -99,8 +91,8 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
         new ShortcutItem { Title = "Lab", Target = @"C:\work\lab" },
         new ShortcutItem { Title = "Docs", Target = @"C:\work\docs" },
         new ShortcutItem { Title = "X-Drive", Target = @"X:\" },
-        new ShortcutItem { Title = "-", Target = "" },
-        new ShortcutItem { Title = "Manage Shortcuts", Target = managePath },
+        // new ShortcutItem { Title = "-", Target = "" },
+        // new ShortcutItem { Title = "Manage Shortcuts", Target = managePath },
       };
 
       SaveObject(items);
@@ -116,7 +108,8 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
 
     public void Save(string rawJson)
     {
-      File.WriteAllText(LocalShortcutsPath, rawJson);
+      Settings.SetObject(ShortcutsAddinId, ShortcutItemsKey, ShortcutItems);
+      Settings.SaveFile();
     }
 
     /// <summary>
