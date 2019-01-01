@@ -8,6 +8,8 @@
 
 namespace PomodoroAddin.Handlers
 {
+  using System.Windows.Forms;
+  using PomodoroAddin.Views;
   using Xeno.ToolsHub.ExtensionModel;
 
   [Mono.Addins.Extension(
@@ -15,24 +17,23 @@ namespace PomodoroAddin.Handlers
     Path = ExtensionPath.PreferencePage)]
   public class PreferenceHandler : IPreferencePageExtension
   {
-    private Views.PreferencePage _page;
+    private PreferencePage _page;
 
     public string Id { get; set; }
 
     public bool IsModified => _page.IsModified;
+    public Form Page => _page;
 
-    public System.Windows.Forms.Form Page => throw new System.NotImplementedException();
-
-    public string Title => throw new System.NotImplementedException();
+    public string Title { get { return "Pomodoro"; } }
 
     public void InitializePage()
     {
-      throw new System.NotImplementedException();
+      _page = new PreferencePage();
     }
 
     public void OnSave()
     {
-      throw new System.NotImplementedException();
+      _page.OnSave();
     }
   }
 }

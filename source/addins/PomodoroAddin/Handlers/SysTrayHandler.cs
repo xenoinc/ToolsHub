@@ -13,8 +13,8 @@ namespace PomodoroAddin.Handlers
   using Xeno.ToolsHub.ExtensionModel;
 
   [Mono.Addins.Extension(
-    NodeName = ExtensionName.PreferencePageAddin,
-    Path = ExtensionPath.PreferencePage)]
+    NodeName = ExtensionName.SysTrayAddin,
+    Path = ExtensionPath.SystemTray)]
   public class SysTrayHandler : Xeno.ToolsHub.ExtensionModel.SystemTray.SysTrayAddin
   {
     private PomodoroManager _pomodoro;

@@ -13,14 +13,16 @@
  *  - gfx https://www.red-gate.com/simple-talk/dotnet/.net-framework/creating-tray-applications-in-.net-a-practical-guide/
  */
 
-using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
-using Xeno.ToolsHub.Config;
-using Xeno.ToolsHub.Services.Logging;
-
-namespace Xeno.ToolsHub.ExtensionModel.SystemTray
+namespace Xeno.ToolsHub.Managers
 {
+  using System;
+  using System.Collections.Generic;
+  using System.Windows.Forms;
+  using Xeno.ToolsHub.Config;
+  using Xeno.ToolsHub.ExtensionModel;
+  using Xeno.ToolsHub.ExtensionModel.SystemTray;
+  using Xeno.ToolsHub.Services.Logging;
+
   public class SystemTrayManager : ApplicationContext
   {
     private MenuItem[] _trayMenu;
@@ -57,7 +59,7 @@ namespace Xeno.ToolsHub.ExtensionModel.SystemTray
 
     public void AlertBubble(string message, string title)
     {
-      //TODO: Use Xamarin's MessageSender and subscribe when to show balloon
+      // TODO: Use Xamarin's MessageSender and subscribe when to show balloon
       _trayNotify.BalloonTipTitle = message;
       _trayNotify.BalloonTipText = title;
       _trayNotify.ShowBalloonTip(1000);
@@ -65,7 +67,7 @@ namespace Xeno.ToolsHub.ExtensionModel.SystemTray
 
     public void MenuRefresh()
     {
-      //TODO: Create a singleton or IoC pattern to call Refresh() from outside
+      // TODO: Create a singleton or IoC pattern to call Refresh() from outside
       InitTrayMenu();
       DrawTrayNotifacation();
     }
@@ -118,9 +120,9 @@ namespace Xeno.ToolsHub.ExtensionModel.SystemTray
         try
         {
           SysTrayAddin addin = typeNode.CreateInstance() as SysTrayAddin;
-          Log.Debug($"SysTrayAdd-in [{addin.ToString()}]");
+          Log.Debug($"SysTray Add-in initializing [{addin.ToString()}]");
 
-          addinItems = addin.MenuItems();
+          addinItems.AddRange(addin.MenuItems());
         }
         catch (Exception ex)
         {

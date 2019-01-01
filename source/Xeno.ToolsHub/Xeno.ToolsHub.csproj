@@ -93,7 +93,7 @@
     <Compile Include="Services\Logging\ILogger.cs" />
     <Compile Include="Services\Logging\Log.cs" />
     <Compile Include="Managers\SidebarManager.cs" />
-    <Compile Include="ExtensionModel\SystemTray\SystemTrayManager.cs" />
+    <Compile Include="Managers\SystemTrayManager.cs" />
     <Compile Include="Managers\SettingsManager.cs" />
     <Compile Include="Managers\WndProcManager.cs" />
     <Compile Include="LocalAddins\Shortcuts\ShortcutItem.cs" />
