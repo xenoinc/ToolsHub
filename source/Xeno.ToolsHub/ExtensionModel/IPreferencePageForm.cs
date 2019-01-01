@@ -10,7 +10,7 @@ namespace Xeno.ToolsHub.ExtensionModel
 {
   public interface IPreferencePageForm
   {
-    bool IsModified { get; }
+    bool IsModified { get; set; }
 
     bool OnSave();
 

@@ -14,7 +14,7 @@ namespace Xeno.ToolsHub.ExtensionModel
   {
     string Id { get; set; }
 
-    /// <summary>Used by the OnSave feature to trigger if we need to save page changes or not</summary>
+    /// <summary>Gets if settings were modified which is used by the OnSave to trigger</summary>
     bool IsModified { get; }
 
     /// <summary>Preference Page</summary>

@@ -22,6 +22,7 @@ namespace PomodoroAddin.Handlers
     public string Id { get; set; }
 
     public bool IsModified => _page.IsModified;
+
     public Form Page => _page;
 
     public string Title { get { return "Pomodoro"; } }

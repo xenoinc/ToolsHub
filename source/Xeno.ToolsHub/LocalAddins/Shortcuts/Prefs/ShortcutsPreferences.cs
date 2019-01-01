@@ -40,7 +40,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
 
     public bool OnSave()
     {
-      string errMsg = "";
+      string errMsg = string.Empty;
       string json = TxtRawFile.Text;
 
       IsModified = false;
@@ -68,12 +68,12 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
     private void ShortcutsPreferences_Load(object sender, EventArgs e)
     {
       LoadShortcutsFile();
+      IsModified = false;
     }
 
     private void TxtRawFile_TextChanged(object sender, EventArgs e)
     {
       IsModified = true;
-      LblModified.Visible = true;
     }
   }
 }
