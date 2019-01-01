@@ -12,21 +12,16 @@ namespace PomodoroAddin.Views
   using System.Windows.Forms;
   using Xeno.ToolsHub.ExtensionModel;
   using Xeno.ToolsHub.Services;
-
+  
   public partial class PreferencePage : Form, IPreferencePageForm
   {
-    private const string AddinId = "PomodoroTimer";
-    private const string KeyDuration = "Duration";
-    private const string KeyShortBreak = "BreakShort";
-    private const string KeyLongBreak = "BreakLong";
-
     public PreferencePage()
     {
       InitializeComponent();
 
-      TxtDuration.Text = SettingsService.GetInt(AddinId, KeyDuration, 25).ToString();
-      TxtBreakShort.Text = SettingsService.GetInt(AddinId, KeyShortBreak, 5).ToString();
-      TxtBreakLong.Text = SettingsService.GetInt(AddinId, KeyLongBreak, 10).ToString();
+      TxtDuration.Text = SettingsService.GetInt(Constants.AddinId, Constants.KeyDuration, 25).ToString();
+      TxtBreakShort.Text = SettingsService.GetInt(Constants.AddinId, Constants.KeyShortBreak, 5).ToString();
+      TxtBreakLong.Text = SettingsService.GetInt(Constants.AddinId, Constants.KeyLongBreak, 10).ToString();
 
       IsModified = false;
     }
@@ -35,9 +30,9 @@ namespace PomodoroAddin.Views
 
     public bool OnSave()
     {
-      SettingsService.SetValue(AddinId, KeyDuration, TxtDuration.Text);
-      SettingsService.SetValue(AddinId, KeyShortBreak, TxtBreakShort.Text);
-      SettingsService.SetValue(AddinId, KeyLongBreak, TxtBreakLong.Text);
+      SettingsService.SetValue(Constants.AddinId, Constants.KeyDuration, TxtDuration.Text);
+      SettingsService.SetValue(Constants.AddinId, Constants.KeyShortBreak, TxtBreakShort.Text);
+      SettingsService.SetValue(Constants.AddinId, Constants.KeyLongBreak, TxtBreakLong.Text);
 
       return true;
     }

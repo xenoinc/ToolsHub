@@ -11,6 +11,7 @@ namespace PomodoroAddin.Handlers
   using System.Collections.Generic;
   using System.Windows.Forms;
   using Xeno.ToolsHub.ExtensionModel;
+  using Xeno.ToolsHub.ExtensionModel.SystemTray;
 
   [Mono.Addins.Extension(
     NodeName = ExtensionName.SysTrayAddin,
@@ -27,13 +28,17 @@ namespace PomodoroAddin.Handlers
 
     public override bool IsInitialized { get; }
 
-    public override void Initialize()
-    {
-    }
-
     public override List<MenuItem> MenuItems()
     {
-      return _pomodoro.MenuItems;
+      MenuItem menu = new MenuItem("Pomodoro");
+      menu.MenuItems.Add(0, new TrayItem($"Start ({_pomodoro.TimerDuration} min)", string.Empty, true, _pomodoro.OnStart));
+      menu.MenuItems.Add(1, new TrayItem($"Take short break ({_pomodoro.TimerShortBreak} min)", string.Empty, true, _pomodoro.OnBreakShort));
+      menu.MenuItems.Add(2, new TrayItem($"Take long break ({_pomodoro.TimerLongBreak} min)", string.Empty, true, _pomodoro.OnBreakLong));
+      menu.MenuItems.Add(2, new TrayItem($"-", string.Empty));
+      menu.MenuItems.Add(2, new TrayItem($"Pause", string.Empty, true, _pomodoro.OnPause));
+      menu.MenuItems.Add(2, new TrayItem($"Stop", string.Empty, true, _pomodoro.OnStop));
+
+      return new List<MenuItem>() { menu };
     }
   }
 }

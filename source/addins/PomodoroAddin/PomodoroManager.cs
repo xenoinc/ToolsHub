@@ -8,18 +8,36 @@
 
 namespace PomodoroAddin
 {
-  using System.Collections.Generic;
-  using System.Windows.Forms;
-  using Xeno.ToolsHub.ExtensionModel.SystemTray;
+  using Xeno.ToolsHub.Services;
   using Xeno.ToolsHub.Services.Logging;
+
+  public enum TimerState
+  {
+    /// <summary>Timer started</summary>
+    Start,
+
+    /// <summary>Timer paused</summary>
+    Pause,
+
+    /// <summary>Timer stopped</summary>
+    Stop,
+
+    /// <summary>Timer finished</summary>
+    Done
+  };
 
   public class PomodoroManager
   {
+    private System.Timers.Timer _timer;
+    private bool _running;
+
     public PomodoroManager()
     {
-      TimerDuration = 25;
-      TimerShortBreak = 5;
-      TimerLongBreak = 10;
+      _timer = new System.Timers.Timer();
+
+      TimerDuration = SettingsService.GetInt(Constants.AddinId, Constants.KeyDuration, 25);
+      TimerShortBreak = SettingsService.GetInt(Constants.AddinId, Constants.KeyShortBreak, 5);
+      TimerLongBreak = SettingsService.GetInt(Constants.AddinId, Constants.KeyLongBreak, 10);
     }
 
     public int TimerDuration { get; set; }
@@ -27,23 +45,6 @@ namespace PomodoroAddin
     public int TimerShortBreak { get; set; }
 
     public int TimerLongBreak { get; set; }
-
-    public List<MenuItem> MenuItems
-    {
-      get
-      {
-        MenuItem menu = new MenuItem("Pomodoro");
-
-        menu.MenuItems.Add(0, new TrayItem($"Start ({TimerDuration} min)", string.Empty, true, OnStart));
-        menu.MenuItems.Add(1, new TrayItem($"Take short break ({TimerShortBreak} min)", string.Empty, true, OnBreakShort));
-        menu.MenuItems.Add(2, new TrayItem($"Take long break ({TimerLongBreak} min)", string.Empty, true, OnBreakLong));
-        menu.MenuItems.Add(2, new TrayItem($"-", string.Empty));
-        menu.MenuItems.Add(2, new TrayItem($"Pause", string.Empty, true, OnPause));
-        menu.MenuItems.Add(2, new TrayItem($"Stop", string.Empty, true, OnStop));
-
-        return new List<MenuItem>() { menu };
-      }
-    }
 
     public int OnStart(string target)
     {
@@ -73,6 +74,24 @@ namespace PomodoroAddin
     {
       Log.Debug($"Stop timer");
       return 0;
+    }
+
+    private void StartTimer(int minutes)
+    {
+      _timer.Enabled = false;
+      _timer.Stop();
+      _timer.Interval = 1000;
+      _timer.Elapsed += Timer_Elapsed;
+      _timer.Start();
+      _timer.Enabled = true;
+      
+      _running = true;
+
+    }
+
+    private void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+    {
+      throw new System.NotImplementedException();
     }
   }
 }

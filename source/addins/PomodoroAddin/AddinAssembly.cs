@@ -19,3 +19,14 @@
 
 // Attach to add-in host
 [assembly: Mono.Addins.AddinDependency("XenoInnovations.ToolsHub", "0.3")]
+
+namespace PomodoroAddin
+{
+  public static class Constants
+  {
+    public static string AddinId = "PomodoroTimer";
+    public static string KeyDuration = "Duration";
+    public static string KeyShortBreak = "BreakShort";
+    public static string KeyLongBreak = "BreakLong";
+  }
+}
