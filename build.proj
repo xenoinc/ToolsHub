@@ -2,7 +2,15 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <Import Project="BuildProperties.resx" />
-  
+
+  <Target Name="Test">
+    <Message Text="Property Data:" />
+    <Message Text="  - AssemblyCompany:   '$(AssemblyCompany)'" />
+    <Message Text="  - AssemblyCopyright: '$(AssemblyCopyright)'" />
+    <Message Text="  - LibraryPath:       '$(LibraryPath)'" />
+    <Message Text="  - OutputFolder:      '$(OutputFolder)'" />
+  </Target>
+
   <Target Name="Clean">
     <!--
       Directories="**\obj\**;**\bin\**"
@@ -10,14 +18,15 @@
     -->
     <RemoveDir Directories="output"/>
   </Target>
-  
+
+  <!--
   <Target Name="Compile" DependsOnTargets="Clean">
-    <!--<MSBuild Projects="@(ProjectFiles)" />-->
+    <MSBuild Projects="@(ProjectFiles)" />
   </Target>
-  
+
   <Target Name="CompileCode" DependsOnTargets="CleanOutput;CompileDevCode">
-		<Message Text="*** CompileCode complete ***" />
-	</Target>
+    <Message Text="*** CompileCode complete ***" />
+  </Target>
 
   <Target Name="CompileDevCode">
     <MSBuild Projects="$(SourcePath)\$(SolutionName)"
@@ -27,14 +36,15 @@
   </Target>
 
   <Target Name="CleanOutput">
-		<Message Text="Cleaning out $(OutputFolder)" />
+    <Message Text="Cleaning out $(OutputFolder)" />
     <ItemGroup>
       <FilesToDelete Include="$(OutputFolder)\**\*" />
     </ItemGroup>
     <Delete Files="@(FilesToDelete)" />
     <RemoveDir Directories="$(OutputFolder)" />
     <MakeDir Directories="$(OutputFolder)"/>
-		<Message Text="Cleanup completed." />
+    <Message Text="Cleanup completed." />
   </Target>
+  -->
 
 </Project>
