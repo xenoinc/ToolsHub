@@ -6,29 +6,28 @@
  *  Sample utility, complete with deconstructor
  */
 
-using System;
-using Xeno.ToolsHub.Config;
-using Xeno.ToolsHub.ExtensionModel;
-
 namespace Xeno.ToolsHub.LocalAddins.SampleUtility
 {
+  using System;
+  using Xeno.ToolsHub.ExtensionModel;
+  using Xeno.ToolsHub.Services.Logging;
+
   public class SampleUtilityAddin : UtilityAddin
   {
     private bool _initialized = false;
+
+    public SampleUtilityAddin()
+    {
+      _initialized = true;
+      Log.Debug("SampleXml internal Utility add-in, initialized!");
+    }
 
     public override bool IsInitialized => _initialized;
 
     public override void Execute()
     {
-      Log.Debug("Utility Sample (internal) executed");
-
-      //System.Windows.Forms.MessageBox.Show("Utility Sample (internal) executed!");
-    }
-
-    public override void Initialize()
-    {
-      _initialized = true;
-      Log.Debug("Utility Sample (internal add-in) initialized");
+      Log.Debug("SampleXml internal Utility add-in, executed!");
+      //System.Windows.Forms.MessageBox.Show("SampleXml internal Utility add-in, executed!");
     }
 
     public override void Shutdown()

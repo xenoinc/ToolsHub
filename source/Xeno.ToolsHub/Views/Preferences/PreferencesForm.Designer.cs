@@ -40,11 +40,17 @@ namespace Xeno.ToolsHub.Views
       this.BtnCancel = new System.Windows.Forms.Button();
       this.tabControl1 = new System.Windows.Forms.TabControl();
       this.tabPage1 = new System.Windows.Forms.TabPage();
-      this.TreeAddinList = new System.Windows.Forms.TreeView();
+      this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+      this.AddinTree = new System.Windows.Forms.TreeView();
       this.PanelAddinPrefsView = new System.Windows.Forms.Panel();
+      this.LblPageTitle = new System.Windows.Forms.Label();
       this.tabPage2 = new System.Windows.Forms.TabPage();
       this.tabControl1.SuspendLayout();
       this.tabPage1.SuspendLayout();
+      ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+      this.splitContainer1.Panel1.SuspendLayout();
+      this.splitContainer1.Panel2.SuspendLayout();
+      this.splitContainer1.SuspendLayout();
       this.SuspendLayout();
       // 
       // BtnOk
@@ -84,8 +90,7 @@ namespace Xeno.ToolsHub.Views
       // 
       // tabPage1
       // 
-      this.tabPage1.Controls.Add(this.TreeAddinList);
-      this.tabPage1.Controls.Add(this.PanelAddinPrefsView);
+      this.tabPage1.Controls.Add(this.splitContainer1);
       this.tabPage1.Location = new System.Drawing.Point(4, 22);
       this.tabPage1.Name = "tabPage1";
       this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -94,24 +99,58 @@ namespace Xeno.ToolsHub.Views
       this.tabPage1.Text = "Preferences";
       this.tabPage1.UseVisualStyleBackColor = true;
       // 
-      // TreeAddinList
+      // splitContainer1
       // 
-      this.TreeAddinList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-      this.TreeAddinList.Location = new System.Drawing.Point(6, 6);
-      this.TreeAddinList.Name = "TreeAddinList";
-      this.TreeAddinList.Size = new System.Drawing.Size(161, 237);
-      this.TreeAddinList.TabIndex = 5;
+      this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+      this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+      this.splitContainer1.Location = new System.Drawing.Point(6, 6);
+      this.splitContainer1.Name = "splitContainer1";
+      // 
+      // splitContainer1.Panel1
+      // 
+      this.splitContainer1.Panel1.Controls.Add(this.AddinTree);
+      // 
+      // splitContainer1.Panel2
+      // 
+      this.splitContainer1.Panel2.BackColor = System.Drawing.SystemColors.Control;
+      this.splitContainer1.Panel2.Controls.Add(this.PanelAddinPrefsView);
+      this.splitContainer1.Panel2.Controls.Add(this.LblPageTitle);
+      this.splitContainer1.Size = new System.Drawing.Size(537, 237);
+      this.splitContainer1.SplitterDistance = 176;
+      this.splitContainer1.TabIndex = 6;
+      // 
+      // AddinTree
+      // 
+      this.AddinTree.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+      this.AddinTree.Location = new System.Drawing.Point(3, 3);
+      this.AddinTree.Name = "AddinTree";
+      this.AddinTree.Size = new System.Drawing.Size(170, 231);
+      this.AddinTree.TabIndex = 6;
+      this.AddinTree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.AddinTree_AfterSelect);
       // 
       // PanelAddinPrefsView
       // 
       this.PanelAddinPrefsView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-      this.PanelAddinPrefsView.Location = new System.Drawing.Point(173, 6);
+      this.PanelAddinPrefsView.Location = new System.Drawing.Point(3, 26);
       this.PanelAddinPrefsView.Name = "PanelAddinPrefsView";
-      this.PanelAddinPrefsView.Size = new System.Drawing.Size(373, 237);
-      this.PanelAddinPrefsView.TabIndex = 4;
+      this.PanelAddinPrefsView.Size = new System.Drawing.Size(351, 208);
+      this.PanelAddinPrefsView.TabIndex = 6;
+      // 
+      // LblPageTitle
+      // 
+      this.LblPageTitle.AutoSize = true;
+      this.LblPageTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.LblPageTitle.Location = new System.Drawing.Point(3, 3);
+      this.LblPageTitle.Name = "LblPageTitle";
+      this.LblPageTitle.Size = new System.Drawing.Size(282, 20);
+      this.LblPageTitle.TabIndex = 5;
+      this.LblPageTitle.Text = "Select a preference page to begin";
       // 
       // tabPage2
       // 
@@ -132,10 +171,16 @@ namespace Xeno.ToolsHub.Views
       this.Controls.Add(this.BtnCancel);
       this.Controls.Add(this.BtnOk);
       this.Name = "PreferencesForm";
+      this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
       this.Text = "OptionsForm";
-      this.Load += new System.EventHandler(this.OptionsForm_Load);
+      this.Load += new System.EventHandler(this.PreferencesForm_Load);
       this.tabControl1.ResumeLayout(false);
       this.tabPage1.ResumeLayout(false);
+      this.splitContainer1.Panel1.ResumeLayout(false);
+      this.splitContainer1.Panel2.ResumeLayout(false);
+      this.splitContainer1.Panel2.PerformLayout();
+      ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+      this.splitContainer1.ResumeLayout(false);
       this.ResumeLayout(false);
 
     }
@@ -145,8 +190,10 @@ namespace Xeno.ToolsHub.Views
     private System.Windows.Forms.Button BtnCancel;
     private System.Windows.Forms.TabControl tabControl1;
     private System.Windows.Forms.TabPage tabPage1;
-    private System.Windows.Forms.TreeView TreeAddinList;
-    private System.Windows.Forms.Panel PanelAddinPrefsView;
     private System.Windows.Forms.TabPage tabPage2;
+    private System.Windows.Forms.SplitContainer splitContainer1;
+    private System.Windows.Forms.TreeView AddinTree;
+    private System.Windows.Forms.Label LblPageTitle;
+    private System.Windows.Forms.Panel PanelAddinPrefsView;
   }
 }

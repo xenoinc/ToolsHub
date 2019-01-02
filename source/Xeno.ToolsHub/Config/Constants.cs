@@ -6,13 +6,13 @@
  *  Global constants
  */
 
-using System.IO;
-
 namespace Xeno.ToolsHub.Config
 {
+  using System.IO;
+
   public static class Constants
   {
-    public static string SettingsFile => "config.json";
+    public static string SettingsFile => "ToolsHub.db";
 
     public static string LocalSettingsPath => Path.Combine(LocalFolder, SettingsFile);
 

@@ -7,7 +7,6 @@
  */
 
 using System.Collections.Generic;
-using System.Windows.Forms.VisualStyles;
 
 namespace Xeno.ToolsHub.LocalAddins.Shortcuts
 {
@@ -21,14 +20,14 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
 
     public string Target { get; set; }
 
-    public string StartPath { get; set; }
+    // public string StartPath { get; set; }
 
-    public string Params { get; set; }
+    // public string Params { get; set; }
 
-    public int SortOrder { get; set; }
+    // public int SortOrder { get; set; }
 
-    public string IconPath { get; set; }
+    // public string IconPath { get; set; }
 
-    public int RunAs { get; set; }
+    // public int RunAs { get; set; }
   }
 }

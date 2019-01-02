@@ -3,24 +3,26 @@
  * Author:  Damian Suess
  * File:    Program.cs
  * Description:
- *
+ *  Main entry point
  */
-
-using System;
-using System.Threading;
-using System.Windows.Forms;
-using Xeno.ToolsHub.Config;
 
 namespace Xeno.ToolsHub
 {
+  using System;
+  using System.Threading;
+  using System.Windows.Forms;
+  using Xeno.ToolsHub.Config;
+  using Xeno.ToolsHub.Services.Logging;
+
   internal static class Program
   {
-    public static bool AbortShutdown = false;
-
-    /// <summary>global singleton</summary>
-    public static Config.Settings.AppSettings Settings;
-
     private static Mutex _mutex = null;
+
+    public static bool AbortShutdown { get; set; }
+
+    /// <summary>Gets or sets global singleton</summary>
+    /// <value>System settings</value>
+    public static Xeno.ToolsHub.Managers.SettingsManager Settings { get; set; }
 
     /// <summary>
     /// The main entry point for the application.
@@ -38,13 +40,14 @@ namespace Xeno.ToolsHub
       Application.EnableVisualStyles();
       Application.SetCompatibleTextRenderingDefault(false);
 
+      AbortShutdown = false;
       LoadAppSettings();
 
       var appContext = new MainHandler();
       Application.Run(appContext);
 
-      //Application.Run(new Views.MainForm());
-      //Application.Run(new Views.PreferencesForm());
+      // Application.Run(new Views.MainForm());
+      // Application.Run(new Views.PreferencesForm());
     }
 
     /// <summary>Check for previous instance</summary>
@@ -68,18 +71,36 @@ namespace Xeno.ToolsHub
         return false;
     }
 
-    /// <summary>Load application settings</summary>
-    /// <returns>False if settings file does not exist</returns>
+    /// <summary>Loads settings file according to priority</summary>
     private static void LoadAppSettings()
     {
       Log.Debug("Loading app settings");
-      //TODO: Load application settings
-      //// Load application settings
-      //Settings = new AppSettings();
-      //Settings.InitializeDefaults();
-      //Settings = Settings.Load();
-      //
-      //if (System.IO.File.Exists())
+
+      string portable = System.IO.Path.Combine(Helpers.GetStorageFolder(StorageMethod.PortableApp), Constants.SettingsFile);
+      string allUsers = System.IO.Path.Combine(Helpers.GetStorageFolder(StorageMethod.AllUsers), Constants.SettingsFile);
+      string singleUser = System.IO.Path.Combine(Helpers.GetStorageFolder(StorageMethod.SingleUser), Constants.SettingsFile);
+
+      Settings = new Managers.SettingsManager(StorageMethod.Unknown);
+
+      if (System.IO.File.Exists(portable))
+      {
+        Settings.StorageMethod = StorageMethod.PortableApp;
+      }
+      else if (System.IO.File.Exists(allUsers))
+      {
+        Settings.StorageMethod = StorageMethod.AllUsers;
+      }
+      else if (System.IO.File.Exists(allUsers))
+      {
+        Settings.StorageMethod = StorageMethod.SingleUser;
+      }
+      else
+      {
+        // TODO: New install: Ask user which mode to use
+        Settings.StorageMethod = StorageMethod.PortableApp;
+      }
+
+      Settings.LoadFile();
     }
   }
 }

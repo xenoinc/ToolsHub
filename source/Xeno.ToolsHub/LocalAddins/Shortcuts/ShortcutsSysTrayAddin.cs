@@ -19,15 +19,15 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
   //  NodeName = "SysTrayAddin",
   //  Path = "/ToolsHub/SystemTray")]
   public class ShortcutsSysTrayAddin
-    : Xeno.ToolsHub.Managers.SystemTray.SysTrayAddin // ExtensionModel.ISystemTrayExtension
+    : Xeno.ToolsHub.ExtensionModel.SystemTray.SysTrayAddin // ExtensionModel.ISystemTrayExtension
   {
     public ShortcutsSysTrayAddin()
     {
     }
 
-    public string Title => "Shortcuts Add-in";
-
     public override bool IsInitialized => true;
+
+    public string Title => "Shortcuts Add-in";
 
     public void Execute()
     {
@@ -39,12 +39,8 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
 
     public override List<MenuItem> MenuItems()
     {
-      ShortcutsLoader shortcutTray = new ShortcutsLoader();
-      var item = shortcutTray.LoadAsMenuItems();
-
-      var items = new List<MenuItem>();
-      items.Add(item);
-
+      ShortcutsManager shortcutTray = new ShortcutsManager();
+      var items = shortcutTray.LoadAsMenuItems();
       return items;
     }
   }

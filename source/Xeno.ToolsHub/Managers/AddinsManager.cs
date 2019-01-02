@@ -6,22 +6,21 @@
  *  Manager for system wide add-ins
  */
 
-using System;
-using System.Collections.Generic;
-using Mono.Addins;
-using Xeno.ToolsHub.Config;
-using Xeno.ToolsHub.ExtensionModel;
-
 namespace Xeno.ToolsHub.Managers
 {
+  using System;
+  using System.Collections.Generic;
+  using Mono.Addins;
+  using Xeno.ToolsHub.Config;
+  using Xeno.ToolsHub.ExtensionModel;
+  using Xeno.ToolsHub.Services.Logging;
+
   public class AddinsManager
   {
     //private static readonly Log _log = myLogger.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-    /// <summary>
-    ///   Key = TypeExtensionNode.Id
-    /// </summary>
-    private Dictionary<string, UtilityAddin> _appAddins;
+    /// <remarks>Key = TypeExtensionNode.Id</remarks
+    private Dictionary<string, UtilityAddin> _utilityAddins;
 
     public AddinsManager() : this("")
     {
@@ -31,36 +30,53 @@ namespace Xeno.ToolsHub.Managers
     /// <param name="configDir">Add-ins configuration directory</param>
     public AddinsManager(string configDir)
     {
-      _appAddins = new Dictionary<string, UtilityAddin>();
+      _utilityAddins = new Dictionary<string, UtilityAddin>();
 
       InitAddins();
     }
 
     public event EventHandler OnApplicationAddinListChanged;
 
-    public PreferenceAddin[] GetPreferenceAddins()
+    /// <summary>Get all add-ins found in system</summary>
+    /// <returns></returns>
+    public List<Mono.Addins.Addin> GetAllAddins()
     {
-      //TODO: Currently not in use
-      PreferenceAddin[] addins;
+      List<Mono.Addins.Addin> addinList = new List<Mono.Addins.Addin>();
+      Mono.Addins.Addin[] addinArray = Mono.Addins.AddinManager.Registry.GetAddins();
 
-      try
+      if (addinArray != null)
+        addinList = new List<Mono.Addins.Addin>(addinArray);
+
+      return addinList;
+    }
+
+    public List<IPreferencePageExtension> GetPreferenceAddins()
+    {
+      List<IPreferencePageExtension> pages = new List<IPreferencePageExtension>();
+      Mono.Addins.ExtensionNodeList nodes = Mono.Addins.AddinManager.GetExtensionNodes(ExtensionPath.PreferencePage);
+      foreach (Mono.Addins.ExtensionNode node in nodes)
       {
-        addins = (PreferenceAddin[])Mono.Addins.AddinManager.GetExtensionObjects(
-          ExtensionPaths.PreferencePath, typeof(PreferenceAddin));
-      }
-      catch (Exception ex)
-      {
-        Log.Warn($"No perferenceAddins found '{ex.Message}'");
-        addins = new PreferenceAddin[0];
+        Mono.Addins.TypeExtensionNode typeNode = node as Mono.Addins.TypeExtensionNode;
+        try
+        {
+          IPreferencePageExtension page = typeNode.CreateInstance() as IPreferencePageExtension;
+          page.InitializePage();
+          page.Id = node.Id;
+          pages.Add(page);
+        }
+        catch (Exception ex)
+        {
+          Log.Error("Couldn't create PreferencePage: " + ex.Message);
+        }
       }
 
-      return addins;
+      return pages;
     }
 
     /// <summary>Load utility add-ins</summary>
     public void LoadUtilityAddins()
     {
-      Mono.Addins.ExtensionNodeList nodes = Mono.Addins.AddinManager.GetExtensionNodes(ExtensionPaths.UtilityPath);
+      Mono.Addins.ExtensionNodeList nodes = Mono.Addins.AddinManager.GetExtensionNodes(ExtensionPath.Utility);
       foreach (Mono.Addins.ExtensionNode node in nodes)
       {
         Mono.Addins.TypeExtensionNode typeNode = node as Mono.Addins.TypeExtensionNode;
@@ -86,16 +102,19 @@ namespace Xeno.ToolsHub.Managers
     {
       try
       {
-        addin.Initialize();
+        // Removed for now until needed
+        // addin.Initialize();
+
+        // TODO: Add add-in to managed list for later callings
+        if (addin.IsInitialized)
+          addin.Execute();
+        else
+          Log.Debug("Add-in not initialized; not executing.");
       }
       catch (Exception ex)
       {
         Log.Error($"Error while attempting to initialize UtilityAddin, Id: '{addinId}', TypeName: '{addinTypeName}': {ex.Message}");
       }
-
-      // TODO: Add add-in to managed list for later callings
-      if (addin.IsInitialized)
-        addin.Execute();
     }
 
     private void InitAddins()
@@ -116,9 +135,10 @@ namespace Xeno.ToolsHub.Managers
       try
       {
         // EventHandlers for ExtensionNodes
-        Mono.Addins.AddinManager.AddExtensionNodeHandler(ExtensionPaths.OnStartupPath, OnStartupAddins_ExtensionHandler);
-        Mono.Addins.AddinManager.AddExtensionNodeHandler(ExtensionPaths.SystemTrayPath, OnUtilityAddins_ExtensionHandler);
-        Mono.Addins.AddinManager.AddExtensionNodeHandler(ExtensionPaths.UtilityPath, OnUtilityAddins_ExtensionHandler);
+        Mono.Addins.AddinManager.AddExtensionNodeHandler(ExtensionPath.OnStartup, OnStartupAddins_ExtensionHandler);
+        //Mono.Addins.AddinManager.AddExtensionNodeHandler(ExtensionPath.PreferencePage, OnPreferencesAddins_ExtensionHandler);
+        Mono.Addins.AddinManager.AddExtensionNodeHandler(ExtensionPath.SystemTray, OnSystemTrayAddins_ExtensionHandler);
+        Mono.Addins.AddinManager.AddExtensionNodeHandler(ExtensionPath.Utility, OnUtilityAddins_ExtensionHandler);
       }
       catch (Exception ex)
       {
@@ -157,7 +177,7 @@ namespace Xeno.ToolsHub.Managers
       Log.Debug("Entering");
 
       Mono.Addins.TypeExtensionNode extNode = args.ExtensionNode as Mono.Addins.TypeExtensionNode;
-      PrintInfo(ExtensionPaths.OnStartupPath, args, extNode);
+      PrintInfo(ExtensionPath.OnStartup, args, extNode);
 
       // Execute via class interface definition of extension path
       // IOnStartupExtension ext = (IOnStartupExtension)args.ExtensionObject;
@@ -166,6 +186,14 @@ namespace Xeno.ToolsHub.Managers
 
       // Push event changed out to listeners
       OnApplicationAddinListChanged?.Invoke(sender, args);
+    }
+
+    private void OnPreferencesAddins_ExtensionHandler(object sender, ExtensionNodeEventArgs args)
+    {
+    }
+
+    private void OnSystemTrayAddins_ExtensionHandler(object sender, ExtensionNodeEventArgs args)
+    {
     }
 
     private void OnUtilityAddins_ExtensionHandler(object sender, ExtensionNodeEventArgs args)

@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--
+Copyright Xeno Innovations, Inc. 2018
+ * Date:    2018-10-03
+ * Author:  Damian Suess
+ * File:    SampleXmlAddin.addin
+ * Description:
+ *  Sample add-in using an XML manifest
+ *
+ *  Note: keep namespace in the root node blank, but fully define in dependencies.
+-->
+<Addin namespace=""
+       id="ExternalSampleXmlAddin"
+       version="1.0"
+       name="Sample External XML Add-in"
+       author="Damian Suess"
+       copyright="Xeno Innovations, Inc. 2018"
+       description="Quick sample external add-in project."
+       category="Sample"
+       defaultEnabled="true"
+       isRoot="false">
+  <!-- xmlns="https://github.com/mono/mono-addins/MonoAddins.xsd" -->
+
+  <Runtime>
+    <Import assembly="SampleXmlAddin.dll" />
+  </Runtime>
+
+  <Dependencies>
+    <Addin id="XenoInnovations.ToolsHub" version="0.3" />
+  </Dependencies>
+
+  <Extension path="/ToolsHub/OnStartup">
+    <OnStartupAddin type="Xeno.ToolsHub.SampleXmlAddin.Handlers.OnStartHandler" />
+  </Extension>
+
+  <Extension path="/ToolsHub/Utility">
+    <UtilityAddin type="Xeno.ToolsHub.SampleXmlAddin.Handlers.UtilityHandler" />
+  </Extension>
+
+  <Extension path="/ToolsHub/PreferencePage">
+    <PreferencePageAddin type="Xeno.ToolsHub.SampleXmlAddin.Handlers.PreferenceHandler" />
+  </Extension>
+
+  <!--
+  <Extension Path="/ToolsHub/SystemTray">
+    <SystemTrayAddin type="Xeno.ToolsHub.SampleXmlAddin.SysTrayHandlers.Handlers.SysTrayHandler" />
+  </Extension>
+  -->
+</Addin>

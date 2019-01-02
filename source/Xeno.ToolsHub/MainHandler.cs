@@ -9,50 +9,46 @@
  *  [ ] Use IoC to manage managers. (i.e. AutoFac)
  */
 
-using System.Windows.Forms;
-using Microsoft.Win32;
-using Xeno.ToolsHub.Config;
-using Xeno.ToolsHub.Managers;
-
-//[assembly: Mono.Addins.AddinRoot("ToolsHub", "1.0")]
+////[assembly: Mono.Addins.AddinRoot("ToolsHub", "1.0")]
 
 namespace Xeno.ToolsHub
 {
+  using System.Windows.Forms;
+  using Microsoft.Win32;
+  using Xeno.ToolsHub.Managers;
+  using Xeno.ToolsHub.Services.Logging;
+
   /// <summary>
   /// Main application handler. We don't need a GUI form, but do need WndProc
   /// </summary>
   public class MainHandler : ApplicationContext
   {
-    //private NotifyIcon _trayIcon = new NotifyIcon();
-    //PreferencesForm prefWnd = new PreferencesForm();
-    //MenuItem configMenuItem
-
-    private Managers.SystemTray.SystemTrayManager _sysTray;
+    private ExtensionModel.SystemTray.SystemTrayManager _sysTray;
     private Managers.WndProcManager _wndProc;
     private AddinsManager _addinsManager;
 
     public MainHandler()
     {
       Log.Debug("ToolsHub initializing..");
+
       // 1. Listen for system events
       // 2. Initialize SystemTray (add-in) handler
       // 3. Initialize Sidebar (add-in) handler
       // 4. Initialize Application add-in manager
-
-      InitMonoAddins();
+      InitAddinsManager();
 
       InitSystemEvents();
 
-      // Consider moving this as it's own add-in host
+      // Consider moving this as it's own add-in host as a Utility
       InitSystemTray();
 
       InitWndProc();
 
       // Consider moving this as it's own add-in host
-      //InitSideBar();
+      // InitSideBar();
 
       // We're done loading
-      InitOnLoadedAddins();
+      InitUtilityAddins();
 
 #if DEBUG
       DebugTests();
@@ -65,21 +61,21 @@ namespace Xeno.ToolsHub
 
     private void Application_ApplicationExit(object sender, System.EventArgs e)
     {
-      //TODO: Inform add-ins of closing application
-      //TODO: Clean up any additional resources
-      //throw new System.NotImplementedException();
+      // TODO: Inform add-ins of closing application
+      // TODO: Clean up any additional resources
+      // throw new System.NotImplementedException();
     }
 
     private void DebugTests()
     {
     }
 
-    private void InitMonoAddins()
+    private void InitAddinsManager()
     {
       _addinsManager = new AddinsManager();
     }
 
-    private void InitOnLoadedAddins()
+    private void InitUtilityAddins()
     {
       // Run free-floating utility add-ins
       _addinsManager.LoadUtilityAddins();
@@ -95,7 +91,7 @@ namespace Xeno.ToolsHub
     private void InitSystemTray()
     {
       // Consider adding this into a container
-      _sysTray = new Managers.SystemTray.SystemTrayManager();
+      _sysTray = new ExtensionModel.SystemTray.SystemTrayManager(this);
     }
 
     /// <summary>We have a GUI form, but do need WndProc for wiring up things</summary>

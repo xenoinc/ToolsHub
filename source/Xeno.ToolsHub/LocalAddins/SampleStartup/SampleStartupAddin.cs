@@ -6,24 +6,24 @@
  *  Sample OnStartup add-in
  */
 
-using Xeno.ToolsHub.Config;
-
 namespace Xeno.ToolsHub.LocalAddins.SampleStartup
 {
+  using Xeno.ToolsHub.Services.Logging;
+
   public class SampleStartupAddin : ExtensionModel.IOnStartupExtension
   {
     public SampleStartupAddin()
     {
-      this.Title = "Sample Startup Add-In";
+      this.Title = "SampleXml internal OnStartup Add-In";
+      Log.Debug("SampleXml internal OnStartup, initialized!");
     }
 
     public string Title { get; }
 
     public void Execute()
     {
-      Log.Debug("OnStart Sample (internal) executed");
-
-      //System.Windows.Forms.MessageBox.Show("OnStart Sample (internal add-in) executed!");
+      Log.Debug("SampleXml internal OnStartup, executed!");
+      //System.Windows.Forms.MessageBox.Show("SampleXml internal OnStartup, executed!");
     }
   }
 }

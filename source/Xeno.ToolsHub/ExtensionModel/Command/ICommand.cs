@@ -1,6 +1,6 @@
 ﻿/* Copyright Xeno Innovations, Inc. 2018
  * Date:    2018-10-25
- * Author:  <Unknown>
+ * Author:  Damian Suess
  * File:    ICommand.cs
  * Description:
  *

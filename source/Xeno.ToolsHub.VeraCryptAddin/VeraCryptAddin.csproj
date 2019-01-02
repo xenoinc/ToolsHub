@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>..\stylecop.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -47,30 +48,35 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PreferencesPage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PreferencesPage.Designer.cs">
+      <DependentUpon>PreferencesPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="VeraCrypt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="VeraCryptPreferences.cs" />
-    <Compile Include="VeraCryptPreferencesView.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="VeraCryptPreferencesView.Designer.cs">
-      <DependentUpon>VeraCryptPreferencesView.cs</DependentUpon>
-    </Compile>
+    <Compile Include="VeraCryptPreferencesHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="VeraCrypt.addin.xml" />
-    <EmbeddedResource Include="VeraCryptPreferencesView.resx">
-      <DependentUpon>VeraCryptPreferencesView.cs</DependentUpon>
+    <EmbeddedResource Include="PreferencesPage.resx">
+      <DependentUpon>PreferencesPage.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="VeraCrypt.addin.xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Xeno.ToolsHub\Xeno.ToolsHub.csproj">
       <Project>{01d40bbe-da31-41e7-808e-67afcc50e698}</Project>
       <Name>Xeno.ToolsHub</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

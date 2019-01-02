@@ -15,8 +15,6 @@ namespace Xeno.ToolsHub.ExtensionModel
   {
     public abstract bool IsInitialized { get; }
 
-    public abstract void Initialize();
-
     public abstract void Execute();
 
     public abstract void Shutdown();

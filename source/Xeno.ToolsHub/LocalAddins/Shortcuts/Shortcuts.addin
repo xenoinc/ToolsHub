@@ -1,14 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ExtensionModel>
-  
+
   <!-- Shortcuts extension manifest -->
   <Extension path="/ToolsHub/SystemTray">
     <SysTrayAddin type="Xeno.ToolsHub.LocalAddins.Shortcuts.ShortcutsSysTrayAddin" />
   </Extension>
 
-  <!--
-  <Extension path="/ToolsHub/AddinPreferences">
-    <PreferencesAddin type="Xeno.ToolsHub.LocalAddins.Shortcuts.ShortcutsPreferences" />
+  <Extension path="/ToolsHub/PreferencePage">
+    <PreferencePageAddin type="Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs.PreferencesHandler" />
   </Extension>
-  -->
 </ExtensionModel>

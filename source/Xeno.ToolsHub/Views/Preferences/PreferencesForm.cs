@@ -6,19 +6,20 @@
  *
  */
 
-using System;
-using System.Windows.Forms;
-using Xeno.ToolsHub.Managers;
-using Xeno.ToolsHub.ExtensionModel;
-using Xeno.ToolsHub.Config;
-
 namespace Xeno.ToolsHub.Views
 {
+  using System;
+  using System.Collections.Generic;
+  using System.Windows.Forms;
+  using Xeno.ToolsHub.ExtensionModel;
+  using Xeno.ToolsHub.Managers;
+  using Xeno.ToolsHub.Services.Logging;
+
   public partial class PreferencesForm : Form
   {
     private readonly AddinsManager _addinManager;
 
-    private Panel[] _addinPanel;
+    private Dictionary<string, IPreferencePageExtension> _addinPages;
 
     public PreferencesForm() : this(new AddinsManager())
     {
@@ -28,12 +29,14 @@ namespace Xeno.ToolsHub.Views
     {
       InitializeComponent();
 
-      //OLD CODE: _addinManager = toolssManager.AddinManager;
+      AddinTree.Sort();
+
       _addinManager = addinsManager;
+      _addinPages = new Dictionary<string, IPreferencePageExtension>();
 
       InitAddinManager();
 
-      InitAddins();
+      RefreshTreeView();
 
       _addinManager.OnApplicationAddinListChanged += OnAppAddinListChanged;
     }
@@ -46,12 +49,13 @@ namespace Xeno.ToolsHub.Views
     private void BtnOk_Click(object sender, EventArgs e)
     {
       // loop through each add-in and save
+      SavePreferences();
       this.Close();
     }
 
     private void InitAddinManager()
     {
-      Views.Preferences.AddinManagerCtrl ctrl = new Preferences.AddinManagerCtrl();
+      Views.Preferences.AddinManagerCtrl ctrl = new Preferences.AddinManagerCtrl(_addinManager);
       ctrl.Dock = DockStyle.Fill;
       tabPage2.Controls.Add(ctrl);
 
@@ -62,27 +66,62 @@ namespace Xeno.ToolsHub.Views
       //myForm.Show();
     }
 
-    private void InitAddins()
+    private void SavePreferences()
     {
-      foreach (PreferenceAddin addin in _addinManager.GetPreferenceAddins())
+      foreach (var addinPage in _addinPages)
       {
-        string name = addin.GetType().Name;
-        Log.Debug($"Adding preference add-in: '{name}");
+        var page = addinPage.Value;
+        if (page.IsModified)
+        {
+          page.OnSave();
+        }
+      }
+    }
+
+    private void RefreshTreeView()
+    {
+      foreach (IPreferencePageExtension page in _addinManager.GetPreferenceAddins())
+      {
+        string id = string.Empty;
+        string name = string.Empty;
+        string title = string.Empty;
         try
         {
-          string title = "";
-          System.Windows.Forms.Panel panel;
-          if (addin.GetPreferenceAddin(this, out title, out panel))
+          id = page.Id;
+          name = page.GetType().Name;
+          title = page.Title;
+
+          _addinPages.Add(page.Id, page);
+
+          TreeNode node = new TreeNode(title)
           {
-            // insert into treeView
-            // Add into _addinPanel
-          }
+            Tag = id
+          };
+
+          AddinTree.Nodes.Add(node);
+
+          Log.Debug($"Adding preference add-in: '{name}");
+
+          //string title = "";
+          //System.Windows.Forms.Panel panel;
+          //if (addin.GetPreferenceAddin(this, out title, out panel))
+          //{
+          //  // insert into treeView
+          //  // Add into _addinPanel
+          //}
         }
         catch (Exception ex)
         {
           Log.Warn($"There was an issue adding Preference panel from add-in {name}");
           Log.Error($"{ex.Message}:\n{ex.StackTrace}");
         }
+      }
+
+      // Auto-select first item
+      if (AddinTree.Nodes.Count > 0)
+      {
+        var firstNode = AddinTree.Nodes[0];
+        AddinTree.SelectedNode = firstNode;
       }
     }
 
@@ -91,8 +130,54 @@ namespace Xeno.ToolsHub.Views
       throw new NotImplementedException();
     }
 
-    private void OptionsForm_Load(object sender, EventArgs e)
+    private void PreferencesForm_Load(object sender, EventArgs e)
     {
+    }
+
+    private void AddinTree_AfterSelect(object sender, TreeViewEventArgs e)
+    {
+      string id = e.Node.Tag.ToString();
+      ShowPage(id);
+    }
+
+    private void ShowPage(string addinId)
+    {
+      foreach (var addin in _addinPages)
+      {
+        Log.Debug($"Parsing panel, {addin.Key}");
+
+        if (addin.Value.Id == addinId)
+        {
+          var page = addin.Value.Page;
+          if (page.GetType().BaseType == typeof(Form))
+          {
+            LblPageTitle.Text = page.Text;
+
+            page.TopLevel = false;
+            PanelAddinPrefsView.Controls.Clear();
+            PanelAddinPrefsView.Controls.Add(page);
+            page.FormBorderStyle = FormBorderStyle.None;
+            page.Dock = DockStyle.Fill;
+            page.Show();
+          }
+          else if (page.GetType().BaseType == typeof(UserControl))
+          {
+            LblPageTitle.Text = addin.Value.Title;
+
+            page.Dock = DockStyle.Fill;
+            // PanelAddinPrefsView.Controls.Cast<Control>().ForEach(i => i.Dispose());
+            PanelAddinPrefsView.Controls.Clear();
+            PanelAddinPrefsView.Controls.Add(page);
+            PanelAddinPrefsView.Show();
+          }
+          else
+          {
+            Log.Error($"Preference page id:'{addinId}' is of an unsupported type.");
+          }
+
+          break;
+        }
+      }
     }
   }
 }
