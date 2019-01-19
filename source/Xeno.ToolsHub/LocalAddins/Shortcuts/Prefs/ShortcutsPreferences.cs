@@ -48,7 +48,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
       if (_shortcuts.ValidateJson(json, out errMsg))
       {
         _shortcuts.ShortcutItems = Newtonsoft.Json.JsonConvert.DeserializeObject<ShortcutItems>(json);
-        _shortcuts.Save();
+        _shortcuts.SaveShortcuts();
         _shortcuts.Refresh();
 
         return true;

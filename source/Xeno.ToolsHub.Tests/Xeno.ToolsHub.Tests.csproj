@@ -57,7 +57,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ExampleTestFixture.cs" />
     <Compile Include="SystemTests\HelperTests.cs" />
+    <Compile Include="SystemTests\Messaging\MessagingCenterTests.cs" />
     <Compile Include="SystemTests\PropertiesTests.cs" />
     <Compile Include="Prototypes\PropertySingleton\IPropertyService.cs" />
     <Compile Include="Prototypes\PropertySingleton\Properties.cs" />

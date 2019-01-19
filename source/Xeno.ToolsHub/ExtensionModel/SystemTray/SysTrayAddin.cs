@@ -4,6 +4,8 @@
  * File:    SysTrayAddin.cs
  * Description:
  *  SystemTray add-in
+ *
+ *  TODO: Rename to, SysTrayAddinExtension
  */
 
 using System.Collections.Generic;

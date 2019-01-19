@@ -94,10 +94,13 @@
   </Rules>
   <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers">
     <Rule Id="SA1101" Action="None" />
+    <Rule Id="SA1124" Action="None" />
+    <Rule Id="SA1200" Action="None" />
     <Rule Id="SA1305" Action="Warning" />
     <Rule Id="SA1309" Action="None" />
     <Rule Id="SA1412" Action="Warning" />
     <Rule Id="SA1503" Action="None" />
+    <Rule Id="SA1504" Action="None" />
     <Rule Id="SA1600" Action="None" />
     <Rule Id="SA1609" Action="Warning" />
     <Rule Id="SA1633" Action="None" />
