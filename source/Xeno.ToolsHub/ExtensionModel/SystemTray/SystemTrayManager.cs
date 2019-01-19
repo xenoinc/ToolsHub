@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using Xeno.ToolsHub.Config;
 using Xeno.ToolsHub.Services.Logging;
+using Xeno.ToolsHub.Services.Messaging;
 
 namespace Xeno.ToolsHub.ExtensionModel.SystemTray
 {
@@ -32,6 +33,7 @@ namespace Xeno.ToolsHub.ExtensionModel.SystemTray
     public SystemTrayManager(MainHandler mainHandler)
     {
       _mainHandler = mainHandler;
+      InitMessageCenter();
       MenuRefresh();
     }
 
@@ -57,26 +59,57 @@ namespace Xeno.ToolsHub.ExtensionModel.SystemTray
 
     public void AlertBubble(string message, string title)
     {
-      //TODO: Use Xamarin's MessageSender and subscribe when to show balloon
-      _trayNotify.BalloonTipTitle = message;
-      _trayNotify.BalloonTipText = title;
-      _trayNotify.ShowBalloonTip(1000);
+      // TODO: Use Xamarin's MessageSender and subscribe when to show balloon
+      // TODO: SysTray - Interactive bubbles - http://www.codeproject.com/Articles/529753/InteractiveToolTip-Tooltips-you-can-click-on
+      // _trayNotify.BalloonTipTitle = message;
+      // _trayNotify.BalloonTipText = title;
+
+      _trayNotify.ShowBalloonTip(20000, title, message, ToolTipIcon.Info);
     }
 
     public void MenuRefresh()
     {
-      //TODO: Create a singleton or IoC pattern to call Refresh() from outside
+      // TODO: Create a singleton or IoC pattern to call Refresh() from outside
       InitTrayMenu();
       DrawTrayNotifacation();
     }
 
-    /// <summary>Redraw systray menu from memory</summary>
+    protected override void Dispose(bool disposing)
+    {
+      MessagingCenter.Unsubscribe<SystemTrayManager>(this, "Refresh");
+
+      base.Dispose(disposing);
+    }
+
+    /// <summary>Redraw SysTray menu from memory</summary>
     private void DrawTrayNotifacation()
     {
       _trayNotify.Icon = ApplicationIcon;
       _trayNotify.ContextMenu = new ContextMenu(_trayMenu);
       _trayNotify.DoubleClick += new EventHandler(OnMenuDoubleClick);
       _trayNotify.Visible = true;
+
+      _trayNotify.Text = "this is a test";
+      _trayNotify.BalloonTipText = "Balloon text";
+      _trayNotify.BalloonTipTitle = "My Title";
+      _trayNotify.ShowBalloonTip(10000);
+
+      // _trayNotify.ShowBalloonTip(10000, "mytitle", "Ready for action", ToolTipIcon.Info);
+    }
+
+    private void InitMessageCenter()
+    {
+      MessagingCenter.Subscribe<SystemTrayMessages>(this, SystemTrayMessages.Refresh, (sender) =>
+      {
+        Log.Debug("Refreshing system tray icon set");
+
+        MenuRefresh();
+      });
+
+      MessagingCenter.Subscribe<SystemTrayMessages, string>(this, SystemTrayMessages.Notify, (sender, msg) =>
+      {
+        AlertBubble(msg, sender.ToString());
+      });
     }
 
     private void InitTrayMenu()
