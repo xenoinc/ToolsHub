@@ -15,8 +15,9 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
   using System.Collections.Generic;
   using System.Windows.Forms;
   using Newtonsoft.Json;
-  using Xeno.ToolsHub.Managers;
+  using Xeno.ToolsHub.ExtensionModel.SystemTray;
   using Xeno.ToolsHub.Services.Logging;
+  using Xeno.ToolsHub.Services.Messaging;
 
   public class ShortcutsManager
   {
@@ -26,10 +27,10 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
 
     public ShortcutsManager()
     {
-      //Settings.LoadFile();      
-      string test = Program.Settings.GetValue("ShortcutsAddin", "ShortcutItems");
-
+      // Settings.LoadFile();
+      var test = Program.Settings.GetValue("ShortcutsAddin", "ShortcutItems");
       var shortcuts = Program.Settings.GetObject<ShortcutItems>(ShortcutsAddinId, ShortcutItemsKey);
+
       this.ShortcutItems = shortcuts == null ? new ShortcutItems() : shortcuts;
     }
 
@@ -81,11 +82,9 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
 
     public int OnGenerateSampleShortcuts(string target)
     {
-      // TODO: 1. Open dialog to create custom shorts
-      // TODO: 2. Force SysTray to refresh itself
-
       Log.Debug($"Generating a sample ShortcutItems");
 
+      // TODO: Open dialog to create custom shorts
       var items = new ShortcutItems
       {
         new ShortcutItem { Title = "C-Drive", Target = @"C:\" },
@@ -93,20 +92,19 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
       };
 
       ShortcutItems = items;
-      Save();
+      SaveShortcuts();
 
-      // TODO: MessageSender to refresh SysTray - Managers.SystemTray.SystemTrayManager.Refresh();
       return 0;
     }
 
     /// <summary>Inform parent objects to refresh</summary>
     public void Refresh()
     {
-      // TODO: Inform parents (SysTray/Sidebar) to refresh
-      // This may require MessagingCenter
+      // TODO: Inform parents to refresh (SysTray/Sidebar)
+      MessagingCenter.Send<SystemTrayMessages>(new SystemTrayMessages(), SystemTrayMessages.Refresh);
     }
 
-    public void Save()
+    public void SaveShortcuts()
     {
       Program.Settings.SetObject(ShortcutsAddinId, ShortcutItemsKey, ShortcutItems);
       Program.Settings.SaveFile();
