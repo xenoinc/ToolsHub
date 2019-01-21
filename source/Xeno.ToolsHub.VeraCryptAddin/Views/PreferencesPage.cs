@@ -6,7 +6,7 @@
  *  Sample XML Add-in Preference Page handler
  */
 
-namespace Xeno.ToolsHub.VeraCryptAddin
+namespace Xeno.ToolsHub.VeraCryptAddin.views
 {
   using System;
   using System.Windows.Forms;
@@ -22,8 +22,8 @@ namespace Xeno.ToolsHub.VeraCryptAddin
       var shutdown = Xeno.ToolsHub.Services.SettingsService.GetValue("VeraCrypt", "AutoDismountShutdown", "0");
       var logoff = Xeno.ToolsHub.Services.SettingsService.GetValue("VeraCrypt", "AutoDismountSignout", "0");
 
-      chkDismountShutdown.Checked = (shutdown == "1" ? true : false);
-      chkDismountSignout.Checked = (logoff == "1" ? true : false);
+      chkDismountShutdown.Checked = shutdown == "1" ? true : false;
+      chkDismountSignout.Checked = logoff == "1" ? true : false;
     }
 
     public bool IsModified => throw new NotImplementedException();

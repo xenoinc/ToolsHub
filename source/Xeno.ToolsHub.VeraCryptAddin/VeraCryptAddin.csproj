@@ -48,22 +48,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PreferencesPage.cs">
+    <Compile Include="Views\PreferencesPage.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PreferencesPage.Designer.cs">
+    <Compile Include="Views\PreferencesPage.Designer.cs">
       <DependentUpon>PreferencesPage.cs</DependentUpon>
     </Compile>
     <Compile Include="VeraCrypt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="VeraCryptPreferencesHandler.cs" />
+    <Compile Include="Handlers\PreferencesHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="PreferencesPage.resx">
+    <EmbeddedResource Include="Views\PreferencesPage.resx">
       <DependentUpon>PreferencesPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="VeraCrypt.addin.xml" />

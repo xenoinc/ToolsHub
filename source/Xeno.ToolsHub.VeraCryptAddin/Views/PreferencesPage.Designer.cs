@@ -1,4 +1,4 @@
-﻿namespace Xeno.ToolsHub.VeraCryptAddin
+﻿namespace Xeno.ToolsHub.VeraCryptAddin.views
 {
   partial class PreferencesPage
   {

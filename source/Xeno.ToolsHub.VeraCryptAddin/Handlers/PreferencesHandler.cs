@@ -9,9 +9,9 @@
 using System.Windows.Forms;
 using Xeno.ToolsHub.ExtensionModel;
 
-namespace Xeno.ToolsHub.VeraCryptAddin
+namespace Xeno.ToolsHub.VeraCryptAddin.Handlers
 {
-  public class VeraCryptPreferencesHandler : IPreferencePageExtension
+  public class PreferencesHandler : IPreferencePageExtension
   {
     public string Title => throw new System.NotImplementedException();
 
