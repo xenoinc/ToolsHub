@@ -10,6 +10,8 @@ Flexible tools launcher desktop app which is "_not your average extensible sideb
 | **Master** | <img src="https://ci.appveyor.com/api/projects/status/github/DamianSuess/ToolsHub?branch=master&svg=true" alt="Project Badge" /> |
 | **Develop** | <img src="https://ci.appveyor.com/api/projects/status/github/DamianSuess/ToolsHub?branch=develop&svg=true" alt="Project Badge" /> |
 
+![Screenshot](docs/ScreenShots/SysTrayShortcuts.png)
+
 
 ## Active Features
 * Launch app from System Tray
