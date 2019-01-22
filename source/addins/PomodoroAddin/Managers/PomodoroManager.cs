@@ -6,30 +6,17 @@
  *  Pomodoro timer manager
  */
 
-namespace PomodoroAddin
+namespace PomodoroAddin.Managers
 {
+  using Xeno.ToolsHub.ExtensionModel.SystemTray;
   using Xeno.ToolsHub.Services;
   using Xeno.ToolsHub.Services.Logging;
-
-  public enum TimerState
-  {
-    /// <summary>Timer started</summary>
-    Start,
-
-    /// <summary>Timer paused</summary>
-    Pause,
-
-    /// <summary>Timer stopped</summary>
-    Stop,
-
-    /// <summary>Timer finished</summary>
-    Done
-  };
+  using Xeno.ToolsHub.Services.Messaging;
 
   public class PomodoroManager
   {
     private System.Timers.Timer _timer;
-    private bool _running;
+    private bool _isRunning;
 
     public PomodoroManager()
     {
@@ -39,6 +26,12 @@ namespace PomodoroAddin
       TimerShortBreak = SettingsService.GetInt(Constants.AddinId, Constants.KeyShortBreak, 5);
       TimerLongBreak = SettingsService.GetInt(Constants.AddinId, Constants.KeyLongBreak, 10);
     }
+
+    public bool DoesFlashScreenEvents { get; set; }
+
+    public bool DoesSysTrayBubbles { get; set; }
+
+    public bool DoesSysTrayIconUpdates { get; set; }
 
     public int TimerDuration { get; set; }
 
@@ -76,6 +69,15 @@ namespace PomodoroAddin
       return 0;
     }
 
+    /// <summary>Send message to SysTray icon</summary>
+    /// <param name="icon">icon to display. NULL for default</param>
+    public void SendMessage(System.Drawing.Icon icon)
+    {
+      // We MUST specify the <..>, otherwise it will fail if you pass a NULL icon
+      MessagingCenter.Send<SystemTrayMessages, System.Drawing.Icon>(
+        new SystemTrayMessages(), SystemTrayMessages.CustomIcon, icon);
+    }
+
     private void StartTimer(int minutes)
     {
       _timer.Enabled = false;
@@ -84,9 +86,8 @@ namespace PomodoroAddin
       _timer.Elapsed += Timer_Elapsed;
       _timer.Start();
       _timer.Enabled = true;
-      
-      _running = true;
 
+      _isRunning = true;
     }
 
     private void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)

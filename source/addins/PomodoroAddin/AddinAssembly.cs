@@ -25,8 +25,13 @@ namespace PomodoroAddin
   public static class Constants
   {
     public static string AddinId = "PomodoroTimer";
+
     public static string KeyDuration = "Duration";
     public static string KeyShortBreak = "BreakShort";
     public static string KeyLongBreak = "BreakLong";
+
+    public static string FlashScreenEvents = "FlashEvents";
+    public static string SysTrayBubbles = "SysTrayBubbles";
+    public static string SysTrayDurations = "SysTrayDurations";
   }
 }

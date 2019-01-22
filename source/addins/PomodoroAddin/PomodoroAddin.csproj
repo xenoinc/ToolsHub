@@ -47,7 +47,9 @@
     <Compile Include="AddinAssembly.cs" />
     <Compile Include="Handlers\PreferenceHandler.cs" />
     <Compile Include="Handlers\SysTrayHandler.cs" />
-    <Compile Include="PomodoroManager.cs" />
+    <Compile Include="Domain\IconGenerator.cs" />
+    <Compile Include="Domain\TimerState.cs" />
+    <Compile Include="Managers\PomodoroManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Views\PreferencePage.cs">
       <SubType>Form</SubType>
@@ -66,7 +68,9 @@
       <Name>Xeno.ToolsHub</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Icons\" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\PreferencePage.resx">
       <DependentUpon>PreferencePage.cs</DependentUpon>
