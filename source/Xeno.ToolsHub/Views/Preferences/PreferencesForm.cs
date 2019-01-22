@@ -68,14 +68,19 @@ namespace Xeno.ToolsHub.Views
 
     private void SavePreferences()
     {
+      bool triggered = false;
       foreach (var addinPage in _addinPages)
       {
         var page = addinPage.Value;
         if (page.IsModified)
         {
           page.OnSave();
+          triggered = true;
         }
       }
+
+      if (triggered)
+        Program.Settings.SaveFile();
     }
 
     private void RefreshTreeView()

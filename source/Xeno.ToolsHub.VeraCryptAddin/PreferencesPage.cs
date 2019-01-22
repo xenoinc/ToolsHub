@@ -14,36 +14,34 @@ namespace Xeno.ToolsHub.VeraCryptAddin
 
   public partial class PreferencesPage : Form, IPreferencePageForm
   {
-    private bool _isModified = false;
-
     public PreferencesPage()
     {
       InitializeComponent();
       var shutdown = Xeno.ToolsHub.Services.SettingsService.GetValue("VeraCrypt", "AutoDismountShutdown", "0");
       var logoff = Xeno.ToolsHub.Services.SettingsService.GetValue("VeraCrypt", "AutoDismountSignout", "0");
 
-      chkDismountShutdown.Checked = (shutdown == "1" ? true : false);
-      chkDismountSignout.Checked = (logoff == "1" ? true : false);
+      chkDismountShutdown.Checked = shutdown == "1" ? true : false;
+      chkDismountSignout.Checked = logoff == "1" ? true : false;
     }
 
-    public bool IsModified => throw new NotImplementedException();
+    public bool IsModified { get; set; }
 
     public bool OnSave()
     {
       VeraCryptAddin.VeraCrypt.SettingSave("AutoDismountSignout", chkDismountSignout.Checked ? "1" : "0");
       VeraCryptAddin.VeraCrypt.SettingSave("AutoDismountShutdown", chkDismountShutdown.Checked ? "1" : "0");
-      _isModified = false;
+      IsModified = false;
       return true;
     }
 
     private void chkDismountShutdown_CheckedChanged(object sender, EventArgs e)
     {
-      _isModified = true;
+      IsModified = true;
     }
 
     private void chkDismountSignout_CheckedChanged(object sender, EventArgs e)
     {
-      _isModified = true;
+      IsModified = true;
     }
 
     private void PreferencesPage_Load(object sender, EventArgs e)

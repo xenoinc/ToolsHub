@@ -67,6 +67,7 @@ namespace Xeno.ToolsHub.Views
       // BtnCancel
       // 
       this.BtnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+      this.BtnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
       this.BtnCancel.Location = new System.Drawing.Point(494, 293);
       this.BtnCancel.Name = "BtnCancel";
       this.BtnCancel.Size = new System.Drawing.Size(75, 23);
@@ -166,6 +167,7 @@ namespace Xeno.ToolsHub.Views
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+      this.CancelButton = this.BtnCancel;
       this.ClientSize = new System.Drawing.Size(581, 328);
       this.Controls.Add(this.tabControl1);
       this.Controls.Add(this.BtnCancel);
