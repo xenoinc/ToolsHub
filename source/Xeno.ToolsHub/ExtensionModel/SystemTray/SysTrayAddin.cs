@@ -4,19 +4,19 @@
  * File:    SysTrayAddin.cs
  * Description:
  *  SystemTray add-in
+ *
+ *  TODO: Rename to, SysTrayAddinExtension
  */
-
-using System.Collections.Generic;
-using System.Windows.Forms;
 
 namespace Xeno.ToolsHub.ExtensionModel.SystemTray
 {
+  using System.Collections.Generic;
+  using System.Windows.Forms;
+
   //[Mono.Addins.TypeExtensionPoint(Path = "/ToolsHub/SystemTray", NodeName = "SysTrayAddin")]
   public abstract class SysTrayAddin : AbstractAddin
   {
     public abstract bool IsInitialized { get; }
-
-    public abstract void Initialize();
 
     public abstract List<MenuItem> MenuItems();
   }

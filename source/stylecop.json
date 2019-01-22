@@ -14,6 +14,7 @@
       "companyName": "PlaceholderCompany"
     },
     "orderingRules": {
+      "systemUsingDirectivesFirst": true,
       "usingDirectivesPlacement": "outsideNamespace"
     },
     "indentation": {

@@ -23,8 +23,8 @@ namespace Xeno.ToolsHub
   /// </summary>
   public class MainHandler : ApplicationContext
   {
-    private ExtensionModel.SystemTray.SystemTrayManager _sysTray;
-    private Managers.WndProcManager _wndProc;
+    private SystemTrayManager _sysTray;
+    private WndProcManager _wndProc;
     private AddinsManager _addinsManager;
 
     public MainHandler()
@@ -91,7 +91,7 @@ namespace Xeno.ToolsHub
     private void InitSystemTray()
     {
       // Consider adding this into a container
-      _sysTray = new ExtensionModel.SystemTray.SystemTrayManager(this);
+      _sysTray = new SystemTrayManager(this);
     }
 
     /// <summary>We have a GUI form, but do need WndProc for wiring up things</summary>
