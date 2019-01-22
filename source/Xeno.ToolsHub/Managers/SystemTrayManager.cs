@@ -21,6 +21,7 @@ using Xeno.ToolsHub.Config;
 using Xeno.ToolsHub.ExtensionModel;
 using Xeno.ToolsHub.ExtensionModel.SystemTray;
 using Xeno.ToolsHub.Services.Logging;
+using Xeno.ToolsHub.Services.Messaging;
 
 namespace Xeno.ToolsHub.Managers
 {
@@ -73,6 +74,10 @@ namespace Xeno.ToolsHub.Managers
     private void AlertBubble(string title, string message, ToolTipIcon icon = ToolTipIcon.Info, int displayTime = 5000)
     {
       // TODO: SysTray - Interactive bubbles - http://www.codeproject.com/Articles/529753/InteractiveToolTip-Tooltips-you-can-click-on
+
+      // Windows can have it disabled at an OS level
+      // http://support.microsoft.com/kb/307729
+
       _trayNotify.BalloonTipTitle = message;
       _trayNotify.BalloonTipText = title;
       _trayNotify.ShowBalloonTip(displayTime, title, message, icon);
@@ -179,6 +184,7 @@ namespace Xeno.ToolsHub.Managers
     {
       MessagingCenter.Unsubscribe<SystemTrayManager>(this, SystemTrayMessages.Refresh);
       MessagingCenter.Unsubscribe<SystemTrayManager, string>(this, SystemTrayMessages.Notify);
+      MessagingCenter.Unsubscribe<SystemTrayManager, string>(this, SystemTrayMessages.CustomIcon);
     }
 
     private void OnMenuAbout(object sender, EventArgs e)
@@ -189,8 +195,8 @@ namespace Xeno.ToolsHub.Managers
 
     private void OnMenuDoubleClick(object sender, EventArgs e)
     {
-      // Show Properties dialog (or About).
-      throw new NotImplementedException();
+      // Show Properties or About?
+      ShowPreferences();
     }
 
     private void OnMenuExit(object sender, EventArgs e)
@@ -201,8 +207,13 @@ namespace Xeno.ToolsHub.Managers
 
     private void OnMenuProperties(object sender, EventArgs e)
     {
+      ShowPreferences();
+    }
+
+    private void ShowPreferences()
+    {
       Form p = new Views.PreferencesForm(_mainHandler.Addins);
-      p.Show();
+      p.ShowDialog();
     }
   }
 }

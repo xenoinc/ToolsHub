@@ -76,7 +76,20 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
     {
       Log.Debug($"Executing MyMethod with target, '{target}'");
 
-      System.Diagnostics.Process.Start(target);
+      try
+      {
+        System.Diagnostics.Process.Start(target);
+      }
+      catch (Exception ex)
+      {
+        Log.Error($"Failed to execute shortcut target, '{target}' - {ex}");
+
+        MessagingCenter.Send<SystemTrayMessages, string>(
+          new SystemTrayMessages(),
+          SystemTrayMessages.Notify,
+          $"Cannot resolve target, '{target}'");
+      }
+
       return 0;
     }
 
