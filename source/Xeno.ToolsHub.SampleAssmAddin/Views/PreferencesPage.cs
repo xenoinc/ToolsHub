@@ -22,7 +22,7 @@ namespace Xeno.ToolsHub.SampleAssmAddin.Views
       InitializeComponent();
     }
 
-    public bool IsModified { get; }
+    public bool IsModified { get; set; }
 
     public bool OnSave()
     {

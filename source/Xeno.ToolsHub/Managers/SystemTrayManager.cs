@@ -18,10 +18,11 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using Xeno.ToolsHub.Config;
+using Xeno.ToolsHub.ExtensionModel;
+using Xeno.ToolsHub.ExtensionModel.SystemTray;
 using Xeno.ToolsHub.Services.Logging;
-using Xeno.ToolsHub.Services.Messaging;
 
-namespace Xeno.ToolsHub.ExtensionModel.SystemTray
+namespace Xeno.ToolsHub.Managers
 {
   public class SystemTrayManager : ApplicationContext
   {
@@ -125,9 +126,9 @@ namespace Xeno.ToolsHub.ExtensionModel.SystemTray
         try
         {
           SysTrayAddin addin = typeNode.CreateInstance() as SysTrayAddin;
-          Log.Debug($"SysTrayAdd-in [{addin.ToString()}]");
+          Log.Debug($"SysTray Add-in initializing [{addin.ToString()}]");
 
-          addinItems = addin.MenuItems();
+          addinItems.AddRange(addin.MenuItems());
         }
         catch (Exception ex)
         {
