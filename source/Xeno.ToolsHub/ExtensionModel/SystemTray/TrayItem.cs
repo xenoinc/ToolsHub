@@ -54,7 +54,7 @@ namespace Xeno.ToolsHub.ExtensionModel.SystemTray
 
     public void OnClick(object sender, EventArgs e)
     {
-      int index = -1;
+      int index = -1, ret = 0;
       string target = "", text = "";
 
       if (sender.GetType() == typeof(TrayItem))
@@ -69,7 +69,7 @@ namespace Xeno.ToolsHub.ExtensionModel.SystemTray
 
         if (_routedMethod != null)
         {
-          _routedMethod.Invoke(target);
+          ret = _routedMethod.Invoke(target);
         }
         else if (target != "")
         {

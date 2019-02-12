@@ -4,6 +4,8 @@
  * File:    SysTrayAddin.cs
  * Description:
  *  SystemTray add-in
+ *
+ *  TODO: Rename to, SysTrayAddinExtension
  */
 
 namespace Xeno.ToolsHub.ExtensionModel.SystemTray

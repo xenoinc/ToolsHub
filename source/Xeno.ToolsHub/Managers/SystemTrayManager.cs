@@ -6,23 +6,25 @@
  *  Manager for SystemTray icons
  *
  * TODO:
- *  [ ] Load custom icon
+ *  [ ] SysTray - Interactive bubbles - http://www.codeproject.com/Articles/529753/InteractiveToolTip-Tooltips-you-can-click-on
+ *  [ ] Add custom icon, and timeout duration
  *  [ ] Ability to add/rmv menu items at will
  *
  * Reference:
  *  - gfx https://www.red-gate.com/simple-talk/dotnet/.net-framework/creating-tray-applications-in-.net-a-practical-guide/
  */
 
+using System;
+using System.Collections.Generic;
+using System.Windows.Forms;
+using Xeno.ToolsHub.Config;
+using Xeno.ToolsHub.ExtensionModel;
+using Xeno.ToolsHub.ExtensionModel.SystemTray;
+using Xeno.ToolsHub.Services.Logging;
+using Xeno.ToolsHub.Services.Messaging;
+
 namespace Xeno.ToolsHub.Managers
 {
-  using System;
-  using System.Collections.Generic;
-  using System.Windows.Forms;
-  using Xeno.ToolsHub.Config;
-  using Xeno.ToolsHub.ExtensionModel;
-  using Xeno.ToolsHub.ExtensionModel.SystemTray;
-  using Xeno.ToolsHub.Services.Logging;
-
   public class SystemTrayManager : ApplicationContext
   {
     private MenuItem[] _trayMenu;
@@ -34,6 +36,7 @@ namespace Xeno.ToolsHub.Managers
     public SystemTrayManager(MainHandler mainHandler)
     {
       _mainHandler = mainHandler;
+      MessageCenterSubscribe();
       MenuRefresh();
     }
 
@@ -51,28 +54,33 @@ namespace Xeno.ToolsHub.Managers
         }
         else
         {
-          // TODO: Load custom icon from settings/extension
           return Properties.Resources.AppIcon;
         }
       }
     }
 
-    public void AlertBubble(string message, string title)
-    {
-      // TODO: Use Xamarin's MessageSender and subscribe when to show balloon
-      _trayNotify.BalloonTipTitle = message;
-      _trayNotify.BalloonTipText = title;
-      _trayNotify.ShowBalloonTip(1000);
-    }
-
     public void MenuRefresh()
     {
-      // TODO: Create a singleton or IoC pattern to call Refresh() from outside
       InitTrayMenu();
       DrawTrayNotifacation();
     }
 
-    /// <summary>Redraw systray menu from memory</summary>
+    protected override void Dispose(bool disposing)
+    {
+      MessagesUnsubscribe();
+      base.Dispose(disposing);
+    }
+
+    private void AlertBubble(string title, string message, ToolTipIcon icon = ToolTipIcon.Info, int displayTime = 5000)
+    {
+      // TODO: SysTray - Interactive bubbles - http://www.codeproject.com/Articles/529753/InteractiveToolTip-Tooltips-you-can-click-on
+      // Windows can have it disabled at an OS level - http://support.microsoft.com/kb/307729
+      _trayNotify.BalloonTipTitle = message;
+      _trayNotify.BalloonTipText = title;
+      _trayNotify.ShowBalloonTip(displayTime, title, message, icon);
+    }
+
+    /// <summary>Redraw SysTray menu from memory</summary>
     private void DrawTrayNotifacation()
     {
       _trayNotify.Icon = ApplicationIcon;
@@ -133,6 +141,57 @@ namespace Xeno.ToolsHub.Managers
       return addinItems;
     }
 
+    /// <summary>Subscribe to messaging center messages</summary>
+    private void MessageCenterSubscribe()
+    {
+      MessagingCenter.Subscribe<SystemTrayMessages>(this, SystemTrayMessages.Refresh, (sender) =>
+      {
+        Log.Debug("Refreshing system tray icon set");
+        MenuRefresh();
+      });
+
+      MessagingCenter.Subscribe<SystemTrayMessages, string>(this, SystemTrayMessages.Notify, (sender, msg) =>
+      {
+        // TODO: Add custom icon, and timeout duration
+        string title = string.Empty;
+        ToolTipIcon icon = ToolTipIcon.Info;
+        int timeout = 5000;
+
+        Log.Debug($"Alert bubble title:'{title}', msg:'{msg}'");
+        AlertBubble(title, msg, icon, timeout);
+      });
+
+      MessagingCenter.Subscribe<SystemTrayMessages, System.Drawing.Icon>(this, SystemTrayMessages.CustomIcon, (sender, icon) =>
+      {
+      // USAGE:
+      //  We MUST specify the <..>, otherwise it will fail if you
+      //  pass a NULL icon/
+      //
+      //  MessagingCenter.Send<SystemTrayMessages, System.Drawing.Icon>(
+      //    new SystemTrayMessages(), SystemTrayMessages.CustomIcon, icon);
+
+
+        if (icon != null)
+        {
+          Log.Debug("Changing SystemTrayIcon to custom");
+          _trayNotify.Icon = icon;
+        }
+        else
+        {
+          Log.Debug("Changing SystemTrayIcon to default");
+          _trayNotify.Icon = Properties.Resources.AppIcon;
+        }
+      });
+    }
+
+    /// <summary>Unsubscribe from messaging center messages</summary>
+    private void MessagesUnsubscribe()
+    {
+      MessagingCenter.Unsubscribe<SystemTrayManager>(this, SystemTrayMessages.Refresh);
+      MessagingCenter.Unsubscribe<SystemTrayManager, string>(this, SystemTrayMessages.Notify);
+      MessagingCenter.Unsubscribe<SystemTrayManager, string>(this, SystemTrayMessages.CustomIcon);
+    }
+
     private void OnMenuAbout(object sender, EventArgs e)
     {
       Form f = new Views.AboutForm();
@@ -141,8 +200,8 @@ namespace Xeno.ToolsHub.Managers
 
     private void OnMenuDoubleClick(object sender, EventArgs e)
     {
-      // Show Properties dialog (or About).
-      throw new NotImplementedException();
+      // Show Properties or About?
+      ShowPreferences();
     }
 
     private void OnMenuExit(object sender, EventArgs e)
@@ -153,8 +212,13 @@ namespace Xeno.ToolsHub.Managers
 
     private void OnMenuProperties(object sender, EventArgs e)
     {
+      ShowPreferences();
+    }
+
+    private void ShowPreferences()
+    {
       Form p = new Views.PreferencesForm(_mainHandler.Addins);
-      p.Show();
+      p.ShowDialog();
     }
   }
 }

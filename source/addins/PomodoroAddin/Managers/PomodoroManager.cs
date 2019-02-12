@@ -7,10 +7,12 @@
  */
 
 using System;
+using Xeno.ToolsHub.ExtensionModel.SystemTray;
 using Xeno.ToolsHub.Services;
 using Xeno.ToolsHub.Services.Logging;
+using Xeno.ToolsHub.Services.Messaging;
 
-namespace PomodoroAddin
+namespace PomodoroAddin.Managers
 {
   public class PomodoroManager
   {
@@ -41,6 +43,16 @@ namespace PomodoroAddin
     public bool SettingAlertFlash { get; set; }
 
     public bool SettingAlertTrayBubble { get; set; }
+
+    public bool SettingTrayIconUpdates { get; set; }
+
+    // public bool DoesFlashScreenEvents { get; set; }
+
+    // public bool DoesSysTrayBubbles { get; set; }
+
+    // public bool DoesSysTrayIconUpdates { get; set; }
+
+    // public int TimerDuration { get; set; }
 
     public int OnStart(string target)
     {
@@ -76,6 +88,15 @@ namespace PomodoroAddin
     {
       ChangeTimerState(TimerState.Done);
       return 0;
+    }
+
+    /// <summary>Send message to SysTray icon</summary>
+    /// <param name="icon">icon to display. NULL for default</param>
+    public void SendMessage(System.Drawing.Icon icon)
+    {
+      // We MUST specify the <..>, otherwise it will fail if you pass a NULL icon
+      MessagingCenter.Send<SystemTrayMessages, System.Drawing.Icon>(
+        new SystemTrayMessages(), SystemTrayMessages.CustomIcon, icon);
     }
 
     private void ChangeTimerState(TimerState state, int durationMinutes = 0)

@@ -8,7 +8,9 @@ Flexible tools launcher desktop app which is "_not your average extensible sideb
 | --- | --- |
 | **License** | [![GitHub license](https://img.shields.io/github/license/DamianSuess/ToolsHub.svg)](https://github.com/DamianSuess/ToolsHub/blob/master/LICENSE) |
 | **Master** | <img src="https://ci.appveyor.com/api/projects/status/github/DamianSuess/ToolsHub?branch=master&svg=true" alt="Project Badge" /> |
-| **Develop** | <img src="https://ci.appveyor.com/api/projects/status/github/DamianSuess/ToolsHub?branch=develop&svg=true" alt="Project Badge" /> |
+| **Develop** | [![Build status](https://ci.appveyor.com/api/projects/status/k8breb3kj6d0fhwo/branch/develop?svg=true)](https://ci.appveyor.com/project/DamianSuess/toolshub/branch/develop) |
+
+![Screenshot](docs/ScreenShots/SysTrayShortcuts.png)
 
 
 ## Active Features
