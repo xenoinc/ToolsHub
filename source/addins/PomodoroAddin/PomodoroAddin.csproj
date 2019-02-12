@@ -49,6 +49,7 @@
     <Compile Include="Handlers\SysTrayHandler.cs" />
     <Compile Include="PomodoroManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TimerState.cs" />
     <Compile Include="Views\PreferencePage.cs">
       <SubType>Form</SubType>
     </Compile>

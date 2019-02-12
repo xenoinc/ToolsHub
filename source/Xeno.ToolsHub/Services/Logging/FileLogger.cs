@@ -27,7 +27,7 @@ namespace Xeno.ToolsHub.Services.Logging
       }
       catch
       {
-        _console.Log(Level.WARN, "Failed to create log file.");
+        _console.Log(Level.Warn, "Failed to create log file.");
       }
     }
 

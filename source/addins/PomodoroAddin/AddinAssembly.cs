@@ -28,5 +28,8 @@ namespace PomodoroAddin
     public static string KeyDuration = "Duration";
     public static string KeyShortBreak = "BreakShort";
     public static string KeyLongBreak = "BreakLong";
+    public static string KeyAlertSound = "AlertPlaySound";
+    public static string KeyAlertFlash = "AlertFlashScreen";
+    public static string KeyAlertSysTrayBubble = "AlertSysTrayBubble";
   }
 }

@@ -11,6 +11,14 @@ namespace Xeno.ToolsHub.Services
 {
   public static class SettingsService
   {
+    public static bool GetBool(string propertyId, string key, bool defValue = false)
+    {
+      if (bool.TryParse(GetValue(propertyId, key, defValue.ToString()), out bool value))
+        return value;
+      else
+        return defValue;
+    }
+
     public static string GetValue(string propertyId, string key, string defValue = "")
     {
       return Program.Settings.GetValue(propertyId, key, defValue);
@@ -35,6 +43,11 @@ namespace Xeno.ToolsHub.Services
     public static void SetValue(string propertyId, string key, string value)
     {
       Program.Settings.SetValue(propertyId, key, value);
+    }
+
+    public static void SetValue(string propertyId, string key, bool value)
+    {
+      SetValue(propertyId, key, value.ToString());
     }
 
     public static void SetValue(string propertyId, string key, int value)
