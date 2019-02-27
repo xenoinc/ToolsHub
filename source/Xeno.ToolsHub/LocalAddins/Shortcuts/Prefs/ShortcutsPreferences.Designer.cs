@@ -47,7 +47,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
       this.BtnMoveDown = new System.Windows.Forms.Button();
       this.BtnMoveUp = new System.Windows.Forms.Button();
       this.label1 = new System.Windows.Forms.Label();
-      this.treeView1 = new System.Windows.Forms.TreeView();
+      this.treeShortcuts = new System.Windows.Forms.TreeView();
       this.tabControl1.SuspendLayout();
       this.tabPage1.SuspendLayout();
       this.tabPage2.SuspendLayout();
@@ -122,7 +122,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
       this.tabPage2.Controls.Add(this.BtnMoveDown);
       this.tabPage2.Controls.Add(this.BtnMoveUp);
       this.tabPage2.Controls.Add(this.label1);
-      this.tabPage2.Controls.Add(this.treeView1);
+      this.tabPage2.Controls.Add(this.treeShortcuts);
       this.tabPage2.Location = new System.Drawing.Point(4, 22);
       this.tabPage2.Name = "tabPage2";
       this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -176,14 +176,14 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
       this.label1.TabIndex = 7;
       this.label1.Text = "Shortcuts:";
       // 
-      // treeView1
+      // treeShortcuts
       // 
-      this.treeView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+      this.treeShortcuts.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-      this.treeView1.Location = new System.Drawing.Point(6, 19);
-      this.treeView1.Name = "treeView1";
-      this.treeView1.Size = new System.Drawing.Size(179, 219);
-      this.treeView1.TabIndex = 6;
+      this.treeShortcuts.Location = new System.Drawing.Point(6, 19);
+      this.treeShortcuts.Name = "treeShortcuts";
+      this.treeShortcuts.Size = new System.Drawing.Size(179, 219);
+      this.treeShortcuts.TabIndex = 6;
       // 
       // ShortcutsPreferences
       // 
@@ -215,7 +215,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
     private System.Windows.Forms.Button BtnMoveDown;
     private System.Windows.Forms.Button BtnMoveUp;
     private System.Windows.Forms.Label label1;
-    private System.Windows.Forms.TreeView treeView1;
+    private System.Windows.Forms.TreeView treeShortcuts;
     private System.Windows.Forms.Label LblModified;
   }
 }
