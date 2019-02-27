@@ -52,6 +52,19 @@ namespace Xeno.ToolsHub.ExtensionModel.SystemTray
       Select += OnSelect;
     }
 
+    public TrayItem(TrayItemInfo itemInfo, Func<string, int> routedMethod)
+    {
+      Text = itemInfo.Text;
+      Tag = itemInfo.Target;
+      Enabled = itemInfo.Enabled;
+
+      _routedMethod = routedMethod;
+
+      // Event handlers
+      Click += OnClick;
+      Select += OnSelect;
+    }
+
     public void OnClick(object sender, EventArgs e)
     {
       int index = -1, ret = 0;

@@ -74,10 +74,7 @@ namespace Xeno.ToolsHub.Managers
     private void AlertBubble(string title, string message, ToolTipIcon icon = ToolTipIcon.Info, int displayTime = 5000)
     {
       // TODO: SysTray - Interactive bubbles - http://www.codeproject.com/Articles/529753/InteractiveToolTip-Tooltips-you-can-click-on
-
-      // Windows can have it disabled at an OS level
-      // http://support.microsoft.com/kb/307729
-
+      // Windows can have it disabled at an OS level - http://support.microsoft.com/kb/307729
       _trayNotify.BalloonTipTitle = message;
       _trayNotify.BalloonTipText = title;
       _trayNotify.ShowBalloonTip(displayTime, title, message, icon);
@@ -166,6 +163,14 @@ namespace Xeno.ToolsHub.Managers
 
       MessagingCenter.Subscribe<SystemTrayMessages, System.Drawing.Icon>(this, SystemTrayMessages.CustomIcon, (sender, icon) =>
       {
+      // USAGE:
+      //  We MUST specify the <..>, otherwise it will fail if you
+      //  pass a NULL icon/
+      //
+      //  MessagingCenter.Send<SystemTrayMessages, System.Drawing.Icon>(
+      //    new SystemTrayMessages(), SystemTrayMessages.CustomIcon, icon);
+
+
         if (icon != null)
         {
           Log.Debug("Changing SystemTrayIcon to custom");
