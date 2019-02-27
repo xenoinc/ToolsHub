@@ -15,20 +15,18 @@ namespace Xeno.ToolsHub.SampleXmlAddin.Views
 
   public partial class PerferencePage : Form, IPreferencePageForm
   {
-    private bool _isModified = false;
-
     public PerferencePage()
     {
       InitializeComponent();
     }
 
-    public bool IsModified => _isModified;
+    public bool IsModified { get; set; }
 
     public bool OnSave()
     {
       Log.Debug("Mock save, SampleXML's settings.");
 
-      _isModified = false;
+      IsModified = false;
       lblIsModified.Text = "False";
       return true;
     }
@@ -42,7 +40,7 @@ namespace Xeno.ToolsHub.SampleXmlAddin.Views
       if (!IsModified)
         lblIsModified.Text = "True";
 
-      _isModified = true;
+      IsModified = true;
     }
   }
 }

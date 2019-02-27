@@ -143,5 +143,17 @@ namespace Xeno.ToolsHub.Config
 
       return path;
     }
+
+    public static void Timeout(int milliseconds)
+    {
+      System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+      sw.Start();
+
+      while (true)
+      {
+        if (sw.ElapsedMilliseconds > milliseconds)
+          break;
+      }
+    }
   }
 }

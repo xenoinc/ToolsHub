@@ -14,8 +14,6 @@ namespace Xeno.ToolsHub.VeraCryptAddin.views
 
   public partial class PreferencesPage : Form, IPreferencePageForm
   {
-    private bool _isModified = false;
-
     public PreferencesPage()
     {
       InitializeComponent();
@@ -26,24 +24,24 @@ namespace Xeno.ToolsHub.VeraCryptAddin.views
       chkDismountSignout.Checked = logoff == "1" ? true : false;
     }
 
-    public bool IsModified => throw new NotImplementedException();
+    public bool IsModified { get; set; }
 
     public bool OnSave()
     {
       VeraCryptAddin.VeraCrypt.SettingSave("AutoDismountSignout", chkDismountSignout.Checked ? "1" : "0");
       VeraCryptAddin.VeraCrypt.SettingSave("AutoDismountShutdown", chkDismountShutdown.Checked ? "1" : "0");
-      _isModified = false;
+      IsModified = false;
       return true;
     }
 
     private void chkDismountShutdown_CheckedChanged(object sender, EventArgs e)
     {
-      _isModified = true;
+      IsModified = true;
     }
 
     private void chkDismountSignout_CheckedChanged(object sender, EventArgs e)
     {
-      _isModified = true;
+      IsModified = true;
     }
 
     private void PreferencesPage_Load(object sender, EventArgs e)

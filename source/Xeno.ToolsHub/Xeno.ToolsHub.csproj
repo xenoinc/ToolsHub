@@ -60,6 +60,7 @@
     <Compile Include="ExtensionModel\IPreferencePageForm.cs" />
     <Compile Include="ExtensionModel\ISystemTrayExtension.cs" />
     <Compile Include="ExtensionModel\SystemTray\SystemTrayMessages.cs" />
+    <Compile Include="ExtensionModel\SystemTray\TrayItemInfo.cs" />
     <Compile Include="LocalAddins\Shortcuts\Prefs\PreferencesHandler.cs" />
     <Compile Include="LocalAddins\Shortcuts\Prefs\ShortcutsPreferences.cs">
       <SubType>Form</SubType>
@@ -94,7 +95,7 @@
     <Compile Include="Services\Logging\ILogger.cs" />
     <Compile Include="Services\Logging\Log.cs" />
     <Compile Include="Managers\SidebarManager.cs" />
-    <Compile Include="ExtensionModel\SystemTray\SystemTrayManager.cs" />
+    <Compile Include="Managers\SystemTrayManager.cs" />
     <Compile Include="Managers\SettingsManager.cs" />
     <Compile Include="Managers\WndProcManager.cs" />
     <Compile Include="LocalAddins\Shortcuts\ShortcutItem.cs" />

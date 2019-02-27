@@ -52,9 +52,22 @@ namespace Xeno.ToolsHub.ExtensionModel.SystemTray
       Select += OnSelect;
     }
 
+    public TrayItem(TrayItemInfo itemInfo, Func<string, int> routedMethod)
+    {
+      Text = itemInfo.Text;
+      Tag = itemInfo.Target;
+      Enabled = itemInfo.Enabled;
+
+      _routedMethod = routedMethod;
+
+      // Event handlers
+      Click += OnClick;
+      Select += OnSelect;
+    }
+
     public void OnClick(object sender, EventArgs e)
     {
-      int index = -1;
+      int index = -1, ret = 0;
       string target = "", text = "";
 
       if (sender.GetType() == typeof(TrayItem))
@@ -69,7 +82,7 @@ namespace Xeno.ToolsHub.ExtensionModel.SystemTray
 
         if (_routedMethod != null)
         {
-          _routedMethod.Invoke(target);
+          ret = _routedMethod.Invoke(target);
         }
         else if (target != "")
         {

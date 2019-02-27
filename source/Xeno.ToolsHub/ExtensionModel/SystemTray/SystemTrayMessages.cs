@@ -18,5 +18,8 @@ namespace Xeno.ToolsHub.ExtensionModel.SystemTray
 
     /// <summary>Custom icon</summary>
     public const string CustomIcon = "Icon";
+
+    /// <summary>Update menu item data</summary>
+    public const string Update = "Update";
   }
 }
