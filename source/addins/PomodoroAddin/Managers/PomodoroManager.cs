@@ -7,6 +7,7 @@
  */
 
 using System;
+using PomodoroAddin.Domain;
 using Xeno.ToolsHub.ExtensionModel.SystemTray;
 using Xeno.ToolsHub.Services;
 using Xeno.ToolsHub.Services.Logging;
@@ -23,10 +24,12 @@ namespace PomodoroAddin.Managers
     public PomodoroManager()
     {
       _timer = new System.Timers.Timer();
+      _timer.Elapsed += Timer_Elapsed;
+      _timer.Interval = 60000;  // Testing only: 1000;
 
       SettingTimerDuration = SettingsService.GetInt(Constants.AddinId, Constants.KeyDuration, 25);
       SettingTimerShortBreak = SettingsService.GetInt(Constants.AddinId, Constants.KeyShortBreak, 5);
-      SettingTimerLongBreak = SettingsService.GetInt(Constants.AddinId, Constants.KeyLongBreak, 10);
+      SettingTimerLongBreak = SettingsService.GetInt(Constants.AddinId, Constants.KeyLongBreak, 15);
       SettingAlertSound = SettingsService.GetBool(Constants.AddinId, Constants.KeyAlertSound, true);
       SettingAlertFlash = SettingsService.GetBool(Constants.AddinId, Constants.KeyAlertFlash, true);
       SettingAlertTrayBubble = SettingsService.GetBool(Constants.AddinId, Constants.KeyAlertSysTrayBubble, true);
@@ -46,32 +49,24 @@ namespace PomodoroAddin.Managers
 
     public bool SettingTrayIconUpdates { get; set; }
 
-    // public bool DoesFlashScreenEvents { get; set; }
-
-    // public bool DoesSysTrayBubbles { get; set; }
-
-    // public bool DoesSysTrayIconUpdates { get; set; }
-
-    // public int TimerDuration { get; set; }
-
     public int OnStart(string target)
     {
       Log.Debug($"Start timer for {SettingTimerDuration} minutes");
-      ChangeTimerState(TimerState.Started, 25);
+      ChangeTimerState(TimerState.Started, SettingTimerDuration);
       return 0;
     }
 
     public int OnBreakShort(string target)
     {
       Log.Debug($"Break timer for {SettingTimerShortBreak} minutes");
-      ChangeTimerState(TimerState.Started, 5);
+      ChangeTimerState(TimerState.Started, SettingTimerShortBreak);
       return 0;
     }
 
     public int OnBreakLong(string target)
     {
       Log.Debug($"Break timer for {SettingTimerLongBreak} minutes");
-      ChangeTimerState(TimerState.Started, 15);
+      ChangeTimerState(TimerState.Started, SettingTimerLongBreak);
       return 0;
     }
 
@@ -92,11 +87,21 @@ namespace PomodoroAddin.Managers
 
     /// <summary>Send message to SysTray icon</summary>
     /// <param name="icon">icon to display. NULL for default</param>
-    public void SendMessage(System.Drawing.Icon icon)
+    public void SendMessageTrayIcon(System.Drawing.Icon icon)
     {
       // We MUST specify the <..>, otherwise it will fail if you pass a NULL icon
       MessagingCenter.Send<SystemTrayMessages, System.Drawing.Icon>(
         new SystemTrayMessages(), SystemTrayMessages.CustomIcon, icon);
+    }
+
+    public void SendMessageTrayData(TrayItemInfo itemInfo)
+    {
+      Log.Warn("Method currently not in use.");
+
+      // TODO: Create infrastructure to inform MenuItems which ones to enable/disable/change-text
+      //
+      MessagingCenter.Send<SystemTrayMessages, TrayItemInfo>(
+        new SystemTrayMessages(), SystemTrayMessages.Update, itemInfo);
     }
 
     private void ChangeTimerState(TimerState state, int durationMinutes = 0)
@@ -148,8 +153,8 @@ namespace PomodoroAddin.Managers
       //  [ ] System Tray Bubble
 
       Log.Debug($"Alert user we're at state: {state}!!");
-
-      throw new NotImplementedException();
+      Log.Warn("Notify state change feature is currently not available!");
+      // throw new NotImplementedException();
     }
 
     private void PlaySound(uint repeat = 1)
@@ -169,22 +174,25 @@ namespace PomodoroAddin.Managers
           }
         }
       }
-      catch
+      catch (Exception ex)
       {
+        Log.Error("Something's missing! " + ex.Message);
       }
-
-      throw new NotImplementedException();
     }
 
     /// <summary>Override TrayIcon with duration remaining</summary>
     /// <param name="number"></param>
     private void UpdateTrayIcon(int number = 0)
     {
-      // TODO:
-      //  [ ] Override tray icon
-      //  [ ] If number==0; reset to default
-
-      throw new NotImplementedException();
+      if (number == 0)
+      {
+        this.SendMessageTrayIcon(null);
+      }
+      else
+      {
+        IconGenerator icon = new IconGenerator(number.ToString());
+        this.SendMessageTrayIcon(icon.ToIcon());
+      }
     }
 
     /// <summary>Disable menu times</summary>
@@ -193,29 +201,58 @@ namespace PomodoroAddin.Managers
     {
       Log.Debug("Not implemented yet!");
 
+      bool start = false;
+      bool breakLong = false;
+      bool breakShort = false;
+      bool pause = false;
+      bool stop = false;
+
       switch (state)
       {
         case TimerState.Started:
           // Make sure pause item says, "Pause" not "Resume"
+          start = false;
+          breakLong = false;
+          breakShort = false;
+          pause = true;
+          stop = true;
+
+          SendMessageTrayData(new TrayItemInfo(Constants.AddinId, "Pause", "Pause", string.Empty, pause));
           break;
 
         case TimerState.Paused:
           // Change text to "Resume"
+          start = true;
+          breakLong = false;
+          breakShort = false;
+          pause = false;
+          stop = true;
+
+          SendMessageTrayData(new TrayItemInfo(Constants.AddinId, "Pause", $"Resume", string.Empty, pause));
           break;
 
         case TimerState.Done:
+          start = true;
+          breakLong = true;
+          breakShort = true;
+          pause = false;
+          stop = false;
+
+          SendMessageTrayData(new TrayItemInfo(Constants.AddinId, "Pause", $"Pause", string.Empty, pause));
           break;
       }
 
-      throw new NotImplementedException();
+      SendMessageTrayData(new TrayItemInfo(Constants.AddinId, "Start", $"Start ({SettingTimerDuration}", string.Empty, start));
+      SendMessageTrayData(new TrayItemInfo(Constants.AddinId, "BreakShort", $"Take short break ({SettingTimerShortBreak} min)", string.Empty, breakShort));
+      SendMessageTrayData(new TrayItemInfo(Constants.AddinId, "BreakLong", $"Take long break ({SettingTimerLongBreak} min)", string.Empty, breakLong));
+      // SendmessageTrayUpdate(new TrayItemInfo(Constants.AddinId, "Pause", $"Pause", string.Empty, pause));
+      SendMessageTrayData(new TrayItemInfo(Constants.AddinId, "Stop", $"Stop", string.Empty, stop));
     }
 
     private void StartTimer(int minutes)
     {
       _timer.Enabled = false;
       _timer.Stop();
-      _timer.Interval = 1000;
-      _timer.Elapsed += Timer_Elapsed;
       _timer.Start();
       _timer.Enabled = true;
 

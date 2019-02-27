@@ -85,19 +85,19 @@ namespace PomodoroAddin.Views
       IconGenerator[] nIcon;
       nIcon = new IconGenerator[5];
 
-      _manager.SendMessage(icon.ToIcon());
+      _manager.SendMessageTrayIcon(icon.ToIcon());
       Xeno.ToolsHub.Config.Helpers.Timeout(700);
 
       for (int i = 1; i <= 5; i++)
       {
         nIcon[i - 1] = new IconGenerator(i.ToString());
 
-        _manager.SendMessage(nIcon[i - 1].ToIcon());
+        _manager.SendMessageTrayIcon(nIcon[i - 1].ToIcon());
         Xeno.ToolsHub.Config.Helpers.Timeout(500);
       }
 
       // Go back to default
-      _manager.SendMessage(null);
+      _manager.SendMessageTrayIcon(null);
     }
 
     /// <summary>Validate if key is a valid number or not</summary>

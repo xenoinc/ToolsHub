@@ -60,6 +60,7 @@
     <Compile Include="ExtensionModel\IPreferencePageForm.cs" />
     <Compile Include="ExtensionModel\ISystemTrayExtension.cs" />
     <Compile Include="ExtensionModel\SystemTray\SystemTrayMessages.cs" />
+    <Compile Include="ExtensionModel\SystemTray\TrayItemInfo.cs" />
     <Compile Include="LocalAddins\Shortcuts\Prefs\PreferencesHandler.cs" />
     <Compile Include="LocalAddins\Shortcuts\Prefs\ShortcutsPreferences.cs">
       <SubType>Form</SubType>
