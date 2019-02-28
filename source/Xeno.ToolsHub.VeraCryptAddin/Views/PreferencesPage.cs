@@ -32,9 +32,13 @@ namespace Xeno.ToolsHub.VeraCryptAddin.Views
 
     public bool OnSave()
     {
+      SettingsService.SetValue(Constants.AddinId, Constants.KeyInstallPath, TxtInstallPath.Text);
+      SettingsService.SetValue(Constants.AddinId, Constants.KeyForceDismounts, ChkForceDismounts.Checked.ToString());
+
       SettingsService.SetValue(Constants.AddinId, Constants.KeyHcDriveLetter, TxtHcDrive.Text);
       SettingsService.SetValue(Constants.AddinId, Constants.KeyHcPath, TxtHcPath.Text);
       SettingsService.SetValue(Constants.AddinId, Constants.KeyHcPass, TxtHcPass.Text);
+
       SettingsService.SetValue(Constants.AddinId, Constants.KeyHcOnStartMount, ChkOnStartMount.Checked.ToString());
       SettingsService.SetValue(Constants.AddinId, Constants.KeyHcOnExitDismount, ChkOnExitDismount.Checked.ToString());
 
@@ -47,41 +51,45 @@ namespace Xeno.ToolsHub.VeraCryptAddin.Views
 
     private void OnLoadSettings()
     {
-      TxtHcDrive.Text = _manager.SettingHcDrive.ToString();
-      TxtHcPath.Text = _manager.SettingHcPath.ToString();
-      TxtHcPass.Text = _manager.SettingHcPass.ToString();
+      TxtInstallPath.Text = _manager.SettingInstallPath;
+      ChkForceDismounts.Checked = _manager.SettingsForceDismounts;
+
+      TxtHcDrive.Text = _manager.SettingHcDrive;
+      TxtHcPath.Text = _manager.SettingHcPath;
+      TxtHcPass.Text = _manager.SettingHcPass;
 
       ChkOnStartMount.Checked = _manager.SettingOnStartMount;
       ChkOnExitDismount.Checked = _manager.SettingOnExitDismount;
+      ChkOnShutdownDismount.Checked = false;
+      ChkOnSignoutDismount.Checked = false;
     }
 
     private void PreferencesPage_Load(object sender, EventArgs e)
     {
     }
 
-    private void ChkOnShutdownDismount_CheckedChanged(object sender, EventArgs e)
-    {
-      IsModified = true;
-    }
-
-    private void ChkOnSignoutDismount_CheckedChanged(object sender, EventArgs e)
-    {
-      IsModified = true;
-    }
-
-    private void ChkOnStartMount_CheckedChanged(object sender, EventArgs e)
-    {
-      IsModified = true;
-    }
-
-    private void ChkOnExitDismount_CheckedChanged(object sender, EventArgs e)
-    {
-      IsModified = true;
-    }
-
     private void TextBox_KeyPress(object sender, KeyPressEventArgs e)
     {
       IsModified = true;
+    }
+
+    private void Check_CheckedChanged(object sender, EventArgs e)
+    {
+      IsModified = true;
+    }
+
+    private void BtnInstallManualFind_Click(object sender, EventArgs e)
+    {
+      IsModified = true;
+    }
+
+    private void BtnInstallAutoFind_Click(object sender, EventArgs e)
+    {
+      IsModified = true;
+    }
+
+    private void BtnHcPath_Click(object sender, EventArgs e)
+    {
     }
   }
 }

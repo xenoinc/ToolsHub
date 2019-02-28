@@ -1,11 +1,10 @@
 ﻿/* Copyright Xeno Innovations, Inc. 2019
  * Date:    2018-08-14
  * Author:  Damian Suess
- * File:    Drive.cs
+ * File:    VirtualDrive.cs
  * Description:
- *  VeraCrypt drive options
+ *  VeraCrypt virtual drive wrapper
  *
- * TODO: Rename Drive to VirtualDrive
  */
 
 using System;
@@ -13,7 +12,7 @@ using System.Diagnostics;
 
 namespace Xeno.ToolsHub.VeraCryptAddin.Domain
 {
-  public class Drive
+  public class VirtualDrive
   {
     private string _driveLetter = string.Empty;
     private string _hcPath = string.Empty;
@@ -21,7 +20,7 @@ namespace Xeno.ToolsHub.VeraCryptAddin.Domain
     private Process _proc = new Process();
     private ProcessStartInfo _procInfo = new ProcessStartInfo();
 
-    public Drive(string vcPath, string driveLetter, string hcPath = "", string password = "")
+    public VirtualDrive(string vcPath, string driveLetter, string hcPath = "", string password = "")
     {
       _veraCryptPath = vcPath;
 
@@ -42,6 +41,7 @@ namespace Xeno.ToolsHub.VeraCryptAddin.Domain
 
     /// <summary>Dismount virtual drive</summary>
     /// <returns>Process exit code (1= failure)</returns>
+    /// <param name="force">Force dismount</param>
     public int Dismount(bool force = true)
     {
       string args = $"{MountOptions.Dismount} {_driveLetter} {MountOptions.Quit}";
@@ -78,6 +78,9 @@ namespace Xeno.ToolsHub.VeraCryptAddin.Domain
       return Execute(args);
     }
 
+    /// <summary>Execute process wrapper</summary>
+    /// <param name="arguments">File execution arguments</param>
+    /// <returns>Process exit code (1= failure)</returns>
     private int Execute(string arguments)
     {
       int exitCode = 0;

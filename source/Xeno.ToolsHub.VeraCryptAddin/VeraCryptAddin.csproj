@@ -49,9 +49,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
-    <Compile Include="Domain\Drive.cs" />
+    <Compile Include="Domain\VirtualDrive.cs" />
+    <Compile Include="Domain\VolumeInfo.cs" />
     <Compile Include="Domain\MountOptions.cs" />
-    <Compile Include="Domain\Utils.cs" />
+    <Compile Include="Domain\DriveUtils.cs" />
     <Compile Include="Handlers\SysTrayHandler.cs" />
     <Compile Include="Views\PreferencesPage.cs">
       <SubType>Form</SubType>
@@ -66,6 +67,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="readme.md" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\PreferencesPage.resx">

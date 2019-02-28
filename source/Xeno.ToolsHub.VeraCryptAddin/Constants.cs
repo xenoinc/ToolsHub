@@ -12,6 +12,12 @@ namespace Xeno.ToolsHub.VeraCryptAddin
   {
     public static string AddinId => "VeraCryptAddin";
 
+    /// <summary>Gets the VeraCrypt install path</summary>
+    /// <value>VeraCrypt install path</value>
+    public static string KeyInstallPath => "InstallPath";
+
+    public static string KeyForceDismounts => "ForceDismounts";
+
     //// First-pass settings; these belong in an array
 
     public static string KeyHcDriveLetter => "HcDrive";
