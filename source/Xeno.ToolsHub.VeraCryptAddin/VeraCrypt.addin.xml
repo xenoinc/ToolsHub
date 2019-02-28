@@ -7,29 +7,30 @@ Copyright Xeno Innovations, Inc. 2018
  * Description:
  *  Veracrypt addin
 -->
-<Addin id="VeraCryptAddin"
-       namespace="ToolsHub"
-       name="VeraCrypt Manager"
+<Addin namespace=""
+       id="VeraCryptAddin"
        version="1.0"
+       compatVersion="0.3"
+       name="VeraCrypt Manager"
        author="Damian Suess"
+       copyright="Xeno Innovations, Inc. 2018-2019"
        description="Automatically handles mounting &amp; dismounting of encrypted drives."
        category="Tools"
-       defaultEnabled="false"
-       xmlns="https://github.com/mono/mono-addins/MonoAddins.xsd">
-  <!--
+       defaultEnabled="true"
+       isRoot="false">
   <Runtime>
-    <Import assembly="VeraCrypt.dll" />
+    <Import assembly="VeraCryptAddin.dll" />
   </Runtime>
 
   <Dependencies>
-    <Addin id="ToolsHub" version="0.1" />
+    <Addin id="XenoInnovations.ToolsHub" version="0.3" />
   </Dependencies>
-  <Extension Path="/ToolsHub/ApplicationAddins">
-    <ApplicationAddin type="Xeno.ToolsHub.VeraCryptAddin.VeraCrypt" />
+
+  <Extension path="/ToolsHub/SystemTray">
+    <SysTrayAddin type="Xeno.ToolsHub.VeraCryptAddin.Handlers.SysTrayHandler" />
   </Extension>
 
-  <Extension Path="/ToolsHub/AddinPreferences">
-    <ApplicationAddin type="Xeno.ToolsHub.VeraCryptAddin.VeraCryptPreferences" />
+  <Extension path="/ToolsHub/PreferencePage">
+    <PreferencePageAddin type="Xeno.ToolsHub.VeraCryptAddin.Handlers.PreferencesHandler" />
   </Extension>
-  -->
 </Addin>
