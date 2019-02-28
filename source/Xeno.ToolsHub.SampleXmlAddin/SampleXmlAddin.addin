@@ -14,12 +14,12 @@ Copyright Xeno Innovations, Inc. 2018
        version="1.0"
        name="Sample External XML Add-in"
        author="Damian Suess"
-       copyright="Xeno Innovations, Inc. 2018"
+       copyright="Xeno Innovations, Inc. 2018-2019"
        description="Quick sample external add-in project."
        category="Sample"
        defaultEnabled="true"
        isRoot="false">
-  <!-- xmlns="https://github.com/mono/mono-addins/MonoAddins.xsd" -->
+  <!-- Do not include (bug in mono.addins): xmlns="https://github.com/mono/mono-addins/MonoAddins.xsd" -->
 
   <Runtime>
     <Import assembly="SampleXmlAddin.dll" />
@@ -43,7 +43,7 @@ Copyright Xeno Innovations, Inc. 2018
 
   <!--
   <Extension Path="/ToolsHub/SystemTray">
-    <SystemTrayAddin type="Xeno.ToolsHub.SampleXmlAddin.SysTrayHandlers.Handlers.SysTrayHandler" />
+    <SysTrayAddin type="Xeno.ToolsHub.SampleXmlAddin.SysTrayHandlers.Handlers.SysTrayHandler" />
   </Extension>
   -->
 </Addin>

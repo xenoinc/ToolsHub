@@ -11,24 +11,30 @@ using Xeno.ToolsHub.ExtensionModel;
 
 namespace Xeno.ToolsHub.VeraCryptAddin.Handlers
 {
+  // We're using an "addin.xml" manifest
+  ////[Mono.Addins.Extension(
+  ////  NodeName = ExtensionName.PreferencePageAddin,
+  ////  Path = ExtensionPath.PreferencePage)]
   public class PreferencesHandler : IPreferencePageExtension
   {
-    public string Title => throw new System.NotImplementedException();
+    private Views.PreferencesPage _page;
 
-    public Form Page => throw new System.NotImplementedException();
+    public string Title => "VeraCrypt";
 
-    public bool IsModified => throw new System.NotImplementedException();
+    public Form Page => _page;
+
+    public bool IsModified => _page.IsModified;
 
     public string Id { get; set; }
 
     public void InitializePage()
     {
-      throw new System.NotImplementedException();
+      _page = new Views.PreferencesPage();
     }
 
     public void OnSave()
     {
-      throw new System.NotImplementedException();
+      _page.OnSave();
     }
   }
 }

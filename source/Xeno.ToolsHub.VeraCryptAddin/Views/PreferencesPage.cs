@@ -6,46 +6,82 @@
  *  Sample XML Add-in Preference Page handler
  */
 
-namespace Xeno.ToolsHub.VeraCryptAddin.views
+namespace Xeno.ToolsHub.VeraCryptAddin.Views
 {
   using System;
   using System.Windows.Forms;
   using Xeno.ToolsHub.ExtensionModel;
+  using Xeno.ToolsHub.Services;
 
   public partial class PreferencesPage : Form, IPreferencePageForm
   {
+    private VeraCryptManager _manager;
+
     public PreferencesPage()
     {
       InitializeComponent();
-      var shutdown = Xeno.ToolsHub.Services.SettingsService.GetValue("VeraCrypt", "AutoDismountShutdown", "0");
-      var logoff = Xeno.ToolsHub.Services.SettingsService.GetValue("VeraCrypt", "AutoDismountSignout", "0");
+      this.Text = "VeraCrypt";
 
-      chkDismountShutdown.Checked = shutdown == "1" ? true : false;
-      chkDismountSignout.Checked = logoff == "1" ? true : false;
+      _manager = new VeraCryptManager();
+      OnLoadSettings();
+
+      IsModified = false;
     }
 
     public bool IsModified { get; set; }
 
     public bool OnSave()
     {
-      VeraCryptAddin.VeraCrypt.SettingSave("AutoDismountSignout", chkDismountSignout.Checked ? "1" : "0");
-      VeraCryptAddin.VeraCrypt.SettingSave("AutoDismountShutdown", chkDismountShutdown.Checked ? "1" : "0");
-      IsModified = false;
+      SettingsService.SetValue(Constants.AddinId, Constants.KeyHcDriveLetter, TxtHcDrive.Text);
+      SettingsService.SetValue(Constants.AddinId, Constants.KeyHcPath, TxtHcPath.Text);
+      SettingsService.SetValue(Constants.AddinId, Constants.KeyHcPass, TxtHcPass.Text);
+      SettingsService.SetValue(Constants.AddinId, Constants.KeyHcOnStartMount, ChkOnStartMount.Checked.ToString());
+      SettingsService.SetValue(Constants.AddinId, Constants.KeyHcOnExitDismount, ChkOnExitDismount.Checked.ToString());
+
+      // Features not implemented yet
+      //// SettingsService.SetValue(Constants.AddinId, Constants.KeyHcOnExitDismount, ChkOnShutdownDismount.Checked.ToString());
+      //// SettingsService.SetValue(Constants.AddinId, Constants.KeyHcOnExitDismount, ChkOnSignoutDismount.Checked.ToString());
+
       return true;
     }
 
-    private void chkDismountShutdown_CheckedChanged(object sender, EventArgs e)
+    private void OnLoadSettings()
     {
-      IsModified = true;
-    }
+      TxtHcDrive.Text = _manager.SettingHcDrive.ToString();
+      TxtHcPath.Text = _manager.SettingHcPath.ToString();
+      TxtHcPass.Text = _manager.SettingHcPass.ToString();
 
-    private void chkDismountSignout_CheckedChanged(object sender, EventArgs e)
-    {
-      IsModified = true;
+      ChkOnStartMount.Checked = _manager.SettingOnStartMount;
+      ChkOnExitDismount.Checked = _manager.SettingOnExitDismount;
     }
 
     private void PreferencesPage_Load(object sender, EventArgs e)
     {
+    }
+
+    private void ChkOnShutdownDismount_CheckedChanged(object sender, EventArgs e)
+    {
+      IsModified = true;
+    }
+
+    private void ChkOnSignoutDismount_CheckedChanged(object sender, EventArgs e)
+    {
+      IsModified = true;
+    }
+
+    private void ChkOnStartMount_CheckedChanged(object sender, EventArgs e)
+    {
+      IsModified = true;
+    }
+
+    private void ChkOnExitDismount_CheckedChanged(object sender, EventArgs e)
+    {
+      IsModified = true;
+    }
+
+    private void TextBox_KeyPress(object sender, KeyPressEventArgs e)
+    {
+      IsModified = true;
     }
   }
 }
