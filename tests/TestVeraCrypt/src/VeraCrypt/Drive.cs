@@ -84,7 +84,7 @@ namespace TestVeraCrypt.VeraCrypt
       if (IsReadOnly) args += $" {MountOptions.MountOption} {MountOptions.MountOptionReadonly}";
       if (IsRemoveable) args += $" {MountOptions.MountOption} {MountOptions.MountOptionRemovable}";
 
-      args = $"{MountOptions.Volume} {_hcPath} {args};
+      args = $"{MountOptions.Volume} {_hcPath} {args}";
       return Execute(args);
     }
 

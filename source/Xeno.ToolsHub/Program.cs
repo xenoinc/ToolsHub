@@ -58,7 +58,7 @@ namespace Xeno.ToolsHub
       string dbg = string.Empty;
       bool createdNew;
 
-      // Allows us to run from VS and
+      // Allows us to run from VS and live
       if (Helpers.IsDebugging)
       {
         dbg = "-IsDebugging";

@@ -19,11 +19,6 @@ namespace Xeno.ToolsHub.Services
         return defValue;
     }
 
-    public static string GetValue(string propertyId, string key, string defValue = "")
-    {
-      return Program.Settings.GetValue(propertyId, key, defValue);
-    }
-
     public static int GetInt(string propertyId, string key, int defValue = 0)
     {
       if (int.TryParse(GetValue(propertyId, key, defValue.ToString()), out int value))
@@ -38,6 +33,17 @@ namespace Xeno.ToolsHub.Services
         return value;
       else
         return defValue;
+    }
+
+    public static string GetString(string propertyId, string key, string defValue = "")
+    {
+      // Yes this is redundant. But to the user you know it's a string
+      return GetValue(propertyId, key, defValue);
+    }
+
+    public static string GetValue(string propertyId, string key, string defValue = "")
+    {
+      return Program.Settings.GetValue(propertyId, key, defValue);
     }
 
     public static void SetValue(string propertyId, string key, string value)
