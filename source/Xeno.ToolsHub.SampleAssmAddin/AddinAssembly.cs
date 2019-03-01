@@ -12,7 +12,7 @@
   Id = "ExternalSampleAssmblyAddin",
   Category = "Sample",
   CompatVersion = "0.3",
-  EnabledByDefault = true,
+  EnabledByDefault = false,
   Version = "0.3",
   Flags = Mono.Addins.Description.AddinFlags.None,
   Url = "https://github.com/xenoinc/ToolsHub")]
