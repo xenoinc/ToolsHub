@@ -19,3 +19,7 @@ Coming soon, Sidebar
 | Disable links if .. | TBD | Paths are not available. Or, user specified in pref |
 | Run as administrator | TBD | ... |
 | Run arguments | TBD | ... |
+
+## References
+* https://stackoverflow.com/questions/3573339/no-creation-of-a-wpf-window-in-a-dll-project
+* 
