@@ -16,5 +16,11 @@ Copyright Xeno Innovations, Inc. 2019
         mc:Ignorable="d"
         d:DesignHeight="450" Width="116.432">
   <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="13*"/>
+      <ColumnDefinition Width="41*"/>
+    </Grid.ColumnDefinitions>
+    <Button Content="Button" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" Grid.ColumnSpan="2"/>
+    <Button Content="Button" HorizontalAlignment="Left" Margin="10,389,0,0" VerticalAlignment="Top" Width="75" Grid.ColumnSpan="2"/>
   </Grid>
 </Window>

@@ -34,7 +34,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xeno.ToolsHub.Tests", "Xeno
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PomodoroAddin", "addins\PomodoroAddin\PomodoroAddin.csproj", "{8A35B6CD-B222-481D-A73D-8AD73618D223}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SidebarAddin", "Xeno.ToolsHub.SidebarAddin\SidebarAddin.csproj", "{5728D1EF-2CF9-4D23-933D-35ACDDB38021}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SidebarAddin", "addins\SidebarAddin\SidebarAddin.csproj", "{5728D1EF-2CF9-4D23-933D-35ACDDB38021}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AddinSamples", "AddinSamples", "{08CA5688-B633-46EB-9F75-17D2550482B5}"
 EndProject

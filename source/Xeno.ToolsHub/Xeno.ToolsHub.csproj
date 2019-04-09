@@ -68,6 +68,7 @@
     <Compile Include="LocalAddins\Shortcuts\Prefs\ShortcutsPreferences.Designer.cs">
       <DependentUpon>ShortcutsPreferences.cs</DependentUpon>
     </Compile>
+    <Compile Include="LocalAddins\Shortcuts\ShortcutsMessage.cs" />
     <Compile Include="LocalAddins\Shortcuts\ShortcutsSysTrayAddin.cs" />
     <Compile Include="LocalAddins\Shortcuts\ShortcutsSidebarAddin.cs" />
     <Compile Include="LocalAddins\Shortcuts\ShortcutsManager.cs" />

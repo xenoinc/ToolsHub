@@ -27,15 +27,20 @@ namespace Xeno.ToolsHub.SidebarAddin
 
     public static string KeyBackground => "BackgroundImage";
 
-    //public static string KeyTintColor => "TintColor";
+    public static string KeyOpacity => "Opacity";
 
-    /// <summary>Left, top, bottom, right</summary>
-    public static string KeyScreenArea => "ScreenSide";
+    /// <summary>Screen side: None, Left, top, bottom, right</summary>
+    public static string KeyScreenArea => "ScreenArea";
 
     /// <summary>Vertical, horizontal</summary>
-    public static string KeyScreenOrientation => "Orientation";
+    public static string KeyScreenOrientation => "ScreenOrientation";
 
     /// <summary>Monitor "1" (main)</summary>
-    public static string KeyMonitorNumber => "MonitorNumber";
+    public static string KeyScreenNumber => "ScreenNumber";
+
+    /// <summary>Use show sidebar(s) when ToolsHub starts</summary>
+    public static string KeyShowSidebars => "ShowSidebars";
+
+    public static string KeyTintColor => "TintColor";
   }
 }

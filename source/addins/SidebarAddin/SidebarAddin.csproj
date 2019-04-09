@@ -34,6 +34,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -57,8 +59,19 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="AddinAssembly.cs" />
+    <Compile Include="Domain\ScreenOrientation.cs" />
+    <Compile Include="Domain\ScreenArea.cs" />
+    <Compile Include="Handlers\PreferencesHandler.cs" />
+    <Compile Include="Handlers\UtilityHandler.cs" />
+    <Compile Include="Managers\SidebarManager.cs" />
     <Compile Include="Views\IconCtrl.xaml.cs">
       <DependentUpon>IconCtrl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PreferencesPage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\PreferencesPage.Designer.cs">
+      <DependentUpon>PreferencesPage.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\ToolbarView.xaml.cs">
       <DependentUpon>ToolbarView.xaml</DependentUpon>
@@ -83,20 +96,24 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\PreferencesPage.resx">
+      <DependentUpon>PreferencesPage.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\libs\Mono.Addins\Mono.Addins\Mono.Addins.csproj">
+    <ProjectReference Include="..\..\..\libs\Mono.Addins\Mono.Addins\Mono.Addins.csproj">
       <Project>{91dd5a2d-9fe3-4c3c-9253-876141874dad}</Project>
       <Name>Mono.Addins</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Xeno.ToolsHub\Xeno.ToolsHub.csproj">
+    <ProjectReference Include="..\..\Xeno.ToolsHub\Xeno.ToolsHub.csproj">
       <Project>{01d40bbe-da31-41e7-808e-67afcc50e698}</Project>
       <Name>Xeno.ToolsHub</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
