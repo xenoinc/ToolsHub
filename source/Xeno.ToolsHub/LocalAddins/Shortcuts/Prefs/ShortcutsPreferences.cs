@@ -89,7 +89,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
 
       // TEST:
       string json = _shortcuts.ToString();
-      string test = "{ 'foo': 'bar', 'baz': [ 42, 'quux' ] }";
+      // string test = "{ 'foo': 'bar', 'baz': [ 42, 'quux' ] }";
       LoadJsonToTreeView(treeShortcuts, json);
 
       // Fails beause we start with a "[ {"
@@ -107,12 +107,17 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
     private void LoadJsonToTreeView(TreeView treeView, string json)
     {
       if (string.IsNullOrWhiteSpace(json))
-      {
         return;
-      }
 
-      var @object = JObject.Parse(json);
-      AddObjectNodes(@object, "Shortcuts", treeView.Nodes);
+      try
+      {
+        var @object = JObject.Parse(json);
+        AddObjectNodes(@object, "Shortcuts", treeView.Nodes);
+      }
+      catch (Exception ex)
+      {
+        MessageBox.Show($"Error parsing json. {ex.Message}", "Shortcuts TreeViewer");
+      }
     }
 
     private void AddObjectNodes(JObject @object, string name, TreeNodeCollection parent)

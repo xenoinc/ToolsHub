@@ -56,6 +56,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\SettingsHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ExampleTestFixture.cs" />
     <Compile Include="SystemTests\HelperTests.cs" />
