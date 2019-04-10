@@ -40,13 +40,15 @@
       this.ChkOnStartMount = new System.Windows.Forms.CheckBox();
       this.ChkOnExitDismount = new System.Windows.Forms.CheckBox();
       this.groupBox2 = new System.Windows.Forms.GroupBox();
+      this.CmboDrives = new System.Windows.Forms.ComboBox();
       this.BtnHcPath = new System.Windows.Forms.Button();
       this.TxtHcPath = new System.Windows.Forms.TextBox();
       this.label1 = new System.Windows.Forms.Label();
       this.TxtHcPass = new System.Windows.Forms.TextBox();
       this.label2 = new System.Windows.Forms.Label();
       this.label3 = new System.Windows.Forms.Label();
-      this.CmboDrives = new System.Windows.Forms.ComboBox();
+      this.BtnTestCipher = new System.Windows.Forms.Button();
+      this.lblCipherTest = new System.Windows.Forms.Label();
       this.flowLayoutPanel1.SuspendLayout();
       this.groupBox3.SuspendLayout();
       this.groupBox2.SuspendLayout();
@@ -64,6 +66,8 @@
       // 
       // groupBox3
       // 
+      this.groupBox3.Controls.Add(this.lblCipherTest);
+      this.groupBox3.Controls.Add(this.BtnTestCipher);
       this.groupBox3.Controls.Add(this.BtnInstallAutoFind);
       this.groupBox3.Controls.Add(this.BtnInstallManualFind);
       this.groupBox3.Controls.Add(this.TxtInstallPath);
@@ -109,7 +113,8 @@
       this.TxtInstallPath.Name = "TxtInstallPath";
       this.TxtInstallPath.Size = new System.Drawing.Size(324, 20);
       this.TxtInstallPath.TabIndex = 13;
-      this.TxtInstallPath.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TextBox_KeyPress);
+      this.TxtInstallPath.TextChanged += new System.EventHandler(this.OnTextChanged);
+      this.TxtInstallPath.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.OnKeyPress);
       // 
       // label4
       // 
@@ -195,6 +200,16 @@
       this.groupBox2.TabStop = false;
       this.groupBox2.Text = "Available Volumes";
       // 
+      // CmboDrives
+      // 
+      this.CmboDrives.FormattingEnabled = true;
+      this.CmboDrives.Location = new System.Drawing.Point(6, 31);
+      this.CmboDrives.MaxLength = 1;
+      this.CmboDrives.Name = "CmboDrives";
+      this.CmboDrives.Size = new System.Drawing.Size(50, 21);
+      this.CmboDrives.TabIndex = 16;
+      this.CmboDrives.TextChanged += new System.EventHandler(this.OnTextChanged);
+      // 
       // BtnHcPath
       // 
       this.BtnHcPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -214,7 +229,8 @@
       this.TxtHcPath.Name = "TxtHcPath";
       this.TxtHcPath.Size = new System.Drawing.Size(271, 20);
       this.TxtHcPath.TabIndex = 10;
-      this.TxtHcPath.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TextBox_KeyPress);
+      this.TxtHcPath.TextChanged += new System.EventHandler(this.OnTextChanged);
+      this.TxtHcPath.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.OnKeyPress);
       // 
       // label1
       // 
@@ -234,7 +250,8 @@
       this.TxtHcPass.PasswordChar = '*';
       this.TxtHcPass.Size = new System.Drawing.Size(364, 20);
       this.TxtHcPass.TabIndex = 7;
-      this.TxtHcPass.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TextBox_KeyPress);
+      this.TxtHcPass.TextChanged += new System.EventHandler(this.OnTextChanged);
+      this.TxtHcPass.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.OnKeyPress);
       // 
       // label2
       // 
@@ -254,14 +271,24 @@
       this.label3.TabIndex = 6;
       this.label3.Text = "Volume Password";
       // 
-      // CmboDrives
+      // BtnTestCipher
       // 
-      this.CmboDrives.FormattingEnabled = true;
-      this.CmboDrives.Location = new System.Drawing.Point(6, 31);
-      this.CmboDrives.MaxLength = 1;
-      this.CmboDrives.Name = "CmboDrives";
-      this.CmboDrives.Size = new System.Drawing.Size(50, 21);
-      this.CmboDrives.TabIndex = 16;
+      this.BtnTestCipher.Location = new System.Drawing.Point(258, 65);
+      this.BtnTestCipher.Name = "BtnTestCipher";
+      this.BtnTestCipher.Size = new System.Drawing.Size(75, 23);
+      this.BtnTestCipher.TabIndex = 16;
+      this.BtnTestCipher.Text = "Test Cipher";
+      this.BtnTestCipher.UseVisualStyleBackColor = true;
+      this.BtnTestCipher.Click += new System.EventHandler(this.BtnTestCipher_Click);
+      // 
+      // lblCipherTest
+      // 
+      this.lblCipherTest.AutoSize = true;
+      this.lblCipherTest.Location = new System.Drawing.Point(256, 91);
+      this.lblCipherTest.Name = "lblCipherTest";
+      this.lblCipherTest.Size = new System.Drawing.Size(84, 13);
+      this.lblCipherTest.TabIndex = 17;
+      this.lblCipherTest.Text = "Test Status: n/a";
       // 
       // PreferencesPage
       // 
@@ -302,5 +329,7 @@
     private System.Windows.Forms.Button BtnInstallAutoFind;
     private System.Windows.Forms.Button BtnHcPath;
     private System.Windows.Forms.ComboBox CmboDrives;
+    private System.Windows.Forms.Button BtnTestCipher;
+    private System.Windows.Forms.Label lblCipherTest;
   }
 }

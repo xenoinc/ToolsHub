@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.Win32;
+using Xeno.ToolsHub.Config;
 using Xeno.ToolsHub.ExtensionModel.SystemTray;
 using Xeno.ToolsHub.Services;
 using Xeno.ToolsHub.Services.Logging;
@@ -41,19 +42,19 @@ namespace Xeno.ToolsHub.VeraCryptAddin
       }
     }
 
-    public string SettingInstallPath { get => SettingsService.GetString(Constants.AddinId, Constants.KeyInstallPath, @"C:\Program Files\VeraCrypt\VeraCrypt.exe"); }
+    public string SettingInstallPath => SettingsService.GetString(Constants.AddinId, Constants.KeyInstallPath, @"C:\Program Files\VeraCrypt\VeraCrypt.exe");
 
-    public bool SettingsForceDismounts { get => SettingsService.GetBool(Constants.AddinId, Constants.KeyForceDismounts, false); }
+    public bool SettingsForceDismounts => SettingsService.GetBool(Constants.AddinId, Constants.KeyForceDismounts, false);
 
-    public string SettingHcDrive { get => SettingsService.GetString(Constants.AddinId, Constants.KeyHcDriveLetter, "Z"); }
+    public string SettingHcDrive => SettingsService.GetString(Constants.AddinId, Constants.KeyHcDriveLetter, "Z");
 
-    public string SettingHcPath { get => SettingsService.GetString(Constants.AddinId, Constants.KeyHcPath, string.Empty); }
+    public string SettingHcPath => SettingDecrypt(SettingsService.GetString(Constants.AddinId, Constants.KeyHcPath, string.Empty));
 
-    public string SettingHcPass { get => SettingsService.GetString(Constants.AddinId, Constants.KeyHcPass, string.Empty); }
+    public string SettingHcPass => SettingDecrypt(SettingsService.GetString(Constants.AddinId, Constants.KeyHcPass, string.Empty));
 
-    public bool SettingOnStartMount { get => SettingsService.GetBool(Constants.AddinId, Constants.KeyHcOnStartMount, false); }
+    public bool SettingOnStartMount => SettingsService.GetBool(Constants.AddinId, Constants.KeyHcOnStartMount, false);
 
-    public bool SettingOnExitDismount { get => SettingsService.GetBool(Constants.AddinId, Constants.KeyHcOnExitDismount, false); }
+    public bool SettingOnExitDismount => SettingsService.GetBool(Constants.AddinId, Constants.KeyHcOnExitDismount, false);
 
     /// <summary>Get VeraCrypt's install path</summary>
     /// <returns>Path of installed VeraCrypt.exe or empty</returns>
@@ -168,6 +169,20 @@ namespace Xeno.ToolsHub.VeraCryptAddin
     {
       // TODO: Inform parents to refresh (SysTray/Sidebar)
       MessagingCenter.Send<SystemTrayMessages>(new SystemTrayMessages(), SystemTrayMessages.Refresh);
+    }
+
+    public string SettingDecrypt(string setting)
+    {
+      var crypto = new Crypto();
+      var data = crypto.Decrypt(setting);
+      return data;
+    }
+
+    public string SettingEncrypt(string setting)
+    {
+      var crypto = new Crypto();
+      var data = crypto.Encrypt(setting);
+      return data;
     }
   }
 }

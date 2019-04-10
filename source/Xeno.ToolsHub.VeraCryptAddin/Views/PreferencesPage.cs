@@ -9,6 +9,7 @@
 namespace Xeno.ToolsHub.VeraCryptAddin.Views
 {
   using System;
+  using System.IO;
   using System.Windows.Forms;
   using Xeno.ToolsHub.ExtensionModel;
   using Xeno.ToolsHub.Services;
@@ -35,9 +36,10 @@ namespace Xeno.ToolsHub.VeraCryptAddin.Views
       SettingsService.SetValue(Constants.AddinId, Constants.KeyInstallPath, TxtInstallPath.Text);
       SettingsService.SetValue(Constants.AddinId, Constants.KeyForceDismounts, ChkForceDismounts.Checked.ToString());
 
+      // TODO: Save list of volume end-points
       SettingsService.SetValue(Constants.AddinId, Constants.KeyHcDriveLetter, CmboDrives.Text);
-      SettingsService.SetValue(Constants.AddinId, Constants.KeyHcPath, TxtHcPath.Text);
-      SettingsService.SetValue(Constants.AddinId, Constants.KeyHcPass, TxtHcPass.Text);
+      SettingsService.SetValue(Constants.AddinId, Constants.KeyHcPath, _manager.SettingEncrypt(TxtHcPath.Text));
+      SettingsService.SetValue(Constants.AddinId, Constants.KeyHcPass, _manager.SettingEncrypt(TxtHcPass.Text));
 
       SettingsService.SetValue(Constants.AddinId, Constants.KeyHcOnStartMount, ChkOnStartMount.Checked.ToString());
       SettingsService.SetValue(Constants.AddinId, Constants.KeyHcOnExitDismount, ChkOnExitDismount.Checked.ToString());
@@ -71,7 +73,12 @@ namespace Xeno.ToolsHub.VeraCryptAddin.Views
     {
     }
 
-    private void TextBox_KeyPress(object sender, KeyPressEventArgs e)
+    private void OnKeyPress(object sender, KeyPressEventArgs e)
+    {
+      IsModified = true;
+    }
+
+    private void OnTextChanged(object sender, EventArgs e)
     {
       IsModified = true;
     }
@@ -117,16 +124,35 @@ namespace Xeno.ToolsHub.VeraCryptAddin.Views
         DefaultExt = "hc",
         FilterIndex = 1,
         CheckPathExists = true,
-        InitialDirectory = @"C:\Program Files\VeraCrypt\",
+        ValidateNames = false,  // Suppress file warning
         Multiselect = false
       })
       {
+        if (Directory.Exists(_manager.GetInstallPath()))
+          dialog.InitialDirectory = @"C:\Program Files\VeraCrypt\";
+
         DialogResult result = dialog.ShowDialog();
         if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(dialog.FileName))
         {
           TxtHcPath.Text = dialog.FileName;
         }
       }
+    }
+
+    private void BtnTestCipher_Click(object sender, EventArgs e)
+    {
+      string pth = @"C:\TEMP\some path";
+
+      var c = new Domain.Crypto();
+
+      var enc = c.Encrypt(pth);
+      Console.WriteLine("Encoded: " + enc);
+
+      var dec = c.Decrypt(enc);
+
+      var status = dec != pth ? "Failed to decrypt" : "Passed!";
+      lblCipherTest.Text = status;
+      Console.WriteLine(status);
     }
   }
 }
