@@ -87,10 +87,11 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
       // https://github.com/huseyint/JsonTreeView/blob/master/JsonTreeView/JsonTreeViewLoader.cs
       // https://stackoverflow.com/questions/39673815/how-to-recursively-populate-a-treeview-with-json-data
 
-
-
       // TEST:
-      LoadJsonToTreeView(treeShortcuts, "{ 'foo': 'bar', 'baz': [ 42, 'quux' ] }");
+      string json = _shortcuts.ToString();
+      string test = "{ 'foo': 'bar', 'baz': [ 42, 'quux' ] }";
+      LoadJsonToTreeView(treeShortcuts, json);
+
       // Fails beause we start with a "[ {"
       // LoadJsonToTreeView(treeShortcuts, _shortcuts.ToString());
       treeShortcuts.ExpandAll();
@@ -111,7 +112,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
       }
 
       var @object = JObject.Parse(json);
-      AddObjectNodes(@object, "JSON", treeView.Nodes);
+      AddObjectNodes(@object, "Shortcuts", treeView.Nodes);
     }
 
     private void AddObjectNodes(JObject @object, string name, TreeNodeCollection parent)
