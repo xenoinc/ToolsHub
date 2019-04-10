@@ -41,12 +41,12 @@
       this.ChkOnExitDismount = new System.Windows.Forms.CheckBox();
       this.groupBox2 = new System.Windows.Forms.GroupBox();
       this.BtnHcPath = new System.Windows.Forms.Button();
-      this.TxtHcDrive = new System.Windows.Forms.TextBox();
       this.TxtHcPath = new System.Windows.Forms.TextBox();
       this.label1 = new System.Windows.Forms.Label();
       this.TxtHcPass = new System.Windows.Forms.TextBox();
       this.label2 = new System.Windows.Forms.Label();
       this.label3 = new System.Windows.Forms.Label();
+      this.CmboDrives = new System.Windows.Forms.ComboBox();
       this.flowLayoutPanel1.SuspendLayout();
       this.groupBox3.SuspendLayout();
       this.groupBox2.SuspendLayout();
@@ -82,7 +82,6 @@
       // 
       // BtnInstallAutoFind
       // 
-      this.BtnInstallAutoFind.Enabled = false;
       this.BtnInstallAutoFind.Location = new System.Drawing.Point(9, 143);
       this.BtnInstallAutoFind.Name = "BtnInstallAutoFind";
       this.BtnInstallAutoFind.Size = new System.Drawing.Size(85, 23);
@@ -94,7 +93,6 @@
       // BtnInstallManualFind
       // 
       this.BtnInstallManualFind.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-      this.BtnInstallManualFind.Enabled = false;
       this.BtnInstallManualFind.Location = new System.Drawing.Point(339, 118);
       this.BtnInstallManualFind.Name = "BtnInstallManualFind";
       this.BtnInstallManualFind.Size = new System.Drawing.Size(31, 20);
@@ -183,8 +181,8 @@
       // 
       // groupBox2
       // 
+      this.groupBox2.Controls.Add(this.CmboDrives);
       this.groupBox2.Controls.Add(this.BtnHcPath);
-      this.groupBox2.Controls.Add(this.TxtHcDrive);
       this.groupBox2.Controls.Add(this.TxtHcPath);
       this.groupBox2.Controls.Add(this.label1);
       this.groupBox2.Controls.Add(this.TxtHcPass);
@@ -200,7 +198,6 @@
       // BtnHcPath
       // 
       this.BtnHcPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-      this.BtnHcPath.Enabled = false;
       this.BtnHcPath.Location = new System.Drawing.Point(339, 31);
       this.BtnHcPath.Name = "BtnHcPath";
       this.BtnHcPath.Size = new System.Drawing.Size(31, 20);
@@ -209,22 +206,13 @@
       this.BtnHcPath.UseVisualStyleBackColor = true;
       this.BtnHcPath.Click += new System.EventHandler(this.BtnHcPath_Click);
       // 
-      // TxtHcDrive
-      // 
-      this.TxtHcDrive.Location = new System.Drawing.Point(6, 32);
-      this.TxtHcDrive.MaxLength = 1;
-      this.TxtHcDrive.Name = "TxtHcDrive";
-      this.TxtHcDrive.Size = new System.Drawing.Size(35, 20);
-      this.TxtHcDrive.TabIndex = 5;
-      this.TxtHcDrive.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TextBox_KeyPress);
-      // 
       // TxtHcPath
       // 
       this.TxtHcPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-      this.TxtHcPath.Location = new System.Drawing.Point(50, 32);
+      this.TxtHcPath.Location = new System.Drawing.Point(62, 32);
       this.TxtHcPath.Name = "TxtHcPath";
-      this.TxtHcPath.Size = new System.Drawing.Size(283, 20);
+      this.TxtHcPath.Size = new System.Drawing.Size(271, 20);
       this.TxtHcPath.TabIndex = 10;
       this.TxtHcPath.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TextBox_KeyPress);
       // 
@@ -251,7 +239,7 @@
       // label2
       // 
       this.label2.AutoSize = true;
-      this.label2.Location = new System.Drawing.Point(47, 16);
+      this.label2.Location = new System.Drawing.Point(64, 16);
       this.label2.Name = "label2";
       this.label2.Size = new System.Drawing.Size(50, 13);
       this.label2.TabIndex = 5;
@@ -265,6 +253,15 @@
       this.label3.Size = new System.Drawing.Size(91, 13);
       this.label3.TabIndex = 6;
       this.label3.Text = "Volume Password";
+      // 
+      // CmboDrives
+      // 
+      this.CmboDrives.FormattingEnabled = true;
+      this.CmboDrives.Location = new System.Drawing.Point(6, 31);
+      this.CmboDrives.MaxLength = 1;
+      this.CmboDrives.Name = "CmboDrives";
+      this.CmboDrives.Size = new System.Drawing.Size(50, 21);
+      this.CmboDrives.TabIndex = 16;
       // 
       // PreferencesPage
       // 
@@ -298,12 +295,12 @@
     private System.Windows.Forms.CheckBox ChkOnExitDismount;
     private System.Windows.Forms.TextBox TxtHcPath;
     private System.Windows.Forms.CheckBox ChkForceDismounts;
-    private System.Windows.Forms.TextBox TxtHcDrive;
     private System.Windows.Forms.Label label1;
     private System.Windows.Forms.TextBox TxtInstallPath;
     private System.Windows.Forms.Label label4;
     private System.Windows.Forms.Button BtnInstallManualFind;
     private System.Windows.Forms.Button BtnInstallAutoFind;
     private System.Windows.Forms.Button BtnHcPath;
+    private System.Windows.Forms.ComboBox CmboDrives;
   }
 }

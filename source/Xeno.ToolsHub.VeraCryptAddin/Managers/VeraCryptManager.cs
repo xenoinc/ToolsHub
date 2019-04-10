@@ -6,6 +6,10 @@
  *  Entry point to VeraCrypt add-in
  */
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using Microsoft.Win32;
 using Xeno.ToolsHub.ExtensionModel.SystemTray;
 using Xeno.ToolsHub.Services;
 using Xeno.ToolsHub.Services.Logging;
@@ -50,6 +54,64 @@ namespace Xeno.ToolsHub.VeraCryptAddin
     public bool SettingOnStartMount { get => SettingsService.GetBool(Constants.AddinId, Constants.KeyHcOnStartMount, false); }
 
     public bool SettingOnExitDismount { get => SettingsService.GetBool(Constants.AddinId, Constants.KeyHcOnExitDismount, false); }
+
+    /// <summary>Get VeraCrypt's install path</summary>
+    /// <returns>Path of installed VeraCrypt.exe or empty</returns>
+    public string GetInstallPath()
+    {
+      string pth = string.Empty;
+
+      try
+      {
+        // "C:\Program Files\VeraCrypt\VeraCrypt Setup.exe" /u
+        string keyPth = @"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\VeraCrypt";
+        using (RegistryKey key = Registry.LocalMachine.OpenSubKey(keyPth))
+        {
+          if (key != null)
+          {
+            var o = key.GetValue("DisplayIcon");
+            if (o != null)
+            {
+              string data = o as string;
+              data = data.Replace("\"", string.Empty);
+              data = data.Replace("VeraCrypt Setup.exe", "VeraCrypt.exe");
+              pth = data.Trim();
+            }
+          }
+        }
+
+        // If it's shit, discard it
+        if (!System.IO.File.Exists(pth))
+          pth = string.Empty;
+      }
+      catch (Exception ex)
+      {
+        Log.Error($"Issue reading registry key. Error: {ex.Message}");
+      }
+
+      return pth;
+    }
+
+    /// <summary>Get list of drives not in use</summary>
+    /// <returns>Available drives</returns>
+    public List<string> GetAvailableDrives()
+    {
+      List<string> availDrives = new List<string>();
+
+      // pre-load A-Z
+      for (char c = 'A'; c <= 'Z'; c++)
+        availDrives.Add(c.ToString());
+
+      DriveInfo[] drivesInUse = DriveInfo.GetDrives();
+      foreach (DriveInfo d in drivesInUse)
+      {
+        string name = d.Name;
+        name = name.Replace(@":\", string.Empty);
+        availDrives.Remove(name);
+      }
+
+      return availDrives;
+    }
 
     /// <summary>Mount drive</summary>
     /// <param name="targetIndexId">Index id of mount in settings db</param>
