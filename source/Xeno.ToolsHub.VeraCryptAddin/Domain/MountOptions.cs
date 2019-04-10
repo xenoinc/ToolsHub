@@ -10,34 +10,38 @@ namespace Xeno.ToolsHub.VeraCryptAddin.Domain
 {
   public static class MountOptions
   {
-    public static string Dismount { get => "/d"; }
+    public static readonly string Dismount = "/d";
 
-    public static string Password { get => "/p"; }
+    public static readonly string Password = "/p";
 
-    public static string Silent { get => "/s"; }
+    public static readonly string Silent = "/s";
 
-    public static string Beep { get => "/b"; }
+    public static readonly string Beep = "/b";
 
-    public static string Force { get => "/f"; }
+    public static readonly string Force = "/f";
 
-    public static string KeyFile { get => "/k"; }
+    public static readonly string KeyFile = "/k";
 
-    public static string DriveLetter { get => "/l"; }
+    public static readonly string DriveLetter = "/l";
 
-    public static string MountOption { get => " /m "; }
+    public static readonly string MountOption = " /m ";
 
-    public static string MountOptionReadonly { get => "ro"; }
+    /// <summary>Mount volume as read-only</summary>
+    public static readonly string MountOptionReadonly = "ro";
 
-    public static string MountOptionRemovable { get => "rm"; }
+    /// <summary>Mount volume as removable medium (see section Volume Mounted as Removable Medium)</summary>
+    public static readonly string MountOptionRemovable = "rm";
 
-    public static string Quit { get => "/q"; }
+    public static readonly string Quit = "/q";
 
-    public static string Volume { get => "/v"; }
+    public static readonly string Volume = "/v";
 
-    public static string Pim { get => "/pim"; }
+    /// <summary>It must be followed by a positive integer indicating the PIM (Personal Iterations Multiplier) to use for the volume</summary>
+    public static readonly string Pim = "/pim";
 
-    public static string Truecrypt { get => "/tc"; }
+    /// <summary>Activate TrueCrypt compatibility mode which enables mounting volumes created with TrueCrypt 6.x and 7.x series </summary>
+    public static readonly string Truecrypt = "/tc";
 
-    public static string Hash { get => "/hash"; }
+    public static readonly string Hash = "/hash";
   }
 }

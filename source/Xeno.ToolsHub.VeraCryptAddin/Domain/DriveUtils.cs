@@ -39,7 +39,7 @@ namespace Xeno.ToolsHub.VeraCryptAddin.Domain
       ////});
 
       // throw new NotImplementedException();
-      return new Dictionary<string, string>();
+      return await Task.FromResult(new Dictionary<string, string>());
     }
 
     /// <summary>Mount drive</summary>

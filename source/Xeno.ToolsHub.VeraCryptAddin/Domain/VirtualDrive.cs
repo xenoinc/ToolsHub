@@ -63,7 +63,10 @@ namespace Xeno.ToolsHub.VeraCryptAddin.Domain
     public int Mount()
     {
       // Build execution parameter set
-      string args = $"{MountOptions.DriveLetter} {_driveLetter} {MountOptions.Password} {Password} {MountOptions.Quit}";
+      string args = $"{MountOptions.DriveLetter} {_driveLetter} {MountOptions.Quit}";
+
+      if (Password.Length > 0)
+        args += $" {MountOptions.Password} \"{Password}\"";
 
       if (IsSilent)
         args += $" {MountOptions.Silent}";
@@ -74,7 +77,7 @@ namespace Xeno.ToolsHub.VeraCryptAddin.Domain
       if (IsRemoveable)
         args += $" {MountOptions.MountOption} {MountOptions.MountOptionRemovable}";
 
-      args = $"{MountOptions.Volume} {_hcPath} {args}";
+      args = $"{MountOptions.Volume} \"{_hcPath}\" {args}";
       return Execute(args);
     }
 
