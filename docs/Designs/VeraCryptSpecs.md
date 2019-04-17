@@ -18,13 +18,64 @@ As of 2019-03-07, the following command line parameters are accepted. Reference 
 
 Note that this section applies to the Windows version of VeraCrypt. For information on command line usage applying to the Linux and Mac OS X versions, please run: veracrypt –h
 
+## Syntax
+
+### VeraCrypt
+```
+VeraCrypt.exe [/tc] [/hash {sha256|sha-256|sha512|sha-512|whirlpool |ripemd160|ripemd-160}][/a [devices|favorites]] [/b] [/c [y|n|f]] [/d [drive letter]] [/e] [/f] [/h [y|n]] [/k keyfile or search path] [tryemptypass [y|n]] [/l drive letter] [/m {bk|rm|recovery|ro|sm|ts|noattach}] [/p password] [/pim pimvalue] [/q [background|preferences]] [/s] [/tokenlib path] [/v volume] [/w]
+```
+
+### VeraCrypt Format
+```
+"VeraCrypt Format.exe" [/n] [/create] [/size number[{K|M|G|T}]] [/p password]  [/encryption {AES | Serpent | Twofish | Camellia | Kuznyechik | AES(Twofish) | AES(Twofish(Serpent)) | Serpent(AES) | Serpent(Twofish(AES)) | Twofish(Serpent) | Camellia(Kuznyechik) | Kuznyechik(Twofish) | Camellia(Serpent) | Kuznyechik(AES) | Kuznyechik(Serpent(Camellia))}] [/hash {sha256|sha-256|sha512|sha-512|whirlpool|ripemd160|ripemd-160}] [/filesystem {None|FAT|NTFS|ExFAT|ReFS}] [/dynamic] [/force] [/silent]
+```
+
+Note that the order in which options are specified does not matter.
+
+
+## Examples
+
+### Mount with prompt
+Mount the volume ``d:\myvolume`` as the first free drive letter, using the password prompt (the main program window will not be displayed):
+
+```
+veracrypt /q /v d:\myvolume
+```
+
+### Dismount
+Dismount a volume mounted as the drive letter ``X`` (the main program window will not be displayed):
+
+```
+veracrypt /q /d x
+```
+
+### Mount with password
+Mount a volume called ``myvolume.tc`` using the password ``MyPassword``, as the drive letter ``X``. VeraCrypt will open an explorer window and beep; mounting will be automatic:
+
+```
+veracrypt /v myvolume.tc /l x /a /p MyPassword /e /b
+```
+
+### Create Volume
+Create a ``10 MB`` file container using the password ``test`` and formatted using ``FAT``:
+
+Example 1:
+```
+"C:\Program Files\VeraCrypt\VeraCrypt Format.exe" /create c:\Data\test.hc /password test /encryption AES /hash sha512 /size 25G /filesystem NTFS /dynamic
+```
+
+Example 2:
+```
+"C:\Program Files\VeraCrypt\VeraCrypt Format.exe" /create c:\Data\test.hc /password test /hash sha512 /encryption serpent /filesystem FAT /size 10M /force
+```
+
 ## Common Commands
 | Command | Description |
 |:--------|:------------|
 | /help or /? | Display command line help. |
 | /truecrypt or /tc | Activate TrueCrypt compatibility mode which enables mounting volumes created with TrueCrypt 6.x and 7.x series.
 | /hash | It must be followed by a parameter indicating the PRF hash algorithm to use when mounting the volume. Possible values for /hash parameter are: sha256, sha-256, sha512, sha-512, whirlpool, ripemd160 and ripemd-160. When /hash is omitted, VeraCrypt will try all possible PRF algorithms thus lengthening the mount operation time. |
-| /volume or /v | <p>It must be followed by a parameter indicating the file and path name of a VeraCrypt volume to mount (do not use when dismounting) or the Volume ID of the disk/partition to mount.</p><p>The syntax of the volume ID is **ID:XXXXXX...XX** where the XX part is a 64 hexadecimal characters string that represent the 32-Bytes ID of the desired volume to mount.</p><p>To mount a partition/device-hosted volume, use, for example, ```/v \Device\Harddisk1\Partition3``` (to determine the path to a partition/device, run VeraCrypt and click Select Device). You can also mount a partition or dynamic volume using its volume name (for example, ``/v \\?\Volume{5cceb196-48bf-46ab-ad00-70965512253a}\)``. To determine the volume name use e.g. mountvol.exe. Also note that device paths are case-sensitive.</p><bp>You can also specify the Volume ID of the partition/device-hosted volume to mount, for example: ``/v ID:53B9A8D59CC84264004DA8728FC8F3E2EE6C130145ABD3835695C29FD601EDCA``. The Volume ID value can be retrieved using the volume properties dialog.</p> |
+| /volume or /v | <p>It must be followed by a parameter indicating the file and path name of a VeraCrypt volume to mount (do not use when dismounting) or the Volume ID of the disk/partition to mount.</p><p>The syntax of the volume ID is **ID:XXXXXX...XX** where the XX part is a 64 hexadecimal characters string that represent the 32-Bytes ID of the desired volume to mount.</p><p>To mount a partition/device-hosted volume, use, for example, ```/v \Device\Harddisk1\Partition3``` (to determine the path to a partition/device, run VeraCrypt and click Select Device). You can also mount a partition or dynamic volume using its volume name (for example, ``/v \\?\Volume{5cceb196-48bf-46ab-ad00-70965512253a}\)``. To determine the volume name use e.g. mountvol.exe. Also note that device paths are case-sensitive.</p><p>You can also specify the Volume ID of the partition/device-hosted volume to mount, for example: ``/v ID:53B9A8D59CC84264004DA8728FC8F3E2EE6C130145ABD3835695C29FD601EDCA``. The Volume ID value can be retrieved using the volume properties dialog.</p> |
 | /letter or /l | It must be followed by a parameter indicating the driver letter to mount the volume as. When ``/l`` is omitted and when /a is used, the first free drive letter is used.
 | /explore or /e | Open an Explorer window after a volume has been mounted. |
 | /beep or /b | Beep after a volume has been successfully mounted or dismounted. |
@@ -75,48 +126,4 @@ It has no parameters and it indicates that overwrite will be forced without requ
 /silent	(Only with /create)
 It has no parameters and it indicates that no message box or dialog will be displayed to the user. If there is any error, the operation will fail silently.
 /noisocheck or /n	Do not verify that VeraCrypt Rescue Disks are correctly burned. WARNING: Never attempt to use this option to facilitate the reuse of a previously created VeraCrypt Rescue Disk. Note that every time you encrypt a system partition/drive, you must create a new VeraCrypt Rescue Disk even if you use the same password. A previously created VeraCrypt Rescue Disk cannot be reused as it was created for a different master key.
-```
-
-## Syntax
-
-### VeraCrypt
-```
-VeraCrypt.exe [/tc] [/hash {sha256|sha-256|sha512|sha-512|whirlpool |ripemd160|ripemd-160}][/a [devices|favorites]] [/b] [/c [y|n|f]] [/d [drive letter]] [/e] [/f] [/h [y|n]] [/k keyfile or search path] [tryemptypass [y|n]] [/l drive letter] [/m {bk|rm|recovery|ro|sm|ts|noattach}] [/p password] [/pim pimvalue] [/q [background|preferences]] [/s] [/tokenlib path] [/v volume] [/w]
-```
-
-### VeraCrypt Format
-```
-"VeraCrypt Format.exe" [/n] [/create] [/size number[{K|M|G|T}]] [/p password]  [/encryption {AES | Serpent | Twofish | Camellia | Kuznyechik | AES(Twofish) | AES(Twofish(Serpent)) | Serpent(AES) | Serpent(Twofish(AES)) | Twofish(Serpent) | Camellia(Kuznyechik) | Kuznyechik(Twofish) | Camellia(Serpent) | Kuznyechik(AES) | Kuznyechik(Serpent(Camellia))}] [/hash {sha256|sha-256|sha512|sha-512|whirlpool|ripemd160|ripemd-160}] [/filesystem {None|FAT|NTFS|ExFAT|ReFS}] [/dynamic] [/force] [/silent]
-```
-
-Note that the order in which options are specified does not matter.
-
-## Examples
-
-### Mount with prompt
-Mount the volume ``d:\myvolume`` as the first free drive letter, using the password prompt (the main program window will not be displayed):
-
-```
-veracrypt /q /v d:\myvolume
-```
-
-### Dismount
-Dismount a volume mounted as the drive letter ``X`` (the main program window will not be displayed):
-
-```
-veracrypt /q /d x
-```
-
-### Mount with password
-Mount a volume called ``myvolume.tc`` using the password ``MyPassword``, as the drive letter ``X``. VeraCrypt will open an explorer window and beep; mounting will be automatic:
-
-```
-veracrypt /v myvolume.tc /l x /a /p MyPassword /e /b
-```
-
-### Create Volume
-Create a ``10 MB`` file container using the password ``test`` and formatted using ``FAT``:
-
-```
-"C:\Program Files\VeraCrypt\VeraCrypt Format.exe" /create c:\Data\test.hc /password test /hash sha512 /encryption serpent /filesystem FAT /size 10M /force
 ```
