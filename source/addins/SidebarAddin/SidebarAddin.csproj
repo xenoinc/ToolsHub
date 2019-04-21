@@ -59,9 +59,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="AddinAssembly.cs" />
-    <Compile Include="Domain\ScreenOrientation.cs" />
-    <Compile Include="Domain\ScreenArea.cs" />
+    <Compile Include="Domain\Enums.cs" />
     <Compile Include="Handlers\PreferencesHandler.cs" />
+    <Compile Include="Domain\Sidebar.cs" />
     <Compile Include="Handlers\UtilityHandler.cs" />
     <Compile Include="Managers\SidebarManager.cs" />
     <Compile Include="Views\IconCtrl.xaml.cs">

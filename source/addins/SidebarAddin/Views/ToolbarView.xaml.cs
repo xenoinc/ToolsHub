@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -16,6 +17,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -23,14 +25,25 @@ using System.Windows.Shapes;
 
 namespace Xeno.ToolsHub.SidebarAddin.Views
 {
-    /// <summary>
-    /// Interaction logic for UserControl1.xaml
-    /// </summary>
-    public partial class ToolbarView : Window
+  /// <summary>
+  /// Interaction logic for UserControl1.xaml
+  /// </summary>
+  public partial class ToolbarView : Window
+  {
+    [DllImport("user32.dll")]
+    public static extern bool AnimateWindow(IntPtr hWnd, int time, int flags);
+
+    public ToolbarView()
     {
-        public ToolbarView()
-        {
-            InitializeComponent();
-        }
+      InitializeComponent();
+
+      // Test this
+      // https://social.msdn.microsoft.com/Forums/sqlserver/en-US/87d02c0a-5258-4bb6-9656-dddfe661c531/pinvoke-window-animation-with-windowstylenone?forum=wpf
+
+      //var win = new Window();
+      //IntPtr windowHandle = new WindowInteropHelper(win).Handle;
+      //win.WindowStyle = WindowStyle.None;
+      //AnimateWindow(windowHandle, 1000, (int)Domain.AnimateWindowFlags.AW_BLEND);
     }
+  }
 }
