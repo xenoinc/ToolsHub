@@ -15,12 +15,41 @@ Copyright Xeno Innovations, Inc. 2019
         xmlns:local="clr-namespace:Xeno.ToolsHub.SidebarAddin"
         mc:Ignorable="d"
         d:DesignHeight="450" Width="116.432">
+  <!--<Window.Resources>
+    <Storyboard x:Key="FlyInStoryboard">
+      <DoubleAnimation From="{Binding Location.FromLeft}"
+                       To="{Binding Location.ToLeft}"
+                       Storyboard.TargetProperty="(Window.Left)"
+                       Duration="0:0:1" />
+      <DoubleAnimation From="{Binding Location.FromTop}"
+                       To="{Binding Location.ToTop}"
+                       Storyboard.TargetProperty="(Window.Top)"
+                       Duration="0:0:1" />
+    </Storyboard>
+    <Storyboard x:Key="FadeInFadeOutStoryboard">
+      <DoubleAnimation Storyboard.TargetProperty="(Window.Opacity)"
+                       From="0.0"
+                       To="1.0"
+                       AutoReverse="True"
+                       AccelerationRatio="0.4"
+                       DecelerationRatio="0.6"
+                       Duration="0:0:3" />
+    </Storyboard>
+  </Window.Resources>
+  <Window.Triggers>
+    <EventTrigger RoutedEvent="Window.Loaded">
+      <BeginStoryboard Storyboard="{StaticResource FlyInStoryboard}" />
+      <BeginStoryboard Storyboard="{StaticResource FadeInFadeOutStoryboard}" />
+    </EventTrigger>
+  </Window.Triggers>-->
   <Grid>
     <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="13*"/>
-      <ColumnDefinition Width="41*"/>
+      <ColumnDefinition Width="13*" />
+      <ColumnDefinition Width="41*" />
     </Grid.ColumnDefinitions>
-    <Button Content="Button" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" Grid.ColumnSpan="2"/>
-    <Button Content="Button" HorizontalAlignment="Left" Margin="10,389,0,0" VerticalAlignment="Top" Width="75" Grid.ColumnSpan="2"/>
+    <Button Content="Std Button" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" Grid.ColumnSpan="2"
+            Click="Button_Click" />
+    <Button Content="VM Button" HorizontalAlignment="Left" Margin="10,389,0,0" VerticalAlignment="Top" Width="75" Grid.ColumnSpan="2"
+            Command="{Binding ClickCommand}" />
   </Grid>
 </Window>

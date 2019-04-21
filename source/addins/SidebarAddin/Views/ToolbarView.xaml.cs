@@ -22,6 +22,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Xeno.ToolsHub.SidebarAddin.Domain;
 
 namespace Xeno.ToolsHub.SidebarAddin.Views
 {
@@ -44,6 +45,31 @@ namespace Xeno.ToolsHub.SidebarAddin.Views
       //IntPtr windowHandle = new WindowInteropHelper(win).Handle;
       //win.WindowStyle = WindowStyle.None;
       //AnimateWindow(windowHandle, 1000, (int)Domain.AnimateWindowFlags.AW_BLEND);
+    }
+
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+      //var win = new Window();
+      //IntPtr windowHandle = new WindowInteropHelper(win).Handle;
+      //win.WindowStyle = WindowStyle.None;
+      //AnimateWindow(windowHandle, 500,
+      //  (int)AnimateWindowFlags.AW_SLIDE | (int)AnimateWindowFlags.AW_HOR_NEGATIVE | (int)AnimateWindowFlags.AW_HIDE);
+      //  // (int)AnimateWindowFlags.AW_ACTIVATE);
+      // -----------------------
+      IntPtr wnd = new WindowInteropHelper(this).Handle;
+      AnimateWindow(wnd, 500, AnimateWindowFlags.AW_HOR_NEGATIVE | AnimateWindowFlags.AW_SLIDE);
+      // (int)AnimateWindowFlags.AW_SLIDE | (int)AnimateWindowFlags.AW_HOR_NEGATIVE | (int)AnimateWindowFlags.AW_HIDE);
+      // (int)AnimateWindowFlags.AW_BLEND | (int)AnimateWindowFlags.AW_VER_NEGATIVE | (int)AnimateWindowFlags.AW_SLIDE );
+
+      // -----------------------
+
+      //System.Windows.Media.Animation.DoubleAnimation dblanim = new System.Windows.Media.Animation.DoubleAnimation();
+      //dblanim.To = 200;
+      //dblanim.Duration = TimeSpan.FromSeconds(3);
+      //this.BeginAnimation(HeightProperty, dblanim);
+
+      // (int)AnimateWindowFlags.AW_SLIDE | (int)AnimateWindowFlags.AW_HOR_NEGATIVE | (int)AnimateWindowFlags.AW_HIDE);
+      // (int)AnimateWindowFlags.AW_BLEND | (int)AnimateWindowFlags.AW_VER_NEGATIVE | (int)AnimateWindowFlags.AW_SLIDE );
     }
   }
 }

@@ -10,6 +10,7 @@ using Xeno.ToolsHub.LocalAddins.Shortcuts;
 using Xeno.ToolsHub.Services;
 using Xeno.ToolsHub.Services.Logging;
 using Xeno.ToolsHub.Services.Messaging;
+using Xeno.ToolsHub.SidebarAddin.ViewModels;
 
 namespace Xeno.ToolsHub.SidebarAddin.Managers
 {
@@ -46,7 +47,15 @@ namespace Xeno.ToolsHub.SidebarAddin.Managers
 
       if (SettingsShowSidebar)
       {
-        var form = new Views.ToolbarView();
+        var viewModel = new ToolbarViewModel();
+
+        var form = new Views.ToolbarView()
+        {
+          // Owner = System.Windows.Application.Current.MainWindow,
+          DataContext = viewModel,
+          ShowInTaskbar = true
+        };
+
         form.Show();
       }
     }

@@ -59,11 +59,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="AddinAssembly.cs" />
+    <Compile Include="Domain\DelegateCommand.cs" />
     <Compile Include="Domain\Enums.cs" />
     <Compile Include="Handlers\PreferencesHandler.cs" />
     <Compile Include="Domain\Sidebar.cs" />
     <Compile Include="Handlers\UtilityHandler.cs" />
     <Compile Include="Managers\SidebarManager.cs" />
+    <Compile Include="Models\LinkIcon.cs" />
+    <Compile Include="ViewModels\ToolbarViewModel.cs" />
     <Compile Include="Views\IconCtrl.xaml.cs">
       <DependentUpon>IconCtrl.xaml</DependentUpon>
     </Compile>

@@ -12,9 +12,9 @@ using System.Windows.Forms;
 
 namespace Xeno.ToolsHub.Views
 {
-  public partial class AboutForm : Form
+  public partial class AboutForm : Form // AnimateForm
   {
-    public AboutForm()
+    public AboutForm() // : base(true) // Used by AnimateForm.. but it looks ugly on the latest Win10
     {
       InitializeComponent();
     }
