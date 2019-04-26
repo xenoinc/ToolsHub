@@ -10,9 +10,9 @@ using System.Windows;
 [assembly: AssemblyTitle("Xeno.ToolsHub.SidebarAddin")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Xeno Innovations")]
 [assembly: AssemblyProduct("Xeno.ToolsHub.SidebarAddin")]
-[assembly: AssemblyCopyright("Copyright ©  2019")]
+[assembly: AssemblyCopyright("Copyright © Xeno Innovations, Inc. 2018-2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
