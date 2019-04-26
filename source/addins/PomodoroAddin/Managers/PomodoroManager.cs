@@ -104,6 +104,29 @@ namespace PomodoroAddin.Managers
         new SystemTrayMessages(), SystemTrayMessages.Update, itemInfo);
     }
 
+    public void PlaySound(uint repeat = 1, bool isTesting = false)
+    {
+      if (!SettingAlertSound && !isTesting)
+        return;
+
+      try
+      {
+        for (uint cnt = 1; cnt <= repeat; ++cnt)
+        {
+          System.Reflection.Assembly a = System.Reflection.Assembly.GetExecutingAssembly();
+          System.IO.Stream s = a.GetManifestResourceStream("PomodoroAddin.chime2.wav");
+          using (System.Media.SoundPlayer player = new System.Media.SoundPlayer(s))
+          {
+            player.PlaySync();
+          }
+        }
+      }
+      catch (Exception ex)
+      {
+        Log.Error("Something's missing! " + ex.Message);
+      }
+    }
+
     private void ChangeTimerState(TimerState state, int durationMinutes = 0)
     {
       if (_currentState == state)
@@ -124,6 +147,7 @@ namespace PomodoroAddin.Managers
             Log.Debug($"Starting timer for {SettingTimerDuration} minutes");
             StartTimer(durationMinutes);
             UpdateMenuItems(state);
+            PlaySound(1);
           }
           break;
 
@@ -135,6 +159,10 @@ namespace PomodoroAddin.Managers
           Log.Debug($"Timer stopped");
           _timer.Stop();
           // _running = false;
+
+          // TODO: If we pressed stop, don't play sound
+          PlaySound(3);
+
           UpdateTrayIcon();
           break;
       }
@@ -155,29 +183,6 @@ namespace PomodoroAddin.Managers
       Log.Debug($"Alert user we're at state: {state}!!");
       Log.Warn("Notify state change feature is currently not available!");
       // throw new NotImplementedException();
-    }
-
-    private void PlaySound(uint repeat = 1)
-    {
-      if (!SettingAlertSound)
-        return;
-
-      try
-      {
-        for (uint cnt = 1; cnt <= repeat; ++cnt)
-        {
-          System.Reflection.Assembly a = System.Reflection.Assembly.GetExecutingAssembly();
-          System.IO.Stream s = a.GetManifestResourceStream("PomodoroAddin.chime.wav");
-          using (System.Media.SoundPlayer player = new System.Media.SoundPlayer(s))
-          {
-            player.PlaySync();
-          }
-        }
-      }
-      catch (Exception ex)
-      {
-        Log.Error("Something's missing! " + ex.Message);
-      }
     }
 
     /// <summary>Override TrayIcon with duration remaining</summary>

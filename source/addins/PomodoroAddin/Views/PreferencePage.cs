@@ -77,6 +77,11 @@ namespace PomodoroAddin.Views
       ////}
     }
 
+    private void BtnTestSound_Click(object sender, EventArgs e)
+    {
+      _manager.PlaySound(1, true);
+    }
+
     private void BtnTestTrayIconUpdate_Click(object sender, EventArgs e)
     {
       // string tIcon = "🍅"; // Shows up as a square on Win10 due to a bug in .Net GDI

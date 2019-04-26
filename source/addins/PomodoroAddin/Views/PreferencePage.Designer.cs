@@ -51,6 +51,7 @@ namespace PomodoroAddin.Views
       this.ChkPlaySound = new System.Windows.Forms.CheckBox();
       this.ChkSysTrayBubbles = new System.Windows.Forms.CheckBox();
       this.ChkFlashScreenEvents = new System.Windows.Forms.CheckBox();
+      this.BtnTestSound = new System.Windows.Forms.Button();
       this.groupBox1.SuspendLayout();
       this.groupBox2.SuspendLayout();
       this.flowLayoutPanel1.SuspendLayout();
@@ -125,6 +126,7 @@ namespace PomodoroAddin.Views
       // 
       // groupBox2
       // 
+      this.groupBox2.Controls.Add(this.BtnTestSound);
       this.groupBox2.Controls.Add(this.BtnTestTrayIconUpdate);
       this.groupBox2.Controls.Add(this.ChkSysTrayDurations);
       this.groupBox2.Location = new System.Drawing.Point(219, 3);
@@ -207,6 +209,16 @@ namespace PomodoroAddin.Views
       this.ChkFlashScreenEvents.Text = "Flash on-screen events";
       this.ChkFlashScreenEvents.UseVisualStyleBackColor = true;
       // 
+      // BtnTestSound
+      // 
+      this.BtnTestSound.Location = new System.Drawing.Point(6, 80);
+      this.BtnTestSound.Name = "BtnTestSound";
+      this.BtnTestSound.Size = new System.Drawing.Size(75, 23);
+      this.BtnTestSound.TabIndex = 2;
+      this.BtnTestSound.Text = "Test Chime";
+      this.BtnTestSound.UseVisualStyleBackColor = true;
+      this.BtnTestSound.Click += new System.EventHandler(this.BtnTestSound_Click);
+      // 
       // PreferencePage
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -244,5 +256,6 @@ namespace PomodoroAddin.Views
     private System.Windows.Forms.CheckBox ChkFlashScreenEvents;
     private System.Windows.Forms.Button BtnTestTrayIconUpdate;
     private System.Windows.Forms.CheckBox ChkPlaySound;
+    private System.Windows.Forms.Button BtnTestSound;
   }
 }
