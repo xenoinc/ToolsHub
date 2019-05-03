@@ -1,10 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<PropertyGroup>
+  <PropertyGroup>
+
     <AssemblyCompany>Xeno Innovations</AssemblyCompany>
     <AssemblyCopyright>Copyright (c) Xeno Innovations, Inc. 2018-2019</AssemblyCopyright>
 
+    <!-- Static Folders -->
     <ProjectBase>$(MSBuildProjectDirectory)</ProjectBase>
     <LibraryPath>$(ProjectBase)\libs</LibraryPath>
+    <SourcePath>$(ProjectBase)\source</SourcePath>
     <OutputFolder>$(ProjectBase)\output</OutputFolder>
-	</PropertyGroup>
+    <MainExe>$(ProjectBase)\output\$(ProjectName).exe</MainExe>
+
+    <!-- Squirrel -->
+    <SquirrelReleasePath>$(ProjectBase)\Releases</SquirrelReleasePath>
+    <SquirrelReleasePathBeta>$(ProjectBase)\Releases-Beta</SquirrelReleasePathBeta>
+
+    <!-- Build Configuration Parameters -->
+    <Configuration>Release</Configuration>
+    <Platform>Any CPU</Platform>
+
+  </PropertyGroup>
 </Project>

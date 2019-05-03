@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>RedRock.Backup</id>
+    <version>$version$</version>
+    <authors>Xeno Innovations</authors>
+    <owners>Damian Suess</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>ToolsHub productivity utility</description>
+    <releaseNotes />
+  </metadata>
+
+  <!--
+  BETTER METHOD!
+  <files>
+  <file src="..\output\*.*" target="lib\net45\" exclude="*.pdb;*.nupkg;*.vshost.*"/>
+  </files>
+  -->
+
+  <files>
+    <file src="..\output\DeltaCompressionDotNet.dll" target="lib\net45\DeltaCompressionDotNet.dll" />
+    <file src="..\output\DeltaCompressionDotNet.MsDelta.dll" target="lib\net45\DeltaCompressionDotNet.MsDelta.dll" />
+    <file src="..\output\DeltaCompressionDotNet.PatchApi.dll" target="lib\net45\DeltaCompressionDotNet.PatchApi.dll" />
+    <file src="..\output\log4net.dll" target="lib\net45\log4net.dll" />
+    <file src="..\output\Mono.Cecil.dll" target="lib\net45\Mono.Cecil.dll" />
+    <file src="..\output\Mono.Cecil.Mdb.dll" target="lib\net45\Mono.Cecil.Mdb.dll" />
+    <file src="..\output\Mono.Cecil.Pdb.dll" target="lib\net45\Mono.Cecil.Pdb.dll" />
+    <file src="..\output\Mono.Cecil.Rocks.dll" target="lib\net45\Mono.Cecil.Rocks.dll" />
+    <file src="..\output\MultiColumnComboControl.dll" target="lib\net45\MultiColumnComboControl.dll" />
+    <file src="..\output\Newtonsoft.Json.dll" target="lib\net45\Newtonsoft.Json.dll" />
+    <file src="..\output\NuGet.Squirrel.dll" target="lib\net45\NuGet.Squirrel.dll" />
+    <file src="..\output\RedRock.Backup.exe" target="lib\net45\RedRock.Backup.exe" />
+    <file src="..\output\RedRock.Backup.exe.config" target="lib\net45\RedRock.Backup.exe.config" />
+    <file src="..\output\SharpCompress.dll" target="lib\net45\SharpCompress.dll" />
+    <file src="..\output\Splat.dll" target="lib\net45\Splat.dll" />
+    <file src="..\output\Squirrel.dll" target="lib\net45\Squirrel.dll" />
+  </files>
+</package>

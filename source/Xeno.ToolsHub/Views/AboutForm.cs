@@ -8,6 +8,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace Xeno.ToolsHub.Views
@@ -17,6 +18,16 @@ namespace Xeno.ToolsHub.Views
     public AboutForm()
     {
       InitializeComponent();
+
+      System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+      var ver = AssemblyName.GetAssemblyName(assembly.Location).Version.ToString();
+
+      ////string assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+      ////string assemblyVersion = Assembly.LoadFile('your assembly file').GetName().Version.ToString();
+      ////string fileVersion = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion;
+      ////string productVersion = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).ProductVersion;
+
+      label1.Text = $"ToolsHub v{ver}";
     }
 
     private void AboutForm_Load(object sender, EventArgs e)
