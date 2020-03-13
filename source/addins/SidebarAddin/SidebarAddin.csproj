@@ -65,7 +65,8 @@
     <Compile Include="Domain\Sidebar.cs" />
     <Compile Include="Handlers\UtilityHandler.cs" />
     <Compile Include="Managers\SidebarManager.cs" />
-    <Compile Include="Models\LinkIcon.cs" />
+    <Compile Include="Models\ItemImage.cs" />
+    <Compile Include="Models\DockItem.cs" />
     <Compile Include="ViewModels\ToolbarViewModel.cs" />
     <Compile Include="Views\IconCtrl.xaml.cs">
       <DependentUpon>IconCtrl.xaml</DependentUpon>

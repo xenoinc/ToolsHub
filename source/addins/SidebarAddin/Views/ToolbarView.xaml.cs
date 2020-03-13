@@ -3,25 +3,13 @@
  * Author:  Damian Suess
  * File:    ToolbarView.xaml.cs
  * Description:
- *  
+ *
  */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Interop;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Xeno.ToolsHub.SidebarAddin.Domain;
 
 namespace Xeno.ToolsHub.SidebarAddin.Views
@@ -31,9 +19,6 @@ namespace Xeno.ToolsHub.SidebarAddin.Views
   /// </summary>
   public partial class ToolbarView : Window
   {
-    [DllImport("user32.dll")]
-    public static extern bool AnimateWindow(IntPtr hWnd, int time, int flags);
-
     public ToolbarView()
     {
       InitializeComponent();
@@ -46,6 +31,9 @@ namespace Xeno.ToolsHub.SidebarAddin.Views
       //win.WindowStyle = WindowStyle.None;
       //AnimateWindow(windowHandle, 1000, (int)Domain.AnimateWindowFlags.AW_BLEND);
     }
+
+    [DllImport("user32.dll")]
+    public static extern bool AnimateWindow(IntPtr hWnd, int time, int flags);
 
     private void Button_Click(object sender, RoutedEventArgs e)
     {

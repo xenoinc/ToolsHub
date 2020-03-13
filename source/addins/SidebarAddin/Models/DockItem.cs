@@ -10,28 +10,26 @@ using System;
 
 namespace Xeno.ToolsHub.SidebarAddin.Models
 {
-  public class LinkIcon
+  public class DockItem
   {
     private readonly string _text;
     private readonly string _image;
     private readonly Action _clickAction;
 
-    public LinkIcon(string text, string image, Action clickAction)
+    public DockItem(string text, string image, Action clickAction)
     {
       _text = text;
       _image = image;
       _clickAction = clickAction;
+
+      DockItemImage = new ItemImage();
     }
 
-    public string Text
-    {
-      get { return _text; }
-    }
+    public ItemImage DockItemImage { get; set; }
 
-    public string Image
-    {
-      get { return _image; }
-    }
+    public string Text => _text;
+
+    public string Image => DockItemImage.ImagePath;
 
     public Action OnClick
     {

@@ -47,14 +47,15 @@ namespace Xeno.ToolsHub.SidebarAddin.Managers
 
       if (SettingsShowSidebar)
       {
-        var viewModel = new ToolbarViewModel();
-
+        //// var viewModel = new ToolbarViewModel();
         var form = new Views.ToolbarView()
         {
-          // Owner = System.Windows.Application.Current.MainWindow,
-          DataContext = viewModel,
+          //// form.DataContext = new ToolbarViewModel(),
+          //// Owner = System.Windows.Application.Current.MainWindow,
           ShowInTaskbar = true
         };
+
+        form.DataContext = new ToolbarViewModel(form.StackDynamic);
 
         form.Show();
       }

@@ -3,9 +3,10 @@
  * Author:  Damian Suess
  * File:    AddinAssembly.cs
  * Description:
- *
+ *  Definition of our Sidebar add-in extension
  */
 
+// Define our add-in
 [assembly: Mono.Addins.Addin(
   Namespace = "",
   Id = "SidebarAddin",
@@ -15,6 +16,8 @@
   Version = "0.3",
   Flags = Mono.Addins.Description.AddinFlags.None,
   Url = "https://github.com/xenoinc/ToolsHub")]
+
+// Attach to add-in host
 [assembly: Mono.Addins.AddinDependency("XenoInnovations.ToolsHub", "0.3")]
 
 namespace Xeno.ToolsHub.SidebarAddin
