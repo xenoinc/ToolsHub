@@ -163,14 +163,12 @@ namespace Xeno.ToolsHub.Managers
 
       MessagingCenter.Subscribe<SystemTrayMessages, System.Drawing.Icon>(this, SystemTrayMessages.CustomIcon, (sender, icon) =>
       {
-      // USAGE:
-      //  We MUST specify the <..>, otherwise it will fail if you
-      //  pass a NULL icon/
-      //
-      //  MessagingCenter.Send<SystemTrayMessages, System.Drawing.Icon>(
-      //    new SystemTrayMessages(), SystemTrayMessages.CustomIcon, icon);
-
-
+        // USAGE:
+        //  We MUST specify the <..>, otherwise it will fail if you
+        //  pass a NULL icon/
+        //
+        //  MessagingCenter.Send<SystemTrayMessages, System.Drawing.Icon>(
+        //    new SystemTrayMessages(), SystemTrayMessages.CustomIcon, icon);
         if (icon != null)
         {
           Log.Debug("Changing SystemTrayIcon to custom");
