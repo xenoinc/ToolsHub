@@ -14,7 +14,7 @@ Copyright Xeno Innovations, Inc. 2018
        name="VeraCrypt Manager"
        author="Damian Suess"
        copyright="Xeno Innovations, Inc. 2018-2019"
-       description="Automatically handles mounting &amp; dismounting of encrypted drives."
+       description="Automatically handles VeraCrypt mounting &amp; dismounting of encrypted drives."
        category="Tools"
        defaultEnabled="true"
        isRoot="false">
