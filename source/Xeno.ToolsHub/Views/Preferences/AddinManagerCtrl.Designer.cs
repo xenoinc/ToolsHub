@@ -37,6 +37,10 @@ namespace Xeno.ToolsHub.Views.Preferences
     private void InitializeComponent()
     {
       this.ListAddins = new System.Windows.Forms.ListView();
+      this.ListAddinId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+      this.ListAddinName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+      this.ListAddinEnabled = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+      this.ListAddinIsUser = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
       this.label1 = new System.Windows.Forms.Label();
       this.BtnEnable = new System.Windows.Forms.Button();
       this.BtnDisable = new System.Windows.Forms.Button();
@@ -44,11 +48,7 @@ namespace Xeno.ToolsHub.Views.Preferences
       this.label3 = new System.Windows.Forms.Label();
       this.label4 = new System.Windows.Forms.Label();
       this.label5 = new System.Windows.Forms.Label();
-      this.ListAddinId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-      this.ListAddinName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-      this.ListAddinEnabled = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
       this.groupBox1 = new System.Windows.Forms.GroupBox();
-      this.ListAddinIsUser = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
       this.groupBox1.SuspendLayout();
       this.SuspendLayout();
       // 
@@ -67,19 +67,39 @@ namespace Xeno.ToolsHub.Views.Preferences
       this.ListAddins.Location = new System.Drawing.Point(6, 47);
       this.ListAddins.MultiSelect = false;
       this.ListAddins.Name = "ListAddins";
-      this.ListAddins.Size = new System.Drawing.Size(466, 193);
+      this.ListAddins.Size = new System.Drawing.Size(466, 283);
       this.ListAddins.TabIndex = 0;
       this.ListAddins.UseCompatibleStateImageBehavior = false;
       this.ListAddins.View = System.Windows.Forms.View.Details;
       // 
+      // ListAddinId
+      // 
+      this.ListAddinId.Text = "Id";
+      this.ListAddinId.Width = 0;
+      // 
+      // ListAddinName
+      // 
+      this.ListAddinName.Text = "Name";
+      this.ListAddinName.Width = 274;
+      // 
+      // ListAddinEnabled
+      // 
+      this.ListAddinEnabled.Text = "Enabled";
+      this.ListAddinEnabled.Width = 98;
+      // 
+      // ListAddinIsUser
+      // 
+      this.ListAddinIsUser.Text = "User Addin";
+      // 
       // label1
       // 
       this.label1.AutoSize = true;
+      this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
       this.label1.Location = new System.Drawing.Point(3, 0);
       this.label1.Name = "label1";
-      this.label1.Size = new System.Drawing.Size(87, 13);
+      this.label1.Size = new System.Drawing.Size(156, 24);
       this.label1.TabIndex = 1;
-      this.label1.Text = "Enabled Add-ins:";
+      this.label1.Text = "Available Add-Ins";
       // 
       // BtnEnable
       // 
@@ -143,21 +163,6 @@ namespace Xeno.ToolsHub.Views.Preferences
       this.label5.Text = "Author(s):";
       this.label5.Visible = false;
       // 
-      // ListAddinId
-      // 
-      this.ListAddinId.Text = "Id";
-      this.ListAddinId.Width = 74;
-      // 
-      // ListAddinName
-      // 
-      this.ListAddinName.Text = "Name";
-      this.ListAddinName.Width = 222;
-      // 
-      // ListAddinEnabled
-      // 
-      this.ListAddinEnabled.Text = "Enabled";
-      this.ListAddinEnabled.Width = 98;
-      // 
       // groupBox1
       // 
       this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
@@ -172,10 +177,7 @@ namespace Xeno.ToolsHub.Views.Preferences
       this.groupBox1.TabIndex = 8;
       this.groupBox1.TabStop = false;
       this.groupBox1.Text = "Addin Information";
-      // 
-      // ListAddinIsUser
-      // 
-      this.ListAddinIsUser.Text = "User Addin";
+      this.groupBox1.Visible = false;
       // 
       // AddinManagerCtrl
       // 

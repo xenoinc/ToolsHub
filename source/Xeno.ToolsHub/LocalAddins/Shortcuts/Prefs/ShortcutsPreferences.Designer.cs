@@ -133,6 +133,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
       // 
       // BtnMoveIn
       // 
+      this.BtnMoveIn.Enabled = false;
       this.BtnMoveIn.Location = new System.Drawing.Point(191, 106);
       this.BtnMoveIn.Name = "BtnMoveIn";
       this.BtnMoveIn.Size = new System.Drawing.Size(47, 23);
@@ -142,6 +143,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
       // 
       // BtnMoveOut
       // 
+      this.BtnMoveOut.Enabled = false;
       this.BtnMoveOut.Location = new System.Drawing.Point(191, 77);
       this.BtnMoveOut.Name = "BtnMoveOut";
       this.BtnMoveOut.Size = new System.Drawing.Size(47, 23);
@@ -151,6 +153,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
       // 
       // BtnMoveDown
       // 
+      this.BtnMoveDown.Enabled = false;
       this.BtnMoveDown.Location = new System.Drawing.Point(191, 48);
       this.BtnMoveDown.Name = "BtnMoveDown";
       this.BtnMoveDown.Size = new System.Drawing.Size(47, 23);
@@ -160,6 +163,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
       // 
       // BtnMoveUp
       // 
+      this.BtnMoveUp.Enabled = false;
       this.BtnMoveUp.Location = new System.Drawing.Point(191, 19);
       this.BtnMoveUp.Name = "BtnMoveUp";
       this.BtnMoveUp.Size = new System.Drawing.Size(47, 23);
@@ -180,6 +184,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
       // 
       this.treeShortcuts.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
+      this.treeShortcuts.Enabled = false;
       this.treeShortcuts.Location = new System.Drawing.Point(6, 19);
       this.treeShortcuts.Name = "treeShortcuts";
       this.treeShortcuts.Size = new System.Drawing.Size(179, 219);

@@ -10,7 +10,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
 {
   using System;
   using System.Windows.Forms;
-  using Newtonsoft.Json.Linq;
+  //// using Newtonsoft.Json.Linq;
   using Xeno.ToolsHub.ExtensionModel;
   using Xeno.ToolsHub.Services.Logging;
 
@@ -65,7 +65,8 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
     {
       TxtRawFile.Text = _shortcuts.ToString();
 
-      RefreshTreeView();
+      // Temp disabled until TreeView is decided upon
+      //// RefreshTreeView();
     }
 
     private void ShortcutsPreferences_Load(object sender, EventArgs e)
@@ -80,7 +81,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
     }
 
     #region JSON Viewer
-
+    /*
     private void RefreshTreeView()
     {
       // http://huseyint.com/2013/12/Have-your-JSON-TreeView-and-unit-test-it-too/
@@ -157,7 +158,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
         AddObjectNodes((JObject)token, name, parent);
       }
     }
-
+    */
     #endregion JSON Viewer
   }
 }
