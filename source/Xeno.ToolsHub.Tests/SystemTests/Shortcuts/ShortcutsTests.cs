@@ -1,12 +1,12 @@
-﻿/* Copyright Xeno Innovations, Inc. 2018
- * Date:    2018-12-31
+﻿/* Copyright Xeno Innovations, Inc. 2019
+ * Date:    2019-4-9
  * Author:  Damian Suess
  * File:    ShortcutsTests.cs
  * Description:
- *
+ *  
  */
 
-namespace Xeno.ToolsHub.Tests.SystemTests
+namespace Xeno.ToolsHub.Tests.SystemTests.Shortcuts
 {
   using Microsoft.VisualStudio.TestTools.UnitTesting;
   using Newtonsoft.Json;

@@ -17,6 +17,9 @@ namespace PomodoroAddin
     Paused,   // Was, "Pause"
 
     /// <summary>Timer finished</summary>
-    Done
+    Done,
+
+    /// <summary>Manually stopped timer</summary>
+    Stopped
   };
 }

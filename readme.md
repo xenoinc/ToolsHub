@@ -12,6 +12,8 @@ Flexible tools launcher desktop app which is "_not your average extensible sideb
 
 ![Screenshot](docs/ScreenShots/SysTrayShortcuts.png)
 
+Author: [Damian Suess](https://www.linkedin.com/in/damiansuess/)
+
 ## Active Features
 * Launch app from System Tray
 * Add-on extensions via [Mono.Addins](https://github.com/mono/mono-addins)

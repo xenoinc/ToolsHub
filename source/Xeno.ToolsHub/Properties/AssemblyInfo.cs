@@ -22,7 +22,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Xeno Innovations, Inc.")]
 [assembly: AssemblyProduct("Xeno.ToolsHub")]
-[assembly: AssemblyCopyright("Copyright © Xeno Innovations 2018-2019")]
+[assembly: AssemblyCopyright("Copyright © Xeno Innovations 2018-2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -44,5 +44,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.4.7")]
-[assembly: AssemblyFileVersion("0.4.7")]
+[assembly: AssemblyVersion("0.5.6.0")]
+[assembly: AssemblyFileVersion("0.5.6.0")]

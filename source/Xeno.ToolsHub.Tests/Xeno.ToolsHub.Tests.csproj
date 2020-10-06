@@ -56,6 +56,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\SettingsHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ExampleTestFixture.cs" />
     <Compile Include="SystemTests\HelperTests.cs" />
@@ -67,7 +68,8 @@
     <Compile Include="Helpers\PropertyHelpers.cs" />
     <Compile Include="SystemTests\PropertiesStoreTests.cs" />
     <Compile Include="Helpers\TestHelpers.cs" />
-    <Compile Include="SystemTests\ShortcutsTests.cs" />
+    <Compile Include="SystemTests\Shortcuts\ShortcutsTests.cs" />
+    <Compile Include="SystemTests\Shortcuts\JsonTreeViewTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

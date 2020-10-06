@@ -81,7 +81,7 @@ namespace PomodoroAddin.Managers
 
     public int OnStop(string target)
     {
-      ChangeTimerState(TimerState.Done);
+      ChangeTimerState(TimerState.Stopped);
       return 0;
     }
 
@@ -147,7 +147,6 @@ namespace PomodoroAddin.Managers
             Log.Debug($"Starting timer for {SettingTimerDuration} minutes");
             StartTimer(durationMinutes);
             UpdateMenuItems(state);
-            PlaySound(1);
           }
           break;
 
@@ -155,13 +154,11 @@ namespace PomodoroAddin.Managers
           Log.Debug($"Timer paused");
           break;
 
+        case TimerState.Stopped:
         case TimerState.Done:
           Log.Debug($"Timer stopped");
           _timer.Stop();
           // _running = false;
-
-          // TODO: If we pressed stop, don't play sound
-          PlaySound(3);
 
           UpdateTrayIcon();
           break;
@@ -177,12 +174,16 @@ namespace PomodoroAddin.Managers
     {
       // TODO:
       //  [ ] Flash on screen
-      //  [ ] Make sound
       //  [ ] System Tray Bubble
 
       Log.Debug($"Alert user we're at state: {state}!!");
       Log.Warn("Notify state change feature is currently not available!");
-      // throw new NotImplementedException();
+
+      // TODO: If we pressed stop, don't play sound. Make TimerState.Stopped (manually stopped)
+      if (state == TimerState.Started)
+        PlaySound(1);
+      else if (state == TimerState.Done)
+        PlaySound(3);
     }
 
     /// <summary>Override TrayIcon with duration remaining</summary>
@@ -236,6 +237,7 @@ namespace PomodoroAddin.Managers
           SendMessageTrayData(new TrayItemInfo(Constants.AddinId, "Pause", $"Resume", string.Empty, pause));
           break;
 
+        case TimerState.Stopped:
         case TimerState.Done:
           start = true;
           breakLong = true;
@@ -272,12 +274,12 @@ namespace PomodoroAddin.Managers
 
       _duration -= 1;
 
-      if (_duration < 0)
+      if (_duration <= 0)
       {
         // We're done!
         ChangeTimerState(TimerState.Done);
         UpdateMenuItems(TimerState.Started);
-        NotifyStateChanged(TimerState.Done);
+        // NotifyStateChanged(TimerState.Done);
 
         // TODO: Update stats for successful pomodoro here
       }
