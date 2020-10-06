@@ -7,15 +7,21 @@
  */
 
 // Define our add-in
+using Mono.Addins;
+
 [assembly: Mono.Addins.Addin(
   Namespace = "",
   Id = "SidebarAddin",
+  Version = "0.3",
   Category = "Tools",
   CompatVersion = "0.3",
   EnabledByDefault = true,
-  Version = "0.3",
   Flags = Mono.Addins.Description.AddinFlags.None,
   Url = "https://github.com/xenoinc/ToolsHub")]
+
+[assembly:AddinProperty("Name", "Sidebar Add-in")]
+//// [assembly:AddinName("Sidebar Add-in")]
+[assembly:AddinDescription("Desktop dockable sidebar")]
 
 // Attach to add-in host
 [assembly: Mono.Addins.AddinDependency("XenoInnovations.ToolsHub", "0.3")]
