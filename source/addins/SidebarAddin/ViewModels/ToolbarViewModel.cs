@@ -59,8 +59,8 @@ namespace Xeno.ToolsHub.SidebarAddin.ViewModels
 
     public ICommand CmdClickTest
     {
-      get => (_cmdClickTest ??
-        (_cmdClickTest = new DelegateCommand((_) => _linkIcon.OnClick())));
+      get => _cmdClickTest ??
+        (_cmdClickTest = new DelegateCommand((_) => _linkIcon.OnClick()));
     }
 
     private void OnAddItem(object obj)

@@ -14,11 +14,6 @@ namespace Xeno.ToolsHub.SidebarAddin.Domain
 {
   public class Sidebar
   {
-
-    [DllImport("user32")]
-    static extern bool AnimateWindow(IntPtr hwnd, int time, AnimateWindowFlags flags);
-
-
     public Sidebar()
     {
       AutoHide = true;
@@ -63,6 +58,9 @@ namespace Xeno.ToolsHub.SidebarAddin.Domain
     public bool ScreenPositionFixed { get; set; } = true;
 
     public string TintColor { get; set; } = string.Empty;
+
+    [DllImport("user32")]
+    private static extern bool AnimateWindow(IntPtr hwnd, int time, AnimateWindowFlags flags);
 
     private static string ColorToHex(Color c)
     {

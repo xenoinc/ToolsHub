@@ -17,8 +17,10 @@ using System;
 namespace Xeno.ToolsHub.SidebarAddin.Domain
 {
   ///// <summary>AnimateWindow USER32 API</summary>
-  ///// <example
-  /////    AnimateWindow(this.Handle, 500, AnimateWindowFlags.AW_VER_POSITIVE | AnimateWindowFlags.AW_SLIDE);
+  ///// <example>
+  /////   <code>
+  /////     AnimateWindow(this.Handle, 500, AnimateWindowFlags.AW_VER_POSITIVE | AnimateWindowFlags.AW_SLIDE);
+  /////   </code>
   ///// </example>
   ////[Flags]
   ////public enum AnimateWindowFlags

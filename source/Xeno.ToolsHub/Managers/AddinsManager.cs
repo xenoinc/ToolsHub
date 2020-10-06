@@ -21,6 +21,7 @@ namespace Xeno.ToolsHub.Managers
 
     /// <remarks>Key = TypeExtensionNode.Id</remarks
     private Dictionary<string, UtilityAddin> _utilityAddins;
+
     private bool _verboseErrorMessage = true;
 
     public AddinsManager()
