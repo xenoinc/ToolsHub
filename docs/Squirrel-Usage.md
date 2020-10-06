@@ -1,4 +1,4 @@
-Copyright 2017 Omnicell, Inc.
+Copyright 2020 Xeno Innovations, Inc.
 
 # Squirrel Updater
 

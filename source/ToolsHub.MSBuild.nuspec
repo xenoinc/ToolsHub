@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
-    <id>RedRock.Backup</id>
+    <id>ToolsHub</id>
     <version>$version$</version>
     <authors>Xeno Innovations</authors>
     <owners>Damian Suess</owners>
@@ -29,8 +29,8 @@
     <file src="..\output\MultiColumnComboControl.dll" target="lib\net45\MultiColumnComboControl.dll" />
     <file src="..\output\Newtonsoft.Json.dll" target="lib\net45\Newtonsoft.Json.dll" />
     <file src="..\output\NuGet.Squirrel.dll" target="lib\net45\NuGet.Squirrel.dll" />
-    <file src="..\output\RedRock.Backup.exe" target="lib\net45\RedRock.Backup.exe" />
-    <file src="..\output\RedRock.Backup.exe.config" target="lib\net45\RedRock.Backup.exe.config" />
+    <file src="..\output\ToolsHub.exe" target="lib\net45\ToolsHub.exe" />
+    <file src="..\output\ToolsHub.exe.config" target="lib\net45\ToolsHub.exe.config" />
     <file src="..\output\SharpCompress.dll" target="lib\net45\SharpCompress.dll" />
     <file src="..\output\Splat.dll" target="lib\net45\Splat.dll" />
     <file src="..\output\Squirrel.dll" target="lib\net45\Squirrel.dll" />
