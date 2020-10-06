@@ -11,7 +11,9 @@ namespace Xeno.ToolsHub.SampleAssmAddin.Handlers
   using Xeno.ToolsHub.ExtensionModel;
   using Xeno.ToolsHub.Services.Logging;
 
-  [Mono.Addins.Extension(NodeName = ExtensionName.UtilityAddin, Path = ExtensionPath.Utility)]
+  [Mono.Addins.Extension(
+    NodeName = ExtensionName.UtilityAddin,
+    Path = ExtensionPath.Utility)]
   public class UtilityHandler : UtilityAddin
   {
     private bool _initialized = false;

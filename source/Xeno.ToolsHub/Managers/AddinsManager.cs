@@ -22,7 +22,10 @@ namespace Xeno.ToolsHub.Managers
     /// <remarks>Key = TypeExtensionNode.Id</remarks
     private Dictionary<string, UtilityAddin> _utilityAddins;
 
-    public AddinsManager() : this("")
+    private bool _verboseErrorMessage = true;
+
+    public AddinsManager()
+      : this(string.Empty)
     {
     }
 
@@ -97,7 +100,9 @@ namespace Xeno.ToolsHub.Managers
     /// <summary>
     ///   Load UtilityAddin and store in memory
     /// </summary>
-    /// <param name="addin"></param>
+    /// <param name="addin">Add-in to load.</param>
+    /// <param name="addinId">Add-in Id.</param>
+    /// <param name="addinTypeName">Add-in assembly type name.</param>
     private void LoadUtilityAddin(UtilityAddin addin, string addinId, string addinTypeName)
     {
       try
@@ -113,7 +118,12 @@ namespace Xeno.ToolsHub.Managers
       }
       catch (Exception ex)
       {
-        Log.Error($"Error while attempting to initialize UtilityAddin, Id: '{addinId}', TypeName: '{addinTypeName}': {ex.Message}");
+        string msg = $"Error while attempting to initialize UtilityAddin, Id: '{addinId}', TypeName: '{addinTypeName}': {ex.Message}";
+        Log.Error(msg);
+
+        // TODO: Use custom pop-up notification, versus a Modal
+        if (_verboseErrorMessage)
+          System.Windows.Forms.MessageBox.Show(msg);
       }
     }
 
