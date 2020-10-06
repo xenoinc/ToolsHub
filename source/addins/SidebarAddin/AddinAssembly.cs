@@ -15,7 +15,7 @@ using Mono.Addins;
   Version = "0.3",
   Category = "Tools",
   CompatVersion = "0.3",
-  EnabledByDefault = true,
+  EnabledByDefault = false,
   Flags = Mono.Addins.Description.AddinFlags.None,
   Url = "https://github.com/xenoinc/ToolsHub")]
 
