@@ -29,10 +29,18 @@
     <file src="..\output\MultiColumnComboControl.dll" target="lib\net45\MultiColumnComboControl.dll" />
     <file src="..\output\Newtonsoft.Json.dll" target="lib\net45\Newtonsoft.Json.dll" />
     <file src="..\output\NuGet.Squirrel.dll" target="lib\net45\NuGet.Squirrel.dll" />
-    <file src="..\output\ToolsHub.exe" target="lib\net45\ToolsHub.exe" />
-    <file src="..\output\ToolsHub.exe.config" target="lib\net45\ToolsHub.exe.config" />
     <file src="..\output\SharpCompress.dll" target="lib\net45\SharpCompress.dll" />
     <file src="..\output\Splat.dll" target="lib\net45\Splat.dll" />
     <file src="..\output\Squirrel.dll" target="lib\net45\Squirrel.dll" />
+    <!-- Core -->
+    <file src="..\output\ToolsHub.exe"          target="lib\net45\ToolsHub.exe" />
+    <file src="..\output\ToolsHub.exe.config"   target="lib\net45\ToolsHub.exe.config" />
+    <!-- Addins -->
+    <file src="..\output\PomodoroAddin.dll"     target="lib\net45\PomodoroAddin.dll" />
+    <file src="..\output\SampleAssmAddin.dll"   target="lib\net45\SampleAssmAddin.dll" />
+    <file src="..\output\SampleXmlAddin.dll"    target="lib\net45\SampleXmlAddin.dll" />
+    <file src="..\output\SampleXmlAddin.addin"  target="lib\net45\SampleXmlAddin.addin" />
+    <file src="..\output\SidebarAddin.dll"      target="lib\net45\SidebarAddin.dll" />
+    <file src="..\output\VeraCryptAddin.dll"    target="lib\net45\VeraCryptAddin.dll" />
   </files>
 </package>
