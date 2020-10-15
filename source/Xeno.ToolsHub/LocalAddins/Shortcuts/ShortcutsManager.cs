@@ -122,6 +122,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
       Program.Settings.SetObject(ShortcutsAddinId, ShortcutItemsKey, ShortcutItems);
       Program.Settings.SaveFile();
 
+      Log.Debug("Shortcut settings saved");
       Refresh();
     }
 

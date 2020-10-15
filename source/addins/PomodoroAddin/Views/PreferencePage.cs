@@ -15,7 +15,7 @@ using Xeno.ToolsHub.Services;
 
 namespace PomodoroAddin.Views
 {
-  public partial class PreferencePage : Form, IPreferencePageForm
+  public partial class PreferencePage : Form, IPreferencePageActions
   {
     private PomodoroManager _manager;
 

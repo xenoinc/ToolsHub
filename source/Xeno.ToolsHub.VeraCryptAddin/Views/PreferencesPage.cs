@@ -14,7 +14,7 @@ namespace Xeno.ToolsHub.VeraCryptAddin.Views
   using Xeno.ToolsHub.ExtensionModel;
   using Xeno.ToolsHub.Services;
 
-  public partial class PreferencesPage : Form, IPreferencePageForm
+  public partial class PreferencesPage : Form, IPreferencePageActions
   {
     private VeraCryptManager _manager;
 

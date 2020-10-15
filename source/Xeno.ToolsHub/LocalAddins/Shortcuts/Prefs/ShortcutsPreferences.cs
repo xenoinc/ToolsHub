@@ -10,11 +10,12 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
 {
   using System;
   using System.Windows.Forms;
+
   //// using Newtonsoft.Json.Linq;
   using Xeno.ToolsHub.ExtensionModel;
   using Xeno.ToolsHub.Services.Logging;
 
-  public partial class ShortcutsPreferences : Form, IPreferencePageForm
+  public partial class ShortcutsPreferences : Form, IPreferencePageActions
   {
     private bool _isModified = false;
 
@@ -23,6 +24,8 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
     public ShortcutsPreferences()
     {
       InitializeComponent();
+
+      LvShortcuts.MultiSelect = false;
     }
 
     public bool IsModified
@@ -65,8 +68,9 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
     {
       TxtRawFile.Text = _shortcuts.ToString();
 
-      // Temp disabled until TreeView is decided upon
-      //// RefreshTreeView();
+      ToggleProperties(false);
+
+      RefreshListView();
     }
 
     private void ShortcutsPreferences_Load(object sender, EventArgs e)
@@ -80,85 +84,73 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
       IsModified = true;
     }
 
-    #region JSON Viewer
-    /*
-    private void RefreshTreeView()
+    private void RefreshListView()
     {
-      // http://huseyint.com/2013/12/Have-your-JSON-TreeView-and-unit-test-it-too/
-      // https://github.com/huseyint/JsonTreeView/blob/master/JsonTreeView/JsonTreeViewLoader.cs
-      // https://stackoverflow.com/questions/39673815/how-to-recursively-populate-a-treeview-with-json-data
-
-      // TEST:
       string json = _shortcuts.ToString();
-      // string test = "{ 'foo': 'bar', 'baz': [ 42, 'quux' ] }";
-      LoadJsonToTreeView(treeShortcuts, json);
+      int ndx = 0;
 
-      // Fails beause we start with a "[ {"
-      // LoadJsonToTreeView(treeShortcuts, _shortcuts.ToString());
-      treeShortcuts.ExpandAll();
+      foreach (var item in _shortcuts.ShortcutItems)
+      {
+        var title = item.Title;
+        var target = item.Target;
+        LvShortcuts.Items.Add(new ListViewItem(new string[] { ndx.ToString(), title, target }));
 
-      ////string data = _shortcuts.ToString();
-      ////using (var jsonReader = new JsonTextReader(data))
-      ////{
-      ////  var root = JToken.Load(jsonReader);
-      ////  DispayTreeView(root, )
-      ////}
+        ++ndx;
+      }
     }
 
-    private void LoadJsonToTreeView(TreeView treeView, string json)
+    private void BtnAdd_Click(object sender, EventArgs e)
     {
-      if (string.IsNullOrWhiteSpace(json))
-        return;
-
-      try
-      {
-        var @object = JObject.Parse(json);
-        AddObjectNodes(@object, "Shortcuts", treeView.Nodes);
-      }
-      catch (Exception ex)
-      {
-        MessageBox.Show($"Error parsing json. {ex.Message}", "Shortcuts TreeViewer");
-      }
+      ListAdd();
     }
 
-    private void AddObjectNodes(JObject @object, string name, TreeNodeCollection parent)
+    private void BtnRemove_Click(object sender, EventArgs e)
     {
-      var node = new TreeNode(name);
-      parent.Add(node);
-
-      foreach (var property in @object.Properties())
-      {
-        AddTokenNodes(property.Value, property.Name, node.Nodes);
-      }
+      foreach (ListViewItem item in LvShortcuts.SelectedItems)
+        LvShortcuts.Items.Remove(item);
     }
 
-    private void AddArrayNodes(JArray array, string name, TreeNodeCollection parent)
+    private void LvShortcuts_SelectedIndexChanged(object sender, EventArgs e)
     {
-      var node = new TreeNode(name);
-      parent.Add(node);
+      var item = LvShortcuts.SelectedItems[0];
 
-      for (var i = 0; i < array.Count; i++)
-      {
-        AddTokenNodes(array[i], string.Format("[{0}]", i), node.Nodes);
-      }
+      TxtTitle.Text = item.SubItems[0].Text;
+      TxtPath.Text = item.SubItems[1].Text;
+      TxtPathArgs.Text = item.SubItems[2].Text;
     }
 
-    private void AddTokenNodes(JToken token, string name, TreeNodeCollection parent)
+    private void BtnHideShowProperties_Click(object sender, EventArgs e)
     {
-      if (token is JValue)
+      ToggleProperties(!GroupProperties.Visible);
+    }
+
+    private void ListAdd()
+    {
+      string title = TxtTitle.Text;
+      string target = TxtPath.Text;
+      int ndx = LvShortcuts.Items.Count;
+
+      LvShortcuts.Items.Add(new ListViewItem(new string[] { ndx.ToString(), title, target }));
+    }
+
+    /// <summary>Visibility of the Shortcut Properties group box.</summary>
+    /// <param name="showProperties">Specify whether or not to display the Properties box.</param>
+    private void ToggleProperties(bool showProperties)
+    {
+      // Hide/show Properties
+      GroupProperties.Visible = showProperties;
+
+      if (showProperties)
       {
-        parent.Add(new TreeNode(string.Format("{0}: {1}", name, ((JValue)token).Value)));
+        var padding = 6;
+        BtnHideShowProperties.Text = "Hide Properties";
+        GroupShortcuts.Height = GroupProperties.Top - GroupShortcuts.Location.Y - padding;
       }
-      else if (token is JArray)
+      else
       {
-        AddArrayNodes((JArray)token, name, parent);
-      }
-      else if (token is JObject)
-      {
-        AddObjectNodes((JObject)token, name, parent);
+        BtnHideShowProperties.Text = "Show Properties";
+        GroupShortcuts.Height = GroupProperties.Location.Y + GroupProperties.Height;
       }
     }
-    */
-    #endregion JSON Viewer
   }
 }
