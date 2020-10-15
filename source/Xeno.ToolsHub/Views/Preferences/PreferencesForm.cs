@@ -49,8 +49,14 @@ namespace Xeno.ToolsHub.Views
     private void BtnOk_Click(object sender, EventArgs e)
     {
       // loop through each add-in and save
-      SavePreferences();
-      this.Close();
+      if (SavePreferences())
+      {
+        this.Close();
+      }
+      else
+      {
+        // TODO: Display error message, listing which plug-in failed
+      }
     }
 
     private void InitAddinManager()
@@ -58,29 +64,35 @@ namespace Xeno.ToolsHub.Views
       Views.Preferences.AddinManagerCtrl ctrl = new Preferences.AddinManagerCtrl(_addinManager);
       ctrl.Dock = DockStyle.Fill;
       tabPage2.Controls.Add(ctrl);
-
-      //Form1 myForm = new Form1();
-      //myForm.TopLevel = false;
-      //myForm.AutoScroll = true;
-      //frmMain.Panel2.Controls.Add(myForm);
-      //myForm.Show();
     }
 
-    private void SavePreferences()
+    private bool SavePreferences()
     {
+      bool saveSuccess = true;
       bool triggered = false;
       foreach (var addinPage in _addinPages)
       {
-        var page = addinPage.Value;
-        if (page.IsModified)
+        var pageExt = addinPage.Value;
+        if (pageExt.IsModified)
         {
-          page.OnSave();
+          pageExt.OnSave();
+          Log.Info($"Add-in '{pageExt.Id}' saved");
+
+          // TODO: If add-in fails to save, cancel the Form closing event
+          ////if (!page.OnSave(out errMsg))
+          ////{
+          ////  Log.Info($"Add-in '{page.Id}' failed to save. {errMsg}");
+          ////  saveSuccess = false;
+          ////}
+
           triggered = true;
         }
       }
 
       if (triggered)
         Program.Settings.SaveFile();
+
+      return saveSuccess;
     }
 
     private void RefreshTreeView()
@@ -107,13 +119,13 @@ namespace Xeno.ToolsHub.Views
 
           Log.Debug($"Adding preference add-in: '{name}");
 
-          //string title = "";
-          //System.Windows.Forms.Panel panel;
-          //if (addin.GetPreferenceAddin(this, out title, out panel))
-          //{
-          //  // insert into treeView
-          //  // Add into _addinPanel
-          //}
+          ////string title = "";
+          ////System.Windows.Forms.Panel panel;
+          ////if (addin.GetPreferenceAddin(this, out title, out panel))
+          ////{
+          ////  // insert into treeView
+          ////  // Add into _addinPanel
+          ////}
         }
         catch (Exception ex)
         {
@@ -170,7 +182,7 @@ namespace Xeno.ToolsHub.Views
             LblPageTitle.Text = addin.Value.Title;
 
             page.Dock = DockStyle.Fill;
-            // PanelAddinPrefsView.Controls.Cast<Control>().ForEach(i => i.Dispose());
+            //// PanelAddinPrefsView.Controls.Cast<Control>().ForEach(i => i.Dispose());
             PanelAddinPrefsView.Controls.Clear();
             PanelAddinPrefsView.Controls.Add(page);
             PanelAddinPrefsView.Show();

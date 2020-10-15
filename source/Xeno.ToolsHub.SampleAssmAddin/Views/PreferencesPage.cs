@@ -15,7 +15,7 @@ namespace Xeno.ToolsHub.SampleAssmAddin.Views
   using Xeno.ToolsHub.Services.Logging;
   using Xeno.ToolsHub.Services.Messaging;
 
-  public partial class PreferencesPage : Form, IPreferencePageForm
+  public partial class PreferencesPage : Form, IPreferencePageActions
   {
     public PreferencesPage()
     {

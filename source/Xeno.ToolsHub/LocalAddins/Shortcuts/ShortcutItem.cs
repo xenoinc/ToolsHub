@@ -6,14 +6,8 @@
  *  Shortcut link to launch
  */
 
-using System.Collections.Generic;
-
 namespace Xeno.ToolsHub.LocalAddins.Shortcuts
 {
-  public class ShortcutItems : List<ShortcutItem>
-  {
-  }
-
   public class ShortcutItem
   {
     public string Title { get; set; }

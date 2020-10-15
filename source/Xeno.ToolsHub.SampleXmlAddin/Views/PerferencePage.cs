@@ -13,7 +13,7 @@ namespace Xeno.ToolsHub.SampleXmlAddin.Views
   using Xeno.ToolsHub.ExtensionModel;
   using Xeno.ToolsHub.Services.Logging;
 
-  public partial class PerferencePage : Form, IPreferencePageForm
+  public partial class PerferencePage : Form, IPreferencePageActions
   {
     public PerferencePage()
     {
