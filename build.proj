@@ -21,14 +21,13 @@
   </Target>
 
   <Target Name="Clean">
+    <Message Text="Clean: (TEMP-DISABLED) RemoveDir='$(OutputFolder)'" />
     <!--
-      Directories="**\obj\**;**\bin\**"
-      https://stackoverflow.com/questions/5080856/how-to-delete-all-file-and-folders-with-msbuild
+      OLD: <RemoveDir Directories="output"/>
+      NEW: <RemoveDir Directories="$(OutputFolder)"/>
     -->
-    <RemoveDir Directories="output"/>
   </Target>
 
-  <!--
   <Target Name="Compile" DependsOnTargets="Clean">
     <MSBuild Projects="@(ProjectFiles)" />
   </Target>
@@ -45,16 +44,24 @@
   </Target>
 
   <Target Name="CleanOutput">
-		<Message Text="Cleaning out $(OutputFolder)" />
+		<Message Text="Cleaning output folder '$(OutputFolder)'" />
+    
     <ItemGroup>
       <FilesToDelete Include="$(OutputFolder)\**\*" />
     </ItemGroup>
+    
+    <Message Text="CleanOutput: (TEMP-Disabled) Delete Files = @(FilesToDelete)" />
+    <Message Text="CleanOutput: (TEMP-Disabled) RemoveDir = @(OutputFolder)" />
+    <Message Text="CleanOutput: (TEMP-Disabled) Directories = @(OutputFolder)" />
+    
+    <!--
     <Delete Files="@(FilesToDelete)" />
     <RemoveDir Directories="$(OutputFolder)" />
     <MakeDir Directories="$(OutputFolder)"/>
+    -->
+    
 		<Message Text="Cleanup completed." />
   </Target>
-  -->
 
 
   <!-- Installer -->
