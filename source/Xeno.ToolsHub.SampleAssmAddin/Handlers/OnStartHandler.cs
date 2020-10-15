@@ -19,8 +19,8 @@ namespace Xeno.ToolsHub.SampleAssmAddin.Handlers
       this.Title = "External SampleAssm OnStartup add-in";
       Log.Debug("External SampleAssm OnStartup, initialized");
 
-      //if (Helpers.IsDebugging)
-      //  System.Windows.Forms.MessageBox.Show("External SampleAssm OnStartup, initialized!");
+      ////if (Helpers.IsDebugging)
+      ////  System.Windows.Forms.MessageBox.Show("External SampleAssm OnStartup, initialized!");
     }
 
     public string Title { get; }
@@ -29,8 +29,8 @@ namespace Xeno.ToolsHub.SampleAssmAddin.Handlers
     {
       Log.Debug("External SampleAssm OnStartup, executed");
 
-      //if (Helpers.IsDebugging)
-      //  System.Windows.Forms.MessageBox.Show("External SampleAssm OnStartup, executed!");
+      ////if (Helpers.IsDebugging)
+      ////  System.Windows.Forms.MessageBox.Show("External SampleAssm OnStartup, executed!");
     }
   }
 }

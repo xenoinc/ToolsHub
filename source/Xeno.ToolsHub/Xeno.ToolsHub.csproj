@@ -93,8 +93,9 @@
     <Compile Include="Config\Helpers.cs" />
     <Compile Include="ExtensionModel\Command\CommandAttribute.cs" />
     <Compile Include="ExtensionModel\Command\ICommand.cs" />
-    <Compile Include="ExtensionModel\IPreferencePageForm.cs" />
+    <Compile Include="ExtensionModel\IPreferencePageActions.cs" />
     <Compile Include="ExtensionModel\ISystemTrayExtension.cs" />
+    <Compile Include="ExtensionModel\BasePreferencePageActions.cs" />
     <Compile Include="ExtensionModel\SystemTray\SystemTrayMessages.cs" />
     <Compile Include="ExtensionModel\SystemTray\TrayItemInfo.cs" />
     <Compile Include="LocalAddins\Shortcuts\Prefs\PreferencesHandler.cs" />
@@ -104,6 +105,7 @@
     <Compile Include="LocalAddins\Shortcuts\Prefs\ShortcutsPreferences.Designer.cs">
       <DependentUpon>ShortcutsPreferences.cs</DependentUpon>
     </Compile>
+    <Compile Include="LocalAddins\Shortcuts\ShortcutItems.cs" />
     <Compile Include="LocalAddins\Shortcuts\ShortcutsMessage.cs" />
     <Compile Include="LocalAddins\Shortcuts\ShortcutsSysTrayAddin.cs" />
     <Compile Include="LocalAddins\Shortcuts\ShortcutsSidebarAddin.cs" />

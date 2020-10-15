@@ -14,7 +14,7 @@ using Xeno.ToolsHub.SidebarAddin.Managers;
 
 namespace Xeno.ToolsHub.SidebarAddin.Views
 {
-  public partial class PreferencesPage : Form, IPreferencePageForm
+  public partial class PreferencesPage : Form, IPreferencePageActions
   {
     private SidebarManager _manager;
 
