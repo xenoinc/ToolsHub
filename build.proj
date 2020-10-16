@@ -21,11 +21,8 @@
   </Target>
 
   <Target Name="Clean">
-    <Message Text="Clean: (TEMP-DISABLED) RemoveDir='$(OutputFolder)'" />
-    <!--
-      OLD: <RemoveDir Directories="output"/>
-      NEW: <RemoveDir Directories="$(OutputFolder)"/>
-    -->
+    <Message Text="Clean: Removing directory '$(OutputFolder)'" />
+    <RemoveDir Directories="$(OutputFolder)"/>
   </Target>
 
   <Target Name="Compile" DependsOnTargets="Clean">
@@ -37,6 +34,11 @@
 	</Target>
 
   <Target Name="CompileDevCode">
+
+    <Message Text="CompileDevCode: SourcePath   = '$(SourcePath)'" />
+    <Message Text="CompileDevCode: SolutionName = '$(SolutionName)'" />
+    <Message Text="CompileDevCode: Projects     = '$(SourcePath)\$(SolutionName)'" />
+
     <MSBuild Projects="$(SourcePath)\$(SolutionName)"
         Targets="Clean;Build"
         Properties="SolutionDir=$(SourcePath)\;Configuration=$(Configuration);OutDir=$(OutputFolder)\"
@@ -45,24 +47,21 @@
 
   <Target Name="CleanOutput">
 		<Message Text="Cleaning output folder '$(OutputFolder)'" />
-    
+
     <ItemGroup>
       <FilesToDelete Include="$(OutputFolder)\**\*" />
     </ItemGroup>
-    
-    <Message Text="CleanOutput: (TEMP-Disabled) Delete Files = @(FilesToDelete)" />
-    <Message Text="CleanOutput: (TEMP-Disabled) RemoveDir = @(OutputFolder)" />
-    <Message Text="CleanOutput: (TEMP-Disabled) Directories = @(OutputFolder)" />
-    
-    <!--
+
+    <!-- <Message Text="(DEBUG) CleanOutput: Delete Files = '@(FilesToDelete)'" />
+    <Message Text="(DEBUG) CleanOutput: Remove Dir = '$(OutputFolder)'" />
+    <Message Text="(DEBUG) CleanOutput: Create Dir = '$(OutputFolder)'" /> -->
+
     <Delete Files="@(FilesToDelete)" />
     <RemoveDir Directories="$(OutputFolder)" />
     <MakeDir Directories="$(OutputFolder)"/>
-    -->
-    
+
 		<Message Text="Cleanup completed." />
   </Target>
-
 
   <!-- Installer -->
   <Target Name="MakeInstaller" DependsOnTargets="CompileCode" Condition="'$(Configuration)' == 'Release'">
@@ -82,7 +81,7 @@
       <SemanticVersion>$([System.Version]::Parse(%(AppAssembly.Version)).ToString(3))</SemanticVersion>
       <NuSpecPath>$(OutputFolder)\$(ProjectName).$(SemanticVersion).nupkg</NuSpecPath>
 
-      <NuGetCmd>"%(NuGetExe.FullPath)" pack "$(SourcePath)\$(ProjectName)\ToolsHub.MSBuild.nuspec" -Version $(SemanticVersion) -Properties "Configuration=Release" -OutputDirectory "$(OutputFolder)" -BasePath "$(OutputFolder)"</NuGetCmd>
+      <NuGetCmd>"%(NuGetExe.FullPath)" pack "$(SquirrelNuSpec)" -Version $(SemanticVersion) -Properties "Configuration=Release" -OutputDirectory "$(OutputFolder)" -BasePath "$(OutputFolder)"</NuGetCmd>
       <SquirrelCmd>"%(SquirrelExe.FullPath)" --releasify "$(OutputFolder)\$(ProjectName).$(SemanticVersion).nupkg" --releaseDir="$(SquirrelReleasePath)"</SquirrelCmd>
     </PropertyGroup>
 

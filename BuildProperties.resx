@@ -3,7 +3,11 @@
   <PropertyGroup>
 
     <AssemblyCompany>Xeno Innovations</AssemblyCompany>
-    <AssemblyCopyright>Copyright (c) Xeno Innovations, Inc. 2018-2019</AssemblyCopyright>
+    <AssemblyCopyright>Copyright (c) Xeno Innovations, Inc. 2018-2020</AssemblyCopyright>
+
+    <!-- Project details -->
+    <ProjectName>ToolsHub</ProjectName>
+    <SolutionName>$(ProjectName).sln</SolutionName>
 
     <!-- Static Folders -->
     <ProjectBase>$(MSBuildProjectDirectory)</ProjectBase>
@@ -12,7 +16,9 @@
     <OutputFolder>$(ProjectBase)\output</OutputFolder>
     <MainExe>$(ProjectBase)\output\$(ProjectName).exe</MainExe>
 
-    <!-- Squirrel -->
+    <!-- Squirrel Installer -->
+    <MainExe>$(ProjectBase)\output\$(ProjectName).exe</MainExe>
+    <SquirrelNuSpec>$(SourcePath)\$(ProjectName).MSBuild.nuspec</SquirrelNuSpec>
     <SquirrelReleasePath>$(ProjectBase)\Releases</SquirrelReleasePath>
     <SquirrelReleasePathBeta>$(ProjectBase)\Releases-Beta</SquirrelReleasePathBeta>
 
