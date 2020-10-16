@@ -158,7 +158,7 @@ namespace Xeno.ToolsHub.Views
       this.tabPage2.Location = new System.Drawing.Point(4, 22);
       this.tabPage2.Name = "tabPage2";
       this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-      this.tabPage2.Size = new System.Drawing.Size(549, 249);
+      this.tabPage2.Size = new System.Drawing.Size(661, 351);
       this.tabPage2.TabIndex = 1;
       this.tabPage2.Text = "Add-in Manager";
       this.tabPage2.UseVisualStyleBackColor = true;
@@ -174,7 +174,7 @@ namespace Xeno.ToolsHub.Views
       this.Controls.Add(this.BtnOk);
       this.Name = "PreferencesForm";
       this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
-      this.Text = "OptionsForm";
+      this.Text = "Preferences";
       this.Load += new System.EventHandler(this.PreferencesForm_Load);
       this.tabControl1.ResumeLayout(false);
       this.tabPage1.ResumeLayout(false);

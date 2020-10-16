@@ -112,11 +112,13 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
 
     private void LvShortcuts_SelectedIndexChanged(object sender, EventArgs e)
     {
-      var item = LvShortcuts.SelectedItems[0];
 
-      TxtTitle.Text = item.SubItems[0].Text;
-      TxtPath.Text = item.SubItems[1].Text;
-      TxtPathArgs.Text = item.SubItems[2].Text;
+      foreach (ListViewItem item in LvShortcuts.SelectedItems)
+      {
+        TxtTitle.Text = item.SubItems[0].Text;
+        TxtPath.Text = item.SubItems[1].Text;
+        TxtPathArgs.Text = item.SubItems[2].Text;
+      }
     }
 
     private void BtnHideShowProperties_Click(object sender, EventArgs e)
