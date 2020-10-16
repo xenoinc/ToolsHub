@@ -1,4 +1,4 @@
-# Copyright 2018 Xeno Innovations, Inc
+# Copyright 2018-2020 Xeno Innovations, Inc
 
 # Generic files
 *.bak
@@ -68,9 +68,12 @@ TestResult.xml
 /output/*
 !/output/readme.txt
 
+# Squirrel Installer
+Update.exe
+/Releases
+
 
 ## PROJECT DEFINED
-
 /libs
 /docs/*.csv
 /docs/backup

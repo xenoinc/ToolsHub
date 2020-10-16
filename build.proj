@@ -11,24 +11,34 @@
     <Message Text="  - OutputFolder:      '$(OutputFolder)'" />
   </Target>
 
-  <Target Name="Clean">
-    <!--
-      Directories="**\obj\**;**\bin\**"
-      https://stackoverflow.com/questions/5080856/how-to-delete-all-file-and-folders-with-msbuild
-    -->
-    <RemoveDir Directories="output"/>
+  <Target Name="Help">
+    <Message Text="ToolsHub MSBuild Commands" />
+    <Message Text="- - - - - - - - - - - - - - - -" />
+    <Message Text="MSBuild /t:CompileCode   - Builds project from scratch" />
+    <Message Text="MSBuild /t:CleanOutput   - Deletes previous builds" />
+    <Message Text="MSBuild /t:MakeInstaller - Creates install package" />
+    <Message Text="- - - - - - - - - - - - - - - -" />
   </Target>
 
-  <!--
+  <Target Name="Clean">
+    <Message Text="Clean: Removing directory '$(OutputFolder)'" />
+    <RemoveDir Directories="$(OutputFolder)"/>
+  </Target>
+
   <Target Name="Compile" DependsOnTargets="Clean">
     <MSBuild Projects="@(ProjectFiles)" />
   </Target>
 
   <Target Name="CompileCode" DependsOnTargets="CleanOutput;CompileDevCode">
-    <Message Text="*** CompileCode complete ***" />
-  </Target>
+		<Message Text="*** CompileCode complete ***" />
+	</Target>
 
   <Target Name="CompileDevCode">
+
+    <Message Text="CompileDevCode: SourcePath   = '$(SourcePath)'" />
+    <Message Text="CompileDevCode: SolutionName = '$(SolutionName)'" />
+    <Message Text="CompileDevCode: Projects     = '$(SourcePath)\$(SolutionName)'" />
+
     <MSBuild Projects="$(SourcePath)\$(SolutionName)"
         Targets="Clean;Build"
         Properties="SolutionDir=$(SourcePath)\;Configuration=$(Configuration);OutDir=$(OutputFolder)\"
@@ -36,15 +46,64 @@
   </Target>
 
   <Target Name="CleanOutput">
-    <Message Text="Cleaning out $(OutputFolder)" />
+		<Message Text="Cleaning output folder '$(OutputFolder)'" />
+
     <ItemGroup>
       <FilesToDelete Include="$(OutputFolder)\**\*" />
     </ItemGroup>
+
+    <!-- <Message Text="(DEBUG) CleanOutput: Delete Files = '@(FilesToDelete)'" />
+    <Message Text="(DEBUG) CleanOutput: Remove Dir = '$(OutputFolder)'" />
+    <Message Text="(DEBUG) CleanOutput: Create Dir = '$(OutputFolder)'" /> -->
+
     <Delete Files="@(FilesToDelete)" />
     <RemoveDir Directories="$(OutputFolder)" />
     <MakeDir Directories="$(OutputFolder)"/>
-    <Message Text="Cleanup completed." />
+
+		<Message Text="Cleanup completed." />
   </Target>
-  -->
+
+  <!-- Installer -->
+  <Target Name="MakeInstaller" DependsOnTargets="CompileCode" Condition="'$(Configuration)' == 'Release'">
+  	<Message Text="Creating installer..." />
+
+    <GetAssemblyIdentity AssemblyFiles="$(MainExe)">
+      <Output TaskParameter="Assemblies" ItemName="AppAssembly"/>
+    </GetAssemblyIdentity>
+
+    <ItemGroup>
+      <!-- Using item group because it works with multiple-versions. Though it gets the lowest version -->
+      <NuGetExe Include="source\packages\NuGet.CommandLine.*\tools\nuget.exe" />
+      <SquirrelExe Include="source\packages\Squirrel.Windows.*\tools\squirrel.exe" />
+    </ItemGroup>
+
+    <PropertyGroup>
+      <SemanticVersion>$([System.Version]::Parse(%(AppAssembly.Version)).ToString(3))</SemanticVersion>
+      <NuSpecPath>$(OutputFolder)\$(ProjectName).$(SemanticVersion).nupkg</NuSpecPath>
+
+      <NuGetCmd>"%(NuGetExe.FullPath)" pack "$(SquirrelNuSpec)" -Version $(SemanticVersion) -Properties "Configuration=Release" -OutputDirectory "$(OutputFolder)" -BasePath "$(OutputFolder)"</NuGetCmd>
+      <SquirrelCmd>"%(SquirrelExe.FullPath)" --releasify "$(OutputFolder)\$(ProjectName).$(SemanticVersion).nupkg" --releaseDir="$(SquirrelReleasePath)"</SquirrelCmd>
+    </PropertyGroup>
+
+    <Message Text="Assembly File (MainExe): '$(MainExe)'" />
+    <Message Text="Assemblies:              '%(AppAssembly.Version)'" />
+    <Message Text="Semantic Version:        '$(SemanticVersion)'" />
+    <Message Text="Output:                  '$(NuSpecPath)'" />
+    <Message Text="--------------" />
+    <!--
+    <Message Text="$(NuGetCmd)" />
+    <Message Text="$(SquirrelCmd)" />
+    -->
+    <Error Condition="!Exists(%(NuGetExe.FullPath))" Text="You are trying to use the NuGet.CommandLine package, but it is not installed. Please install NuGet.CommandLine from the Package Manager." />
+    <Error Condition="!Exists(%(SquirrelExe.FullPath))" Text="You are trying to use the Squirrel.Windows package, but it is not installed. Please install Squirrel.Windows from the Package Manager." />
+
+    <Message Text="Creating Installer Package..." />
+    <Exec Command="$(NuGetCmd)" />
+
+    <Message Text="Registering with Auto-Updater..." />
+    <Exec Command="$(SquirrelCmd)" />
+
+    <Message Text="Done!" />
+  </Target>
 
 </Project>

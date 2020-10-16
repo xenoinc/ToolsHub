@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>ToolsHub</id>
+    <version>$version$</version>
+    <authors>Xeno Innovations</authors>
+    <owners>Damian Suess</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>ToolsHub productivity utility</description>
+    <releaseNotes />
+  </metadata>
+
+  <!--
+  Example of including all files. Can't use this because our unit tests adds extra garbage
+
+  <files>
+  <file src="..\output\*.*" target="lib\net45\" exclude="*.pdb;*.nupkg;*.vshost.*"/>
+  </files>
+  -->
+
+  <files>
+    <!-- Squirrel Files -->
+    <file src="..\output\DeltaCompressionDotNet.dll" target="lib\net45\DeltaCompressionDotNet.dll" />
+    <file src="..\output\DeltaCompressionDotNet.MsDelta.dll" target="lib\net45\DeltaCompressionDotNet.MsDelta.dll" />
+    <file src="..\output\DeltaCompressionDotNet.PatchApi.dll" target="lib\net45\DeltaCompressionDotNet.PatchApi.dll" />
+    <file src="..\output\Mono.Cecil.dll" target="lib\net45\Mono.Cecil.dll" />
+    <file src="..\output\Mono.Cecil.Mdb.dll" target="lib\net45\Mono.Cecil.Mdb.dll" />
+    <file src="..\output\Mono.Cecil.Pdb.dll" target="lib\net45\Mono.Cecil.Pdb.dll" />
+    <file src="..\output\Mono.Cecil.Rocks.dll" target="lib\net45\Mono.Cecil.Rocks.dll" />
+    <file src="..\output\Newtonsoft.Json.dll" target="lib\net45\Newtonsoft.Json.dll" />
+    <file src="..\output\NuGet.Squirrel.dll" target="lib\net45\NuGet.Squirrel.dll" />
+    <file src="..\output\SharpCompress.dll" target="lib\net45\SharpCompress.dll" />
+    <file src="..\output\Splat.dll" target="lib\net45\Splat.dll" />
+    <file src="..\output\Squirrel.dll" target="lib\net45\Squirrel.dll" />
+    <!-- Core -->
+    <file src="..\output\ToolsHub.exe"          target="lib\net45\ToolsHub.exe" />
+    <file src="..\output\ToolsHub.exe.config"   target="lib\net45\ToolsHub.exe.config" />
+    <!-- Addins -->
+    <file src="..\output\PomodoroAddin.dll"     target="lib\net45\PomodoroAddin.dll" />
+    <file src="..\output\SampleAssmAddin.dll"   target="lib\net45\SampleAssmAddin.dll" />
+    <file src="..\output\SampleXmlAddin.dll"    target="lib\net45\SampleXmlAddin.dll" />
+    <file src="..\output\SampleXmlAddin.addin"  target="lib\net45\SampleXmlAddin.addin" />
+    <file src="..\output\SidebarAddin.dll"      target="lib\net45\SidebarAddin.dll" />
+    <file src="..\output\VeraCryptAddin.dll"    target="lib\net45\VeraCryptAddin.dll" />
+  </files>
+</package>

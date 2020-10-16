@@ -13,6 +13,10 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
+//
+// Squirrel Updater
+// * Shortcut Naming: https://github.com/Squirrel/Squirrel.Windows/blob/master/docs/using/naming.md#shortcut-name
+//
 [assembly: AssemblyTitle("ToolsHub")]
 [assembly: AssemblyDescription("Desktop quick-launcher for productivity")]
 [assembly: AssemblyConfiguration("")]
