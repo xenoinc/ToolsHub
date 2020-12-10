@@ -95,7 +95,6 @@
     <Compile Include="ExtensionModel\Command\ICommand.cs" />
     <Compile Include="ExtensionModel\IPreferencePageActions.cs" />
     <Compile Include="ExtensionModel\ISystemTrayExtension.cs" />
-    <Compile Include="ExtensionModel\BasePreferencePageActions.cs" />
     <Compile Include="ExtensionModel\SystemTray\SystemTrayMessages.cs" />
     <Compile Include="ExtensionModel\SystemTray\TrayItemInfo.cs" />
     <Compile Include="LocalAddins\Shortcuts\Prefs\PreferencesHandler.cs" />
@@ -210,6 +209,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="stylecop.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

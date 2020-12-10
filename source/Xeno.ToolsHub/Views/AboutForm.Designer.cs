@@ -69,10 +69,10 @@ namespace Xeno.ToolsHub.Views
       this.linkGitHub.AutoSize = true;
       this.linkGitHub.Location = new System.Drawing.Point(16, 112);
       this.linkGitHub.Name = "linkGitHub";
-      this.linkGitHub.Size = new System.Drawing.Size(216, 13);
+      this.linkGitHub.Size = new System.Drawing.Size(188, 13);
       this.linkGitHub.TabIndex = 2;
       this.linkGitHub.TabStop = true;
-      this.linkGitHub.Text = "https://github.com/DamianSuess/ToolsHub";
+      this.linkGitHub.Text = "https://github.com/xenoinc/ToolsHub";
       this.linkGitHub.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkedLabel_LinkClicked);
       // 
       // label3
