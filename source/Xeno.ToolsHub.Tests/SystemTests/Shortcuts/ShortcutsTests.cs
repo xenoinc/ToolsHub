@@ -3,7 +3,7 @@
  * Author:  Damian Suess
  * File:    ShortcutsTests.cs
  * Description:
- *  
+ *  Shortcut Manager Unit Tests
  */
 
 namespace Xeno.ToolsHub.Tests.SystemTests.Shortcuts
@@ -14,6 +14,7 @@ namespace Xeno.ToolsHub.Tests.SystemTests.Shortcuts
   using Xeno.ToolsHub.Managers;
   using Xeno.ToolsHub.Services.Logging;
 
+  /// <summary>Shortcut Manager Unit Tests.</summary>
   [TestClass]
   public class ShortcutsTests
   {
@@ -54,17 +55,8 @@ namespace Xeno.ToolsHub.Tests.SystemTests.Shortcuts
       _settings.SaveFile();
 
       // Strap-on a new JSON element
-      var items = new ShortcutItems
-      {
-         new ShortcutItem { Title = "FolderA", Target = @"C:\Test1" },
-         new ShortcutItem { Title = "FolderB", Target = @"C:\Test2\Sub1" },
-         new ShortcutItem { Title = "FolderC", Target = @"C:\Test3\Sub1\Sub2" },
-         new ShortcutItem { Title = "Web1", Target = @"https://www.xenoinc.com/" },
-         new ShortcutItem { Title = "-", Target = string.Empty },
-         new ShortcutItem { Title = "Manage Shortcuts", Target = "SomePath" },
-       };
-
-      string json = JsonConvert.SerializeObject(items, Formatting.None);
+      var shortcutItems = Helpers.SettingsHelpers.GenerateShortcutsMixed();
+      string json = JsonConvert.SerializeObject(shortcutItems, Formatting.None);
 
       _settings.SetValue("MyJsonTest", "TestShortcuts", json);
       _settings.SaveFile();

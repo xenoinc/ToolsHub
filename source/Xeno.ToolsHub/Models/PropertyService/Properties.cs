@@ -68,7 +68,6 @@ namespace Xeno.ToolsHub.Models.PropertyService
       ////  return dictionary.TryGetValue(key, out value) ? value
       ////       : defaultValueProvider();
       ////}
-
     }
   }
 }

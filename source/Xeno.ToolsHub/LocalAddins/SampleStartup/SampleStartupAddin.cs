@@ -23,7 +23,6 @@ namespace Xeno.ToolsHub.LocalAddins.SampleStartup
     public void Execute()
     {
       Log.Debug("SampleXml internal OnStartup, executed!");
-      //System.Windows.Forms.MessageBox.Show("SampleXml internal OnStartup, executed!");
     }
   }
 }

@@ -13,9 +13,12 @@ using System.Windows.Forms;
 
 namespace Xeno.ToolsHub.Views
 {
+  /// <summary>
+  ///   Dead-code ahead!
+  ///   We're now using, MainHandler and WinProcManager.
+  /// </summary>
   public partial class MainForm : Form
   {
-    private const int WM_QUERYENDSESSION = 0x11;
     private static bool _systemShutdown = false;
 
     public MainForm()
@@ -24,20 +27,21 @@ namespace Xeno.ToolsHub.Views
 
       this.ShowInTaskbar = false;
     }
-    private void MainForm_Load(object sender, EventArgs e)
-    {
-    }
 
     protected override void WndProc(ref Message m)
     {
-      if (m.Msg == WM_QUERYENDSESSION)
+      if (m.Msg == NativeMethods.WM_QUERYENDSESSION)
       {
-        // System is about to logoff, shutdown, or reboot
+        // System is about to log-off, shutdown, or reboot
         _systemShutdown = true;
       }
 
-      // if this is WM_QUERYENDSESSION, then closing een should be raised in WndProc
+      // if this is WM_QUERYENDSESSION, then closing should be raised in WndProc
       base.WndProc(ref m);
+    }
+
+    private void MainForm_Load(object sender, EventArgs e)
+    {
     }
 
     private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -47,8 +51,7 @@ namespace Xeno.ToolsHub.Views
         // Reset the variable because the user might cancel the shutdown
         _systemShutdown = false;
 
-        //TODO:
-        if (DialogResult.Yes == MessageBox.Show("My application", "Do you want to save your work before logging off?", MessageBoxButtons.YesNo))
+        if (MessageBox.Show("My application", "Do you want to save your work before logging off?", MessageBoxButtons.YesNo) == DialogResult.Yes)
         {
           e.Cancel = true;
         }
@@ -57,6 +60,12 @@ namespace Xeno.ToolsHub.Views
           e.Cancel = false;
         }
       }
+    }
+
+    /// <summary>CA1060 compliant class for Native Methods.</summary>
+    private class NativeMethods
+    {
+      public const int WM_QUERYENDSESSION = 0x11;
     }
   }
 }

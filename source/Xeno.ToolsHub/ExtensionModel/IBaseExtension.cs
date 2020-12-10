@@ -3,11 +3,12 @@
  * Author:  Damian Suess
  * File:    IBaseExtension.cs
  * Description:
- *
+ *  Add-in Base extension
  */
 
 namespace Xeno.ToolsHub.ExtensionModel
 {
+  /// <summary>Add-in base extension.</summary>
   public interface IBaseExtension
   {
     string Title { get; }

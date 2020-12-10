@@ -101,8 +101,6 @@ namespace Xeno.ToolsHub
       _wndProc.CreateWindow();
     }
 
-    #region System Events
-
     private void SystemEvents_SessionEnded(object sender, SessionEndedEventArgs e)
     {
       // Occurs when the user is logging off or shutting down the system
@@ -110,25 +108,23 @@ namespace Xeno.ToolsHub
 
     private void SystemEvents_SessionEnding(object sender, SessionEndingEventArgs e)
     {
-      // TODO: Retest me
-      //// Occurs when the user is trying to log off or shut down the system
-      //
-      //foreach (Mono.Addins.TypeExtensionNode node in Mono.Addins.AddinManager.GetExtensionNodes(ExtensionPaths.SystemShutdownPath))
-      //{
-      //  ISystemShutdownExtension ext = (ISystemShutdownExtension)node.CreateInstance();
-      //  Log.Debug($"  Running add-in titled, '{ext.Title}'");
-      //  ext.Execute();
-      //}
-      //
-      //if (Program.AbortShutdown == true)
-      //{
-      //  e.Cancel = true;
-      //  // old abort shutdown
-      //  //string cmd = "shutdown /a";
-      //  //System.Diagnostics.Process.Start(cmd);
-      //}
+      // TODO: Retest handler of system log-off/shutdown.
+      ////// Occurs when the user is trying to log off or shut down the system
+      ////
+      ////foreach (Mono.Addins.TypeExtensionNode node in Mono.Addins.AddinManager.GetExtensionNodes(ExtensionPaths.SystemShutdownPath))
+      ////{
+      ////  ISystemShutdownExtension ext = (ISystemShutdownExtension)node.CreateInstance();
+      ////  Log.Debug($"  Running add-in titled, '{ext.Title}'");
+      ////  ext.Execute();
+      ////}
+      ////
+      ////if (Program.AbortShutdown == true)
+      ////{
+      ////  e.Cancel = true;
+      ////  // old abort shutdown
+      ////  //string cmd = "shutdown /a";
+      ////  //System.Diagnostics.Process.Start(cmd);
+      ////}
     }
-
-    #endregion System Events
   }
 }

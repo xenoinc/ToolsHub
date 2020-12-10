@@ -3,17 +3,16 @@
  * Author:  Damian Suess
  * File:    ICommand.cs
  * Description:
- *
  */
 
 using Mono.Addins;
 
 namespace Xeno.ToolsHub.ExtensionModel.Command
 {
-  //[TypeExtensionPoint(NodeType = typeof(CommandExtensionNode),
-  //                    ExtensionAttributeType = typeof(CommandAttribute))]
-  //internal interface ICommand
-  //{
-  //  void Exec();
-  //}
+  ////[TypeExtensionPoint(NodeType = typeof(CommandExtensionNode),
+  ////                    ExtensionAttributeType = typeof(CommandAttribute))]
+  ////internal interface ICommand
+  ////{
+  ////  void Execute();
+  ////}
 }

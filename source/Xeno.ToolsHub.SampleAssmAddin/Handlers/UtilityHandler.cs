@@ -23,8 +23,8 @@ namespace Xeno.ToolsHub.SampleAssmAddin.Handlers
       _initialized = true;
       Log.Debug("External SampleAssm Utility add-in: Initialized");
 
-      //if (Helpers.IsDebugging)
-      //  System.Windows.Forms.MessageBox.Show("External SampleAssm Utility add-in: Initialized!");
+      ////if (Helpers.IsDebugging)
+      ////  System.Windows.Forms.MessageBox.Show("External SampleAssm Utility add-in: Initialized!");
     }
 
     public override bool IsInitialized => _initialized;
@@ -33,16 +33,16 @@ namespace Xeno.ToolsHub.SampleAssmAddin.Handlers
     {
       Log.Debug("External SampleAssm Utility add-in: Executed!");
 
-      //if (Helpers.IsDebugging)
-      //  System.Windows.Forms.MessageBox.Show("External SampleAssm Utility add-in: Executed!");
+      ////if (Helpers.IsDebugging)
+      ////  System.Windows.Forms.MessageBox.Show("External SampleAssm Utility add-in: Executed!");
     }
 
     public override void Shutdown()
     {
       Log.Debug("External SampleAssm Utility add-in: Shutting down!");
 
-      //if (Helpers.IsDebugging)
-      //  System.Windows.Forms.MessageBox.Show("External SampleAssm Utility add-in: Shutting down!");
+      ////if (Helpers.IsDebugging)
+      ////  System.Windows.Forms.MessageBox.Show("External SampleAssm Utility add-in: Shutting down!");
     }
   }
 }

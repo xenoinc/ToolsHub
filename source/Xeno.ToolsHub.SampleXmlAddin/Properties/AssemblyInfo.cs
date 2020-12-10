@@ -2,12 +2,9 @@
  * Date:    2018-10-3
  * Author:  Damian Suess
  * File:    AssemblyInfo.cs
- * Description:
- *  
  */
 
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
@@ -16,9 +13,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Xeno.ToolsHub.SampleAddin")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Xeno Innovations, Inc.")]
 [assembly: AssemblyProduct("Xeno.ToolsHub.SampleAddin")]
-[assembly: AssemblyCopyright("Copyright ©  2018")]
+[assembly: AssemblyCopyright("Copyright © Xeno Innovations 2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

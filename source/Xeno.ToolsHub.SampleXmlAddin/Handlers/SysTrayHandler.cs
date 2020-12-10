@@ -10,13 +10,13 @@ using System.Windows.Forms;
 
 namespace Xeno.ToolsHub.SampleXmlAddin.SysTrayHandlers.Handlers
 {
-  // [Command("Hello", Id = "SampleHelloCommand")]
-  //public class SysTrayHandler //: ICommand
-  //{
-  //  public void Exec()
-  //  {
-  //    Xeno.ToolsHub.Config.Log.Debug("Hello command, clicked");
-  //    MessageBox.Show("Hello World!", "BooOOOoring!");
-  //  }
-  //}
+  //// [Command("Hello", Id = "SampleHelloCommand")]
+  ////public class SysTrayHandler //: ICommand
+  ////{
+  ////  public void Exec()
+  ////  {
+  ////    Xeno.ToolsHub.Config.Log.Debug("Hello command, clicked");
+  ////    MessageBox.Show("Hello World!", "BooOOOoring!");
+  ////  }
+  ////}
 }

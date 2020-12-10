@@ -23,17 +23,11 @@ namespace Xeno.ToolsHub.Managers
 {
   public class WndProcManager : NativeWindow
   {
-    private const int WM_CLOSE = 0x0010;
-    private const int WM_QUERYENDSESSION = 0x0011;
-
-    private static bool _systemShutdown = false;
     private readonly string _caption;
-    private IntPtr HWND_MESSAGE = new IntPtr(-3);
 
     public WndProcManager(string caption)
     {
       _caption = caption;
-      _systemShutdown = false;
     }
 
     public bool CreateWindow()
@@ -46,7 +40,7 @@ namespace Xeno.ToolsHub.Managers
           ExStyle = 0,
           ClassStyle = 0,
           Caption = _caption,
-          Parent = (IntPtr)HWND_MESSAGE
+          Parent = (IntPtr)NativeMethods.HWND_MESSAGE
         });
       }
 
@@ -69,30 +63,15 @@ namespace Xeno.ToolsHub.Managers
     {
       switch (m.Msg)
       {
-        case WM_QUERYENDSESSION:
+        case NativeMethods.WM_QUERYENDSESSION:
           // System is about to log-off, shutdown, or reboot
           // TODO: Signal add-ins!!
-          _systemShutdown = true;
+          NotifySystemShutDown();
           break;
       }
 
       base.WndProc(ref m);
     }
-
-    //[SuppressMessage("Microsoft.Reliability", "CA2006:UseSafeHandleToEncapsulateNativeResources")]
-    //private static readonly HandleRef HwndMessage = new HandleRef(null, new IntPtr(-3));
-
-    [DllImport("kernel32.dll", ExactSpelling = true, CharSet = CharSet.Auto)]
-    [ResourceExposure(ResourceScope.Process)]
-    private static extern int GetCurrentThreadId();
-
-    [DllImport("user32.dll", ExactSpelling = true, CharSet = CharSet.Auto)]
-    [ResourceExposure(ResourceScope.Process)]
-    private static extern int GetWindowThreadProcessId(HandleRef hWnd, out int lpdwProcessId);
-
-    [DllImport("user32.dll", CharSet = CharSet.Auto)]
-    [ResourceExposure(ResourceScope.None)]
-    private static extern IntPtr PostMessage(HandleRef hwnd, int msg, int wparam, int lparam);
 
     private void DestroyWindow(bool destroyHwnd, IntPtr hWnd)
     {
@@ -101,7 +80,7 @@ namespace Xeno.ToolsHub.Managers
 
       if (GetInvokeRequired(hWnd))
       {
-        PostMessage(new HandleRef(this, hWnd), WM_CLOSE, 0, 0);
+        NativeMethods.PostMessage(new HandleRef(this, hWnd), NativeMethods.WM_CLOSE, 0, 0);
         return;
       }
 
@@ -115,6 +94,36 @@ namespace Xeno.ToolsHub.Managers
     private bool GetInvokeRequired(IntPtr hWnd)
     {
       return false;
+    }
+
+    /// <summary>Notify add-ins that the system is shutting down.</summary>
+    private void NotifySystemShutDown()
+    {
+      // TODO: Notify add-ins of system shutdown.
+    }
+
+    /// <summary>CA1060 compliant class for Native Methods.</summary>
+    private static class NativeMethods
+    {
+      public const int WM_CLOSE = 0x0010;
+      public const int WM_QUERYENDSESSION = 0x0011;
+
+      public static readonly IntPtr HWND_MESSAGE = new IntPtr(-3);
+
+      ////[SuppressMessage("Microsoft.Reliability", "CA2006:UseSafeHandleToEncapsulateNativeResources")]
+      ////private static readonly HandleRef HwndMessage = new HandleRef(null, new IntPtr(-3));
+
+      [DllImport("kernel32.dll", ExactSpelling = true, CharSet = CharSet.Auto)]
+      [ResourceExposure(ResourceScope.Process)]
+      public static extern int GetCurrentThreadId();
+
+      [DllImport("user32.dll", ExactSpelling = true, CharSet = CharSet.Auto)]
+      [ResourceExposure(ResourceScope.Process)]
+      public static extern int GetWindowThreadProcessId(HandleRef hWnd, out int lpdwProcessId);
+
+      [DllImport("user32.dll", CharSet = CharSet.Auto)]
+      [ResourceExposure(ResourceScope.None)]
+      public static extern IntPtr PostMessage(HandleRef hwnd, int msg, int wparam, int lparam);
     }
   }
 }

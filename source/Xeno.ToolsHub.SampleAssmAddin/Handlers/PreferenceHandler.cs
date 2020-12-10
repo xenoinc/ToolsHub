@@ -23,7 +23,7 @@ namespace Xeno.ToolsHub.SampleAssmAddin.Handlers
 
     public Form Page => _page;
 
-    public string Title { get { return "Sample Ext-Assm"; } }
+    public string Title => "Sample Ext-Assm";
 
     public bool IsModified => _page.IsModified;
 

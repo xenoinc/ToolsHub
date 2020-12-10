@@ -3,19 +3,20 @@
  * Author:  Damian Suess
  * File:    FileLogger.cs
  * Description:
- *
+ *  File logging.
  */
 
 namespace Xeno.ToolsHub.Services.Logging
 {
   using System;
-  using System.IO;
-  using Xeno.ToolsHub.Config;
 
+  /// <summary>File logger.</summary>
   internal class FileLogger : ILogger
   {
     private ConsoleLogger _console;
-    private StreamWriter _stream;
+
+    //// File output stream
+    //// private System.IO.StreamWriter _stream;
 
     public FileLogger()
     {

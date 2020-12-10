@@ -28,16 +28,16 @@ namespace Xeno.ToolsHub.SampleXmlAddin.Handlers
     {
       Log.Debug("External SampleXml utility add-in: Executed!");
 
-      //if (Helpers.IsDebugging)
-      //  MessageBox.Show("External SampleXml utility add-in: Executed!");
+      ////if (Helpers.IsDebugging)
+      ////  MessageBox.Show("External SampleXml utility add-in: Executed!");
     }
 
     public override void Shutdown()
     {
       Log.Debug("External SampleXml utility add-in: Shutting down!");
 
-      //if (Helpers.IsDebugging)
-      //  MessageBox.Show("External SampleXml utility add-in: Shutting down!");
+      ////if (Helpers.IsDebugging)
+      ////  MessageBox.Show("External SampleXml utility add-in: Shutting down!");
     }
   }
 }
