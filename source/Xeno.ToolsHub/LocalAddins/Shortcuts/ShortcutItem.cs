@@ -14,9 +14,9 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
 
     public string Target { get; set; }
 
-    // public string StartPath { get; set; }
+    public string Params { get; set; }
 
-    // public string Params { get; set; }
+    // public string StartPath { get; set; }
 
     // public int SortOrder { get; set; }
 

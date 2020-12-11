@@ -11,24 +11,6 @@ namespace Xeno.ToolsHub.Services.Logging
 {
   using System;
 
-  public enum Level
-  {
-    /// <summary>Debug message.</summary>
-    Debug,
-
-    /// <summary>Informational message.</summary>
-    Info,
-
-    /// <summary>Warning message.</summary>
-    Warn,
-
-    /// <summary>An error has occurred.</summary>
-    Error,
-
-    /// <summary>Fatal-error.</summary>
-    Fatal
-  }
-
   public static class Log
   {
     private static ILogger _logDev = new FileLogger();
@@ -90,18 +72,25 @@ namespace Xeno.ToolsHub.Services.Logging
 
     public static void LogMessage(Level level, string message, params object[] args)
     {
-      string cls = new System.Diagnostics.StackTrace().GetFrame(2).GetMethod().ReflectedType.Name;
-      string method = new System.Diagnostics.StackTrace().GetFrame(2).GetMethod().Name;
-      string text = $"[{FormattedTime}] [{level.ToString()}] [{cls}.{method}] [{message}]";
+      var diag = new System.Diagnostics.StackTrace();
+      string text = string.Empty, cls = string.Empty, method = string.Empty;
 
-      System.Diagnostics.Debug.WriteLine(">> " + text);
-      if (!MuteLogging && level >= _logLevel)
+      if (diag.FrameCount > 1)
       {
-        // TODO: Output to file
-        ////  _logDev.Log(level, message, args);
+        cls = diag.GetFrame(2).GetMethod().ReflectedType.Name;
+        method = diag.GetFrame(2).GetMethod().Name;
       }
 
+      text = $"[{FormattedTime}] [{level}] [{cls}.{method}] [{message}]";
       System.Diagnostics.Debug.WriteLine(">> " + text);
+
+      if (!MuteLogging && level >= _logLevel)
+      {
+        _logDev.Log(level, text, args);
+
+        // TODO: The factory should decide on the formatter
+        //// _logDev.Log(level, message, args);
+      }
     }
 
     public static void Warn(string message, params object[] args)

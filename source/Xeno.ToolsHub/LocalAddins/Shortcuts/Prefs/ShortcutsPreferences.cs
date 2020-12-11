@@ -45,24 +45,86 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
 
     public bool OnSave()
     {
-      string errMsg = string.Empty;
-      string json = TxtRawFile.Text;
-
       IsModified = false;
 
-      if (_shortcuts.ValidateJson(json, out errMsg))
+      if (SaveShortcuts())
       {
-        _shortcuts.ShortcutItems = Newtonsoft.Json.JsonConvert.DeserializeObject<ShortcutItems>(json);
-        _shortcuts.SaveShortcuts();
-        _shortcuts.Refresh();
-
         return true;
       }
       else
       {
-        Log.Error("Your JSON formatting is bad, and you should feel bad too!" + Environment.NewLine + errMsg);
+        Log.Error("Unable to save shortcuts, errors were found in titles or paths.");
         return false;
       }
+
+      ////string errMsg = string.Empty;
+      ////string json = TxtRawFile.Text;
+      ////
+      ////IsModified = false;
+      ////
+      ////if (_shortcuts.ValidateJson(json, out errMsg))
+      ////{
+      ////  _shortcuts.ShortcutItems = Newtonsoft.Json.JsonConvert.DeserializeObject<ShortcutItems>(json);
+      ////  _shortcuts.SaveShortcuts();
+      ////  _shortcuts.Refresh();
+      ////
+      ////  return true;
+      ////}
+      ////else
+      ////{
+      ////  Log.Error("Your JSON formatting is bad, and you should feel bad too!" + Environment.NewLine + errMsg);
+      ////  return false;
+      ////}
+    }
+
+    /// <summary>Validate ListView for invalid user inputs.</summary>
+    /// <returns>True if passing.</returns>
+    private bool ValidateShortcuts(out ShortcutItems shortcuts)
+    {
+      bool passed = true;
+
+      ShortcutItems items = new ShortcutItems();
+
+      foreach (ListViewItem item in LvShortcuts.Items)
+      {
+        string title = item.SubItems[1].Text;
+        string path = item.SubItems[2].Text;
+
+        if (string.IsNullOrEmpty(title.Trim()) ||
+            string.IsNullOrEmpty(path.Trim()))
+        {
+          Log.Error($"Shortcut Id '{item.SubItems[0]}' - Missing or invalid Title/Path");
+
+          item.BackColor = System.Drawing.Color.OrangeRed;
+          passed = false;
+        }
+        else
+        {
+          // Reset if it's okay
+          item.BackColor = System.Drawing.Color.Empty;
+        }
+      }
+
+      shortcuts = items;
+
+      return passed;
+    }
+
+    private bool SaveShortcuts()
+    {
+      ShortcutItems shortcuts = new ShortcutItems();
+
+      if (!ValidateShortcuts(out shortcuts))
+        return false;
+
+      _shortcuts.ShortcutItems.Clear();
+      _shortcuts.ShortcutItems = shortcuts;
+
+      ////_shortcuts.ShortcutItems = Newtonsoft.Json.JsonConvert.DeserializeObject<ShortcutItems>(json);
+      _shortcuts.SaveShortcuts();
+      _shortcuts.Refresh();
+
+      return true;
     }
 
     private void LoadShortcutsFile()
@@ -85,24 +147,9 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
       IsModified = true;
     }
 
-    private void RefreshListView()
-    {
-      string json = _shortcuts.ToString();
-      int ndx = 0;
-
-      foreach (var item in _shortcuts.ShortcutItems)
-      {
-        var title = item.Title;
-        var target = item.Target;
-        LvShortcuts.Items.Add(new ListViewItem(new string[] { ndx.ToString(), title, target }));
-
-        ++ndx;
-      }
-    }
-
     private void BtnAdd_Click(object sender, EventArgs e)
     {
-      ListAdd();
+      ItemAdd(TxtTitle.Text, TxtPath.Text, TxtPathArgs.Text);
     }
 
     private void BtnRemove_Click(object sender, EventArgs e)
@@ -115,10 +162,9 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
     {
       foreach (ListViewItem item in LvShortcuts.SelectedItems)
       {
-
         TxtTitle.Text = item.SubItems[1].Text;
         TxtPath.Text = item.SubItems[2].Text;
-        TxtPathArgs.Text = string.Empty;      // item.SubItems[2].Text;
+        TxtPathArgs.Text = item.SubItems[3].Text;
       }
     }
 
@@ -127,13 +173,24 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
       ToggleProperties(!GroupProperties.Visible);
     }
 
-    private void ListAdd()
+    private void ItemAdd(string title, string target, string args)
     {
-      string title = TxtTitle.Text;
-      string target = TxtPath.Text;
       int ndx = LvShortcuts.Items.Count;
+      LvShortcuts.Items.Add(new ListViewItem(new string[] { ndx.ToString(), title, target, args }));
+    }
 
-      LvShortcuts.Items.Add(new ListViewItem(new string[] { ndx.ToString(), title, target }));
+    private void RefreshListView()
+    {
+      LvShortcuts.Items.Clear();
+
+      foreach (var item in _shortcuts.ShortcutItems)
+      {
+        var title = item.Title;
+        var target = item.Target;
+        var args = item.Params;
+
+        ItemAdd(title, target, args);
+      }
     }
 
     /// <summary>Visibility of the Shortcut Properties group box.</summary>
