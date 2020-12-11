@@ -115,9 +115,10 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
     {
       foreach (ListViewItem item in LvShortcuts.SelectedItems)
       {
-        TxtTitle.Text = item.SubItems[0].Text;
-        TxtPath.Text = item.SubItems[1].Text;
-        TxtPathArgs.Text = item.SubItems[2].Text;
+
+        TxtTitle.Text = item.SubItems[1].Text;
+        TxtPath.Text = item.SubItems[2].Text;
+        TxtPathArgs.Text = string.Empty;      // item.SubItems[2].Text;
       }
     }
 
