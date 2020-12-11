@@ -43,6 +43,7 @@ namespace Xeno.ToolsHub.Models.PropertyService
       return value;
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2237:Mark ISerializable types with serializable", Justification = "Bullshit warning")]
     public class ItemCollection : Dictionary<string, string>
     {
       public ItemCollection()
