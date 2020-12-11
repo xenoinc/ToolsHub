@@ -15,6 +15,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
   using Xeno.ToolsHub.ExtensionModel;
   using Xeno.ToolsHub.Services.Logging;
 
+  /// <summary>Shortcuts Add-in Preference Page.</summary>
   public partial class ShortcutsPreferences : Form, IPreferencePageActions
   {
     private bool _isModified = false;
@@ -112,7 +113,6 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
 
     private void LvShortcuts_SelectedIndexChanged(object sender, EventArgs e)
     {
-
       foreach (ListViewItem item in LvShortcuts.SelectedItems)
       {
         TxtTitle.Text = item.SubItems[0].Text;

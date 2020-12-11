@@ -13,6 +13,7 @@ namespace Xeno.ToolsHub.SampleXmlAddin.Views
   using Xeno.ToolsHub.ExtensionModel;
   using Xeno.ToolsHub.Services.Logging;
 
+  /// <summary>Sample Preference page.</summary>
   public partial class PerferencePage : Form, IPreferencePageActions
   {
     public PerferencePage()
@@ -35,7 +36,7 @@ namespace Xeno.ToolsHub.SampleXmlAddin.Views
     {
     }
 
-    private void textBox1_TextChanged(object sender, EventArgs e)
+    private void SampleTextBox_TextChanged(object sender, EventArgs e)
     {
       if (!IsModified)
         lblIsModified.Text = "True";

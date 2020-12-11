@@ -1,24 +1,14 @@
 ﻿/* Copyright Xeno Innovations, Inc. 2018
  * Date:    2018-7-17
  * Author:  Damian Suess
- * File:    Constants.cs
+ * File:    ExtensionPath.cs
  * Description:
- *  Add-in Extension and Path names
+ *  Add-in Extension Path names
  */
 
 namespace Xeno.ToolsHub.ExtensionModel
 {
-  public class ExtensionName
-  {
-    public const string OnStartupAddin = "OnStartupAddin";
-
-    public const string PreferencePageAddin = "PreferencePageAddin";
-
-    public const string SysTrayAddin = "SysTrayAddin";
-
-    public const string UtilityAddin = "UtilityAddin";
-  }
-
+  /// <summary>Add-in Extension Path Constants.</summary>
   public class ExtensionPath
   {
     /// <summary>Application is starting up extension command</summary>
@@ -33,9 +23,9 @@ namespace Xeno.ToolsHub.ExtensionModel
     /// <summary>Preference page extension</summary>
     public const string PreferencePage = "/ToolsHub/PreferencePage";
 
-    //public const string SystemShutdownPath = "/ToolsHub/OnSystemShutdown";
-    //public const string AppReadyPath = "/ToolsHub/OnAppReady";
-    //public const string AppShutdownPath = "/ToolsHub/OnAppShutdown";
-    //public const string SidebarPath = "/ToolsHub/Sidebar";
+    ////public const string SystemShutdownPath = "/ToolsHub/OnSystemShutdown";
+    ////public const string AppReadyPath = "/ToolsHub/OnAppReady";
+    ////public const string AppShutdownPath = "/ToolsHub/OnAppShutdown";
+    ////public const string SidebarPath = "/ToolsHub/Sidebar";
   }
 }

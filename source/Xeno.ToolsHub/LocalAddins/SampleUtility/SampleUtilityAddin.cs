@@ -27,7 +27,6 @@ namespace Xeno.ToolsHub.LocalAddins.SampleUtility
     public override void Execute()
     {
       Log.Debug("SampleXml internal Utility add-in, executed!");
-      //System.Windows.Forms.MessageBox.Show("SampleXml internal Utility add-in, executed!");
     }
 
     public override void Shutdown()

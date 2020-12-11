@@ -46,7 +46,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
       if (shortcuts == null)
       {
         Log.Debug($"No shortcuts found. Loading default");
-        var item = new ExtensionModel.SystemTray.TrayItem("Create test JSON...", "", true, OnGenerateSampleShortcuts);
+        var item = new ExtensionModel.SystemTray.TrayItem("Create test JSON...", string.Empty, true, OnGenerateSampleShortcuts);
 
         MenuItem menu = new MenuItem("Shortcuts");
         menu.MenuItems.Add(0, item);
@@ -137,7 +137,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
       try
       {
         var obj = Newtonsoft.Json.Linq.JToken.Parse(rawJson);
-        errMessage = "";
+        errMessage = string.Empty;
         return true;
       }
       catch (Exception ex)

@@ -12,6 +12,11 @@ namespace Xeno.ToolsHub.ExtensionModel
   {
     bool IsModified { get; set; }
 
+    /// <summary>User clicked Save in parent Preference window.</summary>
+    /// <returns>
+    ///   True tell parent this page successfully save.
+    ///   False informs parent a child page failed to save and needs attention.
+    /// </returns>
     bool OnSave();
 
     /////// <summary>Save preference page</summary>

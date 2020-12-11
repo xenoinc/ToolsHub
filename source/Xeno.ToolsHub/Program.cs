@@ -84,8 +84,7 @@ namespace Xeno.ToolsHub
             onInitialInstall: _ => mgr.CreateShortcutForThisExe(),
             onAppUpdate: _ => mgr.CreateShortcutForThisExe(),
             onAppUninstall: _ => mgr.RemoveShortcutForThisExe(),
-            onFirstRun: SquirrelWelcomeMessage
-          );
+            onFirstRun: SquirrelWelcomeMessage);
 
           UpdateInfo updateInfo = await mgr.CheckForUpdate();
           if (updateInfo.ReleasesToApply.Any())

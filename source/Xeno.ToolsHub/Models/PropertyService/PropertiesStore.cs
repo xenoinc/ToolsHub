@@ -17,6 +17,8 @@ namespace Xeno.ToolsHub.Models.PropertyService
       this.PropertyBags = new List<Properties>();
     }
 
+    /// <summary>Gets or sets the bag of Properties (set of a set).</summary>
+    // TODO: Change to Dictionary<string, Properties>() so we don't have duplicate Properties.Id
     public List<Properties> PropertyBags { get; set; }
 
     /// <summary>Add new property bag to list</summary>
@@ -54,6 +56,11 @@ namespace Xeno.ToolsHub.Models.PropertyService
       return null;
     }
 
+    /// <summary>Get property value from Id and key in the bag.</summary>
+    /// <param name="propertyId">PropertySet Id</param>
+    /// <param name="key">Key value.</param>
+    /// <param name="defaultValue">Default value.</param>
+    /// <returns>Property value or default.</returns>
     public string GetValue(string propertyId, string key, string defaultValue)
     {
       string value = defaultValue;
@@ -65,6 +72,10 @@ namespace Xeno.ToolsHub.Models.PropertyService
       return value;
     }
 
+    /// <summary>Set key value from PropertyId in bag.</summary>
+    /// <param name="propertyId">PropertySet Id</param>
+    /// <param name="key">Key value.</param>
+    /// <param name="value">Setting value.</param>
     public void SetValue(string propertyId, string key, string value)
     {
       Properties bag = this.Find(propertyId);

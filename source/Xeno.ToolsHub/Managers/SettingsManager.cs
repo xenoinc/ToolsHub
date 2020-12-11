@@ -61,6 +61,7 @@ namespace Xeno.ToolsHub.Managers
 
     public new string ToString => JsonConvert.SerializeObject(_propStore.PropertyBags, Formatting.Indented);
 
+    /// <summary>Clear setting cache from memory.</summary>
     public void Clear()
     {
       _propStore.ClearAll();
@@ -96,6 +97,10 @@ namespace Xeno.ToolsHub.Managers
       return _propStore.GetValue(propertyId, key, defValue);
     }
 
+    /// <summary>Saves object as Base64.</summary>
+    /// <param name="propertyId">Property Id.</param>
+    /// <param name="key">Key.</param>
+    /// <param name="o">Object type.</param>
     public void SetObject(string propertyId, string key, object o)
     {
       string data = JsonConvert.SerializeObject(o, Formatting.None);
@@ -103,6 +108,10 @@ namespace Xeno.ToolsHub.Managers
       _propStore.SetValue(propertyId, key, data);
     }
 
+    /// <summary>Saves object as plain text.</summary>
+    /// <param name="propertyId">Property Id.</param>
+    /// <param name="key">Key.</param>
+    /// <param name="value">Text value.</param>
     public void SetValue(string propertyId, string key, string value)
     {
       _propStore.SetValue(propertyId, key, value);

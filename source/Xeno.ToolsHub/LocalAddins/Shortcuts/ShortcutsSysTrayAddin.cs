@@ -14,7 +14,7 @@ using System.Windows.Forms;
 
 namespace Xeno.ToolsHub.LocalAddins.Shortcuts
 {
-  //[Mono.Addins.Extension(
+  // [Mono.Addins.Extension(
   //  Id = "ShortcutsAddinBoom",
   //  NodeName = "SysTrayAddin",
   //  Path = "/ToolsHub/SystemTray")]

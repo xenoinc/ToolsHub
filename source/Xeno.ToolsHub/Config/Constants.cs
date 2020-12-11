@@ -12,12 +12,6 @@ namespace Xeno.ToolsHub.Config
 
   public static class Constants
   {
-    public static string SettingsFile => "ToolsHub.db";
-
-    public static string LocalSettingsPath => Path.Combine(LocalFolder, SettingsFile);
-
-    public static string LocalFolder => Directory.GetCurrentDirectory();
-
     /// <summary>Remote URI</summary>
     public const string RemoteUri = @"https://xenoinc.com/dev";
 
@@ -29,5 +23,11 @@ namespace Xeno.ToolsHub.Config
     public static readonly string RemoteUpdateBetaPath = Path.Combine(RemoteBase, "beta");
 
     public static readonly string RemoteUpdateStablePath = Path.Combine(RemoteBase, "releases");
+
+    public static string SettingsFile => "ToolsHub.db";
+
+    public static string LocalSettingsPath => Path.Combine(LocalFolder, SettingsFile);
+
+    public static string LocalFolder => Directory.GetCurrentDirectory();
   }
 }

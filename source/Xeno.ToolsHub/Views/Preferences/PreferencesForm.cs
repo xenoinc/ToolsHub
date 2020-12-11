@@ -1,9 +1,9 @@
 ﻿/* Copyright Xeno Innovations, Inc. 2018
  * Date:    2018-7-23
  * Author:  Damian Suess
- * File:    OptionsForm.cs
+ * File:    PreferencesForm.cs
  * Description:
- *
+ *  Options and preferences window.
  */
 
 namespace Xeno.ToolsHub.Views
@@ -15,13 +15,15 @@ namespace Xeno.ToolsHub.Views
   using Xeno.ToolsHub.Managers;
   using Xeno.ToolsHub.Services.Logging;
 
+  /// <summary>Preferences Window main form.</summary>
   public partial class PreferencesForm : Form
   {
     private readonly AddinsManager _addinManager;
 
     private Dictionary<string, IPreferencePageExtension> _addinPages;
 
-    public PreferencesForm() : this(new AddinsManager())
+    public PreferencesForm()
+      : this(new AddinsManager())
     {
     }
 

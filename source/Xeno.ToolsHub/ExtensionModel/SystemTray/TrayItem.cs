@@ -68,7 +68,7 @@ namespace Xeno.ToolsHub.ExtensionModel.SystemTray
     public void OnClick(object sender, EventArgs e)
     {
       int index = -1, ret = 0;
-      string target = "", text = "";
+      string target = string.Empty, text = string.Empty;
 
       if (sender.GetType() == typeof(TrayItem))
       {
@@ -84,7 +84,7 @@ namespace Xeno.ToolsHub.ExtensionModel.SystemTray
         {
           ret = _routedMethod.Invoke(target);
         }
-        else if (target != "")
+        else if (target != string.Empty)
         {
           System.Diagnostics.Process.Start(target);
         }
@@ -107,7 +107,7 @@ namespace Xeno.ToolsHub.ExtensionModel.SystemTray
     public void OnSelect(object sender, EventArgs e)
     {
       int index = -1;
-      string tag = "<unknown>", text = "";
+      string tag = "<unknown>", text = string.Empty;
 
       if (sender.GetType() == typeof(MenuItem))
       {

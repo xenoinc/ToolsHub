@@ -93,9 +93,9 @@
     <Compile Include="Config\Helpers.cs" />
     <Compile Include="ExtensionModel\Command\CommandAttribute.cs" />
     <Compile Include="ExtensionModel\Command\ICommand.cs" />
+    <Compile Include="ExtensionModel\ExtensionName.cs" />
     <Compile Include="ExtensionModel\IPreferencePageActions.cs" />
     <Compile Include="ExtensionModel\ISystemTrayExtension.cs" />
-    <Compile Include="ExtensionModel\BasePreferencePageActions.cs" />
     <Compile Include="ExtensionModel\SystemTray\SystemTrayMessages.cs" />
     <Compile Include="ExtensionModel\SystemTray\TrayItemInfo.cs" />
     <Compile Include="LocalAddins\Shortcuts\Prefs\PreferencesHandler.cs" />
@@ -128,12 +128,11 @@
     <Compile Include="ExtensionModel\IOnStartupExtension.cs" />
     <Compile Include="ExtensionModel\ISystemShutdownExtension.cs" />
     <Compile Include="ExtensionModel\IPreferencePageExtension.cs" />
-    <Compile Include="ExtensionModel\Constants.cs" />
+    <Compile Include="ExtensionModel\ExtensionPath.cs" />
     <Compile Include="Services\Logging\ConsoleLogger.cs" />
     <Compile Include="Services\Logging\FileLogger.cs" />
     <Compile Include="Services\Logging\ILogger.cs" />
     <Compile Include="Services\Logging\Log.cs" />
-    <Compile Include="Managers\SidebarManager.cs" />
     <Compile Include="Managers\SystemTrayManager.cs" />
     <Compile Include="Managers\SettingsManager.cs" />
     <Compile Include="Managers\WndProcManager.cs" />
@@ -210,6 +209,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="stylecop.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

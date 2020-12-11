@@ -10,8 +10,18 @@
 
 namespace Xeno.ToolsHub.ExtensionModel
 {
-  // We're using XML manifest, so we don't need this
-  // [Mono.Addins.TypeExtensionPoint(Path = "/ToolsHub/OnStartup", NodeName = "OnStartupAddin")]
+  /// <summary>
+  ///   OnStartup Add-in Extension Point.
+  ///   This type of add-in is executed immediately on application startup.
+  /// </summary>
+  /// <remarks>
+  ///   This Extension Points is defined in the file, "ToolsHub.addin.xml".
+  ///   An alternative approach is to define the Extension Point via the Assembly Attribute:
+  ///   [Mono.Addins.TypeExtensionPoint(Path = "/ToolsHub/OnStartup", NodeName = "OnStartupAddin")]
+  ///
+  ///   Note:
+  ///   When we need garbage collection, switch from IBaseExtension to AbstractAddin
+  /// </remarks>
   public interface IOnStartupExtension : IBaseExtension
   {
   }

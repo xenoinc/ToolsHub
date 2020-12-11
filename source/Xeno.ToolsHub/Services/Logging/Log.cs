@@ -13,10 +13,19 @@ namespace Xeno.ToolsHub.Services.Logging
 
   public enum Level
   {
+    /// <summary>Debug message.</summary>
     Debug,
+
+    /// <summary>Informational message.</summary>
     Info,
+
+    /// <summary>Warning message.</summary>
     Warn,
+
+    /// <summary>An error has occurred.</summary>
     Error,
+
+    /// <summary>Fatal-error.</summary>
     Fatal
   }
 
@@ -24,7 +33,7 @@ namespace Xeno.ToolsHub.Services.Logging
   {
     private static ILogger _logDev = new FileLogger();
     private static Level _logLevel = Level.Debug;
-    private static bool _muted = false;
+    private static bool _muteLogging = false;
 
     public static ILogger LogDevice
     {
@@ -32,10 +41,18 @@ namespace Xeno.ToolsHub.Services.Logging
       set => _logDev = value;
     }
 
+    /// <summary>Gets or sets system-wide logging level.</summary>
     public static Level LogLevel
     {
       get => _logLevel;
       set => _logLevel = value;
+    }
+
+    /// <summary>Gets or sets a value indicating whether to output logging or not. True == disabled.</summary>
+    public static bool MuteLogging
+    {
+      get => _muteLogging;
+      set => _muteLogging = value;
     }
 
     private static string FormattedTime
@@ -78,21 +95,13 @@ namespace Xeno.ToolsHub.Services.Logging
       string text = $"[{FormattedTime}] [{level.ToString()}] [{cls}.{method}] [{message}]";
 
       System.Diagnostics.Debug.WriteLine(">> " + text);
+      if (!MuteLogging && level >= _logLevel)
+      {
+        // TODO: Output to file
+        ////  _logDev.Log(level, message, args);
+      }
 
-      // TODO: use this when ready
-      ////if (!_muted && level >= _logLevel)
-      ////  _logDev.Log(level, message, args);
-    }
-
-    /// <summary>Temporary disable logging output</summary>
-    public static void Mute()
-    {
-      _muted = true;
-    }
-
-    public static void Unmute()
-    {
-      _muted = false;
+      System.Diagnostics.Debug.WriteLine(">> " + text);
     }
 
     public static void Warn(string message, params object[] args)

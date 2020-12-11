@@ -214,7 +214,8 @@ namespace Xeno.ToolsHub.Services.Messaging
 
     private class Sender : Tuple<string, Type, Type>
     {
-      public Sender(string message, Type senderType, Type argType) : base(message, senderType, argType)
+      public Sender(string message, Type senderType, Type argType)
+        : base(message, senderType, argType)
       {
       }
     }

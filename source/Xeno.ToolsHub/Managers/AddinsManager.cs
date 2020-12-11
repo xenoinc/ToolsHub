@@ -17,19 +17,21 @@ namespace Xeno.ToolsHub.Managers
 
   public class AddinsManager
   {
-    //private static readonly Log _log = myLogger.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
     /// <remarks>Key = TypeExtensionNode.Id</remarks
     private Dictionary<string, UtilityAddin> _utilityAddins;
 
     private bool _verboseErrorMessage = true;
 
+    /// <summary>Initializes a new instance of the <see cref="AddinsManager"/> class.</summary>
     public AddinsManager()
       : this(string.Empty)
     {
     }
 
-    /// <summary>Constructor providing alternative add-in directory</summary>
+    /// <summary>
+    ///   Initializes a new instance of the <see cref="AddinsManager"/> class
+    ///   providing an alternative add-in directory.
+    /// </summary>
     /// <param name="configDir">Add-ins configuration directory</param>
     public AddinsManager(string configDir)
     {
@@ -41,7 +43,7 @@ namespace Xeno.ToolsHub.Managers
     public event EventHandler OnApplicationAddinListChanged;
 
     /// <summary>Get all add-ins found in system</summary>
-    /// <returns></returns>
+    /// <returns>List of add-ins.</returns>
     public List<Mono.Addins.Addin> GetAllAddins()
     {
       List<Mono.Addins.Addin> addinList = new List<Mono.Addins.Addin>();
@@ -146,7 +148,8 @@ namespace Xeno.ToolsHub.Managers
       {
         // EventHandlers for ExtensionNodes
         Mono.Addins.AddinManager.AddExtensionNodeHandler(ExtensionPath.OnStartup, OnStartupAddins_ExtensionHandler);
-        //Mono.Addins.AddinManager.AddExtensionNodeHandler(ExtensionPath.PreferencePage, OnPreferencesAddins_ExtensionHandler);
+        //// TODO: Do we need to reenable the PreferencePageManager?
+        //// Mono.Addins.AddinManager.AddExtensionNodeHandler(ExtensionPath.PreferencePage, OnPreferencesAddins_ExtensionHandler);
         Mono.Addins.AddinManager.AddExtensionNodeHandler(ExtensionPath.SystemTray, OnSystemTrayAddins_ExtensionHandler);
         Mono.Addins.AddinManager.AddExtensionNodeHandler(ExtensionPath.Utility, OnUtilityAddins_ExtensionHandler);
       }
@@ -236,53 +239,53 @@ namespace Xeno.ToolsHub.Managers
 
     private void OnUtilityHandle_Example()
     {
-      //Mono.Addins.TypeExtensionNode extNode = args.ExtensionNode as Mono.Addins.TypeExtensionNode;
-      //PrintInfo(ExtensionPaths.UtilityPath, args, extNode);
-      //
-      //UtilityAddin addin;
-      //if (args.Change == Mono.Addins.ExtensionChange.Add)
-      //{
-      //  // Load add-in
-      //  addin = extNode.GetInstance(typeof(UtilityAddin)) as UtilityAddin;
-      //  if (addin != null)
-      //  {
-      //    try
-      //    {
-      //      addin.Initialize();
-      //      _appAddins[extNode.Id] = addin;
-      //      addin.Execute();
-      //    }
-      //    catch (Exception loadEx)
-      //    {
-      //      Log.Error($"Issue initializing add-in, '{addin.GetType().ToString()}' " +
-      //                $"with exception: {loadEx.Message}{Environment.NewLine}StackTrace: {loadEx.StackTrace}");
-      //    }
-      //  }
-      //}
-      //else
-      //{
-      //  // Remove add-in from app cache
-      //  if (_appAddins.ContainsKey(extNode.Id))
-      //  {
-      //    addin = _appAddins[extNode.Id];
-      //    try
-      //    {
-      //      addin.Shutdown();
-      //    }
-      //    catch (Exception unloadEx)
-      //    {
-      //      Log.Error($"Issue shutting down add-in, '{addin.GetType().ToString()}' " +
-      //                $"with exception: {unloadEx.Message}{Environment.NewLine}StackTrace: {unloadEx.StackTrace}");
-      //    }
-      //    finally
-      //    {
-      //      _appAddins.Remove(extNode.Id);
-      //    }
-      //  }
-      //
-      //// Push event changed out to listeners
-      //OnApplicationAddinListChanged?.Invoke(sender, args);
-      //}
+      ////Mono.Addins.TypeExtensionNode extNode = args.ExtensionNode as Mono.Addins.TypeExtensionNode;
+      ////PrintInfo(ExtensionPaths.UtilityPath, args, extNode);
+      ////
+      ////UtilityAddin addin;
+      ////if (args.Change == Mono.Addins.ExtensionChange.Add)
+      ////{
+      ////  // Load add-in
+      ////  addin = extNode.GetInstance(typeof(UtilityAddin)) as UtilityAddin;
+      ////  if (addin != null)
+      ////  {
+      ////    try
+      ////    {
+      ////      addin.Initialize();
+      ////      _appAddins[extNode.Id] = addin;
+      ////      addin.Execute();
+      ////    }
+      ////    catch (Exception loadEx)
+      ////    {
+      ////      Log.Error($"Issue initializing add-in, '{addin.GetType().ToString()}' " +
+      ////                $"with exception: {loadEx.Message}{Environment.NewLine}StackTrace: {loadEx.StackTrace}");
+      ////    }
+      ////  }
+      ////}
+      ////else
+      ////{
+      ////  // Remove add-in from app cache
+      ////  if (_appAddins.ContainsKey(extNode.Id))
+      ////  {
+      ////    addin = _appAddins[extNode.Id];
+      ////    try
+      ////    {
+      ////      addin.Shutdown();
+      ////    }
+      ////    catch (Exception unloadEx)
+      ////    {
+      ////      Log.Error($"Issue shutting down add-in, '{addin.GetType().ToString()}' " +
+      ////                $"with exception: {unloadEx.Message}{Environment.NewLine}StackTrace: {unloadEx.StackTrace}");
+      ////    }
+      ////    finally
+      ////    {
+      ////      _appAddins.Remove(extNode.Id);
+      ////    }
+      ////  }
+      ////
+      ////// Push event changed out to listeners
+      ////OnApplicationAddinListChanged?.Invoke(sender, args);
+      ////}
     }
 
     private void PrintInfo(string extPoint, ExtensionNodeEventArgs args, Mono.Addins.TypeExtensionNode extNode)

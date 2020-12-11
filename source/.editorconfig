@@ -21,7 +21,7 @@ root = true
 end_of_line = crlf
 
 # 2-column space/tab indentation
-[*.{cs,cpp,h,sql,xml,xaml,json}]
+[*.{cs}]
 indent_style = space
 indent_size = 2
 trim_trailing_whitespace = true
@@ -29,6 +29,10 @@ trim_trailing_whitespace = true
 # .NET specific configurations
 dotnet_sort_system_directives_first = true
 
+[*.{cpp,h,sql}]
+indent_style = space
+indent_size = 2
+trim_trailing_whitespace = true
 
 [*.{xml,xaml,resx,json}]
 indent_style = space

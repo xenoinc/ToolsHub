@@ -2,8 +2,6 @@
  * Date:    2018-12-5
  * Author:  Damian Suess
  * File:    PreferencePageManager.cs
- * Description:
- *
  */
 
 namespace Xeno.ToolsHub.Managers
@@ -13,6 +11,7 @@ namespace Xeno.ToolsHub.Managers
   using Xeno.ToolsHub.ExtensionModel;
   using Xeno.ToolsHub.Services.Logging;
 
+  /// <summary>Preference page manager.</summary>
   public class PreferencePageManager
   {
     private Dictionary<string, IPreferencePageExtension> _preferencePages;
@@ -35,9 +34,9 @@ namespace Xeno.ToolsHub.Managers
 
         try
         {
-          //BROKEN: 2018-12-05
-          //PreferencePageExtension instance = typeNode.CreateInstance() as PreferencePageExtension;
-          //InitPage(instance, typeNode.Id, typeNode.TypeName);
+          // TODO: 2018-12-05 - Need to be able to reload add-in Preference pages
+          ////PreferencePageExtension instance = typeNode.CreateInstance() as PreferencePageExtension;
+          ////InitPage(instance, typeNode.Id, typeNode.TypeName);
         }
         catch (Exception ex)
         {
@@ -46,32 +45,32 @@ namespace Xeno.ToolsHub.Managers
       }
     }
 
-    //BROKEN: 2018-12-05
-    //private void InitPage(PreferencePageExtension page, string addinId, string addinTypeName)
-    //{
-    //  try
-    //  {
-    //    var ctrl = page.InitializePage();
-    //    _preferencePages.Add(addinId, page);
-    //
-    //    //var pageTitle = string.Empty;
-    //    //var pagePanel = new System.Windows.Forms.Panel();
-    //    //var parentDialog = new object();
-    //    //var result = page.GetPreferenceAddin(parentDialog, out pageTitle, out pagePanel);
-    //
-    //    if (result)
-    //    {
-    //      Log.Debug("PreferenePage add-in initialized.");
-    //    }
-    //    else
-    //    {
-    //      Log.Debug($"PreferenePage '{addinId}' failed to fully initial.");
-    //    }
-    //  }
-    //  catch (Exception ex)
-    //  {
-    //    Log.Error($"Error while attempting to initialize UtilityAddin, Id: '{addinId}', TypeName: '{addinTypeName}': {ex.Message}");
-    //  }
-    //}
+    // FIX: 2018-12-05
+    ////private void InitPage(PreferencePageExtension page, string addinId, string addinTypeName)
+    ////{
+    ////  try
+    ////  {
+    ////    var ctrl = page.InitializePage();
+    ////    _preferencePages.Add(addinId, page);
+    ////
+    ////    //var pageTitle = string.Empty;
+    ////    //var pagePanel = new System.Windows.Forms.Panel();
+    ////    //var parentDialog = new object();
+    ////    //var result = page.GetPreferenceAddin(parentDialog, out pageTitle, out pagePanel);
+    ////
+    ////    if (result)
+    ////    {
+    ////      Log.Debug("PreferenePage add-in initialized.");
+    ////    }
+    ////    else
+    ////    {
+    ////      Log.Debug($"PreferenePage '{addinId}' failed to fully initial.");
+    ////    }
+    ////  }
+    ////  catch (Exception ex)
+    ////  {
+    ////    Log.Error($"Error while attempting to initialize UtilityAddin, Id: '{addinId}', TypeName: '{addinTypeName}': {ex.Message}");
+    ////  }
+    ////}
   }
 }

@@ -42,8 +42,12 @@ namespace Xeno.ToolsHub.VeraCryptAddin.Domain
       return await Task.FromResult(new Dictionary<string, string>());
     }
 
-    /// <summary>Mount drive</summary>
-    /// <remarks>Make more dynamic to accept other methods of mounting</remarks>
+    /// <summary>Mount virtual drive.</summary>
+    /// <remarks>Make more dynamic to accept other methods of mounting.</remarks>
+    /// <param name="driveLetter">Drive letter.</param>
+    /// <param name="hcPath">VeraCrypt HC file path.</param>
+    /// <param name="password">Password.</param>
+    /// <returns>True on successful mounting.</returns>
     public static bool Mount(char driveLetter, string hcPath, string password)
     {
       throw new NotImplementedException();
@@ -52,6 +56,10 @@ namespace Xeno.ToolsHub.VeraCryptAddin.Domain
       ////drive.MountDrive();
     }
 
+    /// <summary>Dismount virtual drive.</summary>
+    /// <param name="force">Force dismount.</param>
+    /// <param name="dismountAll">Dismount all drives.</param>
+    /// <returns>True on success.</returns>
     public static bool Dismount(bool force = false, bool dismountAll = false)
     {
       throw new NotImplementedException();
