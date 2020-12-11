@@ -44,28 +44,42 @@ namespace Xeno.ToolsHub.Tests.SystemTests.Shortcuts
     }
 
     [TestMethod]
-    public void SaveJsonInJsonTest()
+    public void SaveValueTest()
     {
+      const string TestProperty = "MyTitle";
+      const string TestKey1 = "MyKey";
+      const string TestKey2 = "MyOtherKey";
+      const string TestValue1 = "MyValue";
+      const string TestValue2 = "ASDFjkl;";
+
+      // Get value in-memory
+      _settings.SetValue(TestProperty, TestKey1, TestValue1);
+      string ret = _settings.GetValue(TestProperty, TestKey1, string.Empty);
+
+      Assert.AreEqual(ret, TestValue1);
+
+      // Clean the slate and re-load
+      _settings.SaveFile();
       _settings.Clear();
+      _settings.LoadFile();
 
-      _settings.SetValue("MyTitle", "MyKey", "MyValue");
-      string testValue = _settings.GetValue("MyTitle", "MyKey", string.Empty);
-      Assert.AreEqual(testValue, "MyValue");
+      // Now add something else.
+      _settings.SetValue(TestProperty, TestKey2, TestValue2);
 
-      _settings.SaveFile();
+      ret = _settings.GetValue(TestProperty, TestKey1, string.Empty);
+      string ret2 = _settings.GetValue(TestProperty, TestKey2, string.Empty);
 
-      // Strap-on a new JSON element
-      var shortcutItems = Helpers.SettingsHelpers.GenerateShortcutsMixed();
-      string json = JsonConvert.SerializeObject(shortcutItems, Formatting.None);
+      Assert.AreEqual(TestValue1, ret, "Invalid first setting value.");
+      Assert.AreEqual(TestValue2, ret2, "Invalid second setting value.");
+    }
 
-      _settings.SetValue("MyJsonTest", "TestShortcuts", json);
-      _settings.SaveFile();
-
-      string storedJson = _settings.GetValue("MyJsonTest", "TestShortcuts", string.Empty);
-      Assert.AreEqual(json, storedJson);
-
-      // Log.Debug(storedJson);
-      Log.Debug("BEFORE:" + System.Environment.NewLine + _settings.ToString);
+    /// <summary>Settings objects get saved as Base64, not plain-text.</summary>
+    [TestMethod]
+    public void SaveObjectTest()
+    {
+      // Create object to be saved as Base64
+      ShortcutItems shortcutItems = Helpers.SettingsHelpers.GenerateShortcutsMixed();
+      _settings.SetObject("MyJsonTest", "TestShortcuts", shortcutItems);
 
       // Clean the slate and re-load
       _settings.SaveFile();
@@ -75,8 +89,8 @@ namespace Xeno.ToolsHub.Tests.SystemTests.Shortcuts
       ShortcutItems items2 = _settings.GetObject<ShortcutItems>("MyJsonTest", "TestShortcuts");
       Log.Debug(_settings.ToString);
 
-      Assert.IsNotNull(items2);
-      Assert.AreEqual(items2.Count, 6);
+      Assert.IsNotNull(items2, "Failed to get test Shortcut Items");
+      Assert.AreEqual(items2.Count, 6, "Missing ShortcutItems");
     }
   }
 }

@@ -9,7 +9,7 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using Xeno.ToolsHub.LocalAddins.Shortcuts;
 using Xeno.ToolsHub.Managers;
 using Xeno.ToolsHub.Tests.Helpers;
 
@@ -39,17 +39,16 @@ namespace Xeno.ToolsHub.Tests.SystemTests.Shortcuts
     {
       _settings.Clear();
 
-      var items = SettingsHelpers.GenerateShortcutsMixed();
+      ShortcutItems items = SettingsHelpers.GenerateShortcutsMixed();
       Assert.AreNotEqual(0, items.Count);
 
       string json = JsonConvert.SerializeObject(items, Formatting.None);
       Console.WriteLine("JSON: ---------" + Environment.NewLine + json + Environment.NewLine + "---------");
 
-      // Fails because we start with "[{" versus "{"
-      // See also: https://stackoverflow.com/questions/17518886/c-sharp-parsing-json-error-reading-json-object
-      var @object = JObject.Parse(json);
+      var obj = JsonConvert.DeserializeObject<ShortcutItems>(json);
 
-      Assert.AreNotSame(null, @object);
+      Assert.IsNotNull(obj);
+      Assert.AreEqual(items.Count, obj.Count);
     }
   }
 }
