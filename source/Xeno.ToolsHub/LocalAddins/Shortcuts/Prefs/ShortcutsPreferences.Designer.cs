@@ -39,14 +39,11 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
       this.tabControl1 = new System.Windows.Forms.TabControl();
       this.TabListEditor = new System.Windows.Forms.TabPage();
       this.GroupShortcuts = new System.Windows.Forms.GroupBox();
-      this.BtnHideShowProperties = new System.Windows.Forms.Button();
       this.LvShortcuts = new System.Windows.Forms.ListView();
       this.LvShortcutsId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
       this.LvShortcutsTitle = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
       this.LvShortcutsPath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
       this.LvShortcutsParameters = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-      this.BtnAdd = new System.Windows.Forms.Button();
-      this.BtnRemove = new System.Windows.Forms.Button();
       this.GroupProperties = new System.Windows.Forms.GroupBox();
       this.label3 = new System.Windows.Forms.Label();
       this.label5 = new System.Windows.Forms.Label();
@@ -59,6 +56,8 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
       this.LblModified = new System.Windows.Forms.Label();
       this.label2 = new System.Windows.Forms.Label();
       this.TxtRawFile = new System.Windows.Forms.TextBox();
+      this.BtnRemove = new System.Windows.Forms.Button();
+      this.BtnAdd = new System.Windows.Forms.Button();
       this.tabControl1.SuspendLayout();
       this.TabListEditor.SuspendLayout();
       this.GroupShortcuts.SuspendLayout();
@@ -76,7 +75,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
       this.tabControl1.Location = new System.Drawing.Point(12, 12);
       this.tabControl1.Name = "tabControl1";
       this.tabControl1.SelectedIndex = 0;
-      this.tabControl1.Size = new System.Drawing.Size(451, 295);
+      this.tabControl1.Size = new System.Drawing.Size(451, 397);
       this.tabControl1.TabIndex = 7;
       // 
       // TabListEditor
@@ -86,7 +85,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
       this.TabListEditor.Location = new System.Drawing.Point(4, 22);
       this.TabListEditor.Name = "TabListEditor";
       this.TabListEditor.Padding = new System.Windows.Forms.Padding(3);
-      this.TabListEditor.Size = new System.Drawing.Size(443, 269);
+      this.TabListEditor.Size = new System.Drawing.Size(443, 371);
       this.TabListEditor.TabIndex = 0;
       this.TabListEditor.Text = "List of Shortcuts";
       this.TabListEditor.UseVisualStyleBackColor = true;
@@ -96,27 +95,13 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
       this.GroupShortcuts.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-      this.GroupShortcuts.Controls.Add(this.BtnHideShowProperties);
       this.GroupShortcuts.Controls.Add(this.LvShortcuts);
-      this.GroupShortcuts.Controls.Add(this.BtnAdd);
-      this.GroupShortcuts.Controls.Add(this.BtnRemove);
       this.GroupShortcuts.Location = new System.Drawing.Point(6, 6);
       this.GroupShortcuts.Name = "GroupShortcuts";
-      this.GroupShortcuts.Size = new System.Drawing.Size(431, 148);
+      this.GroupShortcuts.Size = new System.Drawing.Size(431, 222);
       this.GroupShortcuts.TabIndex = 23;
       this.GroupShortcuts.TabStop = false;
       this.GroupShortcuts.Text = "Shortcuts";
-      // 
-      // BtnHideShowProperties
-      // 
-      this.BtnHideShowProperties.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-      this.BtnHideShowProperties.Location = new System.Drawing.Point(328, 119);
-      this.BtnHideShowProperties.Name = "BtnHideShowProperties";
-      this.BtnHideShowProperties.Size = new System.Drawing.Size(97, 22);
-      this.BtnHideShowProperties.TabIndex = 16;
-      this.BtnHideShowProperties.Text = "Hide Poperties";
-      this.BtnHideShowProperties.UseVisualStyleBackColor = true;
-      this.BtnHideShowProperties.Click += new System.EventHandler(this.BtnHideShowProperties_Click);
       // 
       // LvShortcuts
       // 
@@ -133,7 +118,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
       this.LvShortcuts.Location = new System.Drawing.Point(6, 19);
       this.LvShortcuts.MultiSelect = false;
       this.LvShortcuts.Name = "LvShortcuts";
-      this.LvShortcuts.Size = new System.Drawing.Size(419, 94);
+      this.LvShortcuts.Size = new System.Drawing.Size(419, 197);
       this.LvShortcuts.TabIndex = 12;
       this.LvShortcuts.UseCompatibleStateImageBehavior = false;
       this.LvShortcuts.View = System.Windows.Forms.View.Details;
@@ -142,7 +127,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
       // LvShortcutsId
       // 
       this.LvShortcutsId.Text = "Id";
-      this.LvShortcutsId.Width = 4;
+      this.LvShortcutsId.Width = 26;
       // 
       // LvShortcutsTitle
       // 
@@ -159,42 +144,22 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
       this.LvShortcutsParameters.Text = "Parameters";
       this.LvShortcutsParameters.Width = 8;
       // 
-      // BtnAdd
-      // 
-      this.BtnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-      this.BtnAdd.Location = new System.Drawing.Point(6, 119);
-      this.BtnAdd.Name = "BtnAdd";
-      this.BtnAdd.Size = new System.Drawing.Size(36, 23);
-      this.BtnAdd.TabIndex = 14;
-      this.BtnAdd.Text = "+";
-      this.BtnAdd.UseVisualStyleBackColor = true;
-      this.BtnAdd.Click += new System.EventHandler(this.BtnAdd_Click);
-      // 
-      // BtnRemove
-      // 
-      this.BtnRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-      this.BtnRemove.Location = new System.Drawing.Point(48, 119);
-      this.BtnRemove.Name = "BtnRemove";
-      this.BtnRemove.Size = new System.Drawing.Size(34, 23);
-      this.BtnRemove.TabIndex = 15;
-      this.BtnRemove.Text = "-";
-      this.BtnRemove.UseVisualStyleBackColor = true;
-      this.BtnRemove.Click += new System.EventHandler(this.BtnRemove_Click);
-      // 
       // GroupProperties
       // 
       this.GroupProperties.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
       this.GroupProperties.Controls.Add(this.label3);
+      this.GroupProperties.Controls.Add(this.BtnAdd);
       this.GroupProperties.Controls.Add(this.label5);
+      this.GroupProperties.Controls.Add(this.BtnRemove);
       this.GroupProperties.Controls.Add(this.TxtTitle);
       this.GroupProperties.Controls.Add(this.label4);
       this.GroupProperties.Controls.Add(this.TxtPathArgs);
       this.GroupProperties.Controls.Add(this.button1);
       this.GroupProperties.Controls.Add(this.TxtPath);
-      this.GroupProperties.Location = new System.Drawing.Point(6, 160);
+      this.GroupProperties.Location = new System.Drawing.Point(6, 234);
       this.GroupProperties.Name = "GroupProperties";
-      this.GroupProperties.Size = new System.Drawing.Size(431, 103);
+      this.GroupProperties.Size = new System.Drawing.Size(431, 131);
       this.GroupProperties.TabIndex = 22;
       this.GroupProperties.TabStop = false;
       this.GroupProperties.Text = "Properties";
@@ -225,6 +190,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
       this.TxtTitle.Name = "TxtTitle";
       this.TxtTitle.Size = new System.Drawing.Size(353, 20);
       this.TxtTitle.TabIndex = 17;
+      this.TxtTitle.TextChanged += new System.EventHandler(this.TxtTitle_TextChanged);
       // 
       // label4
       // 
@@ -244,6 +210,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
       this.TxtPathArgs.Name = "TxtPathArgs";
       this.TxtPathArgs.Size = new System.Drawing.Size(353, 20);
       this.TxtPathArgs.TabIndex = 20;
+      this.TxtPathArgs.TextChanged += new System.EventHandler(this.TxtPathArgs_TextChanged);
       // 
       // button1
       // 
@@ -264,6 +231,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
       this.TxtPath.Name = "TxtPath";
       this.TxtPath.Size = new System.Drawing.Size(313, 20);
       this.TxtPath.TabIndex = 18;
+      this.TxtPath.TextChanged += new System.EventHandler(this.TxtPath_TextChanged);
       // 
       // TabRawEditor
       // 
@@ -273,7 +241,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
       this.TabRawEditor.Location = new System.Drawing.Point(4, 22);
       this.TabRawEditor.Name = "TabRawEditor";
       this.TabRawEditor.Padding = new System.Windows.Forms.Padding(3);
-      this.TabRawEditor.Size = new System.Drawing.Size(443, 269);
+      this.TabRawEditor.Size = new System.Drawing.Size(443, 310);
       this.TabRawEditor.TabIndex = 1;
       this.TabRawEditor.Text = "Raw File";
       this.TabRawEditor.UseVisualStyleBackColor = true;
@@ -314,11 +282,33 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
       this.TxtRawFile.TabIndex = 0;
       this.TxtRawFile.TextChanged += new System.EventHandler(this.TxtRawFile_TextChanged);
       // 
+      // BtnRemove
+      // 
+      this.BtnRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+      this.BtnRemove.Location = new System.Drawing.Point(184, 98);
+      this.BtnRemove.Name = "BtnRemove";
+      this.BtnRemove.Size = new System.Drawing.Size(71, 23);
+      this.BtnRemove.TabIndex = 15;
+      this.BtnRemove.Text = "- Remove";
+      this.BtnRemove.UseVisualStyleBackColor = true;
+      this.BtnRemove.Click += new System.EventHandler(this.BtnRemove_Click);
+      // 
+      // BtnAdd
+      // 
+      this.BtnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+      this.BtnAdd.Location = new System.Drawing.Point(72, 98);
+      this.BtnAdd.Name = "BtnAdd";
+      this.BtnAdd.Size = new System.Drawing.Size(48, 23);
+      this.BtnAdd.TabIndex = 14;
+      this.BtnAdd.Text = "+ New";
+      this.BtnAdd.UseVisualStyleBackColor = true;
+      this.BtnAdd.Click += new System.EventHandler(this.BtnAdd_Click);
+      // 
       // ShortcutsPreferences
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(475, 319);
+      this.ClientSize = new System.Drawing.Size(475, 421);
       this.Controls.Add(this.tabControl1);
       this.Name = "ShortcutsPreferences";
       this.Text = "Shortcuts Manager";
@@ -345,8 +335,6 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
     private System.Windows.Forms.TextBox TxtPath;
     private System.Windows.Forms.TextBox TxtTitle;
     private System.Windows.Forms.Label label4;
-    private System.Windows.Forms.Button BtnRemove;
-    private System.Windows.Forms.Button BtnAdd;
     private System.Windows.Forms.Label label3;
     private System.Windows.Forms.ListView LvShortcuts;
     private System.Windows.Forms.ColumnHeader LvShortcutsId;
@@ -358,6 +346,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
     private System.Windows.Forms.Button button1;
     private System.Windows.Forms.GroupBox GroupProperties;
     private System.Windows.Forms.GroupBox GroupShortcuts;
-    private System.Windows.Forms.Button BtnHideShowProperties;
+    private System.Windows.Forms.Button BtnAdd;
+    private System.Windows.Forms.Button BtnRemove;
   }
 }
