@@ -13,7 +13,9 @@ namespace Xeno.ToolsHub
   using System.Threading;
   using System.Threading.Tasks;
   using System.Windows.Forms;
+#if USE_SQUIRREL
   using Squirrel;
+#endif
   using Xeno.ToolsHub.Config;
   using Xeno.ToolsHub.Services.Logging;
 
@@ -73,6 +75,9 @@ namespace Xeno.ToolsHub
       ////  Log.Error($"Error attempting to set network creds for update location. Ex: {ex.Message}");
       ////}
 
+      await Task.Yield();
+
+#if USE_SQUIRREL
       try
       {
         ReleaseEntry release = null;
@@ -112,6 +117,9 @@ namespace Xeno.ToolsHub
       {
         Log.Error($"Issue looking for updates. {exUpdate.Message}");
       }
+#else
+      Log.Debug($"Squirrel Updater is not enabled.");
+#endif
     }
 
     private static void SquirrelWelcomeMessage()
