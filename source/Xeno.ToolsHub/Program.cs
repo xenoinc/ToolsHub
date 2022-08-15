@@ -14,7 +14,7 @@ namespace Xeno.ToolsHub
   using System.Threading.Tasks;
   using System.Windows.Forms;
 #if USE_SQUIRREL
-  using Squirrel;
+  ////using Squirrel;
 #endif
   using Xeno.ToolsHub.Config;
   using Xeno.ToolsHub.Services.Logging;
@@ -78,45 +78,45 @@ namespace Xeno.ToolsHub
       await Task.Yield();
 
 #if USE_SQUIRREL
-      try
-      {
-        ReleaseEntry release = null;
-
-        // TODO: Network creds https://github.com/Squirrel/Squirrel.Windows/issues/946
-        using (var mgr = new UpdateManager(Constants.RemoteUpdateStablePath))
-        {
-          SquirrelAwareApp.HandleEvents(
-            onInitialInstall: _ => mgr.CreateShortcutForThisExe(),
-            onAppUpdate: _ => mgr.CreateShortcutForThisExe(),
-            onAppUninstall: _ => mgr.RemoveShortcutForThisExe(),
-            onFirstRun: SquirrelWelcomeMessage);
-
-          UpdateInfo updateInfo = await mgr.CheckForUpdate();
-          if (updateInfo.ReleasesToApply.Any())
-          {
-            Log.Debug("Update found! Applying it to application...");
-            release = await mgr.UpdateApp();
-          }
-          else
-          {
-            Log.Debug("No updates found in repository.");
-          }
-        }
-
-        if (release != null)
-        {
-          Log.Debug("Restarting application...");
-          UpdateManager.RestartApp();
-        }
-        else
-        {
-          Log.Debug("No updates are required.");
-        }
-      }
-      catch (Exception exUpdate)
-      {
-        Log.Error($"Issue looking for updates. {exUpdate.Message}");
-      }
+      ////try
+      ////{
+      ////  ReleaseEntry release = null;
+      ////
+      ////  // TODO: Network creds https://github.com/Squirrel/Squirrel.Windows/issues/946
+      ////  using (var mgr = new UpdateManager(Constants.RemoteUpdateStablePath))
+      ////  {
+      ////    SquirrelAwareApp.HandleEvents(
+      ////      onInitialInstall: _ => mgr.CreateShortcutForThisExe(),
+      ////      onAppUpdate: _ => mgr.CreateShortcutForThisExe(),
+      ////      onAppUninstall: _ => mgr.RemoveShortcutForThisExe(),
+      ////      onFirstRun: SquirrelWelcomeMessage);
+      ////
+      ////    UpdateInfo updateInfo = await mgr.CheckForUpdate();
+      ////    if (updateInfo.ReleasesToApply.Any())
+      ////    {
+      ////      Log.Debug("Update found! Applying it to application...");
+      ////      release = await mgr.UpdateApp();
+      ////    }
+      ////    else
+      ////    {
+      ////      Log.Debug("No updates found in repository.");
+      ////    }
+      ////  }
+      ////
+      ////  if (release != null)
+      ////  {
+      ////    Log.Debug("Restarting application...");
+      ////    UpdateManager.RestartApp();
+      ////  }
+      ////  else
+      ////  {
+      ////    Log.Debug("No updates are required.");
+      ////  }
+      ////}
+      ////catch (Exception exUpdate)
+      ////{
+      ////  Log.Error($"Issue looking for updates. {exUpdate.Message}");
+      ////}
 #else
       Log.Debug($"Squirrel Updater is not enabled.");
 #endif
