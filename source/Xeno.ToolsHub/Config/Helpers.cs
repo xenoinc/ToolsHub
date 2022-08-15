@@ -97,6 +97,26 @@ namespace Xeno.ToolsHub.Config
       return data;
     }
 
+    /// <summary>Convert JSON to object.</summary>
+    /// <typeparam name="T">Type of object to deserialize.</typeparam>
+    /// <param name="json">JSON string.</param>
+    /// <returns>Converted object.</returns>
+    public static object ToObject<T>(string json)
+    {
+      return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(json);
+    }
+
+    /// <summary>Convert object to JSON.</summary>
+    /// <param name="obj">object to serialize.</param>
+    /// <returns>JSON text.</returns>
+    public static string ToJson(object obj, bool format = false)
+    {
+      string json = Newtonsoft.Json.JsonConvert.SerializeObject(
+        obj,
+        format ? Formatting.Indented : Formatting.None);
+      return json;
+    }
+
     /// <summary>Generate a new GUID</summary>
     /// <returns>GUID/UUID string</returns>
     public static string GenerateGuid()

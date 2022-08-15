@@ -14,6 +14,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
   //// using Newtonsoft.Json.Linq;
   using Xeno.ToolsHub.ExtensionModel;
   using Xeno.ToolsHub.Services.Logging;
+  using static System.Windows.Forms.ListView;
 
   /// <summary>Shortcuts Add-in Preference Page.</summary>
   public partial class ShortcutsPreferences : Form, IPreferencePageActions
@@ -29,10 +30,13 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
       LvShortcuts.MultiSelect = false;
     }
 
+    /// <summary>
+    ///   Gets or sets a value indicating whether or not the parent window
+    ///   needs to invoke the OnSave method.
+    /// </summary>
     public bool IsModified
     {
-      get { return _isModified; }
-
+      get => _isModified;
       set
       {
         if (_isModified != value)
@@ -45,64 +49,60 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
 
     public bool OnSave()
     {
-      string errMsg = string.Empty;
-      string json = TxtRawFile.Text;
-
       IsModified = false;
 
-      if (_shortcuts.ValidateJson(json, out errMsg))
-      {
-        _shortcuts.ShortcutItems = Newtonsoft.Json.JsonConvert.DeserializeObject<ShortcutItems>(json);
-        _shortcuts.SaveShortcuts();
-        _shortcuts.Refresh();
+      ShortcutItems shortcuts = new ShortcutItems();
 
-        return true;
-      }
-      else
+      if (!ValidateListViewShortcuts(out shortcuts))
       {
-        Log.Error("Your JSON formatting is bad, and you should feel bad too!" + Environment.NewLine + errMsg);
+        Log.Error("Unable to save shortcuts, errors were found in titles or paths.");
         return false;
       }
-    }
 
-    private void LoadShortcutsFile()
-    {
-      TxtRawFile.Text = _shortcuts.ToString();
+      _shortcuts.ShortcutItems.Clear();
+      _shortcuts.ShortcutItems = shortcuts;
 
-      ToggleProperties(false);
+      _shortcuts.SaveShortcuts();
+      _shortcuts.Refresh();
 
-      RefreshListView();
-    }
+      return true;
 
-    private void ShortcutsPreferences_Load(object sender, EventArgs e)
-    {
-      LoadShortcutsFile();
-      IsModified = false;
-    }
-
-    private void TxtRawFile_TextChanged(object sender, EventArgs e)
-    {
-      IsModified = true;
-    }
-
-    private void RefreshListView()
-    {
-      string json = _shortcuts.ToString();
-      int ndx = 0;
-
-      foreach (var item in _shortcuts.ShortcutItems)
-      {
-        var title = item.Title;
-        var target = item.Target;
-        LvShortcuts.Items.Add(new ListViewItem(new string[] { ndx.ToString(), title, target }));
-
-        ++ndx;
-      }
+      ////string errMsg = string.Empty;
+      ////string json = TxtRawFile.Text;
+      ////
+      ////IsModified = false;
+      ////
+      ////if (_shortcuts.ValidateJson(json, out errMsg))
+      ////{
+      ////  _shortcuts.ShortcutItems = Newtonsoft.Json.JsonConvert.DeserializeObject<ShortcutItems>(json);
+      ////  _shortcuts.SaveShortcuts();
+      ////  _shortcuts.Refresh();
+      ////
+      ////  return true;
+      ////}
+      ////else
+      ////{
+      ////  Log.Error("Your JSON formatting is bad, and you should feel bad too!" + Environment.NewLine + errMsg);
+      ////  return false;
+      ////}
     }
 
     private void BtnAdd_Click(object sender, EventArgs e)
     {
-      ListAdd();
+      // https://www.codeproject.com/script/Articles/ViewDownloads.aspx?aid=6646
+      LvShortcuts.SelectedItems.
+
+
+      // Create new ShortcutItem for editing
+      TxtPath.Text = string.Empty;
+      TxtTitle.Text = string.Empty;
+      TxtPathArgs.Text = string.Empty;
+
+      int ndx = LvShortcuts.Items.Count;
+      LvShortcuts.Items.Add(new ListViewItem(new string[] { ndx.ToString(), string.Empty, string.Empty, string.Empty }));
+      
+      // Select it so we can edit it
+      LvShortcuts.Items[LvShortcuts.Items.Count - 1].Selected = true;
     }
 
     private void BtnRemove_Click(object sender, EventArgs e)
@@ -111,48 +111,192 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
         LvShortcuts.Items.Remove(item);
     }
 
+    private void TxtTitle_TextChanged(object sender, EventArgs e)
+    {
+      RefreshListViewFromProperties();
+    }
+
+    private void TxtPath_TextChanged(object sender, EventArgs e)
+    {
+      RefreshListViewFromProperties();
+    }
+
+    private void TxtPathArgs_TextChanged(object sender, EventArgs e)
+    {
+      RefreshListViewFromProperties();
+    }
+
+    private void TxtRawFile_TextChanged(object sender, EventArgs e)
+    {
+      IsModified = true;
+    }
+
+    private void LoadShortcutsFile()
+    {
+      TxtRawFile.Text = _shortcuts.ToString();
+
+      RefreshListViewFromCache();
+    }
+
+    private void ShortcutsPreferences_Load(object sender, EventArgs e)
+    {
+      LoadShortcutsFile();
+      IsModified = false;
+    }
+
     private void LvShortcuts_SelectedIndexChanged(object sender, EventArgs e)
     {
       foreach (ListViewItem item in LvShortcuts.SelectedItems)
       {
-        TxtTitle.Text = item.SubItems[0].Text;
-        TxtPath.Text = item.SubItems[1].Text;
-        TxtPathArgs.Text = item.SubItems[2].Text;
+        TxtTitle.Text = item.SubItems[1].Text;
+        TxtPath.Text = item.SubItems[2].Text;
+        TxtPathArgs.Text = item.SubItems[3].Text;
       }
     }
 
-    private void BtnHideShowProperties_Click(object sender, EventArgs e)
+    /// <summary>Add new ShortcutItem into ListView.</summary>
+    /// <param name="addToCache">Add new item to Cache. Use 'false' when loading from cache.</param>
+    /// <param name="title">Title of shortcut.</param>
+    /// <param name="target">Execution target of shortcut.</param>
+    /// <param name="args">Optional execution arguments.</param>
+    private void LvShortcutsAddItem(bool addToCache, string title, string target, string args)
     {
-      ToggleProperties(!GroupProperties.Visible);
-    }
-
-    private void ListAdd()
-    {
-      string title = TxtTitle.Text;
-      string target = TxtPath.Text;
       int ndx = LvShortcuts.Items.Count;
+      LvShortcuts.Items.Add(new ListViewItem(new string[] { ndx.ToString(), title, target, args }));
 
-      LvShortcuts.Items.Add(new ListViewItem(new string[] { ndx.ToString(), title, target }));
+      if (addToCache)
+      {
+        _shortcuts.ShortcutItems.Add(new ShortcutItem(title, target, args));
+      }
+
+      //// RefreshRawJsonFromCache();
+      RefreshRawJsonFromListView();
+
+      IsModified = true;
     }
 
-    /// <summary>Visibility of the Shortcut Properties group box.</summary>
-    /// <param name="showProperties">Specify whether or not to display the Properties box.</param>
-    private void ToggleProperties(bool showProperties)
+    /// <summary>Refresh RawJson tab from ListView</summary>
+    private void RefreshRawJsonFromCache()
     {
-      // Hide/show Properties
-      GroupProperties.Visible = showProperties;
+      var json = Xeno.ToolsHub.Config.Helpers.ToJson(_shortcuts.ShortcutItems, true);
+      TxtRawFile.Text = json;
+    }
 
-      if (showProperties)
+    /// <summary>Refresh RawJson and Cache tab from ListView.</summary>
+    private void RefreshRawJsonFromListView()
+    {
+      // 1. Validate ListView items for errors
+      ;
+
+      // 2. Convert to ShortcutItems object & Serialize
+      var shortcutItems = ToShortcutItems(LvShortcuts.Items);
+      var json = Xeno.ToolsHub.Config.Helpers.ToJson(shortcutItems);
+
+      // 3. Refresh Cache & display Raw input
+      _shortcuts.ShortcutItems.Clear();
+      _shortcuts.ShortcutItems = shortcutItems;
+
+      TxtRawFile.Text = json;
+    }
+
+    /// <summary>Refresh ListView from cached ShortcutItems.</summary>
+    private void RefreshListViewFromCache()
+    {
+      LvShortcuts.Items.Clear();
+
+      foreach (var item in _shortcuts.ShortcutItems)
       {
-        var padding = 6;
-        BtnHideShowProperties.Text = "Hide Properties";
-        GroupShortcuts.Height = GroupProperties.Top - GroupShortcuts.Location.Y - padding;
+        var title = item.Title;
+        var target = item.Target;
+        var args = item.Params;
+
+        LvShortcutsAddItem(false, title, target, args);
       }
-      else
+    }
+
+    private void RefreshListViewFromProperties()
+    {
+      if (LvShortcuts.SelectedItems.Count == 1)
       {
-        BtnHideShowProperties.Text = "Show Properties";
-        GroupShortcuts.Height = GroupProperties.Location.Y + GroupProperties.Height;
+        var item = LvShortcuts.SelectedItems[0];
+        item.SubItems[1].Text = TxtTitle.Text;
+        item.SubItems[2].Text = TxtPath.Text;
+        item.SubItems[3].Text = TxtPathArgs.Text;
+
+        RefreshRawJsonFromListView();
       }
+    }
+
+    /// <summary>Convert ListView to ShortcutItems object.</summary>
+    /// <param name="items">Collection of ListView items.</param>
+    /// <returns>ShortcutItems object.</returns>
+    private ShortcutItems ToShortcutItems(ListViewItemCollection items)
+    {
+      //// bool passed = true;
+      var shortcuts = new ShortcutItems();
+
+      foreach (ListViewItem item in items)
+      {
+        string title = item.SubItems[1].Text;
+        string path = item.SubItems[2].Text;
+        string args = string.Empty;
+
+        if (!string.IsNullOrEmpty(title.Trim()) || !string.IsNullOrEmpty(path.Trim()))
+        {
+          //// passed = false;
+          Log.Warn($"Shortcut Id '{item.SubItems[0]}' - Missing or invalid Title/Path");
+        }
+        else
+        {
+          shortcuts.Add(new ShortcutItem(title, path, args));
+        }
+      }
+
+      return shortcuts;
+    }
+
+    /// <summary>Create ListView row from ShortcutItems object</summary>
+    /// <param name="shortcutItems">ShortcutItems object.</param>
+    /// <returns>Collection of ListView data.</returns>
+    private ListViewItemCollection ToListViewItemArray(ShortcutItems shortcutItems)
+    {
+      throw new NotImplementedException();
+
+      ListViewItemCollection items = new ListViewItemCollection(LvShortcuts);
+      //// ListViewItem[] items = new ListViewItem[shortcutItems.Count];
+      return items;
+    }
+
+    /// <summary>Validate ListView for invalid user inputs.</summary>
+    /// <returns>True if passing.</returns>
+    private bool ValidateListViewShortcuts(out ShortcutItems shortcuts)
+    {
+      bool passed = true;
+
+      ShortcutItems items = new ShortcutItems();
+
+      foreach (ListViewItem item in LvShortcuts.Items)
+      {
+        string title = item.SubItems[1].Text;
+        string path = item.SubItems[2].Text;
+
+        if (string.IsNullOrEmpty(title.Trim()) ||
+            string.IsNullOrEmpty(path.Trim()))
+        {
+          Log.Error($"Shortcut Id '{item.SubItems[0]}' - Missing or invalid Title/Path");
+
+          item.BackColor = System.Drawing.Color.OrangeRed;
+          passed = false;
+        }
+        else
+        {
+          item.BackColor = System.Drawing.Color.Empty;  // Reset if it's okay
+        }
+      }
+
+      shortcuts = items;
+
+      return passed;
     }
   }
 }
