@@ -37,6 +37,9 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Mono.Addins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <HintPath>..\packages\Mono.Addins.1.3.14\lib\net472\Mono.Addins.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -81,10 +84,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\libs\Mono.Addins\Mono.Addins\Mono.Addins.csproj">
-      <Project>{91dd5a2d-9fe3-4c3c-9253-876141874dad}</Project>
-      <Name>Mono.Addins</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Xeno.ToolsHub\Xeno.ToolsHub.csproj">
       <Project>{01d40bbe-da31-41e7-808e-67afcc50e698}</Project>
       <Name>Xeno.ToolsHub</Name>
