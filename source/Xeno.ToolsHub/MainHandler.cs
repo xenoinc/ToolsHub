@@ -6,7 +6,7 @@
  *  Main application handler. We don't need a GUI form, but do need WndProc
  *
  * TOOD:
- *  [ ] Use IoC to manage managers. (i.e. AutoFac)
+ *  [ ] Use IoC to manage managers. (i.e. DryIoc)
  */
 
 ////[assembly: Mono.Addins.AddinRoot("ToolsHub", "1.0")]
