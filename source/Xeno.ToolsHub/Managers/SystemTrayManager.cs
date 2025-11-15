@@ -98,15 +98,11 @@ namespace Xeno.ToolsHub.Managers
         dbgTag = " (DEBUG)";
       }
 
-      // TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
       List<ToolStripMenuItem> menuBuilder = new();
-      // TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
       menuBuilder.Add(new ToolStripMenuItem("ToolsHub" + dbgTag, null, OnMenuProperties));
-      // TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
       menuBuilder.Add(new ToolStripMenuItem("-"));
 
-      // TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
-      List<ToolStripMenuItem> epMenus = new);
+      List<ToolStripMenuItem> epMenus = [];
 
       // Load add-in menus
       epMenus = LoadMenuFromExtensionPoint();

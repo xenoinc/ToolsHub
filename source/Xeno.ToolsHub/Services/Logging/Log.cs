@@ -14,8 +14,6 @@ namespace Xeno.ToolsHub.Services.Logging
   using System.Linq;
   using System.Reflection;
   using System.Runtime.CompilerServices;
-  using Microsoft.Build.Utilities;
-  using static System.Net.Mime.MediaTypeNames;
 
   public enum Level
   {
