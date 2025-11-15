@@ -13,7 +13,8 @@ namespace Xeno.ToolsHub.ExtensionModel.SystemTray
   using System.Windows.Forms;
   using Xeno.ToolsHub.Services.Logging;
 
-  public class TrayItem : MenuItem
+  public class TrayItem : // TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
+MenuItem
   {
     private Func<string, int> _routedMethod;
 
@@ -109,6 +110,7 @@ namespace Xeno.ToolsHub.ExtensionModel.SystemTray
       int index = -1;
       string tag = "<unknown>", text = string.Empty;
 
+      // TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
       if (sender.GetType() == typeof(MenuItem))
       {
         MenuItem item = (MenuItem)sender;

@@ -29,8 +29,10 @@ namespace PomodoroAddin.Handlers
 
     public override bool IsInitialized { get; }
 
-    public override List<MenuItem> MenuItems()
+    public override List<// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
+MenuItem> MenuItems()
     {
+      // TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
       MenuItem menu = new MenuItem("🍅 Pomodoro (alpha)");
       menu.MenuItems.Add(0, new TrayItem($"Start ({_pomodoro.SettingTimerDuration} min)", string.Empty, true, _pomodoro.OnStart));
       menu.MenuItems.Add(1, new TrayItem($"Take short break ({_pomodoro.SettingTimerShortBreak} min)", string.Empty, true, _pomodoro.OnBreakShort));
@@ -47,7 +49,8 @@ namespace PomodoroAddin.Handlers
       ////menu.MenuItems.Add(4, new TrayItem(new TrayItemInfo("P1", "Start", $"Pause", string.Empty, true), _pomodoro.OnPause));
       ////menu.MenuItems.Add(5, new TrayItem(new TrayItemInfo("P1", "Start", $"Stop", string.Empty, true), _pomodoro.OnStop));
 
-      return new List<MenuItem>() { menu };
+      // TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
+                                                return new List<MenuItem>() { menu };
     }
   }
 }

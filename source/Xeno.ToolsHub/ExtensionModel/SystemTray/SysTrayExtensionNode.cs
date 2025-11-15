@@ -26,8 +26,10 @@ namespace Xeno.ToolsHub.ExtensionModel.SystemTray
     [NodeAttribute("Text")]
     public string Text { get; set; }
 
-    public MenuItem CreateMenuItem()
+    public // TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
+    MenuItem CreateMenuItem()
     {
+      // TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
       MenuItem menuItem = new MenuItem(Text);
       foreach (var child in ChildNodes)
       {

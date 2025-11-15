@@ -18,6 +18,8 @@ namespace Xeno.ToolsHub.ExtensionModel.SystemTray
   {
     public abstract bool IsInitialized { get; }
 
-    public abstract List<MenuItem> MenuItems();
+    // TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
+    //// public abstract List<MenuItem> MenuItems();
+    public abstract List<ToolStripMenuItem> MenuItems();
   }
 }

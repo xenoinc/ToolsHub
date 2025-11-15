@@ -22,6 +22,8 @@ namespace Xeno.ToolsHub.ExtensionModel
   /// </remarks>
   public interface ISystemTrayExtension : IBaseExtension
   {
-    List<MenuItem> MenuItems();
+    // TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
+    //// List<MenuItem> MenuItems();
+    List<ToolStripMenuItem> MenuItems();
   }
 }

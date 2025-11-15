@@ -28,6 +28,8 @@ trim_trailing_whitespace = true
 
 # .NET specific configurations
 dotnet_sort_system_directives_first = true
+# SA1000: Keywords should be spaced correctly
+dotnet_diagnostic.SA1000.severity = none
 
 [*.{cpp,h,sql}]
 indent_style = space

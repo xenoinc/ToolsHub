@@ -25,7 +25,8 @@ namespace Xeno.ToolsHub.VeraCryptAddin.Handlers
 
     public override bool IsInitialized { get; }
 
-    public override List<MenuItem> MenuItems()
+    public override List<// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
+MenuItem> MenuItems()
     {
       // TODO: Use Domain.Utils to ask VeraCryptManager if the HC file was already mounted
       // and display a "checked" box if it was.
@@ -42,10 +43,12 @@ namespace Xeno.ToolsHub.VeraCryptAddin.Handlers
 
       // When creating a SysTray entry, use the IndexId to tell which drive it is
       // and the display text is, "Title". However below we're just testing individual components
-      MenuItem menu = new MenuItem("VeraCrypt");
+      // TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
+                  MenuItem menu = new MenuItem("VeraCrypt");
       menu.MenuItems.Add(0, new TrayItem("Mount", volume.IndexId, true, _veraCrypt.OnMount) { Checked = isMounted });
       menu.MenuItems.Add(1, new TrayItem("Dismount", volume.IndexId, true, _veraCrypt.OnDismount));
 
+      // TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
       return new List<MenuItem>() { menu };
     }
   }

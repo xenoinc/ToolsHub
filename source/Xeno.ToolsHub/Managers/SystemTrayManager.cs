@@ -27,7 +27,7 @@ namespace Xeno.ToolsHub.Managers
 {
   public class SystemTrayManager : ApplicationContext
   {
-    private MenuItem[] _trayMenu;
+    private ToolStripMenuItem[] _trayMenu;
 
     private NotifyIcon _trayNotify = new NotifyIcon();
 
@@ -84,7 +84,8 @@ namespace Xeno.ToolsHub.Managers
     private void DrawTrayNotifacation()
     {
       _trayNotify.Icon = ApplicationIcon;
-      _trayNotify.ContextMenu = new ContextMenu(_trayMenu);
+      // TODO ContextMenu is no longer supported. Use ContextMenuStrip instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
+      _trayNotify.ContextMenuStrip = new ContextMenuStrip(_trayMenu);
       _trayNotify.DoubleClick += new EventHandler(OnMenuDoubleClick);
       _trayNotify.Visible = true;
     }
@@ -97,28 +98,34 @@ namespace Xeno.ToolsHub.Managers
         dbgTag = " (DEBUG)";
       }
 
-      List<MenuItem> menuBuilder = new List<MenuItem>();
-      menuBuilder.Add(new MenuItem("ToolsHub" + dbgTag, OnMenuProperties));
-      menuBuilder.Add(new MenuItem("-"));
+      // TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
+      List<ToolStripMenuItem> menuBuilder = new();
+      // TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
+      menuBuilder.Add(new ToolStripMenuItem("ToolsHub" + dbgTag, null, OnMenuProperties));
+      // TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
+      menuBuilder.Add(new ToolStripMenuItem("-"));
 
-      List<MenuItem> epMenus = new List<MenuItem>();
+      // TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
+      List<ToolStripMenuItem> epMenus = new);
 
       // Load add-in menus
       epMenus = LoadMenuFromExtensionPoint();
       if (epMenus.Count > 0)
         menuBuilder.AddRange(epMenus);
 
-      menuBuilder.Add(new MenuItem("About", OnMenuAbout));
-      menuBuilder.Add(new MenuItem("Exit", OnMenuExit));
+      menuBuilder.Add(new("About", null, OnMenuAbout));
+      menuBuilder.Add(new ToolStripMenuItem("Exit", null, OnMenuExit));
 
       _trayMenu = menuBuilder.ToArray();
     }
 
-    private List<MenuItem> LoadMenuFromExtensionPoint()
+    // TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
+    //// private List<MenuItem> LoadMenuFromExtensionPoint()
+    private List<ToolStripMenuItem> LoadMenuFromExtensionPoint()
     {
       Log.Debug("Entering");
 
-      List<MenuItem> addinItems = new List<MenuItem>();
+      List<ToolStripMenuItem> addinItems = new();
       Mono.Addins.ExtensionNodeList nodes = Mono.Addins.AddinManager.GetExtensionNodes(ExtensionPath.SystemTray);
 
       Log.Debug($"Found '{nodes.Count}' items ...");

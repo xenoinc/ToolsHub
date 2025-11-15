@@ -33,7 +33,8 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
     {
     }
 
-    public override List<MenuItem> MenuItems()
+    public override List<// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
+MenuItem> MenuItems()
     {
       ShortcutsManager shortcutTray = new ShortcutsManager();
       var items = shortcutTray.LoadAsMenuItems();

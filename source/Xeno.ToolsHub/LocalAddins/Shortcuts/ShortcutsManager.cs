@@ -38,8 +38,10 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
 
     /// <summary>Load shortcuts into systray from config file</summary>
     /// <returns>Menu item</returns>
-    public List<MenuItem> LoadAsMenuItems()
+    public List<// TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
+MenuItem> LoadAsMenuItems()
     {
+      // TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
       List<MenuItem> shortcutItems = new List<MenuItem>();
 
       ShortcutItems shortcuts = Program.Settings.GetObject<ShortcutItems>(ShortcutsAddinId, ShortcutItemsKey);
@@ -48,6 +50,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
         Log.Debug($"No shortcuts found. Loading default");
         var item = new ExtensionModel.SystemTray.TrayItem("Create test JSON...", string.Empty, true, OnGenerateSampleShortcuts);
 
+        // TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
         MenuItem menu = new MenuItem("Shortcuts");
         menu.MenuItems.Add(0, item);
         shortcutItems.Add(menu);
@@ -55,8 +58,10 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
       else
       {
         // TODO: Let the user decide if they want a parent-menu item or not; fornow, make one
-        MenuItem menu = new MenuItem("Shortcuts");
+        // TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
+                MenuItem menu = new MenuItem("Shortcuts");
 
+        // TODO MenuItem is no longer supported. Use ToolStripMenuItem instead. For more details see https://docs.microsoft.com/en-us/dotnet/core/compatibility/winforms#removed-controls
         List<MenuItem> items = new List<MenuItem>();
         int ndx = 0;
         foreach (ShortcutItem shortcut in shortcuts)
