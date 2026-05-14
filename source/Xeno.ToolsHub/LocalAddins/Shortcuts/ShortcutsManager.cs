@@ -38,9 +38,9 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
 
     /// <summary>Load shortcuts into systray from config file</summary>
     /// <returns>Menu item</returns>
-    public List<MenuItem> LoadAsMenuItems()
+    public List<ToolStripItem> LoadAsMenuItems()
     {
-      List<MenuItem> shortcutItems = new List<MenuItem>();
+      List<ToolStripItem> shortcutItems = new List<ToolStripItem>();
 
       ShortcutItems shortcuts = Program.Settings.GetObject<ShortcutItems>(ShortcutsAddinId, ShortcutItemsKey);
       if (shortcuts == null)
@@ -48,22 +48,19 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
         Log.Debug($"No shortcuts found. Loading default");
         var item = new ExtensionModel.SystemTray.TrayItem("Create test JSON...", string.Empty, true, OnGenerateSampleShortcuts);
 
-        MenuItem menu = new MenuItem("Shortcuts");
-        menu.MenuItems.Add(0, item);
+        ToolStripMenuItem menu = new ToolStripMenuItem("Shortcuts");
+        menu.DropDownItems.Add(item);
         shortcutItems.Add(menu);
       }
       else
       {
         // TODO: Let the user decide if they want a parent-menu item or not; fornow, make one
-        MenuItem menu = new MenuItem("Shortcuts");
+        ToolStripMenuItem menu = new ToolStripMenuItem("Shortcuts");
 
-        List<MenuItem> items = new List<MenuItem>();
-        int ndx = 0;
         foreach (ShortcutItem shortcut in shortcuts)
         {
           var subItem = new ExtensionModel.SystemTray.TrayItem(shortcut.Title, shortcut.Target, true, OnExecuteShortcut);
-          menu.MenuItems.Add(ndx, subItem);
-          ndx++;
+          menu.DropDownItems.Add(subItem);
         }
 
         shortcutItems.Add(menu);

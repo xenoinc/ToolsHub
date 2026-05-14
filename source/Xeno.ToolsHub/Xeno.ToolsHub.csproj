@@ -11,14 +11,13 @@
   <ItemGroup>
     <None Remove="ToolsHub.addin.xml" />
     <None Remove="LocalAddins\Shortcuts\Shortcuts.addin" />
-    <EmbeddedResource Include="ToolsHub.addin.xml">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </EmbeddedResource>
+    <EmbeddedResource Include="ToolsHub.addin.xml" CopyToOutputDirectory="PreserveNewest" />
     <EmbeddedResource Include="LocalAddins\Shortcuts\Shortcuts.addin" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Mono.Addins" Version="1.4.1" />
+    <PackageReference Include="Mono.Addins.CecilReflector" Version="1.4.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="10.0.8" />
