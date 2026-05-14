@@ -13,7 +13,7 @@ namespace Xeno.ToolsHub.ExtensionModel.SystemTray
   using System.Windows.Forms;
   using Xeno.ToolsHub.Services.Logging;
 
-  public class TrayItem : MenuItem
+  public class TrayItem : ToolStripMenuItem
   {
     private Func<string, int> _routedMethod;
 
@@ -49,7 +49,7 @@ namespace Xeno.ToolsHub.ExtensionModel.SystemTray
 
       // Event handlers
       Click += OnClick;
-      Select += OnSelect;
+      MouseEnter += OnSelect;
     }
 
     public TrayItem(TrayItemInfo itemInfo, Func<string, int> routedMethod)
@@ -62,7 +62,7 @@ namespace Xeno.ToolsHub.ExtensionModel.SystemTray
 
       // Event handlers
       Click += OnClick;
-      Select += OnSelect;
+      MouseEnter += OnSelect;
     }
 
     public void OnClick(object sender, EventArgs e)
@@ -73,8 +73,8 @@ namespace Xeno.ToolsHub.ExtensionModel.SystemTray
       if (sender.GetType() == typeof(TrayItem))
       {
         TrayItem item = (TrayItem)sender;
-        index = item.Index;
-        target = item.Tag.ToString(); // Get target path/url. If method, it's blank
+        index = item.GetMenuIndex();
+        target = item.Tag?.ToString() ?? string.Empty; // Get target path/url. If method, it's blank
         text = item.Text;
 
         Log.Debug($"TrayItem.OnClickDefault: Executing tag from, " +
@@ -109,11 +109,11 @@ namespace Xeno.ToolsHub.ExtensionModel.SystemTray
       int index = -1;
       string tag = "<unknown>", text = string.Empty;
 
-      if (sender.GetType() == typeof(MenuItem))
+      if (sender is ToolStripItem)
       {
-        MenuItem item = (MenuItem)sender;
-        index = item.Index;
-        tag = item.Tag.ToString();
+        ToolStripItem item = (ToolStripItem)sender;
+        index = item.Owner?.Items.IndexOf(item) ?? -1;
+        tag = item.Tag?.ToString() ?? string.Empty;
         text = item.Text;
       }
 
@@ -121,6 +121,11 @@ namespace Xeno.ToolsHub.ExtensionModel.SystemTray
       Log.Debug(dbg);
 
       // TODO: Send back to add-in
+    }
+
+    private int GetMenuIndex()
+    {
+      return Owner?.Items.IndexOf(this) ?? -1;
     }
   }
 }

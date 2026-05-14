@@ -27,7 +27,7 @@ namespace Xeno.ToolsHub.Managers
 {
   public class SystemTrayManager : ApplicationContext
   {
-    private MenuItem[] _trayMenu;
+    private ToolStripItem[] _trayMenu;
 
     private NotifyIcon _trayNotify = new NotifyIcon();
 
@@ -84,9 +84,21 @@ namespace Xeno.ToolsHub.Managers
     private void DrawTrayNotifacation()
     {
       _trayNotify.Icon = ApplicationIcon;
-      _trayNotify.ContextMenu = new ContextMenu(_trayMenu);
+      _trayNotify.ContextMenuStrip?.Dispose();
+      _trayNotify.ContextMenuStrip = BuildContextMenuStrip(_trayMenu);
       _trayNotify.DoubleClick += new EventHandler(OnMenuDoubleClick);
       _trayNotify.Visible = true;
+    }
+
+    private static ContextMenuStrip BuildContextMenuStrip(IEnumerable<ToolStripItem> menuItems)
+    {
+      var contextMenuStrip = new ContextMenuStrip();
+      foreach (ToolStripItem menuItem in menuItems)
+      {
+        contextMenuStrip.Items.Add(menuItem);
+      }
+
+      return contextMenuStrip;
     }
 
     private void InitTrayMenu()
@@ -97,28 +109,28 @@ namespace Xeno.ToolsHub.Managers
         dbgTag = " (DEBUG)";
       }
 
-      List<MenuItem> menuBuilder = new List<MenuItem>();
-      menuBuilder.Add(new MenuItem("ToolsHub" + dbgTag, OnMenuProperties));
-      menuBuilder.Add(new MenuItem("-"));
+      List<ToolStripItem> menuBuilder = new List<ToolStripItem>();
+      menuBuilder.Add(new ToolStripMenuItem("ToolsHub" + dbgTag, null, OnMenuProperties));
+      menuBuilder.Add(new ToolStripSeparator());
 
-      List<MenuItem> epMenus = new List<MenuItem>();
+      List<ToolStripItem> epMenus = new List<ToolStripItem>();
 
       // Load add-in menus
       epMenus = LoadMenuFromExtensionPoint();
       if (epMenus.Count > 0)
         menuBuilder.AddRange(epMenus);
 
-      menuBuilder.Add(new MenuItem("About", OnMenuAbout));
-      menuBuilder.Add(new MenuItem("Exit", OnMenuExit));
+      menuBuilder.Add(new ToolStripMenuItem("About", null, OnMenuAbout));
+      menuBuilder.Add(new ToolStripMenuItem("Exit", null, OnMenuExit));
 
       _trayMenu = menuBuilder.ToArray();
     }
 
-    private List<MenuItem> LoadMenuFromExtensionPoint()
+    private List<ToolStripItem> LoadMenuFromExtensionPoint()
     {
       Log.Debug("Entering");
 
-      List<MenuItem> addinItems = new List<MenuItem>();
+      List<ToolStripItem> addinItems = new List<ToolStripItem>();
       Mono.Addins.ExtensionNodeList nodes = Mono.Addins.AddinManager.GetExtensionNodes(ExtensionPath.SystemTray);
 
       Log.Debug($"Found '{nodes.Count}' items ...");

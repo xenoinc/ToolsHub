@@ -9,6 +9,7 @@
 namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
 {
   using System;
+  using System.ComponentModel;
   using System.Windows.Forms;
 
   //// using Newtonsoft.Json.Linq;
@@ -29,6 +30,8 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
       LvShortcuts.MultiSelect = false;
     }
 
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public bool IsModified
     {
       get { return _isModified; }

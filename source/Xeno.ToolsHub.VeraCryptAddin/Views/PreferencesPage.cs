@@ -9,6 +9,7 @@
 namespace Xeno.ToolsHub.VeraCryptAddin.Views
 {
   using System;
+  using System.ComponentModel;
   using System.IO;
   using System.Windows.Forms;
   using Xeno.ToolsHub.ExtensionModel;
@@ -29,6 +30,8 @@ namespace Xeno.ToolsHub.VeraCryptAddin.Views
       IsModified = false;
     }
 
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public bool IsModified { get; set; }
 
     public bool OnSave()
@@ -112,8 +115,18 @@ namespace Xeno.ToolsHub.VeraCryptAddin.Views
     {
       IsModified = true;
       string pth = _manager.GetInstallPath().Trim();
+
+      lblInstallFound.Visible = true;
+
       if (!string.IsNullOrEmpty(pth))
+      {
         TxtInstallPath.Text = pth;
+        lblInstallFound.Text = "Found VeraCrypt installation!";
+      }
+      else
+      {
+        lblInstallFound.Text = "Could not find installation!";
+      }
     }
 
     private void BtnHcPath_Click(object sender, EventArgs e)
@@ -125,11 +138,14 @@ namespace Xeno.ToolsHub.VeraCryptAddin.Views
         FilterIndex = 1,
         CheckPathExists = true,
         ValidateNames = false,  // Suppress file warning
-        Multiselect = false
+        Multiselect = false,
       })
       {
-        if (Directory.Exists(_manager.GetInstallPath()))
+        var path = _manager.GetInstallPath();
+        if (Directory.Exists(path))
+        {
           dialog.InitialDirectory = @"C:\Program Files\VeraCrypt\";
+        }
 
         DialogResult result = dialog.ShowDialog();
         if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(dialog.FileName))

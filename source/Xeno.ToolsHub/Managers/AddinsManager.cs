@@ -10,6 +10,7 @@ namespace Xeno.ToolsHub.Managers
 {
   using System;
   using System.Collections.Generic;
+  using System.IO;
   using Mono.Addins;
   using Xeno.ToolsHub.Config;
   using Xeno.ToolsHub.ExtensionModel;
@@ -19,6 +20,8 @@ namespace Xeno.ToolsHub.Managers
   {
     /// <remarks>Key = TypeExtensionNode.Id</remarks
     private Dictionary<string, UtilityAddin> _utilityAddins;
+
+    private readonly string _configDir;
 
     private bool _verboseErrorMessage = true;
 
@@ -36,6 +39,9 @@ namespace Xeno.ToolsHub.Managers
     public AddinsManager(string configDir)
     {
       _utilityAddins = new Dictionary<string, UtilityAddin>();
+      _configDir = string.IsNullOrWhiteSpace(configDir)
+        ? AppContext.BaseDirectory
+        : Path.GetFullPath(configDir);
 
       InitAddins();
     }
@@ -136,9 +142,9 @@ namespace Xeno.ToolsHub.Managers
       Mono.Addins.AddinManager.AddinLoaded += OnAddinLoaded;
       Mono.Addins.AddinManager.AddinUnloaded += OnAddinUnloaded;
 
-      Mono.Addins.AddinManager.Initialize(".");
+      Mono.Addins.AddinManager.Initialize(_configDir, _configDir, _configDir);
 
-      // Rebuild registry when debugging
+      // Rebuild registry when debugging.
       if (Helpers.IsDebugging)
         Mono.Addins.AddinManager.Registry.Rebuild(null);
       else
@@ -146,20 +152,47 @@ namespace Xeno.ToolsHub.Managers
 
       try
       {
-        // EventHandlers for ExtensionNodes
-        Mono.Addins.AddinManager.AddExtensionNodeHandler(ExtensionPath.OnStartup, OnStartupAddins_ExtensionHandler);
-        //// TODO: Do we need to reenable the PreferencePageManager?
-        //// Mono.Addins.AddinManager.AddExtensionNodeHandler(ExtensionPath.PreferencePage, OnPreferencesAddins_ExtensionHandler);
-        Mono.Addins.AddinManager.AddExtensionNodeHandler(ExtensionPath.SystemTray, OnSystemTrayAddins_ExtensionHandler);
-        Mono.Addins.AddinManager.AddExtensionNodeHandler(ExtensionPath.Utility, OnUtilityAddins_ExtensionHandler);
+        RegisterExtensionNodeHandlers();
       }
       catch (Exception ex)
       {
+        if (IsMissingExtensionPointException(ex))
+        {
+          Log.Info("Mono.Addins extension points were missing; rebuilding registry.");
+          Mono.Addins.AddinManager.Registry.Rebuild(null);
+
+          try
+          {
+            RegisterExtensionNodeHandlers();
+            return;
+          }
+          catch (Exception retryEx)
+          {
+            ex = retryEx;
+          }
+        }
+
         Log.Error("Could not register one or more ExtensionPoints. Possibly could not find XML manifest.");
         Log.Error("Exception: " + ex.Message + Environment.NewLine + ex.StackTrace);
 
         throw new Exception("Unable to add extension handler.", ex);
       }
+    }
+
+    private static bool IsMissingExtensionPointException(Exception ex)
+    {
+      return ex is InvalidOperationException
+        && ex.Message.IndexOf("Extension node not found in path", StringComparison.OrdinalIgnoreCase) >= 0;
+    }
+
+    private void RegisterExtensionNodeHandlers()
+    {
+      // EventHandlers for ExtensionNodes
+      Mono.Addins.AddinManager.AddExtensionNodeHandler(ExtensionPath.OnStartup, OnStartupAddins_ExtensionHandler);
+      //// TODO: Do we need to reenable the PreferencePageManager?
+      //// Mono.Addins.AddinManager.AddExtensionNodeHandler(ExtensionPath.PreferencePage, OnPreferencesAddins_ExtensionHandler);
+      Mono.Addins.AddinManager.AddExtensionNodeHandler(ExtensionPath.SystemTray, OnSystemTrayAddins_ExtensionHandler);
+      Mono.Addins.AddinManager.AddExtensionNodeHandler(ExtensionPath.Utility, OnUtilityAddins_ExtensionHandler);
     }
 
     private void OnAddinLoaded(object sender, Mono.Addins.AddinEventArgs args)

@@ -9,7 +9,7 @@
  *  [ ] Use IoC to manage managers. (i.e. DryIoc)
  */
 
-////[assembly: Mono.Addins.AddinRoot("ToolsHub", "1.0")]
+[assembly: Mono.Addins.AddinRoot("ToolsHub", "0.3", Namespace = "XenoInnovations", CompatVersion = "0.3")]
 
 namespace Xeno.ToolsHub
 {

@@ -1,226 +1,25 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{01D40BBE-DA31-41E7-808E-67AFCC50E698}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>Xeno.ToolsHub</RootNamespace>
     <AssemblyName>ToolsHub</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+    <ApplicationIcon>Resources\AppIcon.ico</ApplicationIcon>
     <OutputPath>..\..\output\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;WIN32</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>..\stylecop.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\..\output\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationIcon>Resources\AppIcon.ico</ApplicationIcon>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="Microsoft.Build.Utilities.v4.0" />
-    <Reference Include="Mono.Addins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mono.Addins.1.3.14\lib\net472\Mono.Addins.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
-    </Reference>
-    <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.ComponentModel.Composition.Registration" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.IO.Compression" />
-    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Text.Encoding.CodePages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Text.Encoding.CodePages.6.0.0\lib\net461\System.Text.Encoding.CodePages.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
+    <None Remove="ToolsHub.addin.xml" />
+    <None Remove="LocalAddins\Shortcuts\Shortcuts.addin" />
+    <EmbeddedResource Include="ToolsHub.addin.xml" CopyToOutputDirectory="Never" />
+    <EmbeddedResource Include="LocalAddins\Shortcuts\Shortcuts.addin" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="Config\Constants.cs" />
-    <Compile Include="Config\Enums.cs" />
-    <Compile Include="Config\Helpers.cs" />
-    <Compile Include="ExtensionModel\Command\CommandAttribute.cs" />
-    <Compile Include="ExtensionModel\Command\ICommand.cs" />
-    <Compile Include="ExtensionModel\ExtensionName.cs" />
-    <Compile Include="ExtensionModel\IPreferencePageActions.cs" />
-    <Compile Include="ExtensionModel\ISystemTrayExtension.cs" />
-    <Compile Include="ExtensionModel\SystemTray\SystemTrayMessages.cs" />
-    <Compile Include="ExtensionModel\SystemTray\TrayItemInfo.cs" />
-    <Compile Include="LocalAddins\Shortcuts\Prefs\PreferencesHandler.cs" />
-    <Compile Include="LocalAddins\Shortcuts\Prefs\ShortcutsPreferences.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="LocalAddins\Shortcuts\Prefs\ShortcutsPreferences.Designer.cs">
-      <DependentUpon>ShortcutsPreferences.cs</DependentUpon>
-    </Compile>
-    <Compile Include="LocalAddins\Shortcuts\ShortcutItems.cs" />
-    <Compile Include="LocalAddins\Shortcuts\ShortcutsMessage.cs" />
-    <Compile Include="LocalAddins\Shortcuts\ShortcutsSysTrayAddin.cs" />
-    <Compile Include="LocalAddins\Shortcuts\ShortcutsSidebarAddin.cs" />
-    <Compile Include="LocalAddins\Shortcuts\ShortcutsManager.cs" />
-    <Compile Include="LocalAddins\SampleStartup\SampleStartupAddin.cs" />
-    <Compile Include="LocalAddins\SampleUtility\SampleUtilityAddin.cs" />
-    <Compile Include="MainHandler.cs" />
-    <Compile Include="Managers\AddinsManager.cs" />
-    <Compile Include="ExtensionModel\SystemTray\ISysTray.cs" />
-    <Compile Include="ExtensionModel\SystemTray\SysTrayAddin.cs" />
-    <Compile Include="ExtensionModel\SystemTray\TrayItem.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="ExtensionModel\SystemTray\SysTrayExtensionNode.cs" />
-    <Compile Include="Managers\PreferencePageManager.cs" />
-    <Compile Include="Managers\ToolsManager.cs" />
-    <Compile Include="ExtensionModel\AbstractAddin.cs" />
-    <Compile Include="ExtensionModel\UtilityAddin.cs" />
-    <Compile Include="ExtensionModel\IBaseExtension.cs" />
-    <Compile Include="ExtensionModel\IOnStartupExtension.cs" />
-    <Compile Include="ExtensionModel\ISystemShutdownExtension.cs" />
-    <Compile Include="ExtensionModel\IPreferencePageExtension.cs" />
-    <Compile Include="ExtensionModel\ExtensionPath.cs" />
-    <Compile Include="Services\Logging\ConsoleLogger.cs" />
-    <Compile Include="Services\Logging\FileLogger.cs" />
-    <Compile Include="Services\Logging\ILogger.cs" />
-    <Compile Include="Services\Logging\Log.cs" />
-    <Compile Include="Managers\SystemTrayManager.cs" />
-    <Compile Include="Managers\SettingsManager.cs" />
-    <Compile Include="Managers\WndProcManager.cs" />
-    <Compile Include="LocalAddins\Shortcuts\ShortcutItem.cs" />
-    <Compile Include="Models\PropertyService\Properties.cs" />
-    <Compile Include="Models\PropertyService\PropertiesStore.cs" />
-    <Compile Include="Services\Messaging\IMessagingCenter.cs" />
-    <Compile Include="Services\Messaging\MessagingCenter.cs" />
-    <Compile Include="Services\SettingsService.cs" />
-    <Compile Include="Views\AboutForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\AboutForm.Designer.cs">
-      <DependentUpon>AboutForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\MainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Views\Preferences\AddinManagerCtrl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Views\Preferences\AddinManagerCtrl.Designer.cs">
-      <DependentUpon>AddinManagerCtrl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Preferences\PreferencesForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\Preferences\PreferencesForm.Designer.cs">
-      <DependentUpon>PreferencesForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\AnimateForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <EmbeddedResource Include="LocalAddins\Shortcuts\Prefs\ShortcutsPreferences.resx">
-      <DependentUpon>ShortcutsPreferences.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\AboutForm.resx">
-      <DependentUpon>AboutForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <EmbeddedResource Include="Views\Preferences\AddinManagerCtrl.resx">
-      <DependentUpon>AddinManagerCtrl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\Preferences\PreferencesForm.resx">
-      <DependentUpon>PreferencesForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <None Include="MonoAddins.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <None Include="stylecop.json" />
+    <PackageReference Include="Mono.Addins" Version="1.4.1" />
+    <PackageReference Include="Mono.Addins.CecilReflector" Version="1.4.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="10.0.8" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\AppIcon.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="ToolsHub.addin.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="LocalAddins\Shortcuts\Shortcuts.addin">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
-    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
