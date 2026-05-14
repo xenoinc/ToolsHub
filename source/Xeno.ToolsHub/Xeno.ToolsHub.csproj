@@ -11,7 +11,7 @@
   <ItemGroup>
     <None Remove="ToolsHub.addin.xml" />
     <None Remove="LocalAddins\Shortcuts\Shortcuts.addin" />
-    <EmbeddedResource Include="ToolsHub.addin.xml" CopyToOutputDirectory="PreserveNewest" />
+    <EmbeddedResource Include="ToolsHub.addin.xml" CopyToOutputDirectory="Never" />
     <EmbeddedResource Include="LocalAddins\Shortcuts\Shortcuts.addin" />
   </ItemGroup>
 

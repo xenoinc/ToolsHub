@@ -1,0 +1,22 @@
+<Solution>
+  <Folder Name="/Addins/">
+    <Project Path="addins/PomodoroAddin/PomodoroAddin.csproj" />
+    <Project Path="addins/SidebarAddin/SidebarAddin.csproj" />
+    <Project Path="Xeno.ToolsHub.VeraCryptAddin/VeraCryptAddin.csproj" />
+  </Folder>
+  <Folder Name="/AddinSamples/">
+    <Project Path="Xeno.ToolsHub.SampleAssmAddin/SampleAssmAddin.csproj" />
+    <Project Path="Xeno.ToolsHub.SampleXmlAddin/SampleXmlAddin.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path="CodeMaid.config" />
+    <File Path="stylecop.json" />
+    <File Path="stylecop.ruleset" />
+    <File Path="ToolsHub.sln.licenseheader" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="Xeno.ToolsHub.Tests/Xeno.ToolsHub.Tests.csproj" />
+  </Folder>
+  <Project Path="Xeno.ToolsHub/Xeno.ToolsHub.csproj" />
+</Solution>
