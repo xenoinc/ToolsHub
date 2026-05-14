@@ -7,6 +7,7 @@
  */
 
 using System;
+using System.ComponentModel;
 using System.Windows.Forms;
 using PomodoroAddin.Domain;
 using PomodoroAddin.Managers;
@@ -30,6 +31,8 @@ namespace PomodoroAddin.Views
       IsModified = false;
     }
 
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public bool IsModified { get; set; }
 
     public bool OnSave()

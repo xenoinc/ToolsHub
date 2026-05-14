@@ -9,6 +9,7 @@
 namespace Xeno.ToolsHub.SampleXmlAddin.Views
 {
   using System;
+  using System.ComponentModel;
   using System.Windows.Forms;
   using Xeno.ToolsHub.ExtensionModel;
   using Xeno.ToolsHub.Services.Logging;
@@ -21,6 +22,8 @@ namespace Xeno.ToolsHub.SampleXmlAddin.Views
       InitializeComponent();
     }
 
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public bool IsModified { get; set; }
 
     public bool OnSave()

@@ -84,9 +84,45 @@ namespace Xeno.ToolsHub.Managers
     private void DrawTrayNotifacation()
     {
       _trayNotify.Icon = ApplicationIcon;
-      _trayNotify.ContextMenu = new ContextMenu(_trayMenu);
+      _trayNotify.ContextMenuStrip?.Dispose();
+      _trayNotify.ContextMenuStrip = BuildContextMenuStrip(_trayMenu);
       _trayNotify.DoubleClick += new EventHandler(OnMenuDoubleClick);
       _trayNotify.Visible = true;
+    }
+
+    private static ContextMenuStrip BuildContextMenuStrip(IEnumerable<MenuItem> menuItems)
+    {
+      var contextMenuStrip = new ContextMenuStrip();
+      foreach (MenuItem menuItem in menuItems)
+      {
+        contextMenuStrip.Items.Add(BuildToolStripItem(menuItem));
+      }
+
+      return contextMenuStrip;
+    }
+
+    private static ToolStripItem BuildToolStripItem(MenuItem menuItem)
+    {
+      if (menuItem.Text == "-")
+      {
+        return new ToolStripSeparator();
+      }
+
+      var toolStripItem = new ToolStripMenuItem(menuItem.Text)
+      {
+        Checked = menuItem.Checked,
+        Enabled = menuItem.Enabled,
+        Tag = menuItem.Tag,
+        Visible = menuItem.Visible
+      };
+
+      toolStripItem.Click += (sender, args) => menuItem.PerformClick();
+      foreach (MenuItem childMenuItem in menuItem.MenuItems)
+      {
+        toolStripItem.DropDownItems.Add(BuildToolStripItem(childMenuItem));
+      }
+
+      return toolStripItem;
     }
 
     private void InitTrayMenu()

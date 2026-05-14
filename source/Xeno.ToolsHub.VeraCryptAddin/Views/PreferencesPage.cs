@@ -9,6 +9,7 @@
 namespace Xeno.ToolsHub.VeraCryptAddin.Views
 {
   using System;
+  using System.ComponentModel;
   using System.IO;
   using System.Windows.Forms;
   using Xeno.ToolsHub.ExtensionModel;
@@ -29,6 +30,8 @@ namespace Xeno.ToolsHub.VeraCryptAddin.Views
       IsModified = false;
     }
 
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public bool IsModified { get; set; }
 
     public bool OnSave()
