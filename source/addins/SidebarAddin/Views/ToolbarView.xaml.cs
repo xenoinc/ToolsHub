@@ -21,6 +21,7 @@ public partial class ToolbarView : Window
   private readonly LauncherDropHandler _drops;
   private Point _dragStart;
   private LauncherIcon _dragItem;
+  private LauncherIcon _activeDragItem;
   private bool _positioning;
   private bool _closed;
 
@@ -38,7 +39,11 @@ public partial class ToolbarView : Window
 
     SourceInitialized += (_, _) => PositionDock();
     Loaded += (_, _) => PositionDock();
-    DragLeave += (_, _) => DockSurface.BorderBrush = new SolidColorBrush(Color.FromRgb(126, 139, 160));
+    DragLeave += (_, args) =>
+    {
+      if (!new Rect(RenderSize).Contains(args.GetPosition(this)))
+        ClearDragFeedback();
+    };
     DpiChanged += (_, _) => QueuePosition();
     Closed += OnClosed;
     ((INotifyCollectionChanged)_model.Items).CollectionChanged += OnItemsChanged;
@@ -104,6 +109,7 @@ public partial class ToolbarView : Window
   private void OnClosed(object sender, EventArgs args)
   {
     _closed = true;
+    ClearDragFeedback();
     SystemEvents.DisplaySettingsChanged -= OnDisplayChanged;
     ((INotifyCollectionChanged)_model.Items).CollectionChanged -= OnItemsChanged;
     _model.PropertyChanged -= OnModelChanged;
@@ -162,7 +168,22 @@ public partial class ToolbarView : Window
 
     // End Button's click capture before beginning a drag so dropping never launches the app.
     ((Button)sender).ReleaseMouseCapture();
-    DragDrop.DoDragDrop((DependencyObject)sender, new DataObject(LauncherDropHandler.ItemDragFormat, item), DragDropEffects.Move);
+    var button = (Button)sender;
+    _activeDragItem = item;
+    button.Opacity = 0.3;
+    button.GiveFeedback += OnGiveDragFeedback;
+    try
+    {
+      DragDrop.DoDragDrop(button, new DataObject(LauncherDropHandler.ItemDragFormat, item), DragDropEffects.Move);
+    }
+    finally
+    {
+      button.GiveFeedback -= OnGiveDragFeedback;
+      button.Opacity = 1;
+      _activeDragItem = null;
+      ClearDragFeedback();
+    }
+
     args.Handled = true;
   }
 
@@ -171,6 +192,10 @@ public partial class ToolbarView : Window
     args.Effects = _drops.GetEffect(args.Data, args.AllowedEffects);
     DockSurface.BorderBrush = args.Effects == DragDropEffects.None ? new SolidColorBrush(Color.FromRgb(126, 139, 160)) : Brushes.LightSkyBlue;
     AutoScroll(args.GetPosition(LauncherScroll));
+    if (args.Effects != DragDropEffects.None)
+      UpdateDragFeedback(args.GetPosition(DragOverlay), FindInsertion(args.GetPosition(Launchers)));
+    else
+      ClearDragFeedback();
     args.Handled = true;
   }
 
@@ -180,8 +205,58 @@ public partial class ToolbarView : Window
     args.Effects = _drops.GetEffect(args.Data, args.AllowedEffects);
     if (args.Effects == DragDropEffects.None || !_drops.Drop(args.Data, insertion))
       args.Effects = DragDropEffects.None;
-    DockSurface.BorderBrush = new SolidColorBrush(Color.FromRgb(126, 139, 160));
+    ClearDragFeedback();
     args.Handled = true;
+  }
+
+  private void OnGiveDragFeedback(object sender, GiveFeedbackEventArgs args)
+  {
+    args.UseDefaultCursors = args.Effects == DragDropEffects.None;
+    if (!args.UseDefaultCursors)
+      Mouse.SetCursor(Cursors.Hand);
+    args.Handled = true;
+  }
+
+  private void UpdateDragFeedback(Point pointer, int insertionIndex)
+  {
+    if (_activeDragItem != null)
+    {
+      DraggedIcon.Source = _activeDragItem.Image;
+      DragPreview.ToolTip = _activeDragItem.Title;
+      DragPreview.Visibility = Visibility.Visible;
+      Canvas.SetLeft(DragPreview, Math.Clamp(pointer.X - 28, 0, Math.Max(0, DragOverlay.ActualWidth - 56)));
+      Canvas.SetTop(DragPreview, Math.Clamp(pointer.Y - 28, 0, Math.Max(0, DragOverlay.ActualHeight - 56)));
+    }
+
+    if (_model.Items.Count == 0)
+    {
+      InsertionMarker.Visibility = Visibility.Collapsed;
+      return;
+    }
+
+    bool horizontal = _model.Orientation == Orientation.Horizontal;
+    int index = Math.Min(insertionIndex, _model.Items.Count - 1);
+    if (Launchers.ItemContainerGenerator.ContainerFromIndex(index) is not FrameworkElement container)
+      return;
+    Point origin = container.TranslatePoint(new Point(), DragOverlay);
+    bool afterLast = insertionIndex == _model.Items.Count;
+    InsertionMarker.Width = horizontal ? 3 : 48;
+    InsertionMarker.Height = horizontal ? 48 : 3;
+    Canvas.SetLeft(InsertionMarker, horizontal
+      ? origin.X + (afterLast ? container.ActualWidth : 0) - 1.5
+      : origin.X + ((container.ActualWidth - 48) / 2));
+    Canvas.SetTop(InsertionMarker, horizontal
+      ? origin.Y + ((container.ActualHeight - 48) / 2)
+      : origin.Y + (afterLast ? container.ActualHeight : 0) - 1.5);
+    InsertionMarker.Visibility = Visibility.Visible;
+  }
+
+  private void ClearDragFeedback()
+  {
+    DragPreview.Visibility = Visibility.Collapsed;
+    DraggedIcon.Source = null;
+    InsertionMarker.Visibility = Visibility.Collapsed;
+    DockSurface.BorderBrush = new SolidColorBrush(Color.FromRgb(126, 139, 160));
   }
 
   private int FindInsertion(Point position)

@@ -56,6 +56,7 @@
       </Setter>
     </Style>
   </Window.Resources>
+  <Grid x:Name="DockRoot">
   <Border x:Name="DockSurface" Background="#F0202632" BorderBrush="#607E8BA0"
           BorderThickness="1" CornerRadius="16" Padding="7">
     <Border.ContextMenu>
@@ -115,4 +116,13 @@
       </TextBlock>
     </Grid>
   </Border>
+    <Canvas x:Name="DragOverlay" IsHitTestVisible="False" ClipToBounds="True">
+      <Border x:Name="InsertionMarker" Panel.ZIndex="1" Background="#FF8ACBFF" CornerRadius="2" Visibility="Collapsed" />
+      <Border x:Name="DragPreview" Width="56" Height="56" CornerRadius="12" Background="#E83B4C60"
+              BorderBrush="#B08ACBFF" BorderThickness="1" Opacity="0.95" Visibility="Collapsed">
+        <Border.Effect><DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.5" /></Border.Effect>
+        <Image x:Name="DraggedIcon" Width="44" Height="44" RenderOptions.BitmapScalingMode="HighQuality" />
+      </Border>
+    </Canvas>
+  </Grid>
 </Window>
