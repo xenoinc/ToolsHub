@@ -15,14 +15,18 @@ namespace Xeno.ToolsHub.Views
   using Xeno.ToolsHub.ExtensionModel;
   using Xeno.ToolsHub.Managers;
   using Xeno.ToolsHub.Services.Logging;
+  using Xeno.ToolsHub.Services.Addins;
 
   /// <summary>Preferences Window main form.</summary>
   public partial class PreferencesForm : Form
   {
     private readonly AddinsManager _addinManager;
+    private readonly SettingsManager _settings;
+    private readonly AddinFactory _pageFactory;
     private readonly Preferences.GeneralPreferencesPage _generalPage;
 
     private Dictionary<string, IPreferencePageExtension> _addinPages;
+    private bool _pagesDisposed;
 
     public PreferencesForm()
       : this(new AddinsManager())
@@ -30,10 +34,16 @@ namespace Xeno.ToolsHub.Views
     }
 
     public PreferencesForm(AddinsManager addinsManager)
+      : this(addinsManager, Program.Settings, new Preferences.GeneralPreferencesPage(), null)
+    {
+    }
+
+    public PreferencesForm(AddinsManager addinsManager, SettingsManager settings, Preferences.GeneralPreferencesPage generalPage, AddinFactory pageFactory)
     {
       InitializeComponent();
-
-      _generalPage = new Preferences.GeneralPreferencesPage();
+      _settings = settings;
+      _pageFactory = pageFactory;
+      _generalPage = generalPage;
       AddinTree.Sorted = false;  // Previously, AddinTree.Sort();
 
       _addinManager = addinsManager;
@@ -49,9 +59,24 @@ namespace Xeno.ToolsHub.Views
 
     protected override void OnFormClosed(FormClosedEventArgs e)
     {
-      _addinManager.OnApplicationAddinListChanged -= OnAppAddinListChanged;
-      _generalPage.Dispose();
+      DisposePreferencePages();
       base.OnFormClosed(e);
+    }
+
+    private void DisposePreferencePages()
+    {
+      if (_pagesDisposed)
+        return;
+      _pagesDisposed = true;
+      if (_addinManager != null)
+        _addinManager.OnApplicationAddinListChanged -= OnAppAddinListChanged;
+      if (_addinPages != null)
+      {
+        foreach (var page in _addinPages.Values)
+          page.Page?.Dispose();
+      }
+
+      _generalPage?.Dispose();
     }
 
     private void BtnCancel_Click(object sender, EventArgs e)
@@ -109,7 +134,7 @@ namespace Xeno.ToolsHub.Views
       }
 
       if (triggered)
-        Program.Settings.SaveFile();
+        _settings.SaveFile();
 
       return saveSuccess;
     }
@@ -118,7 +143,7 @@ namespace Xeno.ToolsHub.Views
     {
       AddinTree.Nodes.Add(new TreeNode("General") { Tag = _generalPage });
 
-      foreach (IPreferencePageExtension page in _addinManager.GetPreferenceAddins().OrderBy(page => page.Title, StringComparer.CurrentCultureIgnoreCase))
+      foreach (IPreferencePageExtension page in _addinManager.GetPreferenceAddins(_pageFactory == null ? null : _pageFactory.Create).OrderBy(page => page.Title, StringComparer.CurrentCultureIgnoreCase))
       {
         string id = string.Empty;
         string name = string.Empty;

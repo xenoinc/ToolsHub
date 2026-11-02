@@ -15,6 +15,15 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
   {
     private ShortcutsPreferences _page;
 
+    public PreferencesHandler()
+    {
+    }
+
+    public PreferencesHandler(ShortcutsPreferences page)
+    {
+      _page = page;
+    }
+
     public string Id { get; set; }
 
     public string Title => "Shortcuts";
@@ -25,7 +34,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
 
     public void InitializePage()
     {
-      _page = new ShortcutsPreferences();
+      _page ??= new ShortcutsPreferences();
     }
 
     public void OnSave()

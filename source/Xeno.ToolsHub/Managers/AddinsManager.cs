@@ -16,9 +16,10 @@ using Xeno.ToolsHub.Config;
 using Xeno.ToolsHub.ExtensionModel;
 using Xeno.ToolsHub.Services.Logging;
 
-public class AddinsManager
+public class AddinsManager : IDisposable
 {
   private readonly string _configDir;
+  private readonly Func<TypeExtensionNode, object> _activate;
 
   /// <remarks>Key = TypeExtensionNode.Id</remarks
   private Dictionary<string, UtilityAddin> _utilityAddins;
@@ -35,9 +36,20 @@ public class AddinsManager
   ///   Initializes a new instance of the <see cref="AddinsManager"/> class
   ///   providing an alternative add-in directory.
   /// </summary>
-  /// <param name="configDir">Add-ins configuration directory</param>
-  public AddinsManager(string configDir)
+  /// <param name="activate">The host's add-in activation boundary.</param>
+  public AddinsManager(Func<TypeExtensionNode, object> activate)
+    : this(string.Empty, activate)
   {
+  }
+
+  public AddinsManager(string configDir)
+    : this(configDir, node => node.CreateInstance())
+  {
+  }
+
+  public AddinsManager(string configDir, Func<TypeExtensionNode, object> activate)
+  {
+    _activate = activate ?? throw new ArgumentNullException(nameof(activate));
     _utilityAddins = new Dictionary<string, UtilityAddin>();
     _configDir = string.IsNullOrWhiteSpace(configDir)
       ? AppContext.BaseDirectory
@@ -47,6 +59,17 @@ public class AddinsManager
   }
 
   public event EventHandler OnApplicationAddinListChanged;
+
+  public object CreateAddin(TypeExtensionNode node) => _activate(node);
+
+  public void Dispose()
+  {
+    Mono.Addins.AddinManager.AddinLoaded -= OnAddinLoaded;
+    Mono.Addins.AddinManager.AddinUnloaded -= OnAddinUnloaded;
+    Mono.Addins.AddinManager.RemoveExtensionNodeHandler(ExtensionPath.OnStartup, OnStartupAddins_ExtensionHandler);
+    Mono.Addins.AddinManager.RemoveExtensionNodeHandler(ExtensionPath.SystemTray, OnSystemTrayAddins_ExtensionHandler);
+    Mono.Addins.AddinManager.RemoveExtensionNodeHandler(ExtensionPath.Utility, OnUtilityAddins_ExtensionHandler);
+  }
 
   /// <summary>Get all add-ins found in system</summary>
   /// <returns>List of add-ins.</returns>
@@ -61,7 +84,7 @@ public class AddinsManager
     return addinList;
   }
 
-  public List<IPreferencePageExtension> GetPreferenceAddins()
+  public List<IPreferencePageExtension> GetPreferenceAddins(Func<TypeExtensionNode, object> activate = null)
   {
     List<IPreferencePageExtension> pages = new List<IPreferencePageExtension>();
     Mono.Addins.ExtensionNodeList nodes = Mono.Addins.AddinManager.GetExtensionNodes(ExtensionPath.PreferencePage);
@@ -70,7 +93,7 @@ public class AddinsManager
       Mono.Addins.TypeExtensionNode typeNode = node as Mono.Addins.TypeExtensionNode;
       try
       {
-        IPreferencePageExtension page = typeNode.CreateInstance() as IPreferencePageExtension;
+        IPreferencePageExtension page = (activate ?? _activate)(typeNode) as IPreferencePageExtension;
         page.InitializePage();
         page.Id = node.Id;
         pages.Add(page);
@@ -94,7 +117,7 @@ public class AddinsManager
 
       try
       {
-        UtilityAddin utility = typeNode.CreateInstance() as UtilityAddin;
+        UtilityAddin utility = CreateAddin(typeNode) as UtilityAddin;
 
         LoadUtilityAddin(utility, typeNode.Id, typeNode.TypeName);
       }
@@ -227,7 +250,7 @@ public class AddinsManager
 
     // Execute via class interface definition of extension path
     // IOnStartupExtension ext = (IOnStartupExtension)args.ExtensionObject;
-    IOnStartupExtension addin = extNode.GetInstance(typeof(IOnStartupExtension)) as IOnStartupExtension;
+    IOnStartupExtension addin = CreateAddin(extNode) as IOnStartupExtension;
     addin.Execute();
 
     // Push event changed out to listeners
@@ -328,7 +351,7 @@ public class AddinsManager
     Log.Debug($"  Id      - '{args.ExtensionNode.Id}'");
     Log.Debug($"  Path    - '{args.Path}'");
     Log.Debug($"  Node    - '{args.ExtensionNode}'");
-    Log.Debug($"  Object  - '{args.ExtensionObject}'");
+    Log.Debug($"  Object  - '{extNode.TypeName}'");
     Log.Debug($"  Changed - '{args.Change.ToString()}'");
     Log.Debug("   --[ ExtensionNode ]------");
     Log.Debug($"  Id      - '{extNode.Id}'");

@@ -17,8 +17,12 @@ namespace Xeno.ToolsHub
   // Disabled 2022-08-15
   ////using Squirrel;
 #endif
+  using Lite.EventIpc;
+  using Microsoft.Extensions.DependencyInjection;
   using Xeno.ToolsHub.Config;
+  using Xeno.ToolsHub.Services;
   using Xeno.ToolsHub.Services.Logging;
+  using Xeno.ToolsHub.Services.Messaging;
 
   internal static class Program
   {
@@ -26,7 +30,7 @@ namespace Xeno.ToolsHub
 
     public static bool AbortShutdown { get; set; }
 
-    /// <summary>Gets or sets global singleton</summary>
+    /// <summary>Gets or sets compatibility access for add-ins not yet using injected settings.</summary>
     /// <value>System settings</value>
     public static Xeno.ToolsHub.Managers.SettingsManager Settings { get; set; }
 
@@ -59,10 +63,16 @@ namespace Xeno.ToolsHub
       Application.SetCompatibleTextRenderingDefault(false);
 
       AbortShutdown = false;
-      LoadAppSettings();
+      using var services = new ServiceCollection().AddToolsHub().BuildServiceProvider(new ServiceProviderOptions
+      {
+        ValidateScopes = true,
+        ValidateOnBuild = true,
+      });
 
-      using var appContext = new MainHandler();
-      Application.Run(appContext);
+      // Compatibility bridge for add-ins that have not migrated to constructor injection yet.
+      Settings = services.GetRequiredService<Managers.SettingsManager>();
+      AppEvents.Instance = services.GetRequiredService<IEventAggregator>();
+      Application.Run(services.GetRequiredService<MainHandler>());
 
       // Application.Run(new Views.MainForm());
       // Application.Run(new Views.PreferencesForm());
@@ -173,38 +183,6 @@ namespace Xeno.ToolsHub
         return true;
       else
         return false;
-    }
-
-    /// <summary>Loads settings file according to priority</summary>
-    private static void LoadAppSettings()
-    {
-      Log.Debug("Loading app settings");
-
-      string portable = System.IO.Path.Combine(Helpers.GetStorageFolder(StorageMethod.PortableApp), Constants.SettingsFile);
-      string allUsers = System.IO.Path.Combine(Helpers.GetStorageFolder(StorageMethod.AllUsers), Constants.SettingsFile);
-      string singleUser = System.IO.Path.Combine(Helpers.GetStorageFolder(StorageMethod.SingleUser), Constants.SettingsFile);
-
-      Settings = new Managers.SettingsManager(StorageMethod.Unknown);
-
-      if (System.IO.File.Exists(portable))
-      {
-        Settings.StorageMethod = StorageMethod.PortableApp;
-      }
-      else if (System.IO.File.Exists(allUsers))
-      {
-        Settings.StorageMethod = StorageMethod.AllUsers;
-      }
-      else if (System.IO.File.Exists(allUsers))
-      {
-        Settings.StorageMethod = StorageMethod.SingleUser;
-      }
-      else
-      {
-        // TODO: New install: Ask user which mode to use
-        Settings.StorageMethod = StorageMethod.PortableApp;
-      }
-
-      Settings.LoadFile();
     }
   }
 }

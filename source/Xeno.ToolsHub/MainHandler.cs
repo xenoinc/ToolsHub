@@ -5,8 +5,6 @@
  * Description:
  *  Main application handler. We don't need a GUI form, but do need WndProc
  *
- * TOOD:
- *  [ ] Use IoC to manage managers. (i.e. DryIoc)
  */
 
 [assembly: Mono.Addins.AddinRoot("ToolsHub", "0.3", Namespace = "XenoInnovations", CompatVersion = "0.3")]
@@ -23,29 +21,18 @@ namespace Xeno.ToolsHub
   /// </summary>
   public class MainHandler : ApplicationContext
   {
-    private SystemTrayManager _sysTray;
-    private WndProcManager _wndProc;
-    private AddinsManager _addinsManager;
+    private readonly WndProcManager _wndProc;
+    private readonly AddinsManager _addinsManager;
 
-    public MainHandler()
+    public MainHandler(AddinsManager addins, SystemTrayManager systemTray, WndProcManager wndProc)
     {
+      _addinsManager = addins;
+      _wndProc = wndProc;
       Log.Debug("ToolsHub initializing..");
 
-      // 1. Listen for system events
-      // 2. Initialize SystemTray (add-in) handler
-      // 3. Initialize Sidebar (add-in) handler
-      // 4. Initialize Application add-in manager
-      InitAddinsManager();
-
+      // The container constructs add-ins and the system tray before this context.
       InitSystemEvents();
-
-      // Consider moving this as it's own add-in host as a Utility
-      InitSystemTray();
-
       InitWndProc();
-
-      // Consider moving this as it's own add-in host
-      // InitSideBar();
 
       // We're done loading
       InitUtilityAddins();
@@ -62,7 +49,12 @@ namespace Xeno.ToolsHub
     protected override void Dispose(bool disposing)
     {
       if (disposing)
-        _sysTray?.Dispose();
+      {
+        SystemEvents.SessionEnding -= SystemEvents_SessionEnding;
+        SystemEvents.SessionEnded -= SystemEvents_SessionEnded;
+        Application.ApplicationExit -= Application_ApplicationExit;
+        _wndProc.DestroyWindow();
+      }
 
       base.Dispose(disposing);
     }
@@ -78,11 +70,6 @@ namespace Xeno.ToolsHub
     {
     }
 
-    private void InitAddinsManager()
-    {
-      _addinsManager = new AddinsManager();
-    }
-
     private void InitUtilityAddins()
     {
       // Run free-floating utility add-ins
@@ -96,16 +83,9 @@ namespace Xeno.ToolsHub
       SystemEvents.SessionEnded += SystemEvents_SessionEnded;
     }
 
-    private void InitSystemTray()
-    {
-      // Consider adding this into a container
-      _sysTray = new SystemTrayManager(this);
-    }
-
     /// <summary>We have a GUI form, but do need WndProc for wiring up things</summary>
     private void InitWndProc()
     {
-      _wndProc = new Managers.WndProcManager("ToolsHub");
       _wndProc.CreateWindow();
     }
 

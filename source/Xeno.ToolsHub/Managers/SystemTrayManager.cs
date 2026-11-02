@@ -17,9 +17,11 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using Lite.EventIpc;
 using Xeno.ToolsHub.Config;
 using Xeno.ToolsHub.ExtensionModel;
 using Xeno.ToolsHub.ExtensionModel.SystemTray;
+using Xeno.ToolsHub.Services;
 using Xeno.ToolsHub.Services.Logging;
 using Xeno.ToolsHub.Services.Messaging;
 
@@ -30,17 +32,19 @@ namespace Xeno.ToolsHub.Managers
     private readonly Control _eventDispatcher = new Control();
     private readonly TrayEventSubscriptions _eventSubscriptions;
 
+    private readonly AddinsManager _addins;
+    private readonly IPreferencesDialogService _preferences;
+
     private ToolStripItem[] _trayMenu;
     private NotifyIcon _trayNotify = new();
 
-    private MainHandler _mainHandler;
-
-    public SystemTrayManager(MainHandler mainHandler)
+    public SystemTrayManager(AddinsManager addins, IEventAggregator events, IPreferencesDialogService preferences)
     {
-      _mainHandler = mainHandler;
+      _addins = addins;
+      _preferences = preferences;
       _eventDispatcher.CreateControl();
       _eventSubscriptions = new TrayEventSubscriptions(
-        AppEvents.Instance, MenuRefresh, OnTrayNotification, OnTrayIconChanged, DispatchEvent);
+        events, MenuRefresh, OnTrayNotification, OnTrayIconChanged, DispatchEvent);
       MenuRefresh();
     }
 
@@ -149,7 +153,7 @@ namespace Xeno.ToolsHub.Managers
         Mono.Addins.TypeExtensionNode typeNode = node as Mono.Addins.TypeExtensionNode;
         try
         {
-          SysTrayAddin addin = typeNode.CreateInstance() as SysTrayAddin;
+          SysTrayAddin addin = _addins.CreateAddin(typeNode) as SysTrayAddin;
           Log.Debug($"SysTray Add-in initializing [{addin.ToString()}]");
 
           addinItems.AddRange(addin.MenuItems());
@@ -211,8 +215,7 @@ namespace Xeno.ToolsHub.Managers
 
     private void ShowPreferences()
     {
-      Form p = new Views.PreferencesForm(_mainHandler.Addins);
-      p.ShowDialog();
+      _preferences.Show();
     }
   }
 }
