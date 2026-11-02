@@ -36,291 +36,298 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
     /// </summary>
     private void InitializeComponent()
     {
-      this.tabControl1 = new System.Windows.Forms.TabControl();
-      this.TabListEditor = new System.Windows.Forms.TabPage();
-      this.GroupShortcuts = new System.Windows.Forms.GroupBox();
-      this.LvShortcuts = new System.Windows.Forms.ListView();
-      this.LvShortcutsId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-      this.LvShortcutsTitle = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-      this.LvShortcutsPath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-      this.LvShortcutsParameters = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-      this.GroupProperties = new System.Windows.Forms.GroupBox();
-      this.label3 = new System.Windows.Forms.Label();
-      this.label5 = new System.Windows.Forms.Label();
-      this.TxtTitle = new System.Windows.Forms.TextBox();
-      this.label4 = new System.Windows.Forms.Label();
-      this.TxtPathArgs = new System.Windows.Forms.TextBox();
-      this.button1 = new System.Windows.Forms.Button();
-      this.TxtPath = new System.Windows.Forms.TextBox();
-      this.TabRawEditor = new System.Windows.Forms.TabPage();
-      this.LblModified = new System.Windows.Forms.Label();
-      this.label2 = new System.Windows.Forms.Label();
-      this.TxtRawFile = new System.Windows.Forms.TextBox();
-      this.BtnRemove = new System.Windows.Forms.Button();
-      this.BtnAdd = new System.Windows.Forms.Button();
-      this.tabControl1.SuspendLayout();
-      this.TabListEditor.SuspendLayout();
-      this.GroupShortcuts.SuspendLayout();
-      this.GroupProperties.SuspendLayout();
-      this.TabRawEditor.SuspendLayout();
-      this.SuspendLayout();
+      tabControl1 = new System.Windows.Forms.TabControl();
+      TabListEditor = new System.Windows.Forms.TabPage();
+      GroupShortcuts = new System.Windows.Forms.GroupBox();
+      LvShortcuts = new System.Windows.Forms.ListView();
+      LvShortcutsId = new System.Windows.Forms.ColumnHeader();
+      LvShortcutsTitle = new System.Windows.Forms.ColumnHeader();
+      LvShortcutsPath = new System.Windows.Forms.ColumnHeader();
+      LvShortcutsParameters = new System.Windows.Forms.ColumnHeader();
+      GroupProperties = new System.Windows.Forms.GroupBox();
+      label3 = new System.Windows.Forms.Label();
+      BtnAdd = new System.Windows.Forms.Button();
+      label5 = new System.Windows.Forms.Label();
+      BtnRemove = new System.Windows.Forms.Button();
+      TxtTitle = new System.Windows.Forms.TextBox();
+      label4 = new System.Windows.Forms.Label();
+      TxtPathArgs = new System.Windows.Forms.TextBox();
+      button1 = new System.Windows.Forms.Button();
+      TxtPath = new System.Windows.Forms.TextBox();
+      TabRawEditor = new System.Windows.Forms.TabPage();
+      LblModified = new System.Windows.Forms.Label();
+      label2 = new System.Windows.Forms.Label();
+      TxtRawFile = new System.Windows.Forms.TextBox();
+      tabControl1.SuspendLayout();
+      TabListEditor.SuspendLayout();
+      GroupShortcuts.SuspendLayout();
+      GroupProperties.SuspendLayout();
+      TabRawEditor.SuspendLayout();
+      SuspendLayout();
       // 
       // tabControl1
       // 
-      this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-      this.tabControl1.Controls.Add(this.TabListEditor);
-      this.tabControl1.Controls.Add(this.TabRawEditor);
-      this.tabControl1.Location = new System.Drawing.Point(12, 12);
-      this.tabControl1.Name = "tabControl1";
-      this.tabControl1.SelectedIndex = 0;
-      this.tabControl1.Size = new System.Drawing.Size(451, 397);
-      this.tabControl1.TabIndex = 7;
+      tabControl1.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+      tabControl1.Controls.Add(TabListEditor);
+      tabControl1.Controls.Add(TabRawEditor);
+      tabControl1.Location = new System.Drawing.Point(14, 14);
+      tabControl1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+      tabControl1.Name = "tabControl1";
+      tabControl1.SelectedIndex = 0;
+      tabControl1.Size = new System.Drawing.Size(526, 458);
+      tabControl1.TabIndex = 7;
       // 
       // TabListEditor
       // 
-      this.TabListEditor.Controls.Add(this.GroupShortcuts);
-      this.TabListEditor.Controls.Add(this.GroupProperties);
-      this.TabListEditor.Location = new System.Drawing.Point(4, 22);
-      this.TabListEditor.Name = "TabListEditor";
-      this.TabListEditor.Padding = new System.Windows.Forms.Padding(3);
-      this.TabListEditor.Size = new System.Drawing.Size(443, 371);
-      this.TabListEditor.TabIndex = 0;
-      this.TabListEditor.Text = "List of Shortcuts";
-      this.TabListEditor.UseVisualStyleBackColor = true;
+      TabListEditor.Controls.Add(GroupShortcuts);
+      TabListEditor.Controls.Add(GroupProperties);
+      TabListEditor.Location = new System.Drawing.Point(4, 24);
+      TabListEditor.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+      TabListEditor.Name = "TabListEditor";
+      TabListEditor.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+      TabListEditor.Size = new System.Drawing.Size(518, 430);
+      TabListEditor.TabIndex = 0;
+      TabListEditor.Text = "List of Shortcuts";
+      TabListEditor.UseVisualStyleBackColor = true;
       // 
       // GroupShortcuts
       // 
-      this.GroupShortcuts.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-      this.GroupShortcuts.Controls.Add(this.LvShortcuts);
-      this.GroupShortcuts.Location = new System.Drawing.Point(6, 6);
-      this.GroupShortcuts.Name = "GroupShortcuts";
-      this.GroupShortcuts.Size = new System.Drawing.Size(431, 222);
-      this.GroupShortcuts.TabIndex = 23;
-      this.GroupShortcuts.TabStop = false;
-      this.GroupShortcuts.Text = "Shortcuts";
+      GroupShortcuts.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+      GroupShortcuts.Controls.Add(LvShortcuts);
+      GroupShortcuts.Location = new System.Drawing.Point(7, 7);
+      GroupShortcuts.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+      GroupShortcuts.Name = "GroupShortcuts";
+      GroupShortcuts.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+      GroupShortcuts.Size = new System.Drawing.Size(503, 256);
+      GroupShortcuts.TabIndex = 23;
+      GroupShortcuts.TabStop = false;
+      GroupShortcuts.Text = "Shortcuts";
       // 
       // LvShortcuts
       // 
-      this.LvShortcuts.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-      this.LvShortcuts.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.LvShortcutsId,
-            this.LvShortcutsTitle,
-            this.LvShortcutsPath,
-            this.LvShortcutsParameters});
-      this.LvShortcuts.FullRowSelect = true;
-      this.LvShortcuts.GridLines = true;
-      this.LvShortcuts.Location = new System.Drawing.Point(6, 19);
-      this.LvShortcuts.MultiSelect = false;
-      this.LvShortcuts.Name = "LvShortcuts";
-      this.LvShortcuts.Size = new System.Drawing.Size(419, 197);
-      this.LvShortcuts.TabIndex = 12;
-      this.LvShortcuts.UseCompatibleStateImageBehavior = false;
-      this.LvShortcuts.View = System.Windows.Forms.View.Details;
-      this.LvShortcuts.SelectedIndexChanged += new System.EventHandler(this.LvShortcuts_SelectedIndexChanged);
+      LvShortcuts.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+      LvShortcuts.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { LvShortcutsId, LvShortcutsTitle, LvShortcutsPath, LvShortcutsParameters });
+      LvShortcuts.FullRowSelect = true;
+      LvShortcuts.GridLines = true;
+      LvShortcuts.Location = new System.Drawing.Point(7, 22);
+      LvShortcuts.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+      LvShortcuts.MultiSelect = false;
+      LvShortcuts.Name = "LvShortcuts";
+      LvShortcuts.Size = new System.Drawing.Size(488, 227);
+      LvShortcuts.TabIndex = 12;
+      LvShortcuts.UseCompatibleStateImageBehavior = false;
+      LvShortcuts.View = System.Windows.Forms.View.Details;
+      LvShortcuts.SelectedIndexChanged += LvShortcuts_SelectedIndexChanged;
       // 
       // LvShortcutsId
       // 
-      this.LvShortcutsId.Text = "Id";
-      this.LvShortcutsId.Width = 26;
+      LvShortcutsId.Text = "Id";
+      LvShortcutsId.Width = 26;
       // 
       // LvShortcutsTitle
       // 
-      this.LvShortcutsTitle.Text = "Title";
-      this.LvShortcutsTitle.Width = 126;
+      LvShortcutsTitle.Text = "Title";
+      LvShortcutsTitle.Width = 126;
       // 
       // LvShortcutsPath
       // 
-      this.LvShortcutsPath.Text = "Path";
-      this.LvShortcutsPath.Width = 261;
+      LvShortcutsPath.Text = "Path";
+      LvShortcutsPath.Width = 261;
       // 
       // LvShortcutsParameters
       // 
-      this.LvShortcutsParameters.Text = "Parameters";
-      this.LvShortcutsParameters.Width = 8;
+      LvShortcutsParameters.Text = "Parameters";
+      LvShortcutsParameters.Width = 8;
       // 
       // GroupProperties
       // 
-      this.GroupProperties.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-      this.GroupProperties.Controls.Add(this.label3);
-      this.GroupProperties.Controls.Add(this.BtnAdd);
-      this.GroupProperties.Controls.Add(this.label5);
-      this.GroupProperties.Controls.Add(this.BtnRemove);
-      this.GroupProperties.Controls.Add(this.TxtTitle);
-      this.GroupProperties.Controls.Add(this.label4);
-      this.GroupProperties.Controls.Add(this.TxtPathArgs);
-      this.GroupProperties.Controls.Add(this.button1);
-      this.GroupProperties.Controls.Add(this.TxtPath);
-      this.GroupProperties.Location = new System.Drawing.Point(6, 234);
-      this.GroupProperties.Name = "GroupProperties";
-      this.GroupProperties.Size = new System.Drawing.Size(431, 131);
-      this.GroupProperties.TabIndex = 22;
-      this.GroupProperties.TabStop = false;
-      this.GroupProperties.Text = "Properties";
+      GroupProperties.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+      GroupProperties.Controls.Add(label3);
+      GroupProperties.Controls.Add(BtnAdd);
+      GroupProperties.Controls.Add(label5);
+      GroupProperties.Controls.Add(BtnRemove);
+      GroupProperties.Controls.Add(TxtTitle);
+      GroupProperties.Controls.Add(label4);
+      GroupProperties.Controls.Add(TxtPathArgs);
+      GroupProperties.Controls.Add(button1);
+      GroupProperties.Controls.Add(TxtPath);
+      GroupProperties.Location = new System.Drawing.Point(7, 270);
+      GroupProperties.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+      GroupProperties.Name = "GroupProperties";
+      GroupProperties.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+      GroupProperties.Size = new System.Drawing.Size(503, 151);
+      GroupProperties.TabIndex = 22;
+      GroupProperties.TabStop = false;
+      GroupProperties.Text = "Properties";
       // 
       // label3
       // 
-      this.label3.AutoSize = true;
-      this.label3.Location = new System.Drawing.Point(28, 22);
-      this.label3.Name = "label3";
-      this.label3.Size = new System.Drawing.Size(30, 13);
-      this.label3.TabIndex = 13;
-      this.label3.Text = "Title:";
-      // 
-      // label5
-      // 
-      this.label5.AutoSize = true;
-      this.label5.Location = new System.Drawing.Point(6, 75);
-      this.label5.Name = "label5";
-      this.label5.Size = new System.Drawing.Size(60, 13);
-      this.label5.TabIndex = 21;
-      this.label5.Text = "Arguments:";
-      // 
-      // TxtTitle
-      // 
-      this.TxtTitle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-      this.TxtTitle.Location = new System.Drawing.Point(72, 19);
-      this.TxtTitle.Name = "TxtTitle";
-      this.TxtTitle.Size = new System.Drawing.Size(353, 20);
-      this.TxtTitle.TabIndex = 17;
-      this.TxtTitle.TextChanged += new System.EventHandler(this.TxtTitle_TextChanged);
-      // 
-      // label4
-      // 
-      this.label4.AutoSize = true;
-      this.label4.Location = new System.Drawing.Point(26, 49);
-      this.label4.Name = "label4";
-      this.label4.Size = new System.Drawing.Size(32, 13);
-      this.label4.TabIndex = 16;
-      this.label4.Text = "Path:";
-      // 
-      // TxtPathArgs
-      // 
-      this.TxtPathArgs.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-      this.TxtPathArgs.Enabled = false;
-      this.TxtPathArgs.Location = new System.Drawing.Point(72, 72);
-      this.TxtPathArgs.Name = "TxtPathArgs";
-      this.TxtPathArgs.Size = new System.Drawing.Size(353, 20);
-      this.TxtPathArgs.TabIndex = 20;
-      this.TxtPathArgs.TextChanged += new System.EventHandler(this.TxtPathArgs_TextChanged);
-      // 
-      // button1
-      // 
-      this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-      this.button1.Enabled = false;
-      this.button1.Location = new System.Drawing.Point(391, 45);
-      this.button1.Name = "button1";
-      this.button1.Size = new System.Drawing.Size(34, 21);
-      this.button1.TabIndex = 19;
-      this.button1.Text = "...";
-      this.button1.UseVisualStyleBackColor = true;
-      // 
-      // TxtPath
-      // 
-      this.TxtPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-      this.TxtPath.Location = new System.Drawing.Point(72, 46);
-      this.TxtPath.Name = "TxtPath";
-      this.TxtPath.Size = new System.Drawing.Size(313, 20);
-      this.TxtPath.TabIndex = 18;
-      this.TxtPath.TextChanged += new System.EventHandler(this.TxtPath_TextChanged);
-      // 
-      // TabRawEditor
-      // 
-      this.TabRawEditor.Controls.Add(this.LblModified);
-      this.TabRawEditor.Controls.Add(this.label2);
-      this.TabRawEditor.Controls.Add(this.TxtRawFile);
-      this.TabRawEditor.Location = new System.Drawing.Point(4, 22);
-      this.TabRawEditor.Name = "TabRawEditor";
-      this.TabRawEditor.Padding = new System.Windows.Forms.Padding(3);
-      this.TabRawEditor.Size = new System.Drawing.Size(443, 310);
-      this.TabRawEditor.TabIndex = 1;
-      this.TabRawEditor.Text = "Raw File";
-      this.TabRawEditor.UseVisualStyleBackColor = true;
-      // 
-      // LblModified
-      // 
-      this.LblModified.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-      this.LblModified.AutoSize = true;
-      this.LblModified.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.LblModified.ForeColor = System.Drawing.SystemColors.HotTrack;
-      this.LblModified.Location = new System.Drawing.Point(457, 3);
-      this.LblModified.Name = "LblModified";
-      this.LblModified.Size = new System.Drawing.Size(47, 13);
-      this.LblModified.TabIndex = 2;
-      this.LblModified.Text = "Modified";
-      this.LblModified.Visible = false;
-      // 
-      // label2
-      // 
-      this.label2.AutoSize = true;
-      this.label2.Location = new System.Drawing.Point(6, 3);
-      this.label2.Name = "label2";
-      this.label2.Size = new System.Drawing.Size(105, 13);
-      this.label2.TabIndex = 1;
-      this.label2.Text = "Shortcuts JSON File:";
-      // 
-      // TxtRawFile
-      // 
-      this.TxtRawFile.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-      this.TxtRawFile.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.TxtRawFile.Location = new System.Drawing.Point(6, 19);
-      this.TxtRawFile.Multiline = true;
-      this.TxtRawFile.Name = "TxtRawFile";
-      this.TxtRawFile.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-      this.TxtRawFile.Size = new System.Drawing.Size(512, 350);
-      this.TxtRawFile.TabIndex = 0;
-      this.TxtRawFile.TextChanged += new System.EventHandler(this.TxtRawFile_TextChanged);
-      // 
-      // BtnRemove
-      // 
-      this.BtnRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-      this.BtnRemove.Location = new System.Drawing.Point(184, 98);
-      this.BtnRemove.Name = "BtnRemove";
-      this.BtnRemove.Size = new System.Drawing.Size(71, 23);
-      this.BtnRemove.TabIndex = 15;
-      this.BtnRemove.Text = "- Remove";
-      this.BtnRemove.UseVisualStyleBackColor = true;
-      this.BtnRemove.Click += new System.EventHandler(this.BtnRemove_Click);
+      label3.AutoSize = true;
+      label3.Location = new System.Drawing.Point(33, 25);
+      label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+      label3.Name = "label3";
+      label3.Size = new System.Drawing.Size(33, 15);
+      label3.TabIndex = 13;
+      label3.Text = "Title:";
       // 
       // BtnAdd
       // 
-      this.BtnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-      this.BtnAdd.Location = new System.Drawing.Point(72, 98);
-      this.BtnAdd.Name = "BtnAdd";
-      this.BtnAdd.Size = new System.Drawing.Size(48, 23);
-      this.BtnAdd.TabIndex = 14;
-      this.BtnAdd.Text = "+ New";
-      this.BtnAdd.UseVisualStyleBackColor = true;
-      this.BtnAdd.Click += new System.EventHandler(this.BtnAdd_Click);
+      BtnAdd.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+      BtnAdd.Location = new System.Drawing.Point(84, 113);
+      BtnAdd.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+      BtnAdd.Name = "BtnAdd";
+      BtnAdd.Size = new System.Drawing.Size(56, 27);
+      BtnAdd.TabIndex = 14;
+      BtnAdd.Text = "+ New";
+      BtnAdd.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+      BtnAdd.UseVisualStyleBackColor = true;
+      BtnAdd.Click += BtnAdd_Click;
+      // 
+      // label5
+      // 
+      label5.AutoSize = true;
+      label5.Location = new System.Drawing.Point(7, 87);
+      label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+      label5.Name = "label5";
+      label5.Size = new System.Drawing.Size(69, 15);
+      label5.TabIndex = 21;
+      label5.Text = "Arguments:";
+      // 
+      // BtnRemove
+      // 
+      BtnRemove.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+      BtnRemove.Location = new System.Drawing.Point(148, 113);
+      BtnRemove.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+      BtnRemove.Name = "BtnRemove";
+      BtnRemove.Size = new System.Drawing.Size(83, 27);
+      BtnRemove.TabIndex = 15;
+      BtnRemove.Text = "- Remove";
+      BtnRemove.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+      BtnRemove.UseVisualStyleBackColor = true;
+      BtnRemove.Click += BtnRemove_Click;
+      // 
+      // TxtTitle
+      // 
+      TxtTitle.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+      TxtTitle.Location = new System.Drawing.Point(84, 22);
+      TxtTitle.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+      TxtTitle.Name = "TxtTitle";
+      TxtTitle.Size = new System.Drawing.Size(411, 23);
+      TxtTitle.TabIndex = 17;
+      TxtTitle.TextChanged += TxtTitle_TextChanged;
+      // 
+      // label4
+      // 
+      label4.AutoSize = true;
+      label4.Location = new System.Drawing.Point(30, 57);
+      label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+      label4.Name = "label4";
+      label4.Size = new System.Drawing.Size(34, 15);
+      label4.TabIndex = 16;
+      label4.Text = "Path:";
+      // 
+      // TxtPathArgs
+      // 
+      TxtPathArgs.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+      TxtPathArgs.Enabled = false;
+      TxtPathArgs.Location = new System.Drawing.Point(84, 83);
+      TxtPathArgs.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+      TxtPathArgs.Name = "TxtPathArgs";
+      TxtPathArgs.Size = new System.Drawing.Size(411, 23);
+      TxtPathArgs.TabIndex = 20;
+      TxtPathArgs.TextChanged += TxtPathArgs_TextChanged;
+      // 
+      // button1
+      // 
+      button1.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+      button1.Enabled = false;
+      button1.Location = new System.Drawing.Point(456, 52);
+      button1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+      button1.Name = "button1";
+      button1.Size = new System.Drawing.Size(40, 24);
+      button1.TabIndex = 19;
+      button1.Text = "...";
+      button1.UseVisualStyleBackColor = true;
+      // 
+      // TxtPath
+      // 
+      TxtPath.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+      TxtPath.Location = new System.Drawing.Point(84, 53);
+      TxtPath.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+      TxtPath.Name = "TxtPath";
+      TxtPath.Size = new System.Drawing.Size(364, 23);
+      TxtPath.TabIndex = 18;
+      TxtPath.TextChanged += TxtPath_TextChanged;
+      // 
+      // TabRawEditor
+      // 
+      TabRawEditor.Controls.Add(LblModified);
+      TabRawEditor.Controls.Add(label2);
+      TabRawEditor.Controls.Add(TxtRawFile);
+      TabRawEditor.Location = new System.Drawing.Point(4, 24);
+      TabRawEditor.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+      TabRawEditor.Name = "TabRawEditor";
+      TabRawEditor.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+      TabRawEditor.Size = new System.Drawing.Size(518, 430);
+      TabRawEditor.TabIndex = 1;
+      TabRawEditor.Text = "Raw File";
+      TabRawEditor.UseVisualStyleBackColor = true;
+      // 
+      // LblModified
+      // 
+      LblModified.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+      LblModified.AutoSize = true;
+      LblModified.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, 0);
+      LblModified.ForeColor = System.Drawing.SystemColors.HotTrack;
+      LblModified.Location = new System.Drawing.Point(533, 3);
+      LblModified.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+      LblModified.Name = "LblModified";
+      LblModified.Size = new System.Drawing.Size(47, 13);
+      LblModified.TabIndex = 2;
+      LblModified.Text = "Modified";
+      LblModified.Visible = false;
+      // 
+      // label2
+      // 
+      label2.AutoSize = true;
+      label2.Location = new System.Drawing.Point(7, 3);
+      label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+      label2.Name = "label2";
+      label2.Size = new System.Drawing.Size(112, 15);
+      label2.TabIndex = 1;
+      label2.Text = "Shortcuts JSON File:";
+      // 
+      // TxtRawFile
+      // 
+      TxtRawFile.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+      TxtRawFile.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+      TxtRawFile.Location = new System.Drawing.Point(7, 22);
+      TxtRawFile.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+      TxtRawFile.Multiline = true;
+      TxtRawFile.Name = "TxtRawFile";
+      TxtRawFile.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+      TxtRawFile.Size = new System.Drawing.Size(597, 403);
+      TxtRawFile.TabIndex = 0;
+      TxtRawFile.TextChanged += TxtRawFile_TextChanged;
       // 
       // ShortcutsPreferences
       // 
-      this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-      this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(475, 421);
-      this.Controls.Add(this.tabControl1);
-      this.Name = "ShortcutsPreferences";
-      this.Text = "Shortcuts Manager";
-      this.Load += new System.EventHandler(this.ShortcutsPreferences_Load);
-      this.tabControl1.ResumeLayout(false);
-      this.TabListEditor.ResumeLayout(false);
-      this.GroupShortcuts.ResumeLayout(false);
-      this.GroupProperties.ResumeLayout(false);
-      this.GroupProperties.PerformLayout();
-      this.TabRawEditor.ResumeLayout(false);
-      this.TabRawEditor.PerformLayout();
-      this.ResumeLayout(false);
+      AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+      AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+      ClientSize = new System.Drawing.Size(554, 486);
+      Controls.Add(tabControl1);
+      Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+      Name = "ShortcutsPreferences";
+      Text = "Shortcuts Manager";
+      Load += ShortcutsPreferences_Load;
+      tabControl1.ResumeLayout(false);
+      TabListEditor.ResumeLayout(false);
+      GroupShortcuts.ResumeLayout(false);
+      GroupProperties.ResumeLayout(false);
+      GroupProperties.PerformLayout();
+      TabRawEditor.ResumeLayout(false);
+      TabRawEditor.PerformLayout();
+      ResumeLayout(false);
 
     }
 
