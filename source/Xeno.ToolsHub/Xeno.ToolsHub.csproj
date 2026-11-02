@@ -6,6 +6,7 @@
     <ApplicationIcon>Resources\AppIcon.ico</ApplicationIcon>
     <OutputPath>..\..\output\</OutputPath>
     <CodeAnalysisRuleSet>..\stylecop.ruleset</CodeAnalysisRuleSet>
+    <TargetFramework>net10.0-windows</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>

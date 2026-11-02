@@ -22,10 +22,17 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
   {
     private bool _isModified = false;
 
-    private ShortcutsManager _shortcuts = new ShortcutsManager();
+    private readonly ShortcutsManager _shortcuts;
+    private bool _updatingControls;
 
     public ShortcutsPreferences()
+      : this(new ShortcutsManager())
     {
+    }
+
+    public ShortcutsPreferences(ShortcutsManager shortcuts)
+    {
+      _shortcuts = shortcuts ?? throw new ArgumentNullException(nameof(shortcuts));
       InitializeComponent();
 
       LvShortcuts.MultiSelect = false;
@@ -52,8 +59,6 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
 
     public bool OnSave()
     {
-      IsModified = false;
-
       ShortcutItems shortcuts = new ShortcutItems();
 
       if (!ValidateListViewShortcuts(out shortcuts))
@@ -62,11 +67,9 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
         return false;
       }
 
-      _shortcuts.ShortcutItems.Clear();
       _shortcuts.ShortcutItems = shortcuts;
-
       _shortcuts.SaveShortcuts();
-      _shortcuts.Refresh();
+      IsModified = false;
 
       return true;
 
@@ -102,15 +105,18 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
 
       int ndx = LvShortcuts.Items.Count;
       LvShortcuts.Items.Add(new ListViewItem(new string[] { ndx.ToString(), string.Empty, string.Empty, string.Empty }));
-      
+
       // Select it so we can edit it
       LvShortcuts.Items[LvShortcuts.Items.Count - 1].Selected = true;
+      RefreshRawJsonFromListView();
     }
 
     private void BtnRemove_Click(object sender, EventArgs e)
     {
-      foreach (ListViewItem item in LvShortcuts.SelectedItems)
-        LvShortcuts.Items.Remove(item);
+      while (LvShortcuts.SelectedItems.Count > 0)
+        LvShortcuts.Items.Remove(LvShortcuts.SelectedItems[0]);
+
+      RefreshRawJsonFromListView();
     }
 
     private void TxtTitle_TextChanged(object sender, EventArgs e)
@@ -148,11 +154,23 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
 
     private void LvShortcuts_SelectedIndexChanged(object sender, EventArgs e)
     {
-      foreach (ListViewItem item in LvShortcuts.SelectedItems)
+      if (_updatingControls)
+        return;
+
+      _updatingControls = true;
+      try
       {
-        TxtTitle.Text = item.SubItems[1].Text;
-        TxtPath.Text = item.SubItems[2].Text;
-        TxtPathArgs.Text = item.SubItems[3].Text;
+        if (LvShortcuts.SelectedItems.Count == 1)
+        {
+          var item = LvShortcuts.SelectedItems[0];
+          TxtTitle.Text = item.SubItems[1].Text;
+          TxtPath.Text = item.SubItems[2].Text;
+          TxtPathArgs.Text = item.SubItems[3].Text;
+        }
+      }
+      finally
+      {
+        _updatingControls = false;
       }
     }
 
@@ -171,10 +189,8 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
         _shortcuts.ShortcutItems.Add(new ShortcutItem(title, target, args));
       }
 
-      //// RefreshRawJsonFromCache();
-      RefreshRawJsonFromListView();
-
-      IsModified = true;
+      if (addToCache)
+        RefreshRawJsonFromListView();
     }
 
     /// <summary>Refresh RawJson tab from ListView</summary>
@@ -187,38 +203,41 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
     /// <summary>Refresh RawJson and Cache tab from ListView.</summary>
     private void RefreshRawJsonFromListView()
     {
-      // 1. Validate ListView items for errors
-      ;
+      if (_updatingControls)
+        return;
 
-      // 2. Convert to ShortcutItems object & Serialize
       var shortcutItems = ToShortcutItems(LvShortcuts.Items);
-      var json = Xeno.ToolsHub.Config.Helpers.ToJson(shortcutItems);
-
-      // 3. Refresh Cache & display Raw input
-      _shortcuts.ShortcutItems.Clear();
       _shortcuts.ShortcutItems = shortcutItems;
-
-      TxtRawFile.Text = json;
+      TxtRawFile.Text = Xeno.ToolsHub.Config.Helpers.ToJson(shortcutItems);
+      IsModified = true;
     }
 
-    /// <summary>Refresh ListView from cached ShortcutItems.</summary>
+    /// <summary>Refresh ListView from cached ShortcutItems without modifying the cache.</summary>
     private void RefreshListViewFromCache()
     {
-      LvShortcuts.Items.Clear();
-
-      foreach (var item in _shortcuts.ShortcutItems)
+      _updatingControls = true;
+      LvShortcuts.BeginUpdate();
+      try
       {
-        var title = item.Title;
-        var target = item.Target;
-        var args = item.Params;
+        LvShortcuts.Items.Clear();
+        foreach (var item in _shortcuts.ShortcutItems)
+        {
+          LvShortcutsAddItem(false, item.Title, item.Target, item.Params);
+          LvShortcuts.Items[LvShortcuts.Items.Count - 1].Tag = item;
+        }
 
-        LvShortcutsAddItem(false, title, target, args);
+        RefreshRawJsonFromCache();
+      }
+      finally
+      {
+        LvShortcuts.EndUpdate();
+        _updatingControls = false;
       }
     }
 
     private void RefreshListViewFromProperties()
     {
-      if (LvShortcuts.SelectedItems.Count == 1)
+      if (!_updatingControls && LvShortcuts.SelectedItems.Count == 1)
       {
         var item = LvShortcuts.SelectedItems[0];
         item.SubItems[1].Text = TxtTitle.Text;
@@ -234,24 +253,13 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
     /// <returns>ShortcutItems object.</returns>
     private ShortcutItems ToShortcutItems(ListViewItemCollection items)
     {
-      //// bool passed = true;
       var shortcuts = new ShortcutItems();
-
       foreach (ListViewItem item in items)
       {
-        string title = item.SubItems[1].Text;
-        string path = item.SubItems[2].Text;
-        string args = string.Empty;
-
-        if (!string.IsNullOrEmpty(title.Trim()) || !string.IsNullOrEmpty(path.Trim()))
+        shortcuts.Add(new ShortcutItem(item.SubItems[1].Text, item.SubItems[2].Text, item.SubItems[3].Text)
         {
-          //// passed = false;
-          Log.Warn($"Shortcut Id '{item.SubItems[0]}' - Missing or invalid Title/Path");
-        }
-        else
-        {
-          shortcuts.Add(new ShortcutItem(title, path, args));
-        }
+          RunAsAdmin = (item.Tag as ShortcutItem)?.RunAsAdmin ?? false,
+        });
       }
 
       return shortcuts;
@@ -275,15 +283,12 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
     {
       bool passed = true;
 
-      ShortcutItems items = new ShortcutItems();
-
       foreach (ListViewItem item in LvShortcuts.Items)
       {
         string title = item.SubItems[1].Text;
         string path = item.SubItems[2].Text;
 
-        if (string.IsNullOrEmpty(title.Trim()) ||
-            string.IsNullOrEmpty(path.Trim()))
+        if (string.IsNullOrWhiteSpace(title) || string.IsNullOrWhiteSpace(path))
         {
           Log.Error($"Shortcut Id '{item.SubItems[0]}' - Missing or invalid Title/Path");
 
@@ -296,7 +301,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
         }
       }
 
-      shortcuts = items;
+      shortcuts = ToShortcutItems(LvShortcuts.Items);
 
       return passed;
     }
