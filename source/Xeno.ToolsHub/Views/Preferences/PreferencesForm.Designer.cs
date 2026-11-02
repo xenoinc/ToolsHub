@@ -56,7 +56,7 @@ namespace Xeno.ToolsHub.Views
       // BtnOk
       // 
       this.BtnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-      this.BtnOk.Location = new System.Drawing.Point(525, 395);
+      this.BtnOk.Location = new System.Drawing.Point(525, 465);
       this.BtnOk.Name = "BtnOk";
       this.BtnOk.Size = new System.Drawing.Size(75, 23);
       this.BtnOk.TabIndex = 1;
@@ -68,7 +68,7 @@ namespace Xeno.ToolsHub.Views
       // 
       this.BtnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
       this.BtnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-      this.BtnCancel.Location = new System.Drawing.Point(606, 395);
+      this.BtnCancel.Location = new System.Drawing.Point(606, 465);
       this.BtnCancel.Name = "BtnCancel";
       this.BtnCancel.Size = new System.Drawing.Size(75, 23);
       this.BtnCancel.TabIndex = 2;
@@ -86,7 +86,7 @@ namespace Xeno.ToolsHub.Views
       this.tabControl1.Location = new System.Drawing.Point(12, 12);
       this.tabControl1.Name = "tabControl1";
       this.tabControl1.SelectedIndex = 0;
-      this.tabControl1.Size = new System.Drawing.Size(669, 377);
+      this.tabControl1.Size = new System.Drawing.Size(669, 447);
       this.tabControl1.TabIndex = 4;
       // 
       // tabPage1
@@ -95,7 +95,7 @@ namespace Xeno.ToolsHub.Views
       this.tabPage1.Location = new System.Drawing.Point(4, 22);
       this.tabPage1.Name = "tabPage1";
       this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-      this.tabPage1.Size = new System.Drawing.Size(661, 351);
+      this.tabPage1.Size = new System.Drawing.Size(661, 421);
       this.tabPage1.TabIndex = 0;
       this.tabPage1.Text = "Preferences";
       this.tabPage1.UseVisualStyleBackColor = true;
@@ -118,7 +118,7 @@ namespace Xeno.ToolsHub.Views
       this.splitContainer1.Panel2.BackColor = System.Drawing.SystemColors.Control;
       this.splitContainer1.Panel2.Controls.Add(this.PanelAddinPrefsView);
       this.splitContainer1.Panel2.Controls.Add(this.LblPageTitle);
-      this.splitContainer1.Size = new System.Drawing.Size(649, 339);
+      this.splitContainer1.Size = new System.Drawing.Size(649, 409);
       this.splitContainer1.SplitterDistance = 176;
       this.splitContainer1.TabIndex = 6;
       // 
@@ -129,7 +129,7 @@ namespace Xeno.ToolsHub.Views
             | System.Windows.Forms.AnchorStyles.Right)));
       this.AddinTree.Location = new System.Drawing.Point(3, 3);
       this.AddinTree.Name = "AddinTree";
-      this.AddinTree.Size = new System.Drawing.Size(170, 333);
+      this.AddinTree.Size = new System.Drawing.Size(170, 403);
       this.AddinTree.TabIndex = 6;
       this.AddinTree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.AddinTree_AfterSelect);
       // 
@@ -140,7 +140,7 @@ namespace Xeno.ToolsHub.Views
             | System.Windows.Forms.AnchorStyles.Right)));
       this.PanelAddinPrefsView.Location = new System.Drawing.Point(3, 26);
       this.PanelAddinPrefsView.Name = "PanelAddinPrefsView";
-      this.PanelAddinPrefsView.Size = new System.Drawing.Size(463, 310);
+      this.PanelAddinPrefsView.Size = new System.Drawing.Size(463, 380);
       this.PanelAddinPrefsView.TabIndex = 6;
       // 
       // LblPageTitle
@@ -158,7 +158,7 @@ namespace Xeno.ToolsHub.Views
       this.tabPage2.Location = new System.Drawing.Point(4, 22);
       this.tabPage2.Name = "tabPage2";
       this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-      this.tabPage2.Size = new System.Drawing.Size(661, 351);
+      this.tabPage2.Size = new System.Drawing.Size(661, 421);
       this.tabPage2.TabIndex = 1;
       this.tabPage2.Text = "Add-in Manager";
       this.tabPage2.UseVisualStyleBackColor = true;
@@ -168,7 +168,7 @@ namespace Xeno.ToolsHub.Views
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.CancelButton = this.BtnCancel;
-      this.ClientSize = new System.Drawing.Size(693, 430);
+      this.ClientSize = new System.Drawing.Size(693, 500);
       this.Controls.Add(this.tabControl1);
       this.Controls.Add(this.BtnCancel);
       this.Controls.Add(this.BtnOk);

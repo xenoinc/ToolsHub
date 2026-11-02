@@ -15,27 +15,8 @@ namespace Xeno.ToolsHub.Services.Logging
   using System.Reflection;
   using System.Runtime.CompilerServices;
 
-  public enum Level
-  {
-    /// <summary>Debug message.</summary>
-    Debug,
-
-    /// <summary>Informational message.</summary>
-    Info,
-
-    /// <summary>Warning message.</summary>
-    Warn,
-
-    /// <summary>An error has occurred.</summary>
-    Error,
-
-    /// <summary>Fatal-error.</summary>
-    Fatal
-  }
-
   public static class Log
   {
-    private static readonly Assembly LogAssembly = typeof(Log).GetAssembly();
     private static readonly Assembly MscorlibAssembly = typeof(string).GetAssembly();
     private static readonly Assembly SystemAssembly = typeof(Debug).GetAssembly();
 
@@ -101,36 +82,29 @@ namespace Xeno.ToolsHub.Services.Logging
       return type.GetTypeInfo().Assembly;
     }
 
-    /// <summary>Extracts calling frame namespace and outputs.</summary>
-    /// <param name="logLevel">Custom LogLevel.</param>
+    /// <summary>Extracts the caller and writes to the configured logging device.</summary>
+    /// <param name="logLevel">Message severity.</param>
     /// <param name="message">User message.</param>
-    private static void LogMessage(Level logLevel, string message, params object[] args)
+    /// <param name="args">Message arguments passed to the logging device.</param>
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    public static void LogMessage(Level logLevel, string message, params object[] args)
     {
-      // Enable when using nLog
-      ////var nLogLevel = ToLogLevel(logLevel);
+      var stackTrace = new StackTrace();
+      var loggerName = string.Empty;
 
-      var stackTrace = new System.Diagnostics.StackTrace();
-      var loggerName = string.Empty;      // = (loggerName ?? Name) ?? string.Empty;
-      var userFrameIndex = -1;
-
-      // NLogTraceListener and StackTraceUsageUtils.LookupClassNameFromStackFrame(..)
       for (int i = 0; i < stackTrace.FrameCount; ++i)
       {
-        var frame = stackTrace.GetFrame(i);
-        loggerName = LookupClassNameFromStackFrame(frame);
+        loggerName = LookupClassNameFromStackFrame(stackTrace.GetFrame(i));
         if (!string.IsNullOrEmpty(loggerName))
-        {
-          userFrameIndex = i;
           break;
-        }
       }
 
-      System.Diagnostics.Debug.WriteLine($">> [{FormattedTime}] [{logLevel}] [{loggerName}] [{message}");
+      string text = $"[{FormattedTime}] [{logLevel}] [{loggerName}] [{message}]";
+      System.Diagnostics.Debug.WriteLine(">> " + text);
 
-      if (userFrameIndex >= 0)
+      if (!MuteLogging && logLevel >= _logLevel)
       {
-        // Enable when using nLog
-        ////NLogger.Log(nLogLevel, $"{loggerName}] [{message}");
+        _logDev.Log(logLevel, text, args);
       }
     }
 
@@ -176,8 +150,8 @@ namespace Xeno.ToolsHub.Services.Logging
 
       var assembly = method.DeclaringType?.GetAssembly() ?? method.Module?.Assembly;
 
-      // skip stack frame if the method declaring type assembly is from hidden assemblies list
-      if (assembly == LogAssembly)
+      // Skip the logging facade, but keep callers in the application assembly.
+      if (method.DeclaringType == typeof(Log))
       {
         return null;
       }

@@ -122,7 +122,7 @@ namespace Xeno.ToolsHub.Managers
     {
       try
       {
-        if (!string.IsNullOrEmpty(SettingsFilePath))
+        if (!string.IsNullOrEmpty(SettingsFilePath) && System.IO.File.Exists(SettingsFilePath))
         {
           _propStore.PropertyBags = JsonConvert.DeserializeObject<List<Properties>>(
             System.IO.File.ReadAllText(SettingsFilePath));

@@ -8,33 +8,67 @@
 
 namespace Xeno.ToolsHub.Services.Logging
 {
-  using System;
+  using System.IO;
+  using System.Reflection;
+
 
   /// <summary>File logger.</summary>
-  internal class FileLogger : ILogger
+  public class FileLogger : ILogger
   {
-    private ConsoleLogger _console;
-
     //// File output stream
     //// private System.IO.StreamWriter _stream;
+    private readonly string _baseName = "LogFile";
+
+    private readonly object _lock = new object();
 
     public FileLogger()
     {
-      _console = new ConsoleLogger();
+      ////exePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+      ////
+      // Consider logging to console as well.
+      ////_console = new ConsoleLogger();
+      ////try
+      ////{
+      ////  // Create file directory
+      ////}
+      ////catch
+      ////{
+      ////  _console.Log(Level.Warn, "Failed to create log file.");
+      ////}
+    }
 
-      try
+    ////public uint MaxFiles { get; set; } = 5;
+
+    public uint MaxSize { get; set; } = 5000000;  // 5 MB
+
+    public string LogFile => _baseName + ".log";
+
+    ////private ConsoleLogger _console;
+    public void Log(Level level, string message, params object[] args)
+    {
+      lock (_lock)
       {
-        // Create file directory
-      }
-      catch
-      {
-        _console.Log(Level.Warn, "Failed to create log file.");
+        RolloverChecker();
+
+        using (StreamWriter writer = File.AppendText(LogFile))
+        {
+          writer.WriteLine(message);
+          writer.Close();
+        }
       }
     }
 
-    public void Log(Level level, string message, params object[] args)
+    /// <summary>Checks if we need to create a new file and delete old ones.</summary>
+    private void RolloverChecker()
     {
-      Console.WriteLine(message);
+      if (!File.Exists(LogFile))
+        return;
+
+      var info = new FileInfo(LogFile);
+      if (info.Length > MaxSize)
+      {
+        info.MoveTo(_baseName + "1.log");
+      }
     }
   }
 }
