@@ -64,7 +64,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
 
         foreach (ShortcutItem shortcut in shortcuts)
         {
-          var subItem = new ExtensionModel.SystemTray.TrayItem(shortcut.Title, shortcut.Target, true, OnExecuteShortcut);
+          var subItem = new ExtensionModel.SystemTray.TrayItem(shortcut.Title, shortcut.Target, true, _ => OnExecuteShortcut(shortcut));
           menu.DropDownItems.Add(subItem);
         }
 
@@ -76,11 +76,17 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
 
     public int OnExecuteShortcut(string target)
     {
-      Log.Debug($"Executing MyMethod with target, '{target}'");
+      return OnExecuteShortcut(new ShortcutItem { Target = target });
+    }
 
+    public int OnExecuteShortcut(ShortcutItem shortcut)
+    {
+      string target = shortcut?.Target;
       try
       {
-        System.Diagnostics.Process.Start(target);
+        var startInfo = ShortcutLauncher.CreateStartInfo(shortcut);
+        Log.Debug($"Launching shortcut '{target}' with working directory '{startInfo.WorkingDirectory}'");
+        using var process = System.Diagnostics.Process.Start(startInfo);
       }
       catch (Exception ex)
       {
