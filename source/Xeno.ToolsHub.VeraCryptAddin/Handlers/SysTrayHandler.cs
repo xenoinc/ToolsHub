@@ -15,11 +15,11 @@ namespace Xeno.ToolsHub.VeraCryptAddin.Handlers
 {
   public class SysTrayHandler : Xeno.ToolsHub.ExtensionModel.SystemTray.SysTrayAddin
   {
-    private VeraCryptManager _veraCrypt;
+    private readonly VeraCryptManager _veraCrypt;
 
-    public SysTrayHandler()
+    public SysTrayHandler(VeraCryptManager manager)
     {
-      _veraCrypt = new VeraCryptManager();
+      _veraCrypt = manager;
       this.IsInitialized = true;
     }
 

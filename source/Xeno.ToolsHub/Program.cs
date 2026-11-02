@@ -21,6 +21,7 @@ namespace Xeno.ToolsHub
   using Microsoft.Extensions.DependencyInjection;
   using Xeno.ToolsHub.Config;
   using Xeno.ToolsHub.Services;
+  using Xeno.ToolsHub.Services.Addins;
   using Xeno.ToolsHub.Services.Logging;
   using Xeno.ToolsHub.Services.Messaging;
 
@@ -63,7 +64,7 @@ namespace Xeno.ToolsHub
       Application.SetCompatibleTextRenderingDefault(false);
 
       AbortShutdown = false;
-      using var services = new ServiceCollection().AddToolsHub().BuildServiceProvider(new ServiceProviderOptions
+      using var services = new ServiceCollection().AddToolsHub().AddBundledAddinServices().BuildServiceProvider(new ServiceProviderOptions
       {
         ValidateScopes = true,
         ValidateOnBuild = true,

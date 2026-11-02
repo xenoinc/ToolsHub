@@ -7,47 +7,77 @@
  */
 
 using System;
+using Lite.EventIpc;
 using PomodoroAddin.Domain;
 using Xeno.ToolsHub.ExtensionModel.SystemTray;
 using Xeno.ToolsHub.Services;
 using Xeno.ToolsHub.Services.Logging;
-using Xeno.ToolsHub.Services.Messaging;
 
 namespace PomodoroAddin.Managers
 {
-  public class PomodoroManager
+  public class PomodoroManager : IDisposable
   {
+    private readonly ISettingsService _settings;
+    private readonly IEventAggregator _events;
+    private readonly IPomodoroTimer _timer;
+    private readonly object _sync = new();
+
     private TimerState _currentState = TimerState.Done;
-    private System.Timers.Timer _timer;
-    private int _duration = 0;
+    private int _duration;
+    private bool _disposed;
 
-    public PomodoroManager()
+    public PomodoroManager(ISettingsService settings, IEventAggregator events, IPomodoroTimer timer)
     {
-      _timer = new System.Timers.Timer();
-      _timer.Elapsed += Timer_Elapsed;
-      _timer.Interval = 60000;  // Testing only: 1000;
-
-      SettingTimerDuration = SettingsService.GetInt(Constants.AddinId, Constants.KeyDuration, 25);
-      SettingTimerShortBreak = SettingsService.GetInt(Constants.AddinId, Constants.KeyShortBreak, 5);
-      SettingTimerLongBreak = SettingsService.GetInt(Constants.AddinId, Constants.KeyLongBreak, 15);
-      SettingAlertSound = SettingsService.GetBool(Constants.AddinId, Constants.KeyAlertSound, true);
-      SettingAlertFlash = SettingsService.GetBool(Constants.AddinId, Constants.KeyAlertFlash, true);
-      SettingAlertTrayBubble = SettingsService.GetBool(Constants.AddinId, Constants.KeyAlertSysTrayBubble, true);
+      _settings = settings;
+      _events = events;
+      _timer = timer;
+      _timer.Tick += Timer_Elapsed;
     }
 
-    public int SettingTimerDuration { get; set; }
+    public int SettingTimerDuration => _settings.GetInt(Constants.AddinId, Constants.KeyDuration, 25);
 
-    public int SettingTimerShortBreak { get; set; }
+    public int SettingTimerShortBreak => _settings.GetInt(Constants.AddinId, Constants.KeyShortBreak, 5);
 
-    public int SettingTimerLongBreak { get; set; }
+    public int SettingTimerLongBreak => _settings.GetInt(Constants.AddinId, Constants.KeyLongBreak, 15);
 
-    public bool SettingAlertSound { get; set; }
+    public bool SettingAlertSound => _settings.GetBool(Constants.AddinId, Constants.KeyAlertSound, true);
 
-    public bool SettingAlertFlash { get; set; }
+    public bool SettingAlertFlash => _settings.GetBool(Constants.AddinId, Constants.KeyAlertFlash, true);
 
-    public bool SettingAlertTrayBubble { get; set; }
+    public bool SettingAlertTrayBubble => _settings.GetBool(Constants.AddinId, Constants.KeyAlertSysTrayBubble, true);
 
-    public bool SettingTrayIconUpdates { get; set; }
+    public bool SettingTrayIconUpdates => _settings.GetBool(Constants.AddinId, Constants.KeyTrayShowDuration, false);
+
+    public int RemainingMinutes
+    {
+      get
+      {
+        lock (_sync)
+          return _duration;
+      }
+    }
+
+    public TimerState CurrentState
+    {
+      get
+      {
+        lock (_sync)
+          return _currentState;
+      }
+    }
+
+    public void Dispose()
+    {
+      lock (_sync)
+      {
+        if (_disposed)
+          return;
+        _disposed = true;
+        _timer.Tick -= Timer_Elapsed;
+        _timer.Stop();
+        _currentState = TimerState.Stopped;
+      }
+    }
 
     public int OnStart(string target)
     {
@@ -72,11 +102,12 @@ namespace PomodoroAddin.Managers
 
     public int OnPause(string target)
     {
-      var state = _currentState != TimerState.Paused ?
-        TimerState.Paused : TimerState.Started;
-
-      ChangeTimerState(state);
-      return 0;
+      lock (_sync)
+      {
+        var state = _currentState != TimerState.Paused ? TimerState.Paused : TimerState.Started;
+        ChangeTimerState(state);
+        return 0;
+      }
     }
 
     public int OnStop(string target)
@@ -89,8 +120,10 @@ namespace PomodoroAddin.Managers
     /// <param name="icon">icon to display. NULL for default</param>
     public void SendMessageTrayIcon(System.Drawing.Icon icon)
     {
-      AppEvents.Instance.Publish(new SystemTrayChangeIconRequest(icon));
+      _events.Publish(new SystemTrayChangeIconRequest(icon));
     }
+
+    public void RefreshMenu() => _events.Publish(new SystemTrayRefreshRequest());
 
     public void SendMessageTrayData(TrayItemInfo itemInfo)
     {
@@ -98,7 +131,7 @@ namespace PomodoroAddin.Managers
 
       // TODO: Create infrastructure to inform MenuItems which ones to enable/disable/change-text
       //
-      AppEvents.Instance.Publish(new SystemTrayUpdateRequest(itemInfo));
+      _events.Publish(new SystemTrayUpdateRequest(itemInfo));
     }
 
     public void PlaySound(uint repeat = 1, bool isTesting = false)
@@ -126,44 +159,50 @@ namespace PomodoroAddin.Managers
 
     private void ChangeTimerState(TimerState state, int durationMinutes = 0)
     {
-      if (_currentState == state)
-        return;
-
-      switch (state)
+      lock (_sync)
       {
-        case TimerState.Started:
+        ObjectDisposedException.ThrowIf(_disposed, this);
+        if (_currentState == state)
+          return;
 
-          if (_currentState == TimerState.Paused)
-          {
-            // resume timer
-            Log.Debug($"Resuming timer for {SettingTimerDuration} minutes");
-          }
-          else
-          {
-            // new timer
-            Log.Debug($"Starting timer for {SettingTimerDuration} minutes");
-            StartTimer(durationMinutes);
-            UpdateMenuItems(state);
-          }
+        switch (state)
+        {
+          case TimerState.Started:
 
-          break;
+            if (_currentState == TimerState.Paused)
+            {
+              // resume timer
+              Log.Debug($"Resuming timer for {SettingTimerDuration} minutes");
+              _timer.Start();
+            }
+            else
+            {
+              // new timer
+              Log.Debug($"Starting timer for {SettingTimerDuration} minutes");
+              StartTimer(durationMinutes);
+              UpdateMenuItems(state);
+            }
 
-        case TimerState.Paused:
-          Log.Debug($"Timer paused");
-          break;
+            break;
 
-        case TimerState.Stopped:
-        case TimerState.Done:
-          Log.Debug($"Timer stopped");
-          _timer.Stop();
-          // _running = false;
+          case TimerState.Paused:
+            Log.Debug($"Timer paused");
+            _timer.Stop();
+            break;
 
-          UpdateTrayIcon();
-          break;
+          case TimerState.Stopped:
+          case TimerState.Done:
+            Log.Debug($"Timer stopped");
+            _timer.Stop();
+            // _running = false;
+
+            UpdateTrayIcon();
+            break;
+        }
+
+        _currentState = state;
+        NotifyStateChanged(state);
       }
-
-      _currentState = state;
-      NotifyStateChanged(state);
     }
 
     /// <summary>Alert to user of state change</summary>
@@ -256,34 +295,34 @@ namespace PomodoroAddin.Managers
 
     private void StartTimer(int minutes)
     {
-      _timer.Enabled = false;
       _timer.Stop();
-      _timer.Start();
-      _timer.Enabled = true;
-
       _duration = minutes;
-      UpdateTrayIcon(minutes);  // Move to StateChange?
+      _timer.Start();
+      UpdateTrayIcon(minutes);
     }
 
-    private void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+    private void Timer_Elapsed(object sender, EventArgs e)
     {
-      if (_currentState != TimerState.Started)
-        return;
-
-      _duration -= 1;
-
-      if (_duration <= 0)
+      lock (_sync)
       {
-        // We're done!
-        ChangeTimerState(TimerState.Done);
-        UpdateMenuItems(TimerState.Started);
-        // NotifyStateChanged(TimerState.Done);
+        if (_disposed || _currentState != TimerState.Started)
+          return;
 
-        // TODO: Update stats for successful pomodoro here
-      }
-      else
-      {
-        UpdateTrayIcon(_duration);
+        _duration -= 1;
+
+        if (_duration <= 0)
+        {
+          // We're done!
+          ChangeTimerState(TimerState.Done);
+          UpdateMenuItems(TimerState.Done);
+          // NotifyStateChanged(TimerState.Done);
+
+          // TODO: Update stats for successful pomodoro here
+        }
+        else
+        {
+          UpdateTrayIcon(_duration);
+        }
       }
     }
   }

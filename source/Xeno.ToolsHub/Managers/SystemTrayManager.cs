@@ -45,6 +45,7 @@ namespace Xeno.ToolsHub.Managers
       _eventDispatcher.CreateControl();
       _eventSubscriptions = new TrayEventSubscriptions(
         events, MenuRefresh, OnTrayNotification, OnTrayIconChanged, DispatchEvent);
+      _trayNotify.DoubleClick += OnMenuDoubleClick;
       MenuRefresh();
     }
 
@@ -79,6 +80,7 @@ namespace Xeno.ToolsHub.Managers
       {
         _eventSubscriptions.Dispose();
         _eventDispatcher.Dispose();
+        _trayNotify.DoubleClick -= OnMenuDoubleClick;
         _trayNotify.Dispose();
       }
 
@@ -111,7 +113,6 @@ namespace Xeno.ToolsHub.Managers
       _trayNotify.Icon = ApplicationIcon;
       _trayNotify.ContextMenuStrip?.Dispose();
       _trayNotify.ContextMenuStrip = BuildContextMenuStrip(_trayMenu);
-      _trayNotify.DoubleClick += new EventHandler(OnMenuDoubleClick);
       _trayNotify.Visible = true;
     }
 

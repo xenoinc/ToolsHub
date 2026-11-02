@@ -1,16 +1,20 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <RootNamespace>Xeno.ToolsHub.Tests</RootNamespace>
     <AssemblyName>Xeno.ToolsHub.Tests</AssemblyName>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
+    <UseWPF>true</UseWPF>
     <OutputPath>..\..\output\tests\</OutputPath>
     <CodeAnalysisRuleSet>..\stylecop.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Xeno.ToolsHub\Xeno.ToolsHub.csproj" />
+    <ProjectReference Include="..\addins\PomodoroAddin\PomodoroAddin.csproj" />
+    <ProjectReference Include="..\addins\SidebarAddin\SidebarAddin.csproj" />
+    <ProjectReference Include="..\Xeno.ToolsHub.VeraCryptAddin\VeraCryptAddin.csproj" />
   </ItemGroup>
 
   <ItemGroup>

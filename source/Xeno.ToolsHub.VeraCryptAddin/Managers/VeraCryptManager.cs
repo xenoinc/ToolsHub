@@ -9,51 +9,45 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Lite.EventIpc;
 using Microsoft.Win32;
 using Xeno.ToolsHub.ExtensionModel.SystemTray;
 using Xeno.ToolsHub.Services;
 using Xeno.ToolsHub.Services.Logging;
-using Xeno.ToolsHub.Services.Messaging;
-using Xeno.ToolsHub.VeraCryptAddin.Domain;
+using Xeno.ToolsHub.VeraCryptAddin.Services;
 
 namespace Xeno.ToolsHub.VeraCryptAddin;
 
 public class VeraCryptManager
 {
-  public VeraCryptManager()
+  private readonly ISettingsService _settings;
+  private readonly IEventAggregator _events;
+  private readonly IVeraCryptOperations _operations;
+  private readonly ISecretProtector _secrets;
+
+  public VeraCryptManager(ISettingsService settings, IEventAggregator events, IVeraCryptOperations operations, ISecretProtector secrets)
   {
-    // SettingInstallPath = SettingsService.GetString(Constants.AddinId, Constants.KeyInstallPath, @"C:\Program Files\VeraCrypt\VeraCrypt.exe");
-    // SettingsForceDismounts = SettingsService.GetBool(Constants.AddinId, Constants.KeyForceDismounts, false);
-    // SettingHcDrive = SettingsService.GetString(Constants.AddinId, Constants.KeyHcDriveLetter, "Z");
-    // SettingHcPath = SettingsService.GetString(Constants.AddinId, Constants.KeyHcPath, string.Empty);
-    // SettingHcPass = SettingsService.GetString(Constants.AddinId, Constants.KeyHcPass, string.Empty);
-    // Not in use
-    // SettingOnStartMount = SettingsService.GetBool(Constants.AddinId, Constants.KeyHcOnStartMount, false);
-    // SettingOnExitDismount = SettingsService.GetBool(Constants.AddinId, Constants.KeyHcOnExitDismount, false);
+    _settings = settings;
+    _events = events;
+    _operations = operations;
+    _secrets = secrets;
   }
 
-  public bool IsValidInstall
-  {
-    get
-    {
-      var pth = SettingsService.GetString(Constants.AddinId, Constants.KeyInstallPath, @"C:\Program Files\VeraCrypt\VeraCrypt.exe");
-      return System.IO.File.Exists(pth) ? true : false;
-    }
-  }
+  public bool IsValidInstall => _operations.IsInstalled(SettingInstallPath);
 
-  public string SettingInstallPath => SettingsService.GetString(Constants.AddinId, Constants.KeyInstallPath, @"C:\Program Files\VeraCrypt\VeraCrypt.exe");
+  public string SettingInstallPath => _settings.GetString(Constants.AddinId, Constants.KeyInstallPath, @"C:\Program Files\VeraCrypt\VeraCrypt.exe");
 
-  public bool SettingsForceDismounts => SettingsService.GetBool(Constants.AddinId, Constants.KeyForceDismounts, false);
+  public bool SettingsForceDismounts => _settings.GetBool(Constants.AddinId, Constants.KeyForceDismounts, false);
 
-  public string SettingHcDrive => SettingsService.GetString(Constants.AddinId, Constants.KeyHcDriveLetter, "Z");
+  public string SettingHcDrive => _settings.GetString(Constants.AddinId, Constants.KeyHcDriveLetter, "Z");
 
-  public string SettingHcPath => SettingDecrypt(SettingsService.GetString(Constants.AddinId, Constants.KeyHcPath, string.Empty));
+  public string SettingHcPath => SettingDecrypt(_settings.GetString(Constants.AddinId, Constants.KeyHcPath, string.Empty));
 
-  public string SettingHcPass => SettingDecrypt(SettingsService.GetString(Constants.AddinId, Constants.KeyHcPass, string.Empty));
+  public string SettingHcPass => SettingDecrypt(_settings.GetString(Constants.AddinId, Constants.KeyHcPass, string.Empty));
 
-  public bool SettingOnStartMount => SettingsService.GetBool(Constants.AddinId, Constants.KeyHcOnStartMount, false);
+  public bool SettingOnStartMount => _settings.GetBool(Constants.AddinId, Constants.KeyHcOnStartMount, false);
 
-  public bool SettingOnExitDismount => SettingsService.GetBool(Constants.AddinId, Constants.KeyHcOnExitDismount, false);
+  public bool SettingOnExitDismount => _settings.GetBool(Constants.AddinId, Constants.KeyHcOnExitDismount, false);
 
   /// <summary>Get VeraCrypt's install path</summary>
   /// <returns>Path of installed VeraCrypt.exe or empty</returns>
@@ -131,11 +125,7 @@ public class VeraCryptManager
     string path = SettingHcPath;
     string pass = SettingHcPass;
 
-    VirtualDrive mnt = new VirtualDrive(SettingInstallPath, drive, path, pass);
-    mnt.IsSilent = false;
-    int ret = mnt.Mount();
-
-    return 0;
+    return _operations.Mount(SettingInstallPath, drive, path, pass);
   }
 
   /// <summary>Dismount VeraCrypt virtual drive</summary>
@@ -154,33 +144,17 @@ public class VeraCryptManager
     // 3. Update SysTray menu item's checkbox with mount state
     string drive = SettingHcDrive;
     string path = SettingHcPath;
-    string pass = SettingHcPass;
-
-    VirtualDrive mnt = new VirtualDrive(SettingInstallPath, drive, path);
-    mnt.IsSilent = false;
-    int ret = mnt.Dismount(SettingsForceDismounts);
-
-    return 0;
+    return _operations.Dismount(SettingInstallPath, drive, path, SettingsForceDismounts);
   }
 
   /// <summary>Inform parent objects to refresh</summary>
   public void RefreshSysTray()
   {
     // TODO: Inform parents to refresh (SysTray/Sidebar)
-    AppEvents.Instance.Publish(new SystemTrayRefreshRequest());
+    _events.Publish(new SystemTrayRefreshRequest());
   }
 
-  public string SettingDecrypt(string setting)
-  {
-    var crypto = new Crypto();
-    var data = crypto.Decrypt(setting);
-    return data;
-  }
+  public string SettingDecrypt(string setting) => _secrets.Decrypt(setting);
 
-  public string SettingEncrypt(string setting)
-  {
-    var crypto = new Crypto();
-    var data = crypto.Encrypt(setting);
-    return data;
-  }
+  public string SettingEncrypt(string setting) => _secrets.Encrypt(setting);
 }

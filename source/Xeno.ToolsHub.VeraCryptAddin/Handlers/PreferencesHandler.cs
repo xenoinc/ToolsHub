@@ -17,7 +17,12 @@ namespace Xeno.ToolsHub.VeraCryptAddin.Handlers
   ////  Path = ExtensionPath.PreferencePage)]
   public class PreferencesHandler : IPreferencePageExtension
   {
-    private Views.PreferencesPage _page;
+    private readonly Views.PreferencesPage _page;
+
+    public PreferencesHandler(Views.PreferencesPage page)
+    {
+      _page = page;
+    }
 
     public string Title => "VeraCrypt";
 
@@ -29,7 +34,7 @@ namespace Xeno.ToolsHub.VeraCryptAddin.Handlers
 
     public void InitializePage()
     {
-      _page = new Views.PreferencesPage();
+      // Page dependencies and lifetime are supplied by the dialog scope.
     }
 
     public void OnSave()

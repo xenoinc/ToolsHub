@@ -19,11 +19,11 @@ namespace PomodoroAddin.Handlers
     Path = ExtensionPath.SystemTray)]
   public class SysTrayHandler : Xeno.ToolsHub.ExtensionModel.SystemTray.SysTrayAddin
   {
-    private PomodoroManager _pomodoro;
+    private readonly PomodoroManager _pomodoro;
 
-    public SysTrayHandler()
+    public SysTrayHandler(PomodoroManager manager)
     {
-      _pomodoro = new PomodoroManager();
+      _pomodoro = manager;
       this.IsInitialized = true;
     }
 
