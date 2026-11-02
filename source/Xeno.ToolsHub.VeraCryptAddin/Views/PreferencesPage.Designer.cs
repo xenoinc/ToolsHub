@@ -28,283 +28,319 @@
     /// </summary>
     private void InitializeComponent()
     {
-      this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-      this.groupBox3 = new System.Windows.Forms.GroupBox();
-      this.BtnInstallAutoFind = new System.Windows.Forms.Button();
-      this.BtnInstallManualFind = new System.Windows.Forms.Button();
-      this.TxtInstallPath = new System.Windows.Forms.TextBox();
-      this.label4 = new System.Windows.Forms.Label();
-      this.ChkOnSignoutDismount = new System.Windows.Forms.CheckBox();
-      this.ChkForceDismounts = new System.Windows.Forms.CheckBox();
-      this.ChkOnShutdownDismount = new System.Windows.Forms.CheckBox();
-      this.ChkOnStartMount = new System.Windows.Forms.CheckBox();
-      this.ChkOnExitDismount = new System.Windows.Forms.CheckBox();
-      this.groupBox2 = new System.Windows.Forms.GroupBox();
-      this.CmboDrives = new System.Windows.Forms.ComboBox();
-      this.BtnHcPath = new System.Windows.Forms.Button();
-      this.TxtHcPath = new System.Windows.Forms.TextBox();
-      this.label1 = new System.Windows.Forms.Label();
-      this.TxtHcPass = new System.Windows.Forms.TextBox();
-      this.label2 = new System.Windows.Forms.Label();
-      this.label3 = new System.Windows.Forms.Label();
-      this.BtnTestCipher = new System.Windows.Forms.Button();
-      this.lblCipherTest = new System.Windows.Forms.Label();
-      this.flowLayoutPanel1.SuspendLayout();
-      this.groupBox3.SuspendLayout();
-      this.groupBox2.SuspendLayout();
-      this.SuspendLayout();
+      flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+      groupBox3 = new System.Windows.Forms.GroupBox();
+      lblInstallFound = new System.Windows.Forms.Label();
+      lblCipherTest = new System.Windows.Forms.Label();
+      BtnTestCipher = new System.Windows.Forms.Button();
+      BtnInstallAutoFind = new System.Windows.Forms.Button();
+      BtnInstallManualFind = new System.Windows.Forms.Button();
+      TxtInstallPath = new System.Windows.Forms.TextBox();
+      label4 = new System.Windows.Forms.Label();
+      ChkOnSignoutDismount = new System.Windows.Forms.CheckBox();
+      ChkForceDismounts = new System.Windows.Forms.CheckBox();
+      ChkOnShutdownDismount = new System.Windows.Forms.CheckBox();
+      ChkOnStartMount = new System.Windows.Forms.CheckBox();
+      ChkOnExitDismount = new System.Windows.Forms.CheckBox();
+      groupBox2 = new System.Windows.Forms.GroupBox();
+      CmboDrives = new System.Windows.Forms.ComboBox();
+      BtnHcPath = new System.Windows.Forms.Button();
+      TxtHcPath = new System.Windows.Forms.TextBox();
+      label1 = new System.Windows.Forms.Label();
+      TxtHcPass = new System.Windows.Forms.TextBox();
+      label2 = new System.Windows.Forms.Label();
+      label3 = new System.Windows.Forms.Label();
+      flowLayoutPanel1.SuspendLayout();
+      groupBox3.SuspendLayout();
+      groupBox2.SuspendLayout();
+      SuspendLayout();
       // 
       // flowLayoutPanel1
       // 
-      this.flowLayoutPanel1.Controls.Add(this.groupBox3);
-      this.flowLayoutPanel1.Controls.Add(this.groupBox2);
-      this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-      this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-      this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-      this.flowLayoutPanel1.Size = new System.Drawing.Size(391, 319);
-      this.flowLayoutPanel1.TabIndex = 2;
+      flowLayoutPanel1.Controls.Add(groupBox3);
+      flowLayoutPanel1.Controls.Add(groupBox2);
+      flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+      flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+      flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+      flowLayoutPanel1.Name = "flowLayoutPanel1";
+      flowLayoutPanel1.Size = new System.Drawing.Size(456, 368);
+      flowLayoutPanel1.TabIndex = 2;
       // 
       // groupBox3
       // 
-      this.groupBox3.Controls.Add(this.lblCipherTest);
-      this.groupBox3.Controls.Add(this.BtnTestCipher);
-      this.groupBox3.Controls.Add(this.BtnInstallAutoFind);
-      this.groupBox3.Controls.Add(this.BtnInstallManualFind);
-      this.groupBox3.Controls.Add(this.TxtInstallPath);
-      this.groupBox3.Controls.Add(this.label4);
-      this.groupBox3.Controls.Add(this.ChkOnSignoutDismount);
-      this.groupBox3.Controls.Add(this.ChkForceDismounts);
-      this.groupBox3.Controls.Add(this.ChkOnShutdownDismount);
-      this.groupBox3.Controls.Add(this.ChkOnStartMount);
-      this.groupBox3.Controls.Add(this.ChkOnExitDismount);
-      this.groupBox3.Location = new System.Drawing.Point(3, 3);
-      this.groupBox3.Name = "groupBox3";
-      this.groupBox3.Size = new System.Drawing.Size(376, 172);
-      this.groupBox3.TabIndex = 1;
-      this.groupBox3.TabStop = false;
-      this.groupBox3.Text = "VeraCrypt Settings";
+      groupBox3.Controls.Add(lblInstallFound);
+      groupBox3.Controls.Add(lblCipherTest);
+      groupBox3.Controls.Add(BtnTestCipher);
+      groupBox3.Controls.Add(BtnInstallAutoFind);
+      groupBox3.Controls.Add(BtnInstallManualFind);
+      groupBox3.Controls.Add(TxtInstallPath);
+      groupBox3.Controls.Add(label4);
+      groupBox3.Controls.Add(ChkOnSignoutDismount);
+      groupBox3.Controls.Add(ChkForceDismounts);
+      groupBox3.Controls.Add(ChkOnShutdownDismount);
+      groupBox3.Controls.Add(ChkOnStartMount);
+      groupBox3.Controls.Add(ChkOnExitDismount);
+      groupBox3.Location = new System.Drawing.Point(4, 3);
+      groupBox3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+      groupBox3.Name = "groupBox3";
+      groupBox3.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+      groupBox3.Size = new System.Drawing.Size(439, 198);
+      groupBox3.TabIndex = 1;
+      groupBox3.TabStop = false;
+      groupBox3.Text = "VeraCrypt Settings";
       // 
-      // BtnInstallAutoFind
+      // lblInstallFound
       // 
-      this.BtnInstallAutoFind.Location = new System.Drawing.Point(9, 143);
-      this.BtnInstallAutoFind.Name = "BtnInstallAutoFind";
-      this.BtnInstallAutoFind.Size = new System.Drawing.Size(85, 23);
-      this.BtnInstallAutoFind.TabIndex = 15;
-      this.BtnInstallAutoFind.Text = "Auto-discover";
-      this.BtnInstallAutoFind.UseVisualStyleBackColor = true;
-      this.BtnInstallAutoFind.Click += new System.EventHandler(this.BtnInstallAutoFind_Click);
-      // 
-      // BtnInstallManualFind
-      // 
-      this.BtnInstallManualFind.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-      this.BtnInstallManualFind.Location = new System.Drawing.Point(339, 118);
-      this.BtnInstallManualFind.Name = "BtnInstallManualFind";
-      this.BtnInstallManualFind.Size = new System.Drawing.Size(31, 20);
-      this.BtnInstallManualFind.TabIndex = 14;
-      this.BtnInstallManualFind.Text = "...";
-      this.BtnInstallManualFind.UseVisualStyleBackColor = true;
-      this.BtnInstallManualFind.Click += new System.EventHandler(this.BtnInstallManualFind_Click);
-      // 
-      // TxtInstallPath
-      // 
-      this.TxtInstallPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-      this.TxtInstallPath.Location = new System.Drawing.Point(9, 118);
-      this.TxtInstallPath.Name = "TxtInstallPath";
-      this.TxtInstallPath.Size = new System.Drawing.Size(324, 20);
-      this.TxtInstallPath.TabIndex = 13;
-      this.TxtInstallPath.TextChanged += new System.EventHandler(this.OnTextChanged);
-      this.TxtInstallPath.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.OnKeyPress);
-      // 
-      // label4
-      // 
-      this.label4.AutoSize = true;
-      this.label4.Location = new System.Drawing.Point(3, 98);
-      this.label4.Name = "label4";
-      this.label4.Size = new System.Drawing.Size(111, 13);
-      this.label4.TabIndex = 12;
-      this.label4.Text = "VeraCrypt Install Path:";
-      // 
-      // ChkOnSignoutDismount
-      // 
-      this.ChkOnSignoutDismount.AutoSize = true;
-      this.ChkOnSignoutDismount.Enabled = false;
-      this.ChkOnSignoutDismount.Location = new System.Drawing.Point(119, 42);
-      this.ChkOnSignoutDismount.Name = "ChkOnSignoutDismount";
-      this.ChkOnSignoutDismount.Size = new System.Drawing.Size(160, 17);
-      this.ChkOnSignoutDismount.TabIndex = 1;
-      this.ChkOnSignoutDismount.Text = "Auto-dismount all on Signout";
-      this.ChkOnSignoutDismount.UseVisualStyleBackColor = true;
-      this.ChkOnSignoutDismount.CheckedChanged += new System.EventHandler(this.Check_CheckedChanged);
-      // 
-      // ChkForceDismounts
-      // 
-      this.ChkForceDismounts.AutoSize = true;
-      this.ChkForceDismounts.Location = new System.Drawing.Point(6, 65);
-      this.ChkForceDismounts.Name = "ChkForceDismounts";
-      this.ChkForceDismounts.Size = new System.Drawing.Size(105, 17);
-      this.ChkForceDismounts.TabIndex = 11;
-      this.ChkForceDismounts.Text = "Force Dismounts";
-      this.ChkForceDismounts.UseVisualStyleBackColor = true;
-      this.ChkForceDismounts.CheckedChanged += new System.EventHandler(this.Check_CheckedChanged);
-      // 
-      // ChkOnShutdownDismount
-      // 
-      this.ChkOnShutdownDismount.AutoSize = true;
-      this.ChkOnShutdownDismount.Enabled = false;
-      this.ChkOnShutdownDismount.Location = new System.Drawing.Point(119, 19);
-      this.ChkOnShutdownDismount.Name = "ChkOnShutdownDismount";
-      this.ChkOnShutdownDismount.Size = new System.Drawing.Size(172, 17);
-      this.ChkOnShutdownDismount.TabIndex = 0;
-      this.ChkOnShutdownDismount.Text = "Auto-dismount all on Shutdown";
-      this.ChkOnShutdownDismount.UseVisualStyleBackColor = true;
-      this.ChkOnShutdownDismount.CheckedChanged += new System.EventHandler(this.Check_CheckedChanged);
-      // 
-      // ChkOnStartMount
-      // 
-      this.ChkOnStartMount.AutoSize = true;
-      this.ChkOnStartMount.Enabled = false;
-      this.ChkOnStartMount.Location = new System.Drawing.Point(6, 19);
-      this.ChkOnStartMount.Name = "ChkOnStartMount";
-      this.ChkOnStartMount.Size = new System.Drawing.Size(95, 17);
-      this.ChkOnStartMount.TabIndex = 8;
-      this.ChkOnStartMount.Text = "OnStart Mount";
-      this.ChkOnStartMount.UseVisualStyleBackColor = true;
-      this.ChkOnStartMount.CheckedChanged += new System.EventHandler(this.Check_CheckedChanged);
-      // 
-      // ChkOnExitDismount
-      // 
-      this.ChkOnExitDismount.AutoSize = true;
-      this.ChkOnExitDismount.Enabled = false;
-      this.ChkOnExitDismount.Location = new System.Drawing.Point(6, 42);
-      this.ChkOnExitDismount.Name = "ChkOnExitDismount";
-      this.ChkOnExitDismount.Size = new System.Drawing.Size(104, 17);
-      this.ChkOnExitDismount.TabIndex = 9;
-      this.ChkOnExitDismount.Text = "OnExit Dismount";
-      this.ChkOnExitDismount.UseVisualStyleBackColor = true;
-      this.ChkOnExitDismount.CheckedChanged += new System.EventHandler(this.Check_CheckedChanged);
-      // 
-      // groupBox2
-      // 
-      this.groupBox2.Controls.Add(this.CmboDrives);
-      this.groupBox2.Controls.Add(this.BtnHcPath);
-      this.groupBox2.Controls.Add(this.TxtHcPath);
-      this.groupBox2.Controls.Add(this.label1);
-      this.groupBox2.Controls.Add(this.TxtHcPass);
-      this.groupBox2.Controls.Add(this.label2);
-      this.groupBox2.Controls.Add(this.label3);
-      this.groupBox2.Location = new System.Drawing.Point(3, 181);
-      this.groupBox2.Name = "groupBox2";
-      this.groupBox2.Size = new System.Drawing.Size(376, 104);
-      this.groupBox2.TabIndex = 0;
-      this.groupBox2.TabStop = false;
-      this.groupBox2.Text = "Available Volumes";
-      // 
-      // CmboDrives
-      // 
-      this.CmboDrives.FormattingEnabled = true;
-      this.CmboDrives.Location = new System.Drawing.Point(6, 31);
-      this.CmboDrives.MaxLength = 1;
-      this.CmboDrives.Name = "CmboDrives";
-      this.CmboDrives.Size = new System.Drawing.Size(50, 21);
-      this.CmboDrives.TabIndex = 16;
-      this.CmboDrives.TextChanged += new System.EventHandler(this.OnTextChanged);
-      // 
-      // BtnHcPath
-      // 
-      this.BtnHcPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-      this.BtnHcPath.Location = new System.Drawing.Point(339, 31);
-      this.BtnHcPath.Name = "BtnHcPath";
-      this.BtnHcPath.Size = new System.Drawing.Size(31, 20);
-      this.BtnHcPath.TabIndex = 15;
-      this.BtnHcPath.Text = "...";
-      this.BtnHcPath.UseVisualStyleBackColor = true;
-      this.BtnHcPath.Click += new System.EventHandler(this.BtnHcPath_Click);
-      // 
-      // TxtHcPath
-      // 
-      this.TxtHcPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-      this.TxtHcPath.Location = new System.Drawing.Point(62, 32);
-      this.TxtHcPath.Name = "TxtHcPath";
-      this.TxtHcPath.Size = new System.Drawing.Size(271, 20);
-      this.TxtHcPath.TabIndex = 10;
-      this.TxtHcPath.TextChanged += new System.EventHandler(this.OnTextChanged);
-      this.TxtHcPath.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.OnKeyPress);
-      // 
-      // label1
-      // 
-      this.label1.AutoSize = true;
-      this.label1.Location = new System.Drawing.Point(6, 16);
-      this.label1.Name = "label1";
-      this.label1.Size = new System.Drawing.Size(35, 13);
-      this.label1.TabIndex = 4;
-      this.label1.Text = "Drive:";
-      // 
-      // TxtHcPass
-      // 
-      this.TxtHcPass.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-      this.TxtHcPass.Location = new System.Drawing.Point(6, 71);
-      this.TxtHcPass.Name = "TxtHcPass";
-      this.TxtHcPass.PasswordChar = '*';
-      this.TxtHcPass.Size = new System.Drawing.Size(364, 20);
-      this.TxtHcPass.TabIndex = 7;
-      this.TxtHcPass.TextChanged += new System.EventHandler(this.OnTextChanged);
-      this.TxtHcPass.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.OnKeyPress);
-      // 
-      // label2
-      // 
-      this.label2.AutoSize = true;
-      this.label2.Location = new System.Drawing.Point(64, 16);
-      this.label2.Name = "label2";
-      this.label2.Size = new System.Drawing.Size(50, 13);
-      this.label2.TabIndex = 5;
-      this.label2.Text = "HC Path:";
-      // 
-      // label3
-      // 
-      this.label3.AutoSize = true;
-      this.label3.Location = new System.Drawing.Point(6, 55);
-      this.label3.Name = "label3";
-      this.label3.Size = new System.Drawing.Size(91, 13);
-      this.label3.TabIndex = 6;
-      this.label3.Text = "Volume Password";
-      // 
-      // BtnTestCipher
-      // 
-      this.BtnTestCipher.Location = new System.Drawing.Point(258, 65);
-      this.BtnTestCipher.Name = "BtnTestCipher";
-      this.BtnTestCipher.Size = new System.Drawing.Size(75, 23);
-      this.BtnTestCipher.TabIndex = 16;
-      this.BtnTestCipher.Text = "Test Cipher";
-      this.BtnTestCipher.UseVisualStyleBackColor = true;
-      this.BtnTestCipher.Click += new System.EventHandler(this.BtnTestCipher_Click);
+      lblInstallFound.AutoSize = true;
+      lblInstallFound.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic);
+      lblInstallFound.ForeColor = System.Drawing.SystemColors.Highlight;
+      lblInstallFound.Location = new System.Drawing.Point(117, 171);
+      lblInstallFound.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+      lblInstallFound.Name = "lblInstallFound";
+      lblInstallFound.Size = new System.Drawing.Size(136, 15);
+      lblInstallFound.TabIndex = 18;
+      lblInstallFound.Text = "VeraCrypt Install Found!";
+      lblInstallFound.Visible = false;
       // 
       // lblCipherTest
       // 
-      this.lblCipherTest.AutoSize = true;
-      this.lblCipherTest.Location = new System.Drawing.Point(256, 91);
-      this.lblCipherTest.Name = "lblCipherTest";
-      this.lblCipherTest.Size = new System.Drawing.Size(84, 13);
-      this.lblCipherTest.TabIndex = 17;
-      this.lblCipherTest.Text = "Test Status: n/a";
+      lblCipherTest.AutoSize = true;
+      lblCipherTest.Location = new System.Drawing.Point(299, 105);
+      lblCipherTest.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+      lblCipherTest.Name = "lblCipherTest";
+      lblCipherTest.Size = new System.Drawing.Size(87, 15);
+      lblCipherTest.TabIndex = 17;
+      lblCipherTest.Text = "Test Status: n/a";
+      // 
+      // BtnTestCipher
+      // 
+      BtnTestCipher.Location = new System.Drawing.Point(301, 75);
+      BtnTestCipher.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+      BtnTestCipher.Name = "BtnTestCipher";
+      BtnTestCipher.Size = new System.Drawing.Size(88, 27);
+      BtnTestCipher.TabIndex = 16;
+      BtnTestCipher.Text = "Test Cipher";
+      BtnTestCipher.UseVisualStyleBackColor = true;
+      BtnTestCipher.Click += BtnTestCipher_Click;
+      // 
+      // BtnInstallAutoFind
+      // 
+      BtnInstallAutoFind.Location = new System.Drawing.Point(10, 165);
+      BtnInstallAutoFind.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+      BtnInstallAutoFind.Name = "BtnInstallAutoFind";
+      BtnInstallAutoFind.Size = new System.Drawing.Size(99, 27);
+      BtnInstallAutoFind.TabIndex = 15;
+      BtnInstallAutoFind.Text = "Auto-discover";
+      BtnInstallAutoFind.UseVisualStyleBackColor = true;
+      BtnInstallAutoFind.Click += BtnInstallAutoFind_Click;
+      // 
+      // BtnInstallManualFind
+      // 
+      BtnInstallManualFind.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+      BtnInstallManualFind.Location = new System.Drawing.Point(396, 136);
+      BtnInstallManualFind.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+      BtnInstallManualFind.Name = "BtnInstallManualFind";
+      BtnInstallManualFind.Size = new System.Drawing.Size(36, 23);
+      BtnInstallManualFind.TabIndex = 14;
+      BtnInstallManualFind.Text = "...";
+      BtnInstallManualFind.UseVisualStyleBackColor = true;
+      BtnInstallManualFind.Click += BtnInstallManualFind_Click;
+      // 
+      // TxtInstallPath
+      // 
+      TxtInstallPath.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+      TxtInstallPath.Location = new System.Drawing.Point(10, 136);
+      TxtInstallPath.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+      TxtInstallPath.Name = "TxtInstallPath";
+      TxtInstallPath.Size = new System.Drawing.Size(377, 23);
+      TxtInstallPath.TabIndex = 13;
+      TxtInstallPath.TextChanged += OnTextChanged;
+      TxtInstallPath.KeyPress += OnKeyPress;
+      // 
+      // label4
+      // 
+      label4.AutoSize = true;
+      label4.Location = new System.Drawing.Point(4, 113);
+      label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+      label4.Name = "label4";
+      label4.Size = new System.Drawing.Size(122, 15);
+      label4.TabIndex = 12;
+      label4.Text = "VeraCrypt Install Path:";
+      // 
+      // ChkOnSignoutDismount
+      // 
+      ChkOnSignoutDismount.AutoSize = true;
+      ChkOnSignoutDismount.Enabled = false;
+      ChkOnSignoutDismount.Location = new System.Drawing.Point(139, 48);
+      ChkOnSignoutDismount.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+      ChkOnSignoutDismount.Name = "ChkOnSignoutDismount";
+      ChkOnSignoutDismount.Size = new System.Drawing.Size(184, 19);
+      ChkOnSignoutDismount.TabIndex = 1;
+      ChkOnSignoutDismount.Text = "Auto-dismount all on Signout";
+      ChkOnSignoutDismount.UseVisualStyleBackColor = true;
+      ChkOnSignoutDismount.CheckedChanged += Check_CheckedChanged;
+      // 
+      // ChkForceDismounts
+      // 
+      ChkForceDismounts.AutoSize = true;
+      ChkForceDismounts.Location = new System.Drawing.Point(7, 75);
+      ChkForceDismounts.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+      ChkForceDismounts.Name = "ChkForceDismounts";
+      ChkForceDismounts.Size = new System.Drawing.Size(115, 19);
+      ChkForceDismounts.TabIndex = 11;
+      ChkForceDismounts.Text = "Force Dismounts";
+      ChkForceDismounts.UseVisualStyleBackColor = true;
+      ChkForceDismounts.CheckedChanged += Check_CheckedChanged;
+      // 
+      // ChkOnShutdownDismount
+      // 
+      ChkOnShutdownDismount.AutoSize = true;
+      ChkOnShutdownDismount.Enabled = false;
+      ChkOnShutdownDismount.Location = new System.Drawing.Point(139, 22);
+      ChkOnShutdownDismount.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+      ChkOnShutdownDismount.Name = "ChkOnShutdownDismount";
+      ChkOnShutdownDismount.Size = new System.Drawing.Size(197, 19);
+      ChkOnShutdownDismount.TabIndex = 0;
+      ChkOnShutdownDismount.Text = "Auto-dismount all on Shutdown";
+      ChkOnShutdownDismount.UseVisualStyleBackColor = true;
+      ChkOnShutdownDismount.CheckedChanged += Check_CheckedChanged;
+      // 
+      // ChkOnStartMount
+      // 
+      ChkOnStartMount.AutoSize = true;
+      ChkOnStartMount.Enabled = false;
+      ChkOnStartMount.Location = new System.Drawing.Point(7, 22);
+      ChkOnStartMount.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+      ChkOnStartMount.Name = "ChkOnStartMount";
+      ChkOnStartMount.Size = new System.Drawing.Size(105, 19);
+      ChkOnStartMount.TabIndex = 8;
+      ChkOnStartMount.Text = "OnStart Mount";
+      ChkOnStartMount.UseVisualStyleBackColor = true;
+      ChkOnStartMount.CheckedChanged += Check_CheckedChanged;
+      // 
+      // ChkOnExitDismount
+      // 
+      ChkOnExitDismount.AutoSize = true;
+      ChkOnExitDismount.Enabled = false;
+      ChkOnExitDismount.Location = new System.Drawing.Point(7, 48);
+      ChkOnExitDismount.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+      ChkOnExitDismount.Name = "ChkOnExitDismount";
+      ChkOnExitDismount.Size = new System.Drawing.Size(115, 19);
+      ChkOnExitDismount.TabIndex = 9;
+      ChkOnExitDismount.Text = "OnExit Dismount";
+      ChkOnExitDismount.UseVisualStyleBackColor = true;
+      ChkOnExitDismount.CheckedChanged += Check_CheckedChanged;
+      // 
+      // groupBox2
+      // 
+      groupBox2.Controls.Add(CmboDrives);
+      groupBox2.Controls.Add(BtnHcPath);
+      groupBox2.Controls.Add(TxtHcPath);
+      groupBox2.Controls.Add(label1);
+      groupBox2.Controls.Add(TxtHcPass);
+      groupBox2.Controls.Add(label2);
+      groupBox2.Controls.Add(label3);
+      groupBox2.Location = new System.Drawing.Point(4, 207);
+      groupBox2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+      groupBox2.Name = "groupBox2";
+      groupBox2.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+      groupBox2.Size = new System.Drawing.Size(439, 149);
+      groupBox2.TabIndex = 0;
+      groupBox2.TabStop = false;
+      groupBox2.Text = "Available Volumes";
+      // 
+      // CmboDrives
+      // 
+      CmboDrives.FormattingEnabled = true;
+      CmboDrives.Location = new System.Drawing.Point(7, 36);
+      CmboDrives.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+      CmboDrives.MaxLength = 1;
+      CmboDrives.Name = "CmboDrives";
+      CmboDrives.Size = new System.Drawing.Size(58, 23);
+      CmboDrives.TabIndex = 16;
+      CmboDrives.TextChanged += OnTextChanged;
+      // 
+      // BtnHcPath
+      // 
+      BtnHcPath.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+      BtnHcPath.Location = new System.Drawing.Point(396, 36);
+      BtnHcPath.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+      BtnHcPath.Name = "BtnHcPath";
+      BtnHcPath.Size = new System.Drawing.Size(36, 23);
+      BtnHcPath.TabIndex = 15;
+      BtnHcPath.Text = "...";
+      BtnHcPath.UseVisualStyleBackColor = true;
+      BtnHcPath.Click += BtnHcPath_Click;
+      // 
+      // TxtHcPath
+      // 
+      TxtHcPath.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+      TxtHcPath.Location = new System.Drawing.Point(72, 37);
+      TxtHcPath.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+      TxtHcPath.Name = "TxtHcPath";
+      TxtHcPath.Size = new System.Drawing.Size(316, 23);
+      TxtHcPath.TabIndex = 10;
+      TxtHcPath.TextChanged += OnTextChanged;
+      TxtHcPath.KeyPress += OnKeyPress;
+      // 
+      // label1
+      // 
+      label1.AutoSize = true;
+      label1.Location = new System.Drawing.Point(7, 18);
+      label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+      label1.Name = "label1";
+      label1.Size = new System.Drawing.Size(37, 15);
+      label1.TabIndex = 4;
+      label1.Text = "Drive:";
+      // 
+      // TxtHcPass
+      // 
+      TxtHcPass.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+      TxtHcPass.Location = new System.Drawing.Point(7, 82);
+      TxtHcPass.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+      TxtHcPass.Name = "TxtHcPass";
+      TxtHcPass.PasswordChar = '*';
+      TxtHcPass.Size = new System.Drawing.Size(424, 23);
+      TxtHcPass.TabIndex = 7;
+      TxtHcPass.TextChanged += OnTextChanged;
+      TxtHcPass.KeyPress += OnKeyPress;
+      // 
+      // label2
+      // 
+      label2.AutoSize = true;
+      label2.Location = new System.Drawing.Point(75, 18);
+      label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+      label2.Name = "label2";
+      label2.Size = new System.Drawing.Size(54, 15);
+      label2.TabIndex = 5;
+      label2.Text = "HC Path:";
+      // 
+      // label3
+      // 
+      label3.AutoSize = true;
+      label3.Location = new System.Drawing.Point(7, 63);
+      label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+      label3.Name = "label3";
+      label3.Size = new System.Drawing.Size(100, 15);
+      label3.TabIndex = 6;
+      label3.Text = "Volume Password";
       // 
       // PreferencesPage
       // 
-      this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-      this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(391, 319);
-      this.Controls.Add(this.flowLayoutPanel1);
-      this.Name = "PreferencesPage";
-      this.Text = "PreferencesPage";
-      this.Load += new System.EventHandler(this.PreferencesPage_Load);
-      this.flowLayoutPanel1.ResumeLayout(false);
-      this.groupBox3.ResumeLayout(false);
-      this.groupBox3.PerformLayout();
-      this.groupBox2.ResumeLayout(false);
-      this.groupBox2.PerformLayout();
-      this.ResumeLayout(false);
+      AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+      AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+      ClientSize = new System.Drawing.Size(456, 368);
+      Controls.Add(flowLayoutPanel1);
+      Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+      Name = "PreferencesPage";
+      Text = "PreferencesPage";
+      Load += PreferencesPage_Load;
+      flowLayoutPanel1.ResumeLayout(false);
+      groupBox3.ResumeLayout(false);
+      groupBox3.PerformLayout();
+      groupBox2.ResumeLayout(false);
+      groupBox2.PerformLayout();
+      ResumeLayout(false);
 
     }
 
@@ -331,5 +367,6 @@
     private System.Windows.Forms.ComboBox CmboDrives;
     private System.Windows.Forms.Button BtnTestCipher;
     private System.Windows.Forms.Label lblCipherTest;
+    private System.Windows.Forms.Label lblInstallFound;
   }
 }

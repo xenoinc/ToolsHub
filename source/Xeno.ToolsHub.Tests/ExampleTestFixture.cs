@@ -17,8 +17,7 @@ namespace Xeno.ToolsHub.Tests
     [AssemblyInitialize]
     public static void AssemblyInit(TestContext context)
     {
-      // testContext.TestName
-      Log.Debug("Assembly initialize - Name: " + context.TestName);
+      Log.Debug("Assembly initialize");
     }
 
     [AssemblyCleanup]

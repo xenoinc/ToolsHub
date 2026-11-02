@@ -25,7 +25,7 @@ namespace Xeno.ToolsHub.VeraCryptAddin.Handlers
 
     public override bool IsInitialized { get; }
 
-    public override List<MenuItem> MenuItems()
+    public override List<ToolStripItem> MenuItems()
     {
       // TODO: Use Domain.Utils to ask VeraCryptManager if the HC file was already mounted
       // and display a "checked" box if it was.
@@ -42,11 +42,11 @@ namespace Xeno.ToolsHub.VeraCryptAddin.Handlers
 
       // When creating a SysTray entry, use the IndexId to tell which drive it is
       // and the display text is, "Title". However below we're just testing individual components
-      MenuItem menu = new MenuItem("VeraCrypt");
-      menu.MenuItems.Add(0, new TrayItem("Mount", volume.IndexId, true, _veraCrypt.OnMount) { Checked = isMounted });
-      menu.MenuItems.Add(1, new TrayItem("Dismount", volume.IndexId, true, _veraCrypt.OnDismount));
+      ToolStripMenuItem menu = new ToolStripMenuItem("VeraCrypt");
+      menu.DropDownItems.Add(new TrayItem("Mount", volume.IndexId, true, _veraCrypt.OnMount) { Checked = isMounted });
+      menu.DropDownItems.Add(new TrayItem("Dismount", volume.IndexId, true, _veraCrypt.OnDismount));
 
-      return new List<MenuItem>() { menu };
+      return new List<ToolStripItem>() { menu };
     }
   }
 }

@@ -26,12 +26,12 @@ namespace Xeno.ToolsHub.ExtensionModel.SystemTray
     [NodeAttribute("Text")]
     public string Text { get; set; }
 
-    public MenuItem CreateMenuItem()
+    public ToolStripMenuItem CreateMenuItem()
     {
-      MenuItem menuItem = new MenuItem(Text);
+      ToolStripMenuItem menuItem = new ToolStripMenuItem(Text);
       foreach (var child in ChildNodes)
       {
-        // menuItem.MenuItems.Add(child.CreateMenuItem());
+        // menuItem.DropDownItems.Add(child.CreateMenuItem());
       }
 
       return menuItem;

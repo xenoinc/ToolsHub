@@ -22,6 +22,6 @@ namespace Xeno.ToolsHub.ExtensionModel
   /// </remarks>
   public interface ISystemTrayExtension : IBaseExtension
   {
-    List<MenuItem> MenuItems();
+    List<ToolStripItem> MenuItems();
   }
 }

@@ -29,15 +29,15 @@ namespace PomodoroAddin.Handlers
 
     public override bool IsInitialized { get; }
 
-    public override List<MenuItem> MenuItems()
+    public override List<ToolStripItem> MenuItems()
     {
-      MenuItem menu = new MenuItem("🍅 Pomodoro (alpha)");
-      menu.MenuItems.Add(0, new TrayItem($"Start ({_pomodoro.SettingTimerDuration} min)", string.Empty, true, _pomodoro.OnStart));
-      menu.MenuItems.Add(1, new TrayItem($"Take short break ({_pomodoro.SettingTimerShortBreak} min)", string.Empty, true, _pomodoro.OnBreakShort));
-      menu.MenuItems.Add(2, new TrayItem($"Take long break ({_pomodoro.SettingTimerLongBreak} min)", string.Empty, true, _pomodoro.OnBreakLong));
-      menu.MenuItems.Add(3, new TrayItem($"-", string.Empty));
-      menu.MenuItems.Add(4, new TrayItem($"Pause", string.Empty, true, _pomodoro.OnPause));
-      menu.MenuItems.Add(5, new TrayItem($"Stop", string.Empty, true, _pomodoro.OnStop));
+      ToolStripMenuItem menu = new ToolStripMenuItem("🍅 Pomodoro (alpha)");
+      menu.DropDownItems.Add(new TrayItem($"Start ({_pomodoro.SettingTimerDuration} min)", string.Empty, true, _pomodoro.OnStart));
+      menu.DropDownItems.Add(new TrayItem($"Take short break ({_pomodoro.SettingTimerShortBreak} min)", string.Empty, true, _pomodoro.OnBreakShort));
+      menu.DropDownItems.Add(new TrayItem($"Take long break ({_pomodoro.SettingTimerLongBreak} min)", string.Empty, true, _pomodoro.OnBreakLong));
+      menu.DropDownItems.Add(new ToolStripSeparator());
+      menu.DropDownItems.Add(new TrayItem($"Pause", string.Empty, true, _pomodoro.OnPause));
+      menu.DropDownItems.Add(new TrayItem($"Stop", string.Empty, true, _pomodoro.OnStop));
 
       // Proposed method for creating menu items
       ////menu.MenuItems.Add(0, new TrayItem(new TrayItemInfo("P1", "Start", $"Start ({_pomodoro.SettingTimerDuration} min)", string.Empty, true), _pomodoro.OnStart));
@@ -47,7 +47,7 @@ namespace PomodoroAddin.Handlers
       ////menu.MenuItems.Add(4, new TrayItem(new TrayItemInfo("P1", "Start", $"Pause", string.Empty, true), _pomodoro.OnPause));
       ////menu.MenuItems.Add(5, new TrayItem(new TrayItemInfo("P1", "Start", $"Stop", string.Empty, true), _pomodoro.OnStop));
 
-      return new List<MenuItem>() { menu };
+      return new List<ToolStripItem>() { menu };
     }
   }
 }

@@ -1,3 +1,6 @@
-[submodule "libs/Mono.Addins"]
-	path = libs/Mono.Addins
-	url = https://github.com/mono/mono-addins.git
+; Only enabled when needing to debug Mono.Addins
+;
+;[submodule "libs/Mono.Addins"]
+;	path = libs/Mono.Addins
+;	url = https://github.com/mono/mono-addins.git
+

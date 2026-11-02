@@ -15,8 +15,6 @@
 
 using System;
 using System.Runtime.InteropServices;
-using System.Runtime.Versioning;
-using System.Security.Permissions;
 using System.Windows.Forms;
 
 namespace Xeno.ToolsHub.Managers
@@ -58,7 +56,7 @@ namespace Xeno.ToolsHub.Managers
       DestroyWindow(true, IntPtr.Zero);
     }
 
-    [PermissionSetAttribute(SecurityAction.LinkDemand, Name = "FullTrust")]
+    ////[PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")] // Deprecated attribute
     protected override void WndProc(ref Message m)
     {
       switch (m.Msg)
@@ -114,15 +112,12 @@ namespace Xeno.ToolsHub.Managers
       ////private static readonly HandleRef HwndMessage = new HandleRef(null, new IntPtr(-3));
 
       [DllImport("kernel32.dll", ExactSpelling = true, CharSet = CharSet.Auto)]
-      [ResourceExposure(ResourceScope.Process)]
       public static extern int GetCurrentThreadId();
 
       [DllImport("user32.dll", ExactSpelling = true, CharSet = CharSet.Auto)]
-      [ResourceExposure(ResourceScope.Process)]
       public static extern int GetWindowThreadProcessId(HandleRef hWnd, out int lpdwProcessId);
 
       [DllImport("user32.dll", CharSet = CharSet.Auto)]
-      [ResourceExposure(ResourceScope.None)]
       public static extern IntPtr PostMessage(HandleRef hwnd, int msg, int wparam, int lparam);
     }
   }

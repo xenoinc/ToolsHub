@@ -13,7 +13,7 @@ ToolsHub add-in manifest
        isRoot="true">
 
   <Runtime>
-    <Import Assembly="ToolsHub.exe" />
+    <Import assembly="ToolsHub.dll" />
   </Runtime>
 
   <!-- Define Extension Points -->

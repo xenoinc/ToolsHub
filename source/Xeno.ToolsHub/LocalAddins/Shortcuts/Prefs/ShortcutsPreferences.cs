@@ -9,6 +9,7 @@
 namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
 {
   using System;
+  using System.ComponentModel;
   using System.Windows.Forms;
 
   //// using Newtonsoft.Json.Linq;
@@ -34,6 +35,8 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
     ///   Gets or sets a value indicating whether or not the parent window
     ///   needs to invoke the OnSave method.
     /// </summary>
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public bool IsModified
     {
       get => _isModified;
@@ -90,8 +93,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
     private void BtnAdd_Click(object sender, EventArgs e)
     {
       // https://www.codeproject.com/script/Articles/ViewDownloads.aspx?aid=6646
-      LvShortcuts.SelectedItems.
-
+      LvShortcuts.SelectedItems.Clear();
 
       // Create new ShortcutItem for editing
       TxtPath.Text = string.Empty;

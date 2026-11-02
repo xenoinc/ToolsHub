@@ -18,6 +18,6 @@ namespace Xeno.ToolsHub.ExtensionModel.SystemTray
   {
     public abstract bool IsInitialized { get; }
 
-    public abstract List<MenuItem> MenuItems();
+    public abstract List<ToolStripItem> MenuItems();
   }
 }

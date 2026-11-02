@@ -14,6 +14,7 @@ namespace Xeno.ToolsHub
   using System.Threading.Tasks;
   using System.Windows.Forms;
 #if USE_SQUIRREL
+  // Disabled 2022-08-15
   ////using Squirrel;
 #endif
   using Xeno.ToolsHub.Config;
@@ -44,10 +45,11 @@ namespace Xeno.ToolsHub
 
       Log.Debug("Let's do this!!   ლ(｀ー´ლ)");
 
-      Task.Run(async () =>
-      {
-        await SquirrelAutoUpdateAsync();
-      });
+      // Disabled 2022-08-15
+      ////Task.Run(async () =>
+      ////{
+      ////  await SquirrelAutoUpdateAsync();
+      ////});
 
       Application.EnableVisualStyles();
       Application.SetCompatibleTextRenderingDefault(false);
@@ -78,6 +80,7 @@ namespace Xeno.ToolsHub
       await Task.Yield();
 
 #if USE_SQUIRREL
+      // Disabled 2022-08-15
       ////try
       ////{
       ////  ReleaseEntry release = null;
