@@ -3,7 +3,7 @@
  * Author:  Damian Suess
  * File:    PreferencesPage.cs
  * Description:
- *  Sample preference page with MessagingCenter
+ *  Sample preference page with Lite.EventIpc
  */
 
 namespace Xeno.ToolsHub.SampleAssmAddin.Views
@@ -40,15 +40,12 @@ namespace Xeno.ToolsHub.SampleAssmAddin.Views
 
     private void BtnRefreshSysTray_Click(object sender, EventArgs e)
     {
-      MessagingCenter.Send<SystemTrayMessages>(new SystemTrayMessages(), SystemTrayMessages.Refresh);
+      AppEvents.Instance.Publish(new TrayRefreshRequested());
     }
 
     private void BtnSysTrayNotify_Click(object sender, EventArgs e)
     {
-      MessagingCenter.Send<SystemTrayMessages, string>(
-        new SystemTrayMessages(),
-        SystemTrayMessages.Notify,
-        TxtSysTrayMessage.Text);
+      AppEvents.Instance.Publish(new TrayNotificationRequested(TxtSysTrayMessage.Text));
     }
   }
 }

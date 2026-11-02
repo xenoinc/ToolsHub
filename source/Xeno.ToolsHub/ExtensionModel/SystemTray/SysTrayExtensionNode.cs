@@ -9,32 +9,31 @@
 using System.Windows.Forms;
 using Mono.Addins;
 
-namespace Xeno.ToolsHub.ExtensionModel.SystemTray
+namespace Xeno.ToolsHub.ExtensionModel.SystemTray;
+
+//// [ExtensionNode("SysTray")]  // or "TrayMenu"
+//// [ExtensionNodeChild(typeof(SysTrayExtensionNode))]
+////
+//// or
+////
+//// <ExtensionPoint Path = "/ToolsHub/SystemTray" >
+////  < ExtensionNode Name="SysTrayAddin" Type="Xeno.ToolsHub.ExtensionModel.ISystemTrayExtension" />
+////  <!--<ExtensionNode Name = "SysTrayAddin" Type="Xeno.ToolsHub.Managers.SystemTray.SysTrayExtensionNode" />-->
+//// </ExtensionPoint>
+
+internal class SysTrayExtensionNode : TypeExtensionNode
 {
-  //// [ExtensionNode("SysTray")]  // or "TrayMenu"
-  //// [ExtensionNodeChild(typeof(SysTrayExtensionNode))]
-  ////
-  //// or
-  ////
-  //// <ExtensionPoint Path = "/ToolsHub/SystemTray" >
-  ////  < ExtensionNode Name="SysTrayAddin" Type="Xeno.ToolsHub.ExtensionModel.ISystemTrayExtension" />
-  ////  <!--<ExtensionNode Name = "SysTrayAddin" Type="Xeno.ToolsHub.Managers.SystemTray.SysTrayExtensionNode" />-->
-  //// </ExtensionPoint>
+  [NodeAttribute("Text")]
+  public string Text { get; set; }
 
-  internal class SysTrayExtensionNode : TypeExtensionNode
+  public ToolStripMenuItem CreateMenuItem()
   {
-    [NodeAttribute("Text")]
-    public string Text { get; set; }
-
-    public ToolStripMenuItem CreateMenuItem()
+    ToolStripMenuItem menuItem = new ToolStripMenuItem(Text);
+    foreach (var child in ChildNodes)
     {
-      ToolStripMenuItem menuItem = new ToolStripMenuItem(Text);
-      foreach (var child in ChildNodes)
-      {
-        // menuItem.DropDownItems.Add(child.CreateMenuItem());
-      }
-
-      return menuItem;
+      // menuItem.DropDownItems.Add(child.CreateMenuItem());
     }
+
+    return menuItem;
   }
 }

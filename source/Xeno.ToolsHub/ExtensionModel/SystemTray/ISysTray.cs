@@ -8,12 +8,11 @@
 
 //// [assembly: Mono.Addins.ExtensionPoint("/ToolsHub/SysTray")]
 
-namespace Xeno.ToolsHub.ExtensionModel.SystemTray
-{
-  public interface ISysTray
-  {
-    string Id { get; }
+namespace Xeno.ToolsHub.ExtensionModel.SystemTray;
 
-    string Text { get; }
-  }
+public interface ISysTray
+{
+  string Id { get; }
+
+  string Text { get; }
 }

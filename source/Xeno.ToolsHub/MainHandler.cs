@@ -59,6 +59,14 @@ namespace Xeno.ToolsHub
 
     public AddinsManager Addins => _addinsManager;
 
+    protected override void Dispose(bool disposing)
+    {
+      if (disposing)
+        _sysTray?.Dispose();
+
+      base.Dispose(disposing);
+    }
+
     private void Application_ApplicationExit(object sender, System.EventArgs e)
     {
       // TODO: Inform add-ins of closing application

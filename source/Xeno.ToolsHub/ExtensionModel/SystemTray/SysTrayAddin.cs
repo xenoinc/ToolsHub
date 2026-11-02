@@ -8,16 +8,15 @@
  *  TODO: Rename to, SysTrayAddinExtension
  */
 
-namespace Xeno.ToolsHub.ExtensionModel.SystemTray
+namespace Xeno.ToolsHub.ExtensionModel.SystemTray;
+
+using System.Collections.Generic;
+using System.Windows.Forms;
+
+////[Mono.Addins.TypeExtensionPoint(Path = "/ToolsHub/SystemTray", NodeName = "SysTrayAddin")]
+public abstract class SysTrayAddin : AbstractAddin
 {
-  using System.Collections.Generic;
-  using System.Windows.Forms;
+  public abstract bool IsInitialized { get; }
 
-  ////[Mono.Addins.TypeExtensionPoint(Path = "/ToolsHub/SystemTray", NodeName = "SysTrayAddin")]
-  public abstract class SysTrayAddin : AbstractAddin
-  {
-    public abstract bool IsInitialized { get; }
-
-    public abstract List<ToolStripItem> MenuItems();
-  }
+  public abstract List<ToolStripItem> MenuItems();
 }
