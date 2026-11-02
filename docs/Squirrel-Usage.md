@@ -6,7 +6,7 @@ Copyright 2020 Xeno Innovations, Inc.
 This uses a different NuSpec file than the "manual" process below. This MSBuild process uses,
 
 **Uses NuSpec:**
-``.\source\ToolsHub.MSBuild.nuspec``
+``.\source\Dockzi.MSBuild.nuspec``
 
 1. Open command prompt in root of project
 2. ``MSBuild /t:MakeInstaller``
@@ -21,7 +21,7 @@ To learn more about distributing, read the following [official document](https:/
 2. **VS:** Build from Release
 3. **NuGet Package Explorer** (_or Notepad++_)
     1. Update .nuspec version number to match ApplicationInfo version.
-        * **FILE:** ``.\source\ToolsHub.nuspec``
+        * **FILE:** ``.\source\Dockzi.nuspec``
     2. Click, Save As.
     3. Place file in root of project folder.
 4. Execute Releasify from VS inside of project
@@ -30,7 +30,7 @@ To learn more about distributing, read the following [official document](https:/
     3. Example:
 ```powershell
 PM> cd ..
-PM> Squirrel --releasify ToolsHub.1.1.53.nupkg
+PM> Squirrel --releasify Dockzi.1.1.53.nupkg
 ```
 5. Copy "Releases" output to our network share for archiving
 

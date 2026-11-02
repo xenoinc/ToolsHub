@@ -9,12 +9,12 @@
 using System;
 using System.ComponentModel;
 using System.Windows.Forms;
-using PomodoroAddin.Domain;
-using PomodoroAddin.Managers;
-using Xeno.ToolsHub.ExtensionModel;
-using Xeno.ToolsHub.Services;
+using Xeno.Dockzi.PomodoroAddin.Domain;
+using Xeno.Dockzi.PomodoroAddin.Managers;
+using Xeno.Dockzi.ExtensionModel;
+using Xeno.Dockzi.Services;
 
-namespace PomodoroAddin.Views
+namespace Xeno.Dockzi.PomodoroAddin.Views
 {
   public partial class PreferencePage : Form, IPreferencePageActions
   {
@@ -94,14 +94,14 @@ namespace PomodoroAddin.Views
       nIcon = new IconGenerator[5];
 
       _manager.SendMessageTrayIcon(icon.ToIcon());
-      Xeno.ToolsHub.Config.Helpers.Timeout(700);
+      Xeno.Dockzi.Config.Helpers.Timeout(700);
 
       for (int i = 1; i <= 5; i++)
       {
         nIcon[i - 1] = new IconGenerator(i.ToString());
 
         _manager.SendMessageTrayIcon(nIcon[i - 1].ToIcon());
-        Xeno.ToolsHub.Config.Helpers.Timeout(500);
+        Xeno.Dockzi.Config.Helpers.Timeout(500);
       }
 
       // Go back to default

@@ -12,7 +12,7 @@
 using System;
 using System.Windows.Input;
 
-namespace Xeno.ToolsHub.SidebarAddin.Domain
+namespace Xeno.Dockzi.SidebarAddin.Domain
 {
   /// <summary>A command that executes delegates to determine whether the command can execute, and to execute the command.</summary>
 	/// <remarks>

@@ -6,12 +6,12 @@
  *  Sidebar prefreferences add-in
  */
 
-using Xeno.ToolsHub.SidebarAddin.Views;
+using Xeno.Dockzi.SidebarAddin.Views;
 
-namespace Xeno.ToolsHub.SidebarAddin.Handlers
+namespace Xeno.Dockzi.SidebarAddin.Handlers
 {
   using System.Windows.Forms;
-  using Xeno.ToolsHub.ExtensionModel;
+  using Xeno.Dockzi.ExtensionModel;
 
   [Mono.Addins.Extension(
     NodeName = ExtensionName.PreferencePageAddin,

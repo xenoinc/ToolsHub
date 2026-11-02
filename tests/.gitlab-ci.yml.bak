@@ -1,5 +1,5 @@
 variables:
-  PROJECT_NAME: ToolsHub
+  PROJECT_NAME: Dockzi
 before_script:
   - echo "Starting build for %PROJECT_NAME%"
 stages:

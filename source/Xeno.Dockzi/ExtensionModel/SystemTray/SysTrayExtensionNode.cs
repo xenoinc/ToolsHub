@@ -1,0 +1,40 @@
+﻿/* Copyright Xeno Innovations, Inc. 2018
+ * Date:    2018-10-24
+ * Author:  Damian Suess
+ * File:    TrayMenuExtensionNode.cs
+ * Description:
+ *  System Tray extension node creator
+ */
+
+using System.Windows.Forms;
+using Mono.Addins;
+
+namespace Xeno.Dockzi.ExtensionModel.SystemTray
+{
+  //// [ExtensionNode("SysTray")]  // or "TrayMenu"
+  //// [ExtensionNodeChild(typeof(SysTrayExtensionNode))]
+  ////
+  //// or
+  ////
+  //// <ExtensionPoint Path = "/Dockzi/SystemTray" >
+  ////  < ExtensionNode Name="SysTrayAddin" Type="Xeno.Dockzi.ExtensionModel.ISystemTrayExtension" />
+  ////  <!--<ExtensionNode Name = "SysTrayAddin" Type="Xeno.Dockzi.Managers.SystemTray.SysTrayExtensionNode" />-->
+  //// </ExtensionPoint>
+
+  internal class SysTrayExtensionNode : TypeExtensionNode
+  {
+    [NodeAttribute("Text")]
+    public string Text { get; set; }
+
+    public ToolStripMenuItem CreateMenuItem()
+    {
+      ToolStripMenuItem menuItem = new ToolStripMenuItem(Text);
+      foreach (var child in ChildNodes)
+      {
+        // menuItem.DropDownItems.Add(child.CreateMenuItem());
+      }
+
+      return menuItem;
+    }
+  }
+}

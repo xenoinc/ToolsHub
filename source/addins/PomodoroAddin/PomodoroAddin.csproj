@@ -1,14 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <RootNamespace>PomodoroAddin</RootNamespace>
+    <RootNamespace>Xeno.Dockzi.PomodoroAddin</RootNamespace>
     <AssemblyName>PomodoroAddin</AssemblyName>
     <OutputPath>..\..\..\output\</OutputPath>
     <CodeAnalysisRuleSet>..\..\stylecop.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Xeno.ToolsHub\Xeno.ToolsHub.csproj" />
+    <ProjectReference Include="..\..\Xeno.Dockzi\Xeno.Dockzi.csproj" />
   </ItemGroup>
 
   <ItemGroup>

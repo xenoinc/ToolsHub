@@ -24,9 +24,9 @@ using Mono.Addins;
 [assembly:AddinDescription("Desktop dockable sidebar")]
 
 // Attach to add-in host
-[assembly: Mono.Addins.AddinDependency("XenoInnovations.ToolsHub", "0.3")]
+[assembly: Mono.Addins.AddinDependency("Xeno.Dockzi", "0.3")]
 
-namespace Xeno.ToolsHub.SidebarAddin
+namespace Xeno.Dockzi.SidebarAddin
 {
   public static class Constants
   {
@@ -47,7 +47,7 @@ namespace Xeno.ToolsHub.SidebarAddin
     /// <summary>Monitor "1" (main)</summary>
     public static string KeyScreenNumber => "ScreenNumber";
 
-    /// <summary>Use show sidebar(s) when ToolsHub starts</summary>
+    /// <summary>Use show sidebar(s) when Dockzi starts</summary>
     public static string KeyShowSidebars => "ShowSidebars";
 
     public static string KeyTintColor => "TintColor";

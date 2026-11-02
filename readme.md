@@ -1,4 +1,4 @@
-# Xeno.ToolsHub
+# Dockzi
 
 Flexible tools launcher desktop app which is "_not your average extensible sidebar_"
 
@@ -42,6 +42,23 @@ Author: [Damian Suess](https://www.linkedin.com/in/damiansuess/)
 * **Status:** WiP
 * Auto-mount drives on startup
 * Safely dismount drive on system shutdown to guard against corruption
+
+## Building Dockzi
+
+The base namespace is `Xeno.Dockzi`. Build the solution with the .NET 10 SDK:
+
+```powershell
+dotnet build source/Dockzi.slnx --configuration Release
+dotnet test source/Xeno.Dockzi.Tests/Xeno.Dockzi.Tests.csproj --configuration Release
+```
+
+The launcher is written to `output/Dockzi.exe`. Existing repository and hosted update URLs retain their original addresses.
+
+### Settings from ToolsHub
+
+Dockzi uses `Dockzi.db`. To keep existing settings, close the launcher and copy `ToolsHub.db` to `Dockzi.db`. For installed settings, also copy the file from the `XI/ToolsHub` folder to `XI/Dockzi` under the same local or shared application-data directory. Keep the original as a backup.
+
+External add-ins must be rebuilt against `Xeno.Dockzi`, depend on `Xeno.Dockzi` version `0.3`, and use the `/Dockzi/` extension paths.
 
 ## Coding
 
@@ -90,6 +107,6 @@ Only perform this method if the **MSBuild** one does not.
     3. Example:
 ```powershell
 PM> cd ..
-PM> Squirrel --releasify ToolsHub.1.1.53.nupkg
+PM> Squirrel --releasify Dockzi.1.1.53.nupkg
 ```
 5. Copy "Releases" output to our network share for archiving

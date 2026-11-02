@@ -6,7 +6,7 @@
  *  Dock item
  */
 
-namespace Xeno.ToolsHub.SidebarAddin.Models
+namespace Xeno.Dockzi.SidebarAddin.Models
 {
   public struct ItemImage
   {

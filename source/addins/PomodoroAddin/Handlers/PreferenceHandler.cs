@@ -6,11 +6,11 @@
  *
  */
 
-namespace PomodoroAddin.Handlers
+namespace Xeno.Dockzi.PomodoroAddin.Handlers
 {
   using System.Windows.Forms;
-  using PomodoroAddin.Views;
-  using Xeno.ToolsHub.ExtensionModel;
+  using Xeno.Dockzi.PomodoroAddin.Views;
+  using Xeno.Dockzi.ExtensionModel;
 
   [Mono.Addins.Extension(
     NodeName = ExtensionName.PreferencePageAddin,

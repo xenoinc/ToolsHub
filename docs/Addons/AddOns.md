@@ -1,12 +1,12 @@
-# ToolsHub Extension Points
+# Dockzi Extension Points
 
 ## Endpoints
 
 | Node Name | Path |
 |---|---|
-| StartupAddin | ToolsHub/AppStartup |
-|  | ToolsHub/Sidebar |
-|  | ToolsHub/SystemTray |
+| StartupAddin | Dockzi/AppStartup |
+|  | Dockzi/Sidebar |
+|  | Dockzi/SystemTray |
 
 ## Creating WPF Add-in
 1. Create new project: WPF User Control

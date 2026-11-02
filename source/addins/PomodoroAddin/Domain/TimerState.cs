@@ -6,7 +6,7 @@
  *  Timer state enumeration
  */
 
-namespace PomodoroAddin.Domain
+namespace Xeno.Dockzi.PomodoroAddin.Domain
 {
   public enum TimerState
   {

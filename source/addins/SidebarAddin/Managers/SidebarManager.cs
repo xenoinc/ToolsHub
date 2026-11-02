@@ -6,13 +6,13 @@
  *  Sidebar manager
  */
 
-using Xeno.ToolsHub.LocalAddins.Shortcuts;
-using Xeno.ToolsHub.Services;
-using Xeno.ToolsHub.Services.Logging;
-using Xeno.ToolsHub.Services.Messaging;
-using Xeno.ToolsHub.SidebarAddin.ViewModels;
+using Xeno.Dockzi.LocalAddins.Shortcuts;
+using Xeno.Dockzi.Services;
+using Xeno.Dockzi.Services.Logging;
+using Xeno.Dockzi.Services.Messaging;
+using Xeno.Dockzi.SidebarAddin.ViewModels;
 
-namespace Xeno.ToolsHub.SidebarAddin.Managers
+namespace Xeno.Dockzi.SidebarAddin.Managers
 {
   public class SidebarManager
   {

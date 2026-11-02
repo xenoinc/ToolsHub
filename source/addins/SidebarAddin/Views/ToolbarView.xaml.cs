@@ -10,9 +10,9 @@ using System;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
-using Xeno.ToolsHub.SidebarAddin.Domain;
+using Xeno.Dockzi.SidebarAddin.Domain;
 
-namespace Xeno.ToolsHub.SidebarAddin.Views
+namespace Xeno.Dockzi.SidebarAddin.Views
 {
   /// <summary>
   /// Interaction logic for UserControl1.xaml

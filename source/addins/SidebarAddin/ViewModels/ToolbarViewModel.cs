@@ -8,11 +8,11 @@
 
 using System.Windows.Controls;
 using System.Windows.Input;
-using Xeno.ToolsHub.Services.Logging;
-using Xeno.ToolsHub.SidebarAddin.Domain;
-using Xeno.ToolsHub.SidebarAddin.Models;
+using Xeno.Dockzi.Services.Logging;
+using Xeno.Dockzi.SidebarAddin.Domain;
+using Xeno.Dockzi.SidebarAddin.Models;
 
-namespace Xeno.ToolsHub.SidebarAddin.ViewModels
+namespace Xeno.Dockzi.SidebarAddin.ViewModels
 {
   public class ToolbarViewModel
   {

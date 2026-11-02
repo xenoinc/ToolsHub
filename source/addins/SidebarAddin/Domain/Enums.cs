@@ -14,7 +14,7 @@
 
 using System;
 
-namespace Xeno.ToolsHub.SidebarAddin.Domain
+namespace Xeno.Dockzi.SidebarAddin.Domain
 {
   ///// <summary>AnimateWindow USER32 API</summary>
   ///// <example>

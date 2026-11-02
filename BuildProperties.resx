@@ -6,7 +6,7 @@
     <AssemblyCopyright>Copyright (c) Xeno Innovations, Inc. 2018-2020</AssemblyCopyright>
 
     <!-- Project details -->
-    <ProjectName>ToolsHub</ProjectName>
+    <ProjectName>Dockzi</ProjectName>
     <SolutionName>$(ProjectName).sln</SolutionName>
 
     <!-- Static Folders -->

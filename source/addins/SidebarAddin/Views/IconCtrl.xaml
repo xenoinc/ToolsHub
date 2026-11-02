@@ -7,12 +7,12 @@ Copyright Xeno Innovations, Inc. 2019
  *
 -->
 
-<UserControl x:Class="Xeno.ToolsHub.SidebarAddin.Views.IconCtrl"
+<UserControl x:Class="Xeno.Dockzi.SidebarAddin.Views.IconCtrl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:Xeno.ToolsHub.SidebarAddin.Views"
+             xmlns:local="clr-namespace:Xeno.Dockzi.SidebarAddin.Views"
              mc:Ignorable="d"
              d:DesignHeight="64" d:DesignWidth="64">
   <Grid>

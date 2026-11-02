@@ -6,11 +6,11 @@
  *  Sidebar utility handler
  */
 
-using Xeno.ToolsHub.ExtensionModel;
-using Xeno.ToolsHub.Services.Logging;
-using Xeno.ToolsHub.SidebarAddin.Managers;
+using Xeno.Dockzi.ExtensionModel;
+using Xeno.Dockzi.Services.Logging;
+using Xeno.Dockzi.SidebarAddin.Managers;
 
-namespace Xeno.ToolsHub.SidebarAddin.Handlers
+namespace Xeno.Dockzi.SidebarAddin.Handlers
 {
   [Mono.Addins.Extension(
     NodeName = ExtensionName.UtilityAddin,
