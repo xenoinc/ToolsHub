@@ -13,6 +13,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts;
 
 using System;
 using System.Collections.Generic;
+using Lite.EventIpc;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 using Xeno.ToolsHub.ExtensionModel.SystemTray;
@@ -27,6 +28,7 @@ public class ShortcutsManager
   public const string ShortcutItemsKey = "ShortcutItems";
 
   private readonly SettingsManager _settings;
+  private readonly IEventAggregator _events;
 
   public ShortcutsManager()
     : this(Program.Settings)
@@ -34,7 +36,13 @@ public class ShortcutsManager
   }
 
   public ShortcutsManager(SettingsManager settings)
+    : this(settings, AppEvents.Instance)
   {
+  }
+
+  public ShortcutsManager(SettingsManager settings, IEventAggregator events)
+  {
+    _events = events ?? throw new ArgumentNullException(nameof(events));
     _settings = settings ?? throw new ArgumentNullException(nameof(settings));
     ShortcutItems = _settings.GetObject<ShortcutItems>(ShortcutsAddinId, ShortcutItemsKey) ?? new ShortcutItems();
   }
@@ -92,7 +100,7 @@ public class ShortcutsManager
     {
       Log.Error($"Failed to execute shortcut target, '{target}' - {ex}");
 
-      AppEvents.Instance.Publish(new SystemTrayNotificationRequest($"Cannot resolve target, '{target}'"));
+      _events.Publish(new SystemTrayNotificationRequest($"Cannot resolve target, '{target}'"));
     }
 
     return 0;
@@ -119,7 +127,7 @@ public class ShortcutsManager
   public void Refresh()
   {
     // TODO: Inform parents to refresh (SysTray/Sidebar)
-    AppEvents.Instance.Publish(new SystemTrayRefreshRequest());
+    _events.Publish(new SystemTrayRefreshRequest());
   }
 
   public void SaveShortcuts()

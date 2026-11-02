@@ -172,14 +172,12 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
       // 
       // BtnAdd
       // 
-      BtnAdd.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
       BtnAdd.Location = new System.Drawing.Point(84, 113);
       BtnAdd.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
       BtnAdd.Name = "BtnAdd";
       BtnAdd.Size = new System.Drawing.Size(56, 27);
       BtnAdd.TabIndex = 14;
       BtnAdd.Text = "+ New";
-      BtnAdd.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
       BtnAdd.UseVisualStyleBackColor = true;
       BtnAdd.Click += BtnAdd_Click;
       // 
@@ -195,14 +193,12 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs
       // 
       // BtnRemove
       // 
-      BtnRemove.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
       BtnRemove.Location = new System.Drawing.Point(148, 113);
       BtnRemove.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
       BtnRemove.Name = "BtnRemove";
       BtnRemove.Size = new System.Drawing.Size(83, 27);
       BtnRemove.TabIndex = 15;
       BtnRemove.Text = "- Remove";
-      BtnRemove.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
       BtnRemove.UseVisualStyleBackColor = true;
       BtnRemove.Click += BtnRemove_Click;
       // 
