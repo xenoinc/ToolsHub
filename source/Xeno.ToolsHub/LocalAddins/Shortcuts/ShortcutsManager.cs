@@ -15,7 +15,8 @@ using System;
 using System.Collections.Generic;
 using Lite.EventIpc;
 using System.Windows.Forms;
-using Newtonsoft.Json;
+using System.Text.Json;
+using Xeno.ToolsHub.Config;
 using Xeno.ToolsHub.ExtensionModel.SystemTray;
 using Xeno.ToolsHub.Managers;
 using Xeno.ToolsHub.Services.Logging;
@@ -149,7 +150,11 @@ public class ShortcutsManager
   {
     try
     {
-      var obj = Newtonsoft.Json.Linq.JToken.Parse(rawJson);
+      using var document = JsonDocument.Parse(rawJson, new JsonDocumentOptions
+      {
+        AllowTrailingCommas = true,
+        CommentHandling = JsonCommentHandling.Skip,
+      });
       errMessage = string.Empty;
       return true;
     }
@@ -165,6 +170,6 @@ public class ShortcutsManager
   /// <returns>JSON format of ShortcutItems</returns>
   public override string ToString()
   {
-    return JsonConvert.SerializeObject(ShortcutItems, Formatting.Indented);
+    return JsonSerializer.Serialize(ShortcutItems, JsonOptions.Indented);
   }
 }

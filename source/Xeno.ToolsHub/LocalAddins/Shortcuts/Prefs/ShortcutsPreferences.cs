@@ -12,7 +12,6 @@ using System;
 using System.ComponentModel;
 using System.Windows.Forms;
 
-//// using Newtonsoft.Json.Linq;
 using Xeno.ToolsHub.ExtensionModel;
 using Xeno.ToolsHub.Services.Logging;
 using static System.Windows.Forms.ListView;
@@ -80,7 +79,7 @@ public partial class ShortcutsPreferences : Form, IPreferencePageActions
     ////
     ////if (_shortcuts.ValidateJson(json, out errMsg))
     ////{
-    ////  _shortcuts.ShortcutItems = Newtonsoft.Json.JsonConvert.DeserializeObject<ShortcutItems>(json);
+    ////  _shortcuts.ShortcutItems = JsonSerializer.Deserialize<ShortcutItems>(json);
     ////  _shortcuts.SaveShortcuts();
     ////  _shortcuts.Refresh();
     ////

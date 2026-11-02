@@ -8,8 +8,9 @@
 
 namespace Xeno.ToolsHub.Tests.SystemTests
 {
+  using System.Text.Json;
   using Microsoft.VisualStudio.TestTools.UnitTesting;
-  using Newtonsoft.Json;
+  using Xeno.ToolsHub.Config;
   using Xeno.ToolsHub.Managers;
   using Xeno.ToolsHub.Models.PropertyService;
   using Xeno.ToolsHub.Services.Logging;
@@ -71,11 +72,11 @@ namespace Xeno.ToolsHub.Tests.SystemTests
       bag1.Add("A-NewKey3", "A-NewValue3");
 
       // Output data
-      var json = JsonConvert.SerializeObject(store, Formatting.Indented);
+      var json = JsonSerializer.Serialize(store, JsonOptions.Indented);
       Log.Debug(json);
 
       var tempBag1 = store.Find("GUID1");
-      json = JsonConvert.SerializeObject(tempBag1, Formatting.Indented);
+      json = JsonSerializer.Serialize(tempBag1, JsonOptions.Indented);
       Log.Debug(json);
 
       var value = tempBag1.Items["A-NewKey3"];
@@ -98,7 +99,7 @@ namespace Xeno.ToolsHub.Tests.SystemTests
       _settings.LoadFile();
       Assert.AreNotEqual(store.PropertyBags.Count, 0);
 
-      string json = JsonConvert.SerializeObject(store.PropertyBags, Formatting.Indented);
+      string json = JsonSerializer.Serialize(store.PropertyBags, JsonOptions.Indented);
       Log.Debug(json);
     }
   }

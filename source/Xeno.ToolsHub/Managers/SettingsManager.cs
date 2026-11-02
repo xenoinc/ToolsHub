@@ -13,7 +13,7 @@ namespace Xeno.ToolsHub.Managers
 {
   using System;
   using System.Collections.Generic;
-  using Newtonsoft.Json;
+  using System.Text.Json;
   using Xeno.ToolsHub.Config;
   using Xeno.ToolsHub.Models.PropertyService;
   using Xeno.ToolsHub.Services.Logging;
@@ -59,7 +59,7 @@ namespace Xeno.ToolsHub.Managers
       }
     }
 
-    public new string ToString => JsonConvert.SerializeObject(_propStore.PropertyBags, Formatting.Indented);
+    public new string ToString => JsonSerializer.Serialize(_propStore.PropertyBags, JsonOptions.Indented);
 
     /// <summary>Clear setting cache from memory.</summary>
     public void Clear()
@@ -77,13 +77,15 @@ namespace Xeno.ToolsHub.Managers
       try
       {
         string data = GetValue(propertyId, key, string.Empty);
+        if (string.IsNullOrWhiteSpace(data))
+          return default;
         data = Helpers.Base64Decode(data);
-        return JsonConvert.DeserializeObject<T>(data);
+        return string.IsNullOrWhiteSpace(data) ? default : JsonSerializer.Deserialize<T>(data, JsonOptions.Compact);
       }
       catch (Exception ex)
       {
         Log.Error($"Issue decoding setting object from id: {propertyId}, key: {key}. {ex.Message}");
-        throw ex;
+        throw;
       }
     }
 
@@ -103,7 +105,7 @@ namespace Xeno.ToolsHub.Managers
     /// <param name="o">Object type.</param>
     public void SetObject(string propertyId, string key, object o)
     {
-      string data = JsonConvert.SerializeObject(o, Formatting.None);
+      string data = JsonSerializer.Serialize(o, JsonOptions.Compact);
       data = Helpers.Base64Encode(data);
       _propStore.SetValue(propertyId, key, data);
     }
@@ -124,8 +126,8 @@ namespace Xeno.ToolsHub.Managers
       {
         if (!string.IsNullOrEmpty(SettingsFilePath) && System.IO.File.Exists(SettingsFilePath))
         {
-          _propStore.PropertyBags = JsonConvert.DeserializeObject<List<Properties>>(
-            System.IO.File.ReadAllText(SettingsFilePath));
+          _propStore.PropertyBags = JsonSerializer.Deserialize<List<Properties>>(
+            System.IO.File.ReadAllText(SettingsFilePath), JsonOptions.Compact) ?? new List<Properties>();
         }
       }
       catch (Exception ex)
@@ -144,7 +146,7 @@ namespace Xeno.ToolsHub.Managers
 
         if (SettingsFilePath != null)
         {
-          string data = JsonConvert.SerializeObject(_propStore.PropertyBags, Formatting.Indented);
+          string data = JsonSerializer.Serialize(_propStore.PropertyBags, JsonOptions.Indented);
           System.IO.File.WriteAllText(SettingsFilePath, data);
           Log.Debug("Settings saved");
         }

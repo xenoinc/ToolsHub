@@ -15,6 +15,12 @@ namespace Xeno.ToolsHub.Models.PropertyService
 
   public class Properties
   {
+    // System.Text.Json uses this constructor, then assigns Id and Items from the file.
+    public Properties()
+      : this(string.Empty)
+    {
+    }
+
     public Properties(string propertyId)
     {
       this.Id = propertyId;

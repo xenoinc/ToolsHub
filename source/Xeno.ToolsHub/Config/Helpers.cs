@@ -9,7 +9,7 @@
 namespace Xeno.ToolsHub.Config
 {
   using System;
-  using Newtonsoft.Json;
+  using System.Text.Json;
 
   public static class Helpers
   {
@@ -80,7 +80,7 @@ namespace Xeno.ToolsHub.Config
     /// <returns>Object file to convert JSON to</returns>
     public static T FileDeserialize<T>(string fileName)
     {
-      return JsonConvert.DeserializeObject<T>(System.IO.File.ReadAllText(fileName));
+      return (T)ToObject<T>(System.IO.File.ReadAllText(fileName));
     }
 
     /// <summary>Save object in JSON format</summary>
@@ -90,8 +90,8 @@ namespace Xeno.ToolsHub.Config
     /// <returns>JSON output data</returns>
     public static string FileSerialize(object o, string fileName = null, bool indent = true)
     {
-      Formatting format = indent ? Formatting.Indented : Formatting.None;
-      string data = JsonConvert.SerializeObject(o, format);
+      JsonSerializerOptions format = indent ? JsonOptions.Indented : JsonOptions.Compact;
+      string data = JsonSerializer.Serialize(o, format);
       if (fileName != null)
         System.IO.File.WriteAllText(fileName, data);
       return data;
@@ -103,7 +103,7 @@ namespace Xeno.ToolsHub.Config
     /// <returns>Converted object.</returns>
     public static object ToObject<T>(string json)
     {
-      return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(json);
+      return string.IsNullOrWhiteSpace(json) ? default(T) : JsonSerializer.Deserialize<T>(json, JsonOptions.Compact);
     }
 
     /// <summary>Convert object to JSON.</summary>
@@ -111,9 +111,9 @@ namespace Xeno.ToolsHub.Config
     /// <returns>JSON text.</returns>
     public static string ToJson(object obj, bool format = false)
     {
-      string json = Newtonsoft.Json.JsonConvert.SerializeObject(
+      string json = JsonSerializer.Serialize(
         obj,
-        format ? Formatting.Indented : Formatting.None);
+        format ? JsonOptions.Indented : JsonOptions.Compact);
       return json;
     }
 

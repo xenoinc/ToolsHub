@@ -27,7 +27,6 @@
     <file src="..\output\Mono.Cecil.Mdb.dll" target="lib\net45\Mono.Cecil.Mdb.dll" />
     <file src="..\output\Mono.Cecil.Pdb.dll" target="lib\net45\Mono.Cecil.Pdb.dll" />
     <file src="..\output\Mono.Cecil.Rocks.dll" target="lib\net45\Mono.Cecil.Rocks.dll" />
-    <file src="..\output\Newtonsoft.Json.dll" target="lib\net45\Newtonsoft.Json.dll" />
     <file src="..\output\NuGet.Squirrel.dll" target="lib\net45\NuGet.Squirrel.dll" />
     <file src="..\output\SharpCompress.dll" target="lib\net45\SharpCompress.dll" />
     <file src="..\output\Splat.dll" target="lib\net45\Splat.dll" />

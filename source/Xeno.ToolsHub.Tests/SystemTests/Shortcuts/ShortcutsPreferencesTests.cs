@@ -3,8 +3,8 @@
   using System;
   using System.Threading;
   using System.Windows.Forms;
+  using System.Text.Json;
   using Microsoft.VisualStudio.TestTools.UnitTesting;
-  using Newtonsoft.Json;
   using Xeno.ToolsHub.Config;
   using Xeno.ToolsHub.LocalAddins.Shortcuts;
   using Xeno.ToolsHub.LocalAddins.Shortcuts.Prefs;
@@ -49,7 +49,7 @@
         Assert.AreEqual(2, originalCache.Count);
         Assert.AreEqual("C-Drive", list.Items[0].SubItems[1].Text);
         Assert.AreEqual("D-Drive", list.Items[1].SubItems[1].Text);
-        Assert.AreEqual(2, JsonConvert.DeserializeObject<ShortcutItems>(Find<TextBox>(page, "TxtRawFile").Text).Count);
+        Assert.AreEqual(2, JsonSerializer.Deserialize<ShortcutItems>(Find<TextBox>(page, "TxtRawFile").Text).Count);
         Assert.IsFalse(page.IsModified);
       });
     }
