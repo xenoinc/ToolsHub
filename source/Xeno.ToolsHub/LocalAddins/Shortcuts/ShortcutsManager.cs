@@ -16,6 +16,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
   using System.Windows.Forms;
   using Newtonsoft.Json;
   using Xeno.ToolsHub.ExtensionModel.SystemTray;
+  using Xeno.ToolsHub.Managers;
   using Xeno.ToolsHub.Services.Logging;
   using Xeno.ToolsHub.Services.Messaging;
 
@@ -25,13 +26,17 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
 
     public const string ShortcutItemsKey = "ShortcutItems";
 
-    public ShortcutsManager()
-    {
-      // Settings.LoadFile();
-      var test = Program.Settings.GetValue("ShortcutsAddin", "ShortcutItems");
-      var shortcuts = Program.Settings.GetObject<ShortcutItems>(ShortcutsAddinId, ShortcutItemsKey);
+    private readonly SettingsManager _settings;
 
-      this.ShortcutItems = shortcuts == null ? new ShortcutItems() : shortcuts;
+    public ShortcutsManager()
+      : this(Program.Settings)
+    {
+    }
+
+    public ShortcutsManager(SettingsManager settings)
+    {
+      _settings = settings ?? throw new ArgumentNullException(nameof(settings));
+      ShortcutItems = _settings.GetObject<ShortcutItems>(ShortcutsAddinId, ShortcutItemsKey) ?? new ShortcutItems();
     }
 
     public ShortcutItems ShortcutItems { get; set; }
@@ -42,7 +47,7 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
     {
       List<ToolStripItem> shortcutItems = new List<ToolStripItem>();
 
-      ShortcutItems shortcuts = Program.Settings.GetObject<ShortcutItems>(ShortcutsAddinId, ShortcutItemsKey);
+      ShortcutItems shortcuts = _settings.GetObject<ShortcutItems>(ShortcutsAddinId, ShortcutItemsKey);
       if (shortcuts == null)
       {
         Log.Debug($"No shortcuts found. Loading default");
@@ -116,8 +121,8 @@ namespace Xeno.ToolsHub.LocalAddins.Shortcuts
 
     public void SaveShortcuts()
     {
-      Program.Settings.SetObject(ShortcutsAddinId, ShortcutItemsKey, ShortcutItems);
-      Program.Settings.SaveFile();
+      _settings.SetObject(ShortcutsAddinId, ShortcutItemsKey, ShortcutItems);
+      _settings.SaveFile();
 
       Log.Debug("Shortcut settings saved");
       Refresh();
