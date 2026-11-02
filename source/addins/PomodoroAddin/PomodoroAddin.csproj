@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Xeno.ToolsHub\Xeno.ToolsHub.csproj" />
+    <ProjectReference Include="..\..\Xeno.ToolsHub\Xeno.ToolsHub.csproj" Private="false" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,5 +18,9 @@
 
   <ItemGroup>
     <PackageReference Include="Mono.Addins" Version="1.4.1" />
+    <PackageReference Include="StyleCop.Analyzers.Unstable" Version="1.2.0.556">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 </Project>
