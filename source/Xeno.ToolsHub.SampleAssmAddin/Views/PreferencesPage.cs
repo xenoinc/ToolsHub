@@ -40,12 +40,12 @@ namespace Xeno.ToolsHub.SampleAssmAddin.Views
 
     private void BtnRefreshSysTray_Click(object sender, EventArgs e)
     {
-      AppEvents.Instance.Publish(new TrayRefreshRequested());
+      AppEvents.Instance.Publish(new SystemTrayRefreshRequest());
     }
 
     private void BtnSysTrayNotify_Click(object sender, EventArgs e)
     {
-      AppEvents.Instance.Publish(new TrayNotificationRequested(TxtSysTrayMessage.Text));
+      AppEvents.Instance.Publish(new SystemTrayNotificationRequest(TxtSysTrayMessage.Text));
     }
   }
 }

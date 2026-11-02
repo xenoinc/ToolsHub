@@ -167,7 +167,7 @@ public class VeraCryptManager
   public void RefreshSysTray()
   {
     // TODO: Inform parents to refresh (SysTray/Sidebar)
-    AppEvents.Instance.Publish(new TrayRefreshRequested());
+    AppEvents.Instance.Publish(new SystemTrayRefreshRequest());
   }
 
   public string SettingDecrypt(string setting)

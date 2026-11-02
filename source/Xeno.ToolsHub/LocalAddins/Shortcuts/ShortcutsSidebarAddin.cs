@@ -8,13 +8,12 @@
  *    - Adds shortcut links to Sidebar
  */
 
-namespace Xeno.ToolsHub.LocalAddins.Shortcuts
+namespace Xeno.ToolsHub.LocalAddins.Shortcuts;
+
+internal class ShortcutsSidebarAddin
 {
-  internal class ShortcutsSidebarAddin
+  public ShortcutsSidebarAddin()
   {
-    public ShortcutsSidebarAddin()
-    {
-      throw new System.NotImplementedException();
-    }
+    throw new System.NotImplementedException();
   }
 }

@@ -1,3 +1,3 @@
 ﻿namespace Xeno.ToolsHub.ExtensionModel.SystemTray;
 
-public sealed record TrayRefreshRequested;
+public sealed record SystemTrayRefreshRequest;

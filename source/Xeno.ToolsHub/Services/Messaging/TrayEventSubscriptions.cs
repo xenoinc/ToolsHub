@@ -8,9 +8,9 @@ using Xeno.ToolsHub.ExtensionModel.SystemTray;
 public sealed class TrayEventSubscriptions : IDisposable
 {
   private readonly IEventAggregator _events;
-  private readonly Action<TrayRefreshRequested> _refresh;
-  private readonly Action<TrayNotificationRequested> _notify;
-  private readonly Action<TrayIconChanged> _icon;
+  private readonly Action<SystemTrayRefreshRequest> _refresh;
+  private readonly Action<SystemTrayNotificationRequest> _notify;
+  private readonly Action<SystemTrayChangeIconRequest> _icon;
   private volatile bool _disposed;
 
   public TrayEventSubscriptions(

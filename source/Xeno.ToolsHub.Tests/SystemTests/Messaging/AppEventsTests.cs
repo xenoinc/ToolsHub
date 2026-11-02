@@ -18,7 +18,7 @@ public class AppEventsTests
   public void ShortcutManagerPublishesRefreshOnSharedAggregator()
   {
     int count = 0;
-    Action<TrayRefreshRequested> handler = _ => count++;
+    Action<SystemTrayRefreshRequest> handler = _ => count++;
     AppEvents.Instance.Subscribe(handler);
 
     try
@@ -33,7 +33,7 @@ public class AppEventsTests
       AppEvents.Instance.Unsubscribe(handler);
     }
 
-    AppEvents.Instance.Publish(new TrayRefreshRequested());
+    AppEvents.Instance.Publish(new SystemTrayRefreshRequest());
     Assert.AreEqual(2, count);
   }
 
@@ -45,9 +45,9 @@ public class AppEventsTests
     TrayItemInfo item = null;
     int refreshCount = 0;
 
-    Action<TrayNotificationRequested> notification = message => received = message.Message;
-    Action<TrayItemUpdateRequested> update = message => item = message.Item;
-    Action<TrayRefreshRequested> refresh = _ => refreshCount++;
+    Action<SystemTrayNotificationRequest> notification = message => received = message.Message;
+    Action<SystemTrayUpdateRequest> update = message => item = message.Item;
+    Action<SystemTrayRefreshRequest> refresh = _ => refreshCount++;
 
     events.Subscribe(notification);
     events.Subscribe(update);
@@ -55,8 +55,8 @@ public class AppEventsTests
 
     var expected = new TrayItemInfo("TestAddin", "timer", "Timer", string.Empty, true);
 
-    events.Publish(new TrayNotificationRequested("Timer completed"));
-    events.Publish(new TrayItemUpdateRequested(expected));
+    events.Publish(new SystemTrayNotificationRequest("Timer completed"));
+    events.Publish(new SystemTrayUpdateRequest(expected));
     events.Publish(new ShortcutsRefreshRequested());
 
     Assert.AreEqual("Timer completed", received);
@@ -83,9 +83,9 @@ public class AppEventsTests
     GC.WaitForPendingFinalizers();
     GC.Collect();
 
-    events.Publish(new TrayRefreshRequested());
-    events.Publish(new TrayNotificationRequested("Hello"));
-    events.Publish(new TrayIconChanged(null));
+    events.Publish(new SystemTrayRefreshRequest());
+    events.Publish(new SystemTrayNotificationRequest("Hello"));
+    events.Publish(new SystemTrayChangeIconRequest(null));
 
     Assert.AreEqual(1, refreshCount);
     Assert.AreEqual("Hello", notification);
@@ -102,9 +102,9 @@ public class AppEventsTests
     var subscriptions = new TrayEventSubscriptions(
       events, () => callbackCount++, _ => callbackCount++, _ => callbackCount++, queued.Add);
 
-    events.Publish(new TrayRefreshRequested());
-    events.Publish(new TrayNotificationRequested("queued"));
-    events.Publish(new TrayIconChanged(null));
+    events.Publish(new SystemTrayRefreshRequest());
+    events.Publish(new SystemTrayNotificationRequest("queued"));
+    events.Publish(new SystemTrayChangeIconRequest(null));
     Assert.AreEqual(3, queued.Count);
 
     subscriptions.Dispose();
@@ -113,9 +113,9 @@ public class AppEventsTests
     foreach (var action in queued)
       action();
 
-    events.Publish(new TrayRefreshRequested());
-    events.Publish(new TrayNotificationRequested("disposed"));
-    events.Publish(new TrayIconChanged(null));
+    events.Publish(new SystemTrayRefreshRequest());
+    events.Publish(new SystemTrayNotificationRequest("disposed"));
+    events.Publish(new SystemTrayChangeIconRequest(null));
     Assert.AreEqual(0, callbackCount);
     Assert.AreEqual(3, queued.Count);
   }
@@ -130,7 +130,7 @@ public class AppEventsTests
     using var subscriptions = new TrayEventSubscriptions(
       events, () => callbackThread = Environment.CurrentManagedThreadId, _ => { }, _ => { }, queued.Enqueue);
 
-    await Task.Run(() => events.Publish(new TrayRefreshRequested()));
+    await Task.Run(() => events.Publish(new SystemTrayRefreshRequest()));
     Assert.AreEqual(0, callbackThread);
     Assert.IsTrue(queued.TryDequeue(out var action));
 

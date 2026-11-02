@@ -7,27 +7,26 @@
  *  SysTray menu item
  */
 
-namespace Xeno.ToolsHub.ExtensionModel.SystemTray
+namespace Xeno.ToolsHub.ExtensionModel.SystemTray;
+
+public class TrayItemInfo
 {
-  public class TrayItemInfo
+  public TrayItemInfo(string addinParent, string itemId, string text, string target, bool enabled)
   {
-    public TrayItemInfo(string addinParent, string itemId, string text, string target, bool enabled)
-    {
-      AddinParent = addinParent;
-      ItemId = itemId;
-      Text = text;
-      Enabled = enabled;
-      Target = target;
-    }
-
-    public string AddinParent { get; set; }
-
-    public string ItemId { get; set; }
-
-    public string Text { get; set; }
-
-    public bool Enabled { get; set; }
-
-    public string Target { get; set; }
+    AddinParent = addinParent;
+    ItemId = itemId;
+    Text = text;
+    Enabled = enabled;
+    Target = target;
   }
+
+  public string AddinParent { get; set; }
+
+  public string ItemId { get; set; }
+
+  public string Text { get; set; }
+
+  public bool Enabled { get; set; }
+
+  public string Target { get; set; }
 }

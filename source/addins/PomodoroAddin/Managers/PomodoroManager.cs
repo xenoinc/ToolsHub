@@ -89,7 +89,7 @@ namespace PomodoroAddin.Managers
     /// <param name="icon">icon to display. NULL for default</param>
     public void SendMessageTrayIcon(System.Drawing.Icon icon)
     {
-      AppEvents.Instance.Publish(new TrayIconChanged(icon));
+      AppEvents.Instance.Publish(new SystemTrayChangeIconRequest(icon));
     }
 
     public void SendMessageTrayData(TrayItemInfo itemInfo)
@@ -98,7 +98,7 @@ namespace PomodoroAddin.Managers
 
       // TODO: Create infrastructure to inform MenuItems which ones to enable/disable/change-text
       //
-      AppEvents.Instance.Publish(new TrayItemUpdateRequested(itemInfo));
+      AppEvents.Instance.Publish(new SystemTrayUpdateRequest(itemInfo));
     }
 
     public void PlaySound(uint repeat = 1, bool isTesting = false)
@@ -145,6 +145,7 @@ namespace PomodoroAddin.Managers
             StartTimer(durationMinutes);
             UpdateMenuItems(state);
           }
+
           break;
 
         case TimerState.Paused:

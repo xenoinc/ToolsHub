@@ -92,7 +92,7 @@ public class ShortcutsManager
     {
       Log.Error($"Failed to execute shortcut target, '{target}' - {ex}");
 
-      AppEvents.Instance.Publish(new TrayNotificationRequested($"Cannot resolve target, '{target}'"));
+      AppEvents.Instance.Publish(new SystemTrayNotificationRequest($"Cannot resolve target, '{target}'"));
     }
 
     return 0;
@@ -119,7 +119,7 @@ public class ShortcutsManager
   public void Refresh()
   {
     // TODO: Inform parents to refresh (SysTray/Sidebar)
-    AppEvents.Instance.Publish(new TrayRefreshRequested());
+    AppEvents.Instance.Publish(new SystemTrayRefreshRequest());
   }
 
   public void SaveShortcuts()
