@@ -17,11 +17,12 @@ namespace Xeno.ToolsHub.SidebarAddin.Handlers
     Path = ExtensionPath.Utility)]
   public class UtilityHandler : UtilityAddin
   {
+    private readonly SidebarManager _manager;
     private bool _initialized = false;
-    private SidebarManager _manager = new SidebarManager();
 
-    public UtilityHandler()
+    public UtilityHandler(SidebarManager manager)
     {
+      _manager = manager;
       Log.Debug("Loading sidebar utility");
 
       // TODO: Validate SidebarManager settings
@@ -46,6 +47,7 @@ namespace Xeno.ToolsHub.SidebarAddin.Handlers
     public override void Shutdown()
     {
       Log.Debug("Sidebar utility add-in shutting down");
+      _manager.CloseSidebars();
     }
   }
 }

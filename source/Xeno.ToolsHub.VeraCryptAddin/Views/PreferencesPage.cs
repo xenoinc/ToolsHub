@@ -17,14 +17,16 @@ namespace Xeno.ToolsHub.VeraCryptAddin.Views
 
   public partial class PreferencesPage : Form, IPreferencePageActions
   {
-    private VeraCryptManager _manager;
+    private readonly VeraCryptManager _manager;
+    private readonly ISettingsService _settings;
 
-    public PreferencesPage()
+    public PreferencesPage(VeraCryptManager manager, ISettingsService settings)
     {
+      _manager = manager;
+      _settings = settings;
       InitializeComponent();
       this.Text = "VeraCrypt";
 
-      _manager = new VeraCryptManager();
       OnLoadSettings();
 
       IsModified = false;
@@ -36,21 +38,22 @@ namespace Xeno.ToolsHub.VeraCryptAddin.Views
 
     public bool OnSave()
     {
-      SettingsService.SetValue(Constants.AddinId, Constants.KeyInstallPath, TxtInstallPath.Text);
-      SettingsService.SetValue(Constants.AddinId, Constants.KeyForceDismounts, ChkForceDismounts.Checked.ToString());
+      _settings.SetValue(Constants.AddinId, Constants.KeyInstallPath, TxtInstallPath.Text);
+      _settings.SetValue(Constants.AddinId, Constants.KeyForceDismounts, ChkForceDismounts.Checked.ToString());
 
       // TODO: Save list of volume end-points
-      SettingsService.SetValue(Constants.AddinId, Constants.KeyHcDriveLetter, CmboDrives.Text);
-      SettingsService.SetValue(Constants.AddinId, Constants.KeyHcPath, _manager.SettingEncrypt(TxtHcPath.Text));
-      SettingsService.SetValue(Constants.AddinId, Constants.KeyHcPass, _manager.SettingEncrypt(TxtHcPass.Text));
+      _settings.SetValue(Constants.AddinId, Constants.KeyHcDriveLetter, CmboDrives.Text);
+      _settings.SetValue(Constants.AddinId, Constants.KeyHcPath, _manager.SettingEncrypt(TxtHcPath.Text));
+      _settings.SetValue(Constants.AddinId, Constants.KeyHcPass, _manager.SettingEncrypt(TxtHcPass.Text));
 
-      SettingsService.SetValue(Constants.AddinId, Constants.KeyHcOnStartMount, ChkOnStartMount.Checked.ToString());
-      SettingsService.SetValue(Constants.AddinId, Constants.KeyHcOnExitDismount, ChkOnExitDismount.Checked.ToString());
+      _settings.SetValue(Constants.AddinId, Constants.KeyHcOnStartMount, ChkOnStartMount.Checked.ToString());
+      _settings.SetValue(Constants.AddinId, Constants.KeyHcOnExitDismount, ChkOnExitDismount.Checked.ToString());
 
       // Features not implemented yet
-      //// SettingsService.SetValue(Constants.AddinId, Constants.KeyHcOnExitDismount, ChkOnShutdownDismount.Checked.ToString());
-      //// SettingsService.SetValue(Constants.AddinId, Constants.KeyHcOnExitDismount, ChkOnSignoutDismount.Checked.ToString());
+      //// _settings.SetValue(Constants.AddinId, Constants.KeyHcOnExitDismount, ChkOnShutdownDismount.Checked.ToString());
+      //// _settings.SetValue(Constants.AddinId, Constants.KeyHcOnExitDismount, ChkOnSignoutDismount.Checked.ToString());
 
+      IsModified = false;
       return true;
     }
 

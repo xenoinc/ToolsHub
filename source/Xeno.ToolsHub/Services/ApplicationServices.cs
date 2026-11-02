@@ -15,6 +15,7 @@ public static class ApplicationServices
   {
     services.AddSingleton<SettingsManager>(_ => SettingsLoader.Load());
     services.AddSingleton<IEventAggregator, EventAggregator>();
+    services.AddSingleton<ISettingsService, ApplicationSettings>();
     services.AddSingleton<IAutoStartService, AutoStartService>();
     services.AddTransient<ShortcutsManager>(provider => new ShortcutsManager(
       provider.GetRequiredService<SettingsManager>(), provider.GetRequiredService<IEventAggregator>()));

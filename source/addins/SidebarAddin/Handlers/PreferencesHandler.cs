@@ -18,7 +18,12 @@ namespace Xeno.ToolsHub.SidebarAddin.Handlers
     Path = ExtensionPath.PreferencePage)]
   public class PreferenceHandler : IPreferencePageExtension
   {
-    private PreferencesPage _page;
+    private readonly PreferencesPage _page;
+
+    public PreferenceHandler(PreferencesPage page)
+    {
+      _page = page;
+    }
 
     public string Id { get; set; }
 
@@ -30,7 +35,7 @@ namespace Xeno.ToolsHub.SidebarAddin.Handlers
 
     public void InitializePage()
     {
-      _page = new PreferencesPage();
+      // Page dependencies and lifetime are supplied by the dialog scope.
     }
 
     public void OnSave()

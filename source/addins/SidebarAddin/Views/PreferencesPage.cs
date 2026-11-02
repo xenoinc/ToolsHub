@@ -1,4 +1,4 @@
-/* Copyright Xeno Innovations, Inc. 2019
+﻿/* Copyright Xeno Innovations, Inc. 2019
  * Date:    2019-4-9
  * Author:  Damian Suess
  * File:    PreferencesPage.cs
@@ -18,15 +18,22 @@ namespace Xeno.ToolsHub.SidebarAddin.Views;
 /// <summary>Preferences Page.</summary>
 public partial class PreferencesPage : Form, IPreferencePageActions
 {
-  private SidebarManager _manager;
+  private readonly SidebarManager _manager;
+  private readonly ISettingsService _settings;
 
-  public PreferencesPage()
+  public PreferencesPage(SidebarManager manager, ISettingsService settings)
   {
+    _manager = manager;
+    _settings = settings;
     InitializeComponent();
-
-    ComboScreenArea.SelectedIndex = 1;
-    ComboScreenOrientaiton.SelectedIndex = 0;
-    _manager = new SidebarManager();
+    Text = "Sidebar";
+    OnLoadSettings();
+    ComboScreenArea.SelectedIndexChanged += MarkModified;
+    ComboScreenOrientaiton.SelectedIndexChanged += MarkModified;
+    UpDownScreenNumber.ValueChanged += MarkModified;
+    Opacity.ValueChanged += MarkModified;
+    ChkShowOnStart.CheckedChanged += MarkModified;
+    IsModified = false;
   }
 
   [Browsable(false)]
@@ -35,27 +42,27 @@ public partial class PreferencesPage : Form, IPreferencePageActions
 
   public bool OnSave()
   {
-    SettingsService.SetValue(Constants.AddinId, Constants.KeyBackground, ComboScreenArea.SelectedIndex);
-    SettingsService.SetValue(Constants.AddinId, Constants.KeyOpacity, Opacity.Value);
-    SettingsService.SetValue(Constants.AddinId, Constants.KeyScreenArea, ComboScreenArea.SelectedIndex);
-    SettingsService.SetValue(Constants.AddinId, Constants.KeyScreenOrientation, ComboScreenArea.SelectedIndex);
-    SettingsService.SetValue(Constants.AddinId, Constants.KeyScreenNumber, ComboScreenArea.SelectedIndex);
-    SettingsService.SetValue(Constants.AddinId, Constants.KeyShowSidebars, ChkShowOnStart.Checked);
-    //// SettingsService.SetValue(Constants.AddinId, Constants.KeyTintColor, TxtTintColorHex);
+    _settings.SetValue(Constants.AddinId, Constants.KeyOpacity, Opacity.Value);
+    _settings.SetValue(Constants.AddinId, Constants.KeyScreenArea, ComboScreenArea.SelectedIndex);
+    _settings.SetValue(Constants.AddinId, Constants.KeyScreenOrientation, ComboScreenOrientaiton.SelectedIndex);
+    _settings.SetValue(Constants.AddinId, Constants.KeyScreenNumber, (int)UpDownScreenNumber.Value);
+    _settings.SetValue(Constants.AddinId, Constants.KeyShowSidebars, ChkShowOnStart.Checked);
+    _manager.SendMessageRefreshShortcuts();
+    IsModified = false;
 
     return true;
   }
 
   private void OnLoadSettings()
   {
-    // Set checkboxes & gui stuff
-    ////_manager.SettingBackground;
-    ////_manager.SettingOpacity;
-    ////_manager.SettingScreenArea;
-    ////_manager.SettingScreenNumber;
-    ////_manager.SettingScreenOrientation;
-    ////_manager.SettingTintColor;
+    ComboScreenArea.SelectedIndex = Math.Clamp(_manager.SettingScreenArea, 0, ComboScreenArea.Items.Count - 1);
+    ComboScreenOrientaiton.SelectedIndex = Math.Clamp(_manager.SettingScreenOrientation, 0, ComboScreenOrientaiton.Items.Count - 1);
+    UpDownScreenNumber.Value = Math.Clamp(_manager.SettingScreenNumber, UpDownScreenNumber.Minimum, UpDownScreenNumber.Maximum);
+    Opacity.Value = Math.Clamp(_manager.SettingOpacity, Opacity.Minimum, Opacity.Maximum);
+    ChkShowOnStart.Checked = _manager.SettingsShowSidebar;
   }
+
+  private void MarkModified(object sender, EventArgs args) => IsModified = true;
 
   private void PreferencesPage_Load(object sender, EventArgs e)
   {
