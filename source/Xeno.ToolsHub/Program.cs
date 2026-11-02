@@ -34,8 +34,12 @@ namespace Xeno.ToolsHub
     /// The main entry point for the application.
     /// </summary>
     [STAThread]
-    private static void Main()
+    private static void Main(string[] args)
     {
+      // Windows startup does not guarantee the application's working directory.
+      if (args.Contains("--auto-start", StringComparer.OrdinalIgnoreCase))
+        System.IO.Directory.SetCurrentDirectory(AppContext.BaseDirectory);
+
       Log.Debug("Starting system");
       if (HasPrevInstance())
       {

@@ -10,6 +10,7 @@ namespace Xeno.ToolsHub.Views
 {
   using System;
   using System.Collections.Generic;
+  using System.Linq;
   using System.Windows.Forms;
   using Xeno.ToolsHub.ExtensionModel;
   using Xeno.ToolsHub.Managers;
@@ -19,6 +20,7 @@ namespace Xeno.ToolsHub.Views
   public partial class PreferencesForm : Form
   {
     private readonly AddinsManager _addinManager;
+    private readonly Preferences.GeneralPreferencesPage _generalPage;
 
     private Dictionary<string, IPreferencePageExtension> _addinPages;
 
@@ -31,7 +33,8 @@ namespace Xeno.ToolsHub.Views
     {
       InitializeComponent();
 
-      AddinTree.Sort();
+      _generalPage = new Preferences.GeneralPreferencesPage();
+      AddinTree.Sorted = false;  // Previously, AddinTree.Sort();
 
       _addinManager = addinsManager;
       _addinPages = new Dictionary<string, IPreferencePageExtension>();
@@ -39,8 +42,16 @@ namespace Xeno.ToolsHub.Views
       InitAddinManager();
 
       RefreshTreeView();
+      ShowGeneralPage();
 
       _addinManager.OnApplicationAddinListChanged += OnAppAddinListChanged;
+    }
+
+    protected override void OnFormClosed(FormClosedEventArgs e)
+    {
+      _addinManager.OnApplicationAddinListChanged -= OnAppAddinListChanged;
+      _generalPage.Dispose();
+      base.OnFormClosed(e);
     }
 
     private void BtnCancel_Click(object sender, EventArgs e)
@@ -70,6 +81,12 @@ namespace Xeno.ToolsHub.Views
 
     private bool SavePreferences()
     {
+      if (!_generalPage.TrySave(out string error))
+      {
+        MessageBox.Show(this, error, "General Settings", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        return false;
+      }
+
       bool saveSuccess = true;
       bool triggered = false;
       foreach (var addinPage in _addinPages)
@@ -99,7 +116,9 @@ namespace Xeno.ToolsHub.Views
 
     private void RefreshTreeView()
     {
-      foreach (IPreferencePageExtension page in _addinManager.GetPreferenceAddins())
+      AddinTree.Nodes.Add(new TreeNode("General") { Tag = _generalPage });
+
+      foreach (IPreferencePageExtension page in _addinManager.GetPreferenceAddins().OrderBy(page => page.Title, StringComparer.CurrentCultureIgnoreCase))
       {
         string id = string.Empty;
         string name = string.Empty;
@@ -155,8 +174,24 @@ namespace Xeno.ToolsHub.Views
 
     private void AddinTree_AfterSelect(object sender, TreeViewEventArgs e)
     {
+      if (e.Node.Tag == _generalPage)
+      {
+        ShowGeneralPage();
+        return;
+      }
+
       string id = e.Node.Tag.ToString();
       ShowPage(id);
+    }
+
+    private void ShowGeneralPage()
+    {
+      LblPageTitle.Text = "General";
+      PanelAddinPrefsView.Controls.Clear();
+      _generalPage.Dock = DockStyle.Fill;
+
+      PanelAddinPrefsView.Controls.Add(_generalPage);
+      _generalPage.Show();
     }
 
     private void ShowPage(string addinId)
