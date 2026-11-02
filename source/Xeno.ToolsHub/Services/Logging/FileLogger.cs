@@ -6,69 +6,66 @@
  *  File logging.
  */
 
-namespace Xeno.ToolsHub.Services.Logging
+namespace Xeno.ToolsHub.Services.Logging;
+
+using System.IO;
+
+/// <summary>File logger.</summary>
+public class FileLogger : ILogger
 {
-  using System.IO;
-  using System.Reflection;
+  //// File output stream
+  //// private System.IO.StreamWriter _stream;
+  private readonly string _baseName = "LogFile";
 
+  private readonly object _lock = new object();
 
-  /// <summary>File logger.</summary>
-  public class FileLogger : ILogger
+  public FileLogger()
   {
-    //// File output stream
-    //// private System.IO.StreamWriter _stream;
-    private readonly string _baseName = "LogFile";
+    ////exePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+    ////
+    // Consider logging to console as well.
+    ////_console = new ConsoleLogger();
+    ////try
+    ////{
+    ////  // Create file directory
+    ////}
+    ////catch
+    ////{
+    ////  _console.Log(Level.Warn, "Failed to create log file.");
+    ////}
+  }
 
-    private readonly object _lock = new object();
+  ////public uint MaxFiles { get; set; } = 5;
 
-    public FileLogger()
+  public uint MaxSize { get; set; } = 5000000;  // 5 MB
+
+  public string LogFile => _baseName + ".log";
+
+  ////private ConsoleLogger _console;
+  public void Log(Level level, string message, params object[] args)
+  {
+    lock (_lock)
     {
-      ////exePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-      ////
-      // Consider logging to console as well.
-      ////_console = new ConsoleLogger();
-      ////try
-      ////{
-      ////  // Create file directory
-      ////}
-      ////catch
-      ////{
-      ////  _console.Log(Level.Warn, "Failed to create log file.");
-      ////}
-    }
+      RolloverChecker();
 
-    ////public uint MaxFiles { get; set; } = 5;
-
-    public uint MaxSize { get; set; } = 5000000;  // 5 MB
-
-    public string LogFile => _baseName + ".log";
-
-    ////private ConsoleLogger _console;
-    public void Log(Level level, string message, params object[] args)
-    {
-      lock (_lock)
+      using (StreamWriter writer = File.AppendText(LogFile))
       {
-        RolloverChecker();
-
-        using (StreamWriter writer = File.AppendText(LogFile))
-        {
-          writer.WriteLine(message);
-          writer.Close();
-        }
+        writer.WriteLine(message);
+        writer.Close();
       }
     }
+  }
 
-    /// <summary>Checks if we need to create a new file and delete old ones.</summary>
-    private void RolloverChecker()
+  /// <summary>Checks if we need to create a new file and delete old ones.</summary>
+  private void RolloverChecker()
+  {
+    if (!File.Exists(LogFile))
+      return;
+
+    var info = new FileInfo(LogFile);
+    if (info.Length > MaxSize)
     {
-      if (!File.Exists(LogFile))
-        return;
-
-      var info = new FileInfo(LogFile);
-      if (info.Length > MaxSize)
-      {
-        info.MoveTo(_baseName + "1.log");
-      }
+      info.MoveTo(_baseName + "1.log");
     }
   }
 }

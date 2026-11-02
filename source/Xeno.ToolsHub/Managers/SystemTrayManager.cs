@@ -27,11 +27,11 @@ namespace Xeno.ToolsHub.Managers
 {
   public class SystemTrayManager : ApplicationContext
   {
-    private ToolStripItem[] _trayMenu;
     private readonly Control _eventDispatcher = new Control();
     private readonly TrayEventSubscriptions _eventSubscriptions;
 
-    private NotifyIcon _trayNotify = new NotifyIcon();
+    private ToolStripItem[] _trayMenu;
+    private NotifyIcon _trayNotify = new();
 
     private MainHandler _mainHandler;
 
@@ -81,6 +81,17 @@ namespace Xeno.ToolsHub.Managers
       base.Dispose(disposing);
     }
 
+    private static ContextMenuStrip BuildContextMenuStrip(IEnumerable<ToolStripItem> menuItems)
+    {
+      var contextMenuStrip = new ContextMenuStrip();
+      foreach (ToolStripItem menuItem in menuItems)
+      {
+        contextMenuStrip.Items.Add(menuItem);
+      }
+
+      return contextMenuStrip;
+    }
+
     private void AlertBubble(string title, string message, ToolTipIcon icon = ToolTipIcon.Info, int displayTime = 5000)
     {
       // TODO: SysTray - Interactive bubbles - http://www.codeproject.com/Articles/529753/InteractiveToolTip-Tooltips-you-can-click-on
@@ -98,17 +109,6 @@ namespace Xeno.ToolsHub.Managers
       _trayNotify.ContextMenuStrip = BuildContextMenuStrip(_trayMenu);
       _trayNotify.DoubleClick += new EventHandler(OnMenuDoubleClick);
       _trayNotify.Visible = true;
-    }
-
-    private static ContextMenuStrip BuildContextMenuStrip(IEnumerable<ToolStripItem> menuItems)
-    {
-      var contextMenuStrip = new ContextMenuStrip();
-      foreach (ToolStripItem menuItem in menuItems)
-      {
-        contextMenuStrip.Items.Add(menuItem);
-      }
-
-      return contextMenuStrip;
     }
 
     private void InitTrayMenu()

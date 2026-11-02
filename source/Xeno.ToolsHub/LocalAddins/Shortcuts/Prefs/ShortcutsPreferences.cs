@@ -20,9 +20,9 @@ using static System.Windows.Forms.ListView;
 /// <summary>Shortcuts Add-in Preference Page.</summary>
 public partial class ShortcutsPreferences : Form, IPreferencePageActions
 {
-  private bool _isModified = false;
-
   private readonly ShortcutsManager _shortcuts;
+
+  private bool _isModified = false;
   private bool _updatingControls;
 
   public ShortcutsPreferences()

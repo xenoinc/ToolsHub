@@ -21,9 +21,10 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Xeno Innovations, Inc.")]
 [assembly: AssemblyProduct("Xeno.ToolsHub")]
-[assembly: AssemblyCopyright("Copyright © Xeno Innovations 2018-2020")]
+[assembly: AssemblyCopyright("Copyright © Xeno Innovations 2018-2026")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
+[assembly: System.Runtime.Versioning.SupportedOSPlatform("windows7.0")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
 // to COM components.  If you need to access a type in this assembly from

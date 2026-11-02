@@ -1,9 +1,7 @@
-﻿/* Copyright Xeno Innovations, Inc. 2018
+/* Copyright Xeno Innovations, Inc. 2018
  * Date:    2018-12-31
  * Author:  Damian Suess
  * File:    AssemblyInfo.cs
- * Description:
- *  
  */
 
 using System.Reflection;
@@ -18,9 +16,10 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Xeno Innovations")]
 [assembly: AssemblyProduct("PomodoroAddin")]
-[assembly: AssemblyCopyright("Copyright © Xeno Innovations, Inc 2018-2020")]
+[assembly: AssemblyCopyright("Copyright © Xeno Innovations, Inc 2018-2026")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
+[assembly: System.Runtime.Versioning.SupportedOSPlatform("windows7.0")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
 // to COM components.  If you need to access a type in this assembly from

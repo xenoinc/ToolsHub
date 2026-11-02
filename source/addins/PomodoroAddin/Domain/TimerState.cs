@@ -1,4 +1,4 @@
-﻿/* Copyright Xeno Innovations, Inc. 2019
+/* Copyright Xeno Innovations, Inc. 2019
  * Date:    2019-1-22
  * Author:  Damian Suess
  * File:    TimerState.cs
@@ -6,20 +6,19 @@
  *  Timer state enumeration
  */
 
-namespace PomodoroAddin.Domain
+namespace PomodoroAddin.Domain;
+
+public enum TimerState
 {
-  public enum TimerState
-  {
-    /// <summary>Timer started</summary>
-    Start,
+  /// <summary>Timer started</summary>
+  Start,
 
-    /// <summary>Timer paused</summary>
-    Pause,
+  /// <summary>Timer paused</summary>
+  Pause,
 
-    /// <summary>Timer stopped</summary>
-    Stop,
+  /// <summary>Timer stopped</summary>
+  Stop,
 
-    /// <summary>Timer finished</summary>
-    Done
-  };
+  /// <summary>Timer finished</summary>
+  Done
 }
