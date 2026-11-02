@@ -28,6 +28,8 @@ namespace Xeno.ToolsHub.Managers
   public class SystemTrayManager : ApplicationContext
   {
     private ToolStripItem[] _trayMenu;
+    private readonly Control _eventDispatcher = new Control();
+    private readonly TrayEventSubscriptions _eventSubscriptions;
 
     private NotifyIcon _trayNotify = new NotifyIcon();
 
@@ -36,7 +38,9 @@ namespace Xeno.ToolsHub.Managers
     public SystemTrayManager(MainHandler mainHandler)
     {
       _mainHandler = mainHandler;
-      MessageCenterSubscribe();
+      _eventDispatcher.CreateControl();
+      _eventSubscriptions = new TrayEventSubscriptions(
+        AppEvents.Instance, MenuRefresh, OnTrayNotification, OnTrayIconChanged, DispatchEvent);
       MenuRefresh();
     }
 
@@ -67,7 +71,13 @@ namespace Xeno.ToolsHub.Managers
 
     protected override void Dispose(bool disposing)
     {
-      MessagesUnsubscribe();
+      if (disposing)
+      {
+        _eventSubscriptions.Dispose();
+        _eventDispatcher.Dispose();
+        _trayNotify.Dispose();
+      }
+
       base.Dispose(disposing);
     }
 
@@ -153,53 +163,27 @@ namespace Xeno.ToolsHub.Managers
       return addinItems;
     }
 
-    /// <summary>Subscribe to messaging center messages</summary>
-    private void MessageCenterSubscribe()
+    private void DispatchEvent(Action action)
     {
-      MessagingCenter.Subscribe<SystemTrayMessages>(this, SystemTrayMessages.Refresh, (sender) =>
-      {
-        Log.Debug("Refreshing system tray icon set");
-        MenuRefresh();
-      });
+      if (_eventDispatcher.IsDisposed)
+        return;
 
-      MessagingCenter.Subscribe<SystemTrayMessages, string>(this, SystemTrayMessages.Notify, (sender, msg) =>
-      {
-        // TODO: Add custom icon, and timeout duration
-        string title = string.Empty;
-        ToolTipIcon icon = ToolTipIcon.Info;
-        int timeout = 5000;
-
-        Log.Debug($"Alert bubble title:'{title}', msg:'{msg}'");
-        AlertBubble(title, msg, icon, timeout);
-      });
-
-      MessagingCenter.Subscribe<SystemTrayMessages, System.Drawing.Icon>(this, SystemTrayMessages.CustomIcon, (sender, icon) =>
-      {
-        // USAGE:
-        //  We MUST specify the <..>, otherwise it will fail if you
-        //  pass a NULL icon/
-        //
-        //  MessagingCenter.Send<SystemTrayMessages, System.Drawing.Icon>(
-        //    new SystemTrayMessages(), SystemTrayMessages.CustomIcon, icon);
-        if (icon != null)
-        {
-          Log.Debug("Changing SystemTrayIcon to custom");
-          _trayNotify.Icon = icon;
-        }
-        else
-        {
-          Log.Debug("Changing SystemTrayIcon to default");
-          _trayNotify.Icon = Properties.Resources.AppIcon;
-        }
-      });
+      if (_eventDispatcher.InvokeRequired)
+        _eventDispatcher.BeginInvoke(action);
+      else
+        action();
     }
 
-    /// <summary>Unsubscribe from messaging center messages</summary>
-    private void MessagesUnsubscribe()
+    private void OnTrayNotification(string message)
     {
-      MessagingCenter.Unsubscribe<SystemTrayManager>(this, SystemTrayMessages.Refresh);
-      MessagingCenter.Unsubscribe<SystemTrayManager, string>(this, SystemTrayMessages.Notify);
-      MessagingCenter.Unsubscribe<SystemTrayManager, string>(this, SystemTrayMessages.CustomIcon);
+      Log.Debug($"Alert bubble msg:'{message}'");
+      AlertBubble(string.Empty, message);
+    }
+
+    private void OnTrayIconChanged(System.Drawing.Icon icon)
+    {
+      Log.Debug(icon == null ? "Changing SystemTrayIcon to default" : "Changing SystemTrayIcon to custom");
+      _trayNotify.Icon = icon ?? Properties.Resources.AppIcon;
     }
 
     private void OnMenuAbout(object sender, EventArgs e)

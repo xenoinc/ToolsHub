@@ -64,7 +64,7 @@ namespace Xeno.ToolsHub.SidebarAddin.Managers
     /// <summary>If we modified shortcuts, tell the rest of the system to update</summary>
     public void SendMessageRefreshShortcuts()
     {
-      MessagingCenter.Send<ShortcutsMessage>(new ShortcutsMessage(), ShortcutsMessage.Refresh);
+      AppEvents.Instance.Publish(new ShortcutsRefreshRequested());
     }
   }
 }

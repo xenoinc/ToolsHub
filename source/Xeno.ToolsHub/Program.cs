@@ -61,7 +61,7 @@ namespace Xeno.ToolsHub
       AbortShutdown = false;
       LoadAppSettings();
 
-      var appContext = new MainHandler();
+      using var appContext = new MainHandler();
       Application.Run(appContext);
 
       // Application.Run(new Views.MainForm());
