@@ -44,6 +44,8 @@ namespace Xeno.ToolsHub.SidebarAddin.Handlers
         _manager.ShowSidebars();
     }
 
+    public override void OnEnabled() => _manager.ShowSidebars();
+
     public override void Shutdown()
     {
       Log.Debug("Sidebar utility add-in shutting down");

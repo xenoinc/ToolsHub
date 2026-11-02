@@ -70,3 +70,15 @@ in their containing directory. `ToolbarViewModel` owns the displayed collection,
 Left/right layouts are vertical, top/bottom layouts horizontal. Saving sidebar
 preferences refreshes an already-open dock. Display changes reposition the dock, and
 closing it detaches display and collection event subscriptions.
+
+The host tracks active utility extensions and starts/stops them as add-ins are enabled
+or disabled. `UtilityAddin.OnEnabled()` defaults to `Execute()` for compatibility.
+Sidebar overrides it to show immediately after explicit activation; its startup
+`Execute()` still respects the startup visibility preference. Repeated loads do not
+create duplicate utility instances, and shutdown closes active utilities.
+
+The host tracks active utility extensions and starts/stops them as add-ins are enabled
+or disabled. `UtilityAddin.OnEnabled()` defaults to `Execute()` for compatibility.
+Sidebar overrides it to show immediately after explicit activation; its startup
+`Execute()` still respects the startup visibility preference. Repeated loads do not
+create duplicate utility instances, and shutdown closes active utilities.

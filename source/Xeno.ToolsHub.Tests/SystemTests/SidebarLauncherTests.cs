@@ -50,6 +50,37 @@ public class SidebarLauncherTests
   }
 
   [TestMethod]
+  public void ExplorerDropsBecomeSavedClickableLaunchersAndRespectSourceEffects()
+  {
+    RunSta(() =>
+    {
+      var shell = new FakeShell();
+      var store = new MemoryStore();
+      var model = new ToolbarViewModel(store, shell, new ApplicationSettings(new SettingsManager(StorageMethod.UnitTest)));
+      var drops = new LauncherDropHandler(model);
+      var data = new DataObject(DataFormats.FileDrop, new[] { "application.exe", "desktop.lnk" });
+      Assert.AreEqual(DragDropEffects.Copy, drops.GetEffect(data, DragDropEffects.Copy | DragDropEffects.Move));
+      Assert.AreEqual(DragDropEffects.Link, drops.GetEffect(data, DragDropEffects.Link));
+      Assert.AreEqual(DragDropEffects.None, drops.GetEffect(data, DragDropEffects.Move));
+      Assert.IsTrue(drops.Drop(data, 0));
+      Assert.HasCount(2, store.Load());
+      Assert.IsNull(shell.Launched);
+      model.Launch(model.Items[1]);
+      Assert.AreEqual("desktop.lnk", shell.Launched.Target);
+      var reorder = new DataObject(LauncherDropHandler.ItemDragFormat, model.Items[1]);
+      Assert.AreEqual(DragDropEffects.Move, drops.GetEffect(reorder, DragDropEffects.Move));
+      Assert.IsTrue(drops.Drop(reorder, 0));
+      Assert.AreEqual("desktop.lnk", store.Load()[0].Target);
+      var unsupported = new DataObject(DataFormats.Text, "This is not an app or a URL");
+      Assert.AreEqual(DragDropEffects.None, drops.GetEffect(unsupported, DragDropEffects.All));
+      Assert.IsFalse(drops.Drop(unsupported, 0));
+      var web = new DataObject(DataFormats.Text, "https://example.com/app");
+      Assert.IsTrue(drops.Drop(web, 2));
+      Assert.AreEqual("https://example.com/app", store.Load()[2].Target);
+    });
+  }
+
+  [TestMethod]
   public void SaveFailureKeepsItemsAndCorruptFileIsNotOverwritten()
   {
     var settings = new ApplicationSettings(new SettingsManager(StorageMethod.UnitTest));

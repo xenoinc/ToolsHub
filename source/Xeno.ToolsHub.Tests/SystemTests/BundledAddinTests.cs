@@ -142,6 +142,27 @@ public class BundledAddinTests
   }
 
   [TestMethod]
+  public void SidebarEnableShowsImmediatelyEvenWhenStartupDisplayIsOff()
+  {
+    using var fixture = new Fixture();
+    fixture.Settings.SetValue("Sidebar", "ShowSidebars", "False");
+    var manager = fixture.Provider.GetRequiredService<SidebarManager>();
+    using var utility = new Xeno.ToolsHub.SidebarAddin.Handlers.UtilityHandler(manager);
+    utility.Execute();
+    Assert.AreEqual(0, fixture.Windows.Created);
+    utility.OnEnabled();
+    utility.OnEnabled();
+    Assert.AreEqual(1, fixture.Windows.Created);
+    manager.ApplySettings();
+    Assert.AreEqual(2, fixture.Windows.Created);
+    var window = fixture.Windows.Last;
+    utility.Shutdown();
+    Assert.AreEqual(1, window.CloseCount);
+    utility.OnEnabled();
+    Assert.AreEqual(3, fixture.Windows.Created);
+  }
+
+  [TestMethod]
   public void SidebarEditorLoadsIndependentFieldsAndCancelKeepsSettings()
   {
     RunSta(() =>

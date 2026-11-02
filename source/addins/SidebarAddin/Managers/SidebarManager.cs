@@ -34,7 +34,7 @@ public sealed class SidebarManager : IDisposable
   public void ShowSidebars()
   {
     ObjectDisposedException.ThrowIf(_disposed, this);
-    if (!SettingsShowSidebar || _window != null)
+    if (_window != null)
       return;
     _window = _windows.Create();
     _window.Closed += OnClosed;

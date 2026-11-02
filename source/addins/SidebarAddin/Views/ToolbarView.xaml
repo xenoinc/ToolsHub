@@ -6,7 +6,7 @@
         Background="Transparent" ShowInTaskbar="False" ShowActivated="False"
         Topmost="{Binding OnTop}" Opacity="{Binding Opacity}"
         WindowStartupLocation="Manual" AllowDrop="True"
-        PreviewDragOver="OnDragOver" PreviewDrop="OnDrop">
+        PreviewDragEnter="OnDragOver" PreviewDragOver="OnDragOver" PreviewDrop="OnDrop">
   <Window.Resources>
     <Style x:Key="LauncherButton" TargetType="Button">
       <Setter Property="Width" Value="64" />

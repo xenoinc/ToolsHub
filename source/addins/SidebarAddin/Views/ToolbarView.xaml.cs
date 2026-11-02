@@ -17,8 +17,8 @@ using Screen = System.Windows.Forms.Screen;
 
 public partial class ToolbarView : Window
 {
-  private const string ItemDragFormat = "ToolsHub.Sidebar.Launcher";
   private readonly ToolbarViewModel _model;
+  private readonly LauncherDropHandler _drops;
   private Point _dragStart;
   private LauncherIcon _dragItem;
   private bool _positioning;
@@ -27,6 +27,7 @@ public partial class ToolbarView : Window
   public ToolbarView(ToolbarViewModel model)
   {
     _model = model;
+    _drops = new LauncherDropHandler(model);
     InitializeComponent();
     DataContext = model;
     if (model.Orientation == Orientation.Horizontal)
@@ -87,17 +88,6 @@ public partial class ToolbarView : Window
   [DllImport("user32.dll")]
   [return: MarshalAs(UnmanagedType.Bool)]
   private static extern bool SetWindowPos(IntPtr window, IntPtr insertAfter, int x, int y, int width, int height, uint flags);
-
-  private static string[] GetDroppedPaths(IDataObject data)
-  {
-    if (data.GetData(DataFormats.FileDrop) is string[] paths)
-      return paths;
-    if (data.GetData(DataFormats.UnicodeText) is string text
-      && Uri.TryCreate(text.Trim(), UriKind.Absolute, out var uri)
-      && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps))
-      return new[] { uri.AbsoluteUri };
-    return Array.Empty<string>();
-  }
 
   private void OnItemsChanged(object sender, NotifyCollectionChangedEventArgs args) => QueuePosition();
 
@@ -172,16 +162,13 @@ public partial class ToolbarView : Window
 
     // End Button's click capture before beginning a drag so dropping never launches the app.
     ((Button)sender).ReleaseMouseCapture();
-    DragDrop.DoDragDrop((DependencyObject)sender, new DataObject(ItemDragFormat, item), DragDropEffects.Move);
+    DragDrop.DoDragDrop((DependencyObject)sender, new DataObject(LauncherDropHandler.ItemDragFormat, item), DragDropEffects.Move);
     args.Handled = true;
   }
 
   private void OnDragOver(object sender, DragEventArgs args)
   {
-    args.Effects = args.Data.GetDataPresent(ItemDragFormat)
-      && args.Data.GetData(ItemDragFormat) is LauncherIcon item && _model.Items.Contains(item)
-        ? DragDropEffects.Move
-        : GetDroppedPaths(args.Data).Length > 0 ? DragDropEffects.Copy : DragDropEffects.None;
+    args.Effects = _drops.GetEffect(args.Data, args.AllowedEffects);
     DockSurface.BorderBrush = args.Effects == DragDropEffects.None ? new SolidColorBrush(Color.FromRgb(126, 139, 160)) : Brushes.LightSkyBlue;
     AutoScroll(args.GetPosition(LauncherScroll));
     args.Handled = true;
@@ -190,10 +177,9 @@ public partial class ToolbarView : Window
   private void OnDrop(object sender, DragEventArgs args)
   {
     int insertion = FindInsertion(args.GetPosition(Launchers));
-    if (args.Data.GetDataPresent(ItemDragFormat) && args.Data.GetData(ItemDragFormat) is LauncherIcon item)
-      _model.Move(item, insertion);
-    else
-      _model.AddPaths(GetDroppedPaths(args.Data), insertion);
+    args.Effects = _drops.GetEffect(args.Data, args.AllowedEffects);
+    if (args.Effects == DragDropEffects.None || !_drops.Drop(args.Data, insertion))
+      args.Effects = DragDropEffects.None;
     DockSurface.BorderBrush = new SolidColorBrush(Color.FromRgb(126, 139, 160));
     args.Handled = true;
   }
