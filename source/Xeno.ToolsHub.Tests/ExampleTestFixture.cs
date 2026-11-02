@@ -33,7 +33,7 @@ namespace Xeno.ToolsHub.Tests
     }
 
     [ClassCleanup]
-    public void RunAfterAllTestsInClass()
+    public static void RunAfterAllTestsInClass()
     {
     }
 

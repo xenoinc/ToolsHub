@@ -7,8 +7,9 @@
  */
 
 using System;
+using System.Text.Json;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
+using Xeno.ToolsHub.Config;
 using Xeno.ToolsHub.LocalAddins.Shortcuts;
 using Xeno.ToolsHub.Managers;
 using Xeno.ToolsHub.Tests.Helpers;
@@ -42,10 +43,10 @@ namespace Xeno.ToolsHub.Tests.SystemTests.Shortcuts
       ShortcutItems items = SettingsHelpers.GenerateShortcutsMixed();
       Assert.AreNotEqual(0, items.Count);
 
-      string json = JsonConvert.SerializeObject(items, Formatting.None);
+      string json = JsonSerializer.Serialize(items, JsonOptions.Compact);
       Console.WriteLine("JSON: ---------" + Environment.NewLine + json + Environment.NewLine + "---------");
 
-      var obj = JsonConvert.DeserializeObject<ShortcutItems>(json);
+      var obj = JsonSerializer.Deserialize<ShortcutItems>(json);
 
       Assert.IsNotNull(obj);
       Assert.AreEqual(items.Count, obj.Count);

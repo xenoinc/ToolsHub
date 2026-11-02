@@ -59,6 +59,21 @@ If closed and forgot the submodule:<br />
 
 Read our wiki to learn how to help and make your own add-in.
 
+### Build and test
+
+Use the .NET 10 SDK on Windows:
+
+```powershell
+dotnet build source/ToolsHub.slnx --configuration Release
+dotnet test --project source/Xeno.ToolsHub.Tests/Xeno.ToolsHub.Tests.csproj --configuration Release
+```
+
+Tests use Microsoft Testing Platform, selected by `global.json`. Pass the project with
+`--project`; VSTest options such as `--logger` no longer apply.
+
+Settings use the built-in `System.Text.Json` serializer. Existing `ToolsHub.db` files
+retain their property-bag format and Base64-encoded objects; no file conversion is needed.
+
 ## Squirrel Updater
 
 See, ``Docs\Squirrel-Usage.md`` for more info.

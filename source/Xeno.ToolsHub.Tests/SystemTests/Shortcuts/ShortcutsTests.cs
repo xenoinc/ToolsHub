@@ -9,7 +9,6 @@
 namespace Xeno.ToolsHub.Tests.SystemTests.Shortcuts
 {
   using Microsoft.VisualStudio.TestTools.UnitTesting;
-  using Newtonsoft.Json;
   using Xeno.ToolsHub.LocalAddins.Shortcuts;
   using Xeno.ToolsHub.Managers;
   using Xeno.ToolsHub.Services.Logging;
