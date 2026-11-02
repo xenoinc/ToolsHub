@@ -1,20 +1,32 @@
 ﻿namespace Xeno.ToolsHub.SidebarAddin.Services;
 
 using System;
+using Xeno.ToolsHub.Services;
 using Xeno.ToolsHub.SidebarAddin.ViewModels;
 using Xeno.ToolsHub.SidebarAddin.Views;
 
 public sealed class SidebarWindowFactory : ISidebarWindowFactory
 {
-  public ISidebarWindow Create() => new SidebarWindow();
+  private readonly ILauncherStore _store;
+  private readonly ILauncherShell _shell;
+  private readonly ISettingsService _settings;
+
+  public SidebarWindowFactory(ILauncherStore store, ILauncherShell shell, ISettingsService settings)
+  {
+    _store = store;
+    _shell = shell;
+    _settings = settings;
+  }
+
+  public ISidebarWindow Create() => new SidebarWindow(new ToolbarView(new ToolbarViewModel(_store, _shell, _settings)));
 
   private sealed class SidebarWindow : ISidebarWindow
   {
-    private readonly ToolbarView _view = new() { ShowInTaskbar = true };
+    private readonly ToolbarView _view;
 
-    public SidebarWindow()
+    public SidebarWindow(ToolbarView view)
     {
-      _view.DataContext = new ToolbarViewModel(_view.StackDynamic);
+      _view = view;
       _view.Closed += OnClosed;
     }
 

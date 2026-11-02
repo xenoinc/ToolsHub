@@ -157,14 +157,14 @@ public class BundledAddinTests
       {
         var page = scope.ServiceProvider.GetRequiredService<Xeno.ToolsHub.SidebarAddin.Views.PreferencesPage>();
         Assert.AreEqual(2, Find<ComboBox>(page, "ComboScreenArea").SelectedIndex);
-        Assert.AreEqual(1, Find<ComboBox>(page, "ComboScreenOrientaiton").SelectedIndex);
+        Assert.AreEqual(0, Find<ComboBox>(page, "ComboScreenOrientaiton").SelectedIndex);
         Find<ComboBox>(page, "ComboScreenArea").SelectedIndex = 3;
         Find<ComboBox>(page, "ComboScreenOrientaiton").SelectedIndex = 0;
         Assert.IsTrue(page.OnSave());
       }
 
       Assert.AreEqual("3", fixture.Settings.GetValue(id, "ScreenArea"));
-      Assert.AreEqual("0", fixture.Settings.GetValue(id, "ScreenOrientation"));
+      Assert.AreEqual("1", fixture.Settings.GetValue(id, "ScreenOrientation"));
       Assert.AreEqual("1", fixture.Settings.GetValue(id, "ScreenNumber"));
       Assert.AreEqual("wallpaper.png", fixture.Settings.GetValue(id, "BackgroundImage"));
       using (var scope = fixture.Provider.CreateScope())

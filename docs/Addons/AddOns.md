@@ -52,3 +52,21 @@ The second slice migrates Pomodoro, Sidebar, and VeraCrypt. Their `ServiceModule
 Managers and their runtime services are application singletons. Preference pages are transient objects resolved inside each dialog scope. Inject `ISettingsService` for typed settings access and `IEventAggregator` for events. Pomodoro pages edit configuration without creating or restarting the running timer. The timer stops and detaches callbacks on shutdown. Sidebar owns and closes its window; reopening Settings does not create another Sidebar. VeraCrypt uses injectable operations and secret-protection interfaces, and volume operations occur only for explicit commands. Its previously unimplemented automatic mount/dismount settings are not activated by this rollout.
 
 `Program.Settings`, the static `SettingsService`, and `AppEvents.Instance` remain available for external add-in compatibility. The three migrated bundles no longer use them. An external bundle can implement `IAddinServiceModule` and have its module registered at the composition root before building the provider; the current automatic loader is deliberately limited to the three bundled assembly names. Logging remains unchanged.
+
+## Sidebar launchers
+
+Sidebar owns its launcher list through `ILauncherStore` and `ILauncherShell`. The JSON
+store writes `SidebarLaunchers.json` alongside the host settings file using an atomic
+replacement. It stores an ordered array of `Id`, `Title`, and `Target` values and does
+not read or update the Shortcuts add-in's property bag. Import, reorder, and remove
+operations save immediately; failed writes keep the previous in-memory list. A corrupt
+launcher file is reported in the dock and preserved until repaired.
+
+The Windows shell adapter extracts each target's icon, releases native icon handles,
+and supplies an application icon when extraction fails. Launches use the shell so
+Windows links retain their arguments and working directory; direct executables start
+in their containing directory. `ToolbarViewModel` owns the displayed collection, while
+`ToolbarView` handles drag gestures, hover animation, scrolling, and monitor placement.
+Left/right layouts are vertical, top/bottom layouts horizontal. Saving sidebar
+preferences refreshes an already-open dock. Display changes reposition the dock, and
+closing it detaches display and collection event subscriptions.

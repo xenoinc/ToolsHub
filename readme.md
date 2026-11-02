@@ -34,8 +34,14 @@ Author: [Damian Suess](https://www.linkedin.com/in/damiansuess/)
 
 ### Sidebar Launcher
 
-* **Status:** _n/a_
-* (_i.e. RocketDock, ObjectDock_)
+* Launch apps, files, folders, Windows shortcuts, and web links from an icon dock.
+* Drop items onto the dock to add them; drag icons to reorder them. Changes save immediately.
+* Hover to enlarge an icon, click to launch, or right-click to add/remove launchers.
+* In **Settings > Sidebar**, choose the monitor and Left, Right, Top, or Bottom edge.
+  Layout follows the selected edge. Long lists scroll with the mouse wheel.
+* Launchers are stored separately in `SidebarLaunchers.json`, beside `ToolsHub.db`.
+  The Shortcuts add-in's list is independent. Dropped `.lnk` files keep their original
+  target, arguments, and working directory; keep the link file at its saved location.
 
 ### VeraCrypt
 

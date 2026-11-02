@@ -1,29 +1,25 @@
 ﻿namespace Xeno.ToolsHub.SidebarAddin.Managers;
 
 using System;
-using Lite.EventIpc;
-using Xeno.ToolsHub.LocalAddins.Shortcuts;
 using Xeno.ToolsHub.Services;
 using Xeno.ToolsHub.SidebarAddin.Services;
 
 public sealed class SidebarManager : IDisposable
 {
   private readonly ISettingsService _settings;
-  private readonly IEventAggregator _events;
   private readonly ISidebarWindowFactory _windows;
   private ISidebarWindow _window;
   private bool _disposed;
 
-  public SidebarManager(ISettingsService settings, IEventAggregator events, ISidebarWindowFactory windows)
+  public SidebarManager(ISettingsService settings, ISidebarWindowFactory windows)
   {
     _settings = settings;
-    _events = events;
     _windows = windows;
   }
 
   public string SettingBackground => _settings.GetString(Constants.AddinId, Constants.KeyBackground, string.Empty);
 
-  public int SettingOpacity => _settings.GetInt(Constants.AddinId, Constants.KeyOpacity, 0);
+  public int SettingOpacity => _settings.GetInt(Constants.AddinId, Constants.KeyOpacity, 90);
 
   public int SettingScreenArea => _settings.GetInt(Constants.AddinId, Constants.KeyScreenArea, 1);
 
@@ -34,9 +30,6 @@ public sealed class SidebarManager : IDisposable
   public bool SettingsShowSidebar => _settings.GetBool(Constants.AddinId, Constants.KeyShowSidebars, true);
 
   public string SettingTintColor => _settings.GetString(Constants.AddinId, Constants.KeyTintColor, string.Empty);
-
-  public ShortcutItems GetShortcuts() =>
-    _settings.GetObject<ShortcutItems>(ShortcutsManager.ShortcutsAddinId, ShortcutsManager.ShortcutItemsKey) ?? new ShortcutItems();
 
   public void ShowSidebars()
   {
@@ -58,7 +51,13 @@ public sealed class SidebarManager : IDisposable
     window.Close();
   }
 
-  public void SendMessageRefreshShortcuts() => _events.Publish(new ShortcutsRefreshRequested());
+  public void ApplySettings()
+  {
+    if (_window == null)
+      return;
+    CloseSidebars();
+    ShowSidebars();
+  }
 
   public void Dispose()
   {
