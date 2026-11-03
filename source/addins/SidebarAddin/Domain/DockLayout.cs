@@ -1,4 +1,4 @@
-﻿namespace Xeno.ToolsHub.SidebarAddin.Domain;
+namespace Xeno.ToolsHub.SidebarAddin.Domain;
 
 using System;
 using System.Windows;
@@ -17,12 +17,15 @@ public static class DockLayout
       case 2:
         left = workArea.Right - width;
         break;
+
       case 3:
         top = workArea.Top;
         break;
+
       case 4:
         top = workArea.Bottom - height;
         break;
+
       default:
         left = workArea.Left;
         break;

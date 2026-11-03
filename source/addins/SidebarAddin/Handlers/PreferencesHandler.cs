@@ -1,4 +1,4 @@
-﻿/* Copyright Xeno Innovations, Inc. 2019
+/* Copyright Xeno Innovations, Inc. 2019
  * Date:    2019-4-9
  * Author:  Damian Suess
  * File:    PreferenceHandler.cs
@@ -27,11 +27,11 @@ namespace Xeno.ToolsHub.SidebarAddin.Handlers
 
     public string Id { get; set; }
 
+    public bool IsModified => _page.IsModified;
+
     public Form Page => _page;
 
-    public string Title { get { return "Sidebar"; } }
-
-    public bool IsModified => _page.IsModified;
+    public string Title => "Sidebar";
 
     public void InitializePage()
     {

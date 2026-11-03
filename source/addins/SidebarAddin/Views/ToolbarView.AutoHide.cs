@@ -1,4 +1,4 @@
-﻿namespace Xeno.ToolsHub.SidebarAddin.Views;
+namespace Xeno.ToolsHub.SidebarAddin.Views;
 
 using System;
 using System.Diagnostics;
@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using Xeno.ToolsHub.SidebarAddin.Domain;
 
+/// <summary>ToolbarView AutoHide.</summary>
 public partial class ToolbarView
 {
   private readonly DockAutoHide _autoHide = new();
@@ -107,11 +108,15 @@ public partial class ToolbarView
     var region = new Rect(Math.Floor(visible.X * scaleX), Math.Floor(visible.Y * scaleY),
       Math.Ceiling(visible.Right * scaleX) - Math.Floor(visible.X * scaleX),
       Math.Ceiling(visible.Bottom * scaleY) - Math.Floor(visible.Y * scaleY));
+
     if (region == _lastRegion)
       return;
+
     IntPtr nativeRegion = CreateRectRgn((int)region.Left, (int)region.Top, (int)region.Right, (int)region.Bottom);
+
     if (nativeRegion == IntPtr.Zero)
       return;
+
     if (SetWindowRgn(new System.Windows.Interop.WindowInteropHelper(this).Handle, nativeRegion, true) == 0)
       DeleteObject(nativeRegion);
     else

@@ -1,4 +1,4 @@
-﻿namespace Xeno.ToolsHub.SidebarAddin.Services;
+namespace Xeno.ToolsHub.SidebarAddin.Services;
 
 using System;
 using System.Diagnostics;
@@ -24,22 +24,8 @@ public sealed class WindowsLauncherShell : ILauncherShell
       info.WorkingDirectory = Path.GetDirectoryName(Path.GetFullPath(target));
     else if (Directory.Exists(target))
       info.WorkingDirectory = Path.GetFullPath(target);
-    return info;
-  }
 
-  public DockLauncher Import(string path)
-  {
-    ArgumentException.ThrowIfNullOrWhiteSpace(path);
-    if (Uri.TryCreate(path, UriKind.Absolute, out var uri) && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps))
-      return new DockLauncher { Title = uri.Host, Target = uri.AbsoluteUri };
-    path = Path.GetFullPath(Environment.ExpandEnvironmentVariables(path.Trim('"')));
-    if (!File.Exists(path) && !Directory.Exists(path))
-      throw new FileNotFoundException("The dropped item could not be found.", path);
-    return new DockLauncher
-    {
-      Title = Directory.Exists(path) ? new DirectoryInfo(path).Name : Path.GetFileNameWithoutExtension(path),
-      Target = path,
-    };
+    return info;
   }
 
   public ImageSource GetIcon(string target)
@@ -49,6 +35,7 @@ public sealed class WindowsLauncherShell : ILauncherShell
     SHGetFileInfo(target, 0, ref info, (uint)Marshal.SizeOf<ShellFileInfo>(), 0x100);
     if (info.Icon == IntPtr.Zero)
       return CreateImage(System.Drawing.SystemIcons.Application.Handle);
+
     try
     {
       return CreateImage(info.Icon);
@@ -57,6 +44,24 @@ public sealed class WindowsLauncherShell : ILauncherShell
     {
       DestroyIcon(info.Icon);
     }
+  }
+
+  public DockLauncher Import(string path)
+  {
+    ArgumentException.ThrowIfNullOrWhiteSpace(path);
+    if (Uri.TryCreate(path, UriKind.Absolute, out var uri) && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps))
+      return new DockLauncher { Title = uri.Host, Target = uri.AbsoluteUri };
+
+    path = Path.GetFullPath(Environment.ExpandEnvironmentVariables(path.Trim('"')));
+
+    if (!File.Exists(path) && !Directory.Exists(path))
+      throw new FileNotFoundException("The dropped item could not be found.", path);
+
+    return new DockLauncher
+    {
+      Title = Directory.Exists(path) ? new DirectoryInfo(path).Name : Path.GetFileNameWithoutExtension(path),
+      Target = path,
+    };
   }
 
   public void Launch(DockLauncher item)
@@ -71,12 +76,12 @@ public sealed class WindowsLauncherShell : ILauncherShell
     return image;
   }
 
-  [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
-  private static extern IntPtr SHGetFileInfo(string path, uint attributes, ref ShellFileInfo info, uint size, uint flags);
-
   [DllImport("user32.dll")]
   [return: MarshalAs(UnmanagedType.Bool)]
   private static extern bool DestroyIcon(IntPtr icon);
+
+  [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
+  private static extern IntPtr SHGetFileInfo(string path, uint attributes, ref ShellFileInfo info, uint size, uint flags);
 
   [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
   private struct ShellFileInfo

@@ -1,4 +1,4 @@
-﻿/* Copyright Xeno Innovations, Inc. 2018
+/* Copyright Xeno Innovations, Inc. 2018
  * Date:    2018-12-31
  * Author:  Damian Suess
  * File:    FileLogger.cs
@@ -15,7 +15,7 @@ public class FileLogger : ILogger
 {
   //// File output stream
   //// private System.IO.StreamWriter _stream;
-  private readonly string _baseName = "LogFile";
+  private readonly string _baseName = "toolshub";
 
   private readonly object _lock = new object();
 

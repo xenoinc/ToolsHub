@@ -10,9 +10,11 @@
   The startup visibility setting only controls display when the app starts.
 * Enabling the Sidebar add-in shows it immediately; disabling it closes the dock.
   The startup visibility setting only controls display when the app starts.
-* Launchers are stored separately in `SidebarLaunchers.json`, beside `ToolsHub.db`.
-  The Shortcuts add-in's list is independent. Dropped `.lnk` files keep their original
-  target, arguments, and working directory; keep the link file at its saved location.
+* Sidebar preferences and launchers are stored in the `Sidebar` section of `ToolsHub.db`.
+  The Shortcuts add-in's list remains independent. Existing `SidebarLaunchers.json`
+  entries import automatically when no sidebar list is saved in the database; the
+  original file is retained as a backup. Dropped `.lnk` files keep their original target,
+  arguments, and working directory; keep the link file at its saved location.
 
 If Explorer shows a blocked cursor when dropping onto the dock, run ToolsHub without
 administrator privileges. When debugging, start Visual Studio normally too: Windows

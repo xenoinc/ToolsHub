@@ -32,10 +32,9 @@ public class SidebarLauncherTests
   public void SidebarListPersistsItsOwnOrderWithoutChangingHostShortcuts()
   {
     var settings = new SettingsManager(StorageMethod.UnitTest);
-    settings.SetValue("ToolsHub.Shortcuts", "ShortcutItems", "untouched");
+    settings.SetValue("ShortcutsAddin", "ShortcutItems", "untouched");
     settings.SaveFile();
-    string original = File.ReadAllText(settings.SettingsFilePath);
-    var store = new JsonLauncherStore(settings);
+    var store = new SettingsLauncherStore(settings);
     var model = new ToolbarViewModel(store, new FakeShell(), new ApplicationSettings(settings));
     Assert.IsTrue(model.AddPaths(new[] { "one.lnk", "two.exe", "three.url" }, 0));
     Assert.IsTrue(model.AddPaths(new[] { "TWO.EXE" }, 1));
@@ -43,10 +42,80 @@ public class SidebarLauncherTests
     Assert.IsTrue(model.Move(model.Items[0], 3));
     Assert.IsTrue(model.Move(model.Items[1], 0));
     CollectionAssert.AreEqual(new[] { "three.url", "two.exe", "one.lnk" }, store.Load().Select(item => item.Target).ToArray());
-    var reloaded = new ToolbarViewModel(new JsonLauncherStore(settings), new FakeShell(), new ApplicationSettings(settings));
+    var loadedSettings = new SettingsManager(StorageMethod.UnitTest);
+    loadedSettings.LoadFile();
+    var reloaded = new ToolbarViewModel(new SettingsLauncherStore(loadedSettings), new FakeShell(), new ApplicationSettings(loadedSettings));
     Assert.IsTrue(reloaded.Remove(reloaded.Items[1]));
+    settings.LoadFile();
     CollectionAssert.AreEqual(new[] { "three.url", "one.lnk" }, store.Load().Select(item => item.Target).ToArray());
+    Assert.AreEqual("untouched", settings.GetValue("ShortcutsAddin", "ShortcutItems"));
+    Assert.IsFalse(File.Exists(Path.Combine(Path.GetDirectoryName(settings.SettingsFilePath), "SidebarLaunchers.json")));
+  }
+
+  [TestMethod]
+  public void LegacySidebarLaunchersImportOnceAndAnEmptySavedListDoesNotReimport()
+  {
+    var settings = new SettingsManager(StorageMethod.UnitTest);
+    settings.SetValue("Sidebar", "ScreenArea", "3");
+    settings.SetValue("OtherAddin", "Secret", "opaque-value");
+    string legacy = Path.Combine(Path.GetDirectoryName(settings.SettingsFilePath), "SidebarLaunchers.json");
+    const string json = "[{\"Id\":\"legacy-id\",\"Title\":\"Existing launcher\",\"Target\":\"app.exe\"}]";
+    File.WriteAllText(legacy, json);
+    var store = new SettingsLauncherStore(settings);
+    Assert.AreEqual("legacy-id", store.Load()[0].Id);
+    var loaded = new SettingsManager(StorageMethod.UnitTest);
+    loaded.LoadFile();
+    Assert.AreEqual("app.exe", new SettingsLauncherStore(loaded).Load()[0].Target);
+    Assert.AreEqual("3", loaded.GetValue("Sidebar", "ScreenArea"));
+    Assert.AreEqual("opaque-value", loaded.GetValue("OtherAddin", "Secret"));
+    Assert.AreEqual(json, File.ReadAllText(legacy));
+    store.Save(Array.Empty<DockLauncher>());
+    loaded.LoadFile();
+    Assert.HasCount(0, new SettingsLauncherStore(loaded).Load());
+  }
+
+  [TestMethod]
+  public void DatabaseLaunchersTakePrecedenceAndFailedSaveRestoresPreviousData()
+  {
+    var settings = new SettingsManager(StorageMethod.UnitTest);
+    var store = new SettingsLauncherStore(settings);
+    var model = new ToolbarViewModel(store, new FakeShell(), new ApplicationSettings(settings));
+    Assert.IsTrue(model.AddPaths(new[] { "saved.exe" }, 0));
+    string legacy = Path.Combine(Path.GetDirectoryName(settings.SettingsFilePath), "SidebarLaunchers.json");
+    File.WriteAllText(legacy, "{broken");
+    Assert.AreEqual("saved.exe", store.Load()[0].Target);
+    string original = File.ReadAllText(settings.SettingsFilePath);
+    var attributes = File.GetAttributes(settings.SettingsFilePath);
+    try
+    {
+      File.SetAttributes(settings.SettingsFilePath, attributes | FileAttributes.ReadOnly);
+      Assert.IsFalse(model.AddPaths(new[] { "new.exe" }, 1));
+      Assert.HasCount(1, model.Items);
+      Assert.AreEqual("saved.exe", store.Load()[0].Target);
+      Assert.AreEqual(original, File.ReadAllText(settings.SettingsFilePath));
+    }
+    finally
+    {
+      File.SetAttributes(settings.SettingsFilePath, attributes);
+    }
+
+    Assert.HasCount(0, Directory.GetFiles(Path.GetDirectoryName(settings.SettingsFilePath), ".ToolsHub-*.tmp"));
+  }
+
+  [TestMethod]
+  public void InvalidDatabaseLaunchersArePreservedInsteadOfUsingLegacyData()
+  {
+    var settings = new SettingsManager(StorageMethod.UnitTest);
+    settings.SetValue("Sidebar", "LauncherItems", "invalid-base64!");
+    settings.SaveFile();
+    string original = File.ReadAllText(settings.SettingsFilePath);
+    string legacy = Path.Combine(Path.GetDirectoryName(settings.SettingsFilePath), "SidebarLaunchers.json");
+    File.WriteAllText(legacy, "[]");
+    var model = new ToolbarViewModel(new SettingsLauncherStore(settings), new FakeShell(), new ApplicationSettings(settings));
+    Assert.IsFalse(model.AddPaths(new[] { "new.exe" }, 0));
+    Assert.IsFalse(string.IsNullOrEmpty(model.Error));
     Assert.AreEqual(original, File.ReadAllText(settings.SettingsFilePath));
+    Assert.AreEqual("[]", File.ReadAllText(legacy));
   }
 
   [TestMethod]
@@ -248,9 +317,10 @@ public class SidebarLauncherTests
     Assert.HasCount(2, model.Items);
     Assert.IsFalse(string.IsNullOrEmpty(model.Error));
 
-    string path = Path.Combine(Helpers.GetStorageFolder(StorageMethod.UnitTest), "corrupt.json");
+    var corruptSettings = new SettingsManager(StorageMethod.UnitTest);
+    string path = Path.Combine(Helpers.GetStorageFolder(StorageMethod.UnitTest), "SidebarLaunchers.json");
     File.WriteAllText(path, "{broken");
-    var corrupt = new ToolbarViewModel(new JsonLauncherStore(path), new FakeShell(), settings);
+    var corrupt = new ToolbarViewModel(new SettingsLauncherStore(corruptSettings), new FakeShell(), settings);
     Assert.IsFalse(corrupt.AddPaths(new[] { "new.exe" }, 0));
     Assert.AreEqual("{broken", File.ReadAllText(path));
   }

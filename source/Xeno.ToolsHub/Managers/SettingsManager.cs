@@ -136,20 +136,33 @@ namespace Xeno.ToolsHub.Managers
       }
     }
 
+    /// <summary>Atomically save settings, allowing callers to handle write failures.</summary>
+    public void SaveFileOrThrow()
+    {
+      string path = System.IO.Path.GetFullPath(SettingsFilePath);
+      string directory = System.IO.Path.GetDirectoryName(path);
+      System.IO.Directory.CreateDirectory(directory);
+      string temporary = System.IO.Path.Combine(directory, $".ToolsHub-{Guid.NewGuid():N}.tmp");
+      try
+      {
+        string data = JsonSerializer.Serialize(_propStore.PropertyBags, JsonOptions.Indented);
+        System.IO.File.WriteAllText(temporary, data);
+        System.IO.File.Move(temporary, path, true);
+        Log.Debug("Settings saved");
+      }
+      finally
+      {
+        if (System.IO.File.Exists(temporary))
+          System.IO.File.Delete(temporary);
+      }
+    }
+
     /// <summary>Save the stored properties</summary>
     public void SaveFile()
     {
       try
       {
-        if (string.IsNullOrEmpty(SettingsFilePath))
-          return;
-
-        if (SettingsFilePath != null)
-        {
-          string data = JsonSerializer.Serialize(_propStore.PropertyBags, JsonOptions.Indented);
-          System.IO.File.WriteAllText(SettingsFilePath, data);
-          Log.Debug("Settings saved");
-        }
+        SaveFileOrThrow();
       }
       catch (Exception ex)
       {

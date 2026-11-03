@@ -1,4 +1,4 @@
-﻿namespace Xeno.ToolsHub.SidebarAddin.ViewModels;
+namespace Xeno.ToolsHub.SidebarAddin.ViewModels;
 
 using System.ComponentModel;
 using System.Windows.Media;
@@ -16,6 +16,8 @@ public sealed class LauncherIcon : INotifyPropertyChanged
 
   public event PropertyChangedEventHandler PropertyChanged;
 
+  public ImageSource Image { get; }
+
   public bool IsRunning
   {
     get => _isRunning;
@@ -23,14 +25,13 @@ public sealed class LauncherIcon : INotifyPropertyChanged
     {
       if (_isRunning == value)
         return;
+
       _isRunning = value;
       PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsRunning)));
     }
   }
 
   public DockLauncher Item { get; }
-
-  public ImageSource Image { get; }
 
   public string Title => string.IsNullOrWhiteSpace(Item.Title) ? Item.Target : Item.Title;
 }

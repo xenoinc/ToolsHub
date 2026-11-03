@@ -1,4 +1,4 @@
-﻿namespace Xeno.ToolsHub.SidebarAddin.ViewModels;
+namespace Xeno.ToolsHub.SidebarAddin.ViewModels;
 
 using System;
 using System.IO;
@@ -12,6 +12,14 @@ public sealed class LauncherDropHandler
 
   public LauncherDropHandler(ToolbarViewModel model) => _model = model;
 
+  public bool Drop(IDataObject data, int insertionIndex)
+  {
+    if (data.GetDataPresent(ItemDragFormat))
+      return data.GetData(ItemDragFormat) is LauncherIcon item && _model.Move(item, insertionIndex);
+    string[] paths = GetPaths(data);
+    return paths.Length > 0 && _model.AddPaths(paths, insertionIndex);
+  }
+
   public DragDropEffects GetEffect(IDataObject data, DragDropEffects allowedEffects)
   {
     if (data.GetDataPresent(ItemDragFormat))
@@ -22,14 +30,6 @@ public sealed class LauncherDropHandler
     if ((allowedEffects & DragDropEffects.Copy) != 0)
       return DragDropEffects.Copy;
     return allowedEffects & DragDropEffects.Link;
-  }
-
-  public bool Drop(IDataObject data, int insertionIndex)
-  {
-    if (data.GetDataPresent(ItemDragFormat))
-      return data.GetData(ItemDragFormat) is LauncherIcon item && _model.Move(item, insertionIndex);
-    string[] paths = GetPaths(data);
-    return paths.Length > 0 && _model.AddPaths(paths, insertionIndex);
   }
 
   private static string[] GetPaths(IDataObject data)

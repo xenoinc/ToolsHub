@@ -1,10 +1,10 @@
-﻿<!--
-Copyright Xeno Innovations, Inc. 2019
- * Date:    2019-4-6
- * Author:  Damian Suess
- * File:    IconCtrl.xaml
- * Description:
- *
+<!--
+  Copyright Xeno Innovations, Inc. 2019
+  * Date:    2019-4-6
+  * Author:  Damian Suess
+  * File:    IconCtrl.xaml
+  * Description:
+  *
 -->
 
 <UserControl x:Class="Xeno.ToolsHub.SidebarAddin.Views.IconCtrl"
@@ -14,7 +14,7 @@ Copyright Xeno Innovations, Inc. 2019
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Xeno.ToolsHub.SidebarAddin.Views"
              mc:Ignorable="d"
-             d:DesignHeight="64" d:DesignWidth="64">
-  <Grid>
-  </Grid>
+             d:DesignHeight="64"
+             d:DesignWidth="64">
+  <Grid />
 </UserControl>

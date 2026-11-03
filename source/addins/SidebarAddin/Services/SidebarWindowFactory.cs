@@ -1,4 +1,4 @@
-﻿namespace Xeno.ToolsHub.SidebarAddin.Services;
+namespace Xeno.ToolsHub.SidebarAddin.Services;
 
 using System;
 using Xeno.ToolsHub.Services;
@@ -8,10 +8,10 @@ using Xeno.ToolsHub.SidebarAddin.Views;
 
 public sealed class SidebarWindowFactory : ISidebarWindowFactory
 {
-  private readonly ILauncherStore _store;
-  private readonly ILauncherShell _shell;
-  private readonly ISettingsService _settings;
   private readonly IRunningApplications _running;
+  private readonly ISettingsService _settings;
+  private readonly ILauncherShell _shell;
+  private readonly ILauncherStore _store;
 
   public SidebarWindowFactory(ILauncherStore store, ILauncherShell shell, ISettingsService settings, IRunningApplications running)
   {
@@ -35,11 +35,11 @@ public sealed class SidebarWindowFactory : ISidebarWindowFactory
 
     public event EventHandler Closed;
 
-    public void Show() => _view.Show();
+    public void ApplySettings(SidebarAppearance appearance) => _view.ApplySettings(appearance);
 
     public void Close() => _view.Close();
 
-    public void ApplySettings(SidebarAppearance appearance) => _view.ApplySettings(appearance);
+    public void Show() => _view.Show();
 
     private void OnClosed(object sender, EventArgs args)
     {

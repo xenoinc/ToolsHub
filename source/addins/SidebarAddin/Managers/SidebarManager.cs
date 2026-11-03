@@ -1,4 +1,4 @@
-﻿namespace Xeno.ToolsHub.SidebarAddin.Managers;
+namespace Xeno.ToolsHub.SidebarAddin.Managers;
 
 using System;
 using Xeno.ToolsHub.Services;
@@ -9,8 +9,9 @@ public sealed class SidebarManager : IDisposable
 {
   private readonly ISettingsService _settings;
   private readonly ISidebarWindowFactory _windows;
-  private ISidebarWindow _window;
+
   private bool _disposed;
+  private ISidebarWindow _window;
 
   public SidebarManager(ISettingsService settings, ISidebarWindowFactory windows)
   {
@@ -24,33 +25,13 @@ public sealed class SidebarManager : IDisposable
 
   public int SettingScreenArea => _settings.GetInt(Constants.AddinId, Constants.KeyScreenArea, 1);
 
-  public int SettingScreenOrientation => _settings.GetInt(Constants.AddinId, Constants.KeyScreenOrientation, 0);
-
   public int SettingScreenNumber => _settings.GetInt(Constants.AddinId, Constants.KeyScreenNumber, 1);
+
+  public int SettingScreenOrientation => _settings.GetInt(Constants.AddinId, Constants.KeyScreenOrientation, 0);
 
   public bool SettingsShowSidebar => _settings.GetBool(Constants.AddinId, Constants.KeyShowSidebars, true);
 
   public string SettingTintColor => _settings.GetString(Constants.AddinId, Constants.KeyTintColor, string.Empty);
-
-  public void ShowSidebars()
-  {
-    ObjectDisposedException.ThrowIf(_disposed, this);
-    if (_window != null)
-      return;
-    _window = _windows.Create();
-    _window.Closed += OnClosed;
-    _window.Show();
-  }
-
-  public void CloseSidebars()
-  {
-    var window = _window;
-    _window = null;
-    if (window == null)
-      return;
-    window.Closed -= OnClosed;
-    window.Close();
-  }
 
   public void ApplySettings()
   {
@@ -59,20 +40,46 @@ public sealed class SidebarManager : IDisposable
     _window.ApplySettings(SidebarAppearance.Load(_settings));
   }
 
-  public void PreviewSettings(SidebarAppearance appearance) => _window?.ApplySettings(appearance);
+  public void CloseSidebars()
+  {
+    var window = _window;
+    _window = null;
+
+    if (window == null)
+      return;
+
+    window.Closed -= OnClosed;
+    window.Close();
+  }
 
   public void Dispose()
   {
     if (_disposed)
       return;
+
     _disposed = true;
     CloseSidebars();
+  }
+
+  public void PreviewSettings(SidebarAppearance appearance) => _window?.ApplySettings(appearance);
+
+  public void ShowSidebars()
+  {
+    ObjectDisposedException.ThrowIf(_disposed, this);
+
+    if (_window != null)
+      return;
+
+    _window = _windows.Create();
+    _window.Closed += OnClosed;
+    _window.Show();
   }
 
   private void OnClosed(object sender, EventArgs args)
   {
     if (sender is ISidebarWindow window)
       window.Closed -= OnClosed;
+
     if (ReferenceEquals(sender, _window))
       _window = null;
   }

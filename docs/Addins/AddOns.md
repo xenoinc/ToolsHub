@@ -1,4 +1,4 @@
-﻿# Extension Add-ins
+# Extension Add-ins
 
 ## Extension Endpoints
 
@@ -55,12 +55,18 @@ Managers and their runtime services are application singletons. Preference pages
 
 ## Sidebar launchers
 
-Sidebar owns its launcher list through `ILauncherStore` and `ILauncherShell`. The JSON
-store writes `SidebarLaunchers.json` alongside the host settings file using an atomic
-replacement. It stores an ordered array of `Id`, `Title`, and `Target` values and does
-not read or update the Shortcuts add-in's property bag. Import, reorder, and remove
-operations save immediately; failed writes keep the previous in-memory list. A corrupt
-launcher file is reported in the dock and preserved until repaired.
+Sidebar owns its launcher list through `ILauncherStore` and `ILauncherShell`.
+`SettingsLauncherStore` stores an ordered list of `Id`, `Title`, and `Target` values
+under `Sidebar / LauncherItems` in `ToolsHub.db`, using the host's Base64 JSON object
+format. Appearance preferences use the same Sidebar property bag. The Shortcuts add-in's
+property bag remains independent. Import, reorder, and remove operations save immediately.
+`SettingsManager.SaveFileOrThrow` atomically replaces the settings file, and a failed
+launcher save rolls back the cached value as well as keeping the previous displayed list.
+
+When the launcher key is absent, the store imports the old `SidebarLaunchers.json`
+file once and retains that file as a backup. Database entries, including an empty list,
+always take precedence over the legacy file. Invalid database or migration data is
+reported and preserved rather than silently replaced.
 
 The Windows shell adapter extracts each target's icon, releases native icon handles,
 and supplies an application icon when extraction fails. Launches use the shell so
