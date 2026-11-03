@@ -1,81 +1,195 @@
-﻿/* Copyright Xeno Innovations, Inc. 2019
- * Date:    2019-4-21
- * Author:  Damian Suess
- * File:    ToolbarViewModel.cs
- * Description:
- *  Sidebar Toolbar View Model
- */
+namespace Xeno.ToolsHub.SidebarAddin.ViewModels;
 
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
 using System.Windows.Controls;
-using System.Windows.Input;
+using Xeno.ToolsHub.Services;
 using Xeno.ToolsHub.Services.Logging;
 using Xeno.ToolsHub.SidebarAddin.Domain;
 using Xeno.ToolsHub.SidebarAddin.Models;
+using Xeno.ToolsHub.SidebarAddin.Services;
 
-namespace Xeno.ToolsHub.SidebarAddin.ViewModels
+public sealed class ToolbarViewModel : INotifyPropertyChanged
 {
-  public class ToolbarViewModel
+  private readonly ObservableCollection<LauncherIcon> _items = new();
+  private readonly bool _loadFailed;
+  private readonly IRunningApplications _running;
+  private readonly ILauncherShell _shell;
+  private readonly ILauncherStore _store;
+
+  private SidebarAppearance _appearance;
+  private string _error;
+
+  public ToolbarViewModel(ILauncherStore store, ILauncherShell shell, ISettingsService settings, IRunningApplications running = null)
   {
-    // Lets start with one
-    private readonly DockItem _linkIcon;
+    _store = store;
+    _shell = shell;
+    _appearance = SidebarAppearance.Load(settings);
+    _running = running ?? new WindowsRunningApplications();
+    Items = new ReadOnlyObservableCollection<LauncherIcon>(_items);
 
-    private StackPanel _stackPanel;
-
-    // private readonly ObservableCollection<LinkIcon> _linkIcons;
-    private ICommand _cmdClickTest;
-
-    private ICommand _cmdAddItem;
-
-    public ToolbarViewModel(StackPanel stackPanel)
+    try
     {
-      _stackPanel = stackPanel;
+      foreach (var item in _store.Load())
+        _items.Add(CreateIcon(item));
+    }
+    catch (Exception ex)
+    {
+      _loadFailed = true;
+      ReportError("Unable to load sidebar launchers. Check the settings file and application log before adding items.", ex);
+    }
+  }
 
-      _linkIcon = new DockItem("Test Shortcut", "image.png", () =>
+  public event PropertyChangedEventHandler PropertyChanged;
+
+  public bool AutoHide => _appearance.AutoHide;
+
+  public string Error
+  {
+    get => _error;
+    private set
+    {
+      _error = value;
+      PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Error)));
+    }
+  }
+
+  public ReadOnlyObservableCollection<LauncherIcon> Items { get; }
+
+  public bool OnTop => _appearance.OnTop;
+
+  public double Opacity => Math.Clamp(_appearance.Opacity, 20, 100) / 100.0;
+
+  public Orientation Orientation => ScreenArea == 3 || ScreenArea == 4 ? Orientation.Horizontal : Orientation.Vertical;
+
+  public int ScreenArea => _appearance.ScreenArea;
+
+  public int ScreenNumber => _appearance.ScreenNumber;
+
+  public bool AddPaths(IEnumerable<string> paths, int insertionIndex)
+  {
+    if (_loadFailed)
+      return false;
+    try
+    {
+      var next = _items.ToList();
+      int index = Math.Clamp(insertionIndex, 0, next.Count);
+
+      foreach (string path in paths)
       {
-        Log.Debug("Toolbar shortcut clicked");
-      });
+        var item = _shell.Import(path);
+        if (next.Any(existing => string.Equals(existing.Item.Target, item.Target, StringComparison.OrdinalIgnoreCase)))
+          continue;
 
-      InitListItems();
+        next.Insert(index++, CreateIcon(item));
+      }
+
+      return Commit(next);
     }
-
-    public ToolbarViewModel()
+    catch (Exception ex)
     {
-      _linkIcon = new DockItem("Test Shortcut", "image.png", () =>
+      ReportError("Unable to add the dropped items.", ex);
+      return false;
+    }
+  }
+
+  public void ApplyAppearance(SidebarAppearance appearance)
+  {
+    _appearance = appearance;
+    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(string.Empty));
+  }
+
+  public void Launch(LauncherIcon item)
+  {
+    if (!_items.Contains(item))
+      return;
+
+    try
+    {
+      _shell.Launch(item.Item);
+      Error = null;
+    }
+    catch (Exception ex)
+    {
+      ReportError($"Unable to launch {item.Title}. Check that its target still exists.", ex);
+    }
+  }
+
+  /// <summary>Moves an item to an insertion boundary in the current list.</summary>
+  public bool Move(LauncherIcon item, int insertionIndex)
+  {
+    int oldIndex = _items.IndexOf(item);
+    if (oldIndex < 0 || _loadFailed)
+      return false;
+
+    int index = Math.Clamp(insertionIndex, 0, _items.Count);
+
+    if (oldIndex < index)
+      index--;
+
+    var next = _items.ToList();
+    next.RemoveAt(oldIndex);
+    next.Insert(index, item);
+
+    return Commit(next);
+  }
+
+  public void RefreshRunningState()
+  {
+    try
+    {
+      var open = _running.GetOpenExecutables();
+
+      foreach (var icon in _items)
       {
-        Log.Debug("Toolbar shortcut clicked");
-      });
-
-      InitListItems();
+        string target = _running.ResolveExecutable(icon.Item.Target);
+        icon.IsRunning = target != null && open.Contains(target);
+      }
     }
-
-    public bool IsTransparent { get; set; } = true;
-
-    public double Transparency { get; set; } = 0.9;
-
-    public ICommand CmdAddItem
+    catch (Exception ex)
     {
-      get => _cmdAddItem ?? (_cmdAddItem = new DelegateCommand(OnAddItem));
+      Log.Debug($"Unable to refresh sidebar running indicators: {ex.Message}");
     }
+  }
 
-    public ICommand CmdClickTest
+  public bool Remove(LauncherIcon item)
+  {
+    if (!_items.Contains(item) || _loadFailed)
+      return false;
+
+    var next = _items.ToList();
+    next.Remove(item);
+    return Commit(next);
+  }
+
+  private bool Commit(List<LauncherIcon> next)
+  {
+    try
     {
-      get => _cmdClickTest ??
-        (_cmdClickTest = new DelegateCommand((_) => _linkIcon.OnClick()));
-    }
+      _store.Save(next.Select(icon => icon.Item).ToList());
+      _items.Clear();
 
-    private void OnAddItem(object obj)
+      foreach (var icon in next)
+        _items.Add(icon);
+
+      Error = null;
+      return true;
+    }
+    catch (Exception ex)
     {
-      Label lblDynamic = new Label
-      {
-        Content = "Hello",
-      };
-
-      _stackPanel.Children.Add(lblDynamic);
+      ReportError("Unable to save sidebar launchers. Your previous list has been kept.", ex);
+      return false;
     }
+  }
 
-    /// <summary>Load the dock items to display</summary>
-    private void InitListItems()
-    {
-    }
+  private LauncherIcon CreateIcon(DockLauncher item) => new(item, _shell.GetIcon(item.Target));
+
+  private void ReportError(string message, Exception exception)
+  {
+    Error = message;
+    Log.Error($"{message} {exception.Message}");
   }
 }

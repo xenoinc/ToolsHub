@@ -17,6 +17,9 @@ namespace Xeno.ToolsHub.ExtensionModel
 
     public abstract void Execute();
 
+    /// <summary>Called when the user enables this utility while the host is running.</summary>
+    public virtual void OnEnabled() => Execute();
+
     public abstract void Shutdown();
   }
 }

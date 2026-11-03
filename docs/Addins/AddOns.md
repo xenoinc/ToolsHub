@@ -1,4 +1,4 @@
-﻿# Extension Add-ins
+# Extension Add-ins
 
 ## Extension Endpoints
 
@@ -52,3 +52,55 @@ The second slice migrates Pomodoro, Sidebar, and VeraCrypt. Their `ServiceModule
 Managers and their runtime services are application singletons. Preference pages are transient objects resolved inside each dialog scope. Inject `ISettingsService` for typed settings access and `IEventAggregator` for events. Pomodoro pages edit configuration without creating or restarting the running timer. The timer stops and detaches callbacks on shutdown. Sidebar owns and closes its window; reopening Settings does not create another Sidebar. VeraCrypt uses injectable operations and secret-protection interfaces, and volume operations occur only for explicit commands. Its previously unimplemented automatic mount/dismount settings are not activated by this rollout.
 
 `Program.Settings`, the static `SettingsService`, and `AppEvents.Instance` remain available for external add-in compatibility. The three migrated bundles no longer use them. An external bundle can implement `IAddinServiceModule` and have its module registered at the composition root before building the provider; the current automatic loader is deliberately limited to the three bundled assembly names. Logging remains unchanged.
+
+## Sidebar launchers
+
+Sidebar owns its launcher list through `ILauncherStore` and `ILauncherShell`.
+`SettingsLauncherStore` stores an ordered list of `Id`, `Title`, and `Target` values
+under `Sidebar / LauncherItems` in `ToolsHub.db`, using the host's Base64 JSON object
+format. Appearance preferences use the same Sidebar property bag. The Shortcuts add-in's
+property bag remains independent. Import, reorder, and remove operations save immediately.
+`SettingsManager.SaveFileOrThrow` atomically replaces the settings file, and a failed
+launcher save rolls back the cached value as well as keeping the previous displayed list.
+
+When the launcher key is absent, the store imports the old `SidebarLaunchers.json`
+file once and retains that file as a backup. Database entries, including an empty list,
+always take precedence over the legacy file. Invalid database or migration data is
+reported and preserved rather than silently replaced.
+
+The Windows shell adapter extracts each target's icon, releases native icon handles,
+and supplies an application icon when extraction fails. Launches use the shell so
+Windows links retain their arguments and working directory; direct executables start
+in their containing directory. `ToolbarViewModel` owns the displayed collection, while
+`ToolbarView` handles drag gestures, hover animation, scrolling, and monitor placement.
+Left/right layouts are vertical, top/bottom layouts horizontal. Saving sidebar
+preferences refreshes an already-open dock. Display changes reposition the dock, and
+closing it detaches display and collection event subscriptions.
+
+Appearance changes now update that same window through `ISidebarWindow.ApplySettings`.
+The preference page passes a `SidebarAppearance` snapshot for previews without writing
+to `ISettingsService`; disposing the page restores committed settings. Apply/OK writes
+the snapshot's settings, so subsequent Cancel restores the latest committed values.
+
+`DockAutoHide` controls the idle delay and reversible slide. `ToolbarView` keeps its
+native window inside the selected monitor, translates content inside a clipped viewport,
+and limits the native paint/input region to the visible portion. A three-DIP edge strip
+remains as the hover target. Drag operations, open context menus, and the file picker
+keep the dock visible. Animation and running-app polling timers stop when the dock closes.
+
+`IRunningApplications` supplies a snapshot of executable paths belonging to visible,
+uncloaked top-level windows. Its Windows implementation resolves `.lnk` targets without
+launching them and releases process/COM resources after use. The view model updates
+`LauncherIcon.IsRunning` once per second; the template displays a dot for matching targets.
+
+The host tracks active utility extensions and starts/stops them as add-ins are enabled
+or disabled. `UtilityAddin.OnEnabled()` defaults to `Execute()` for compatibility.
+Sidebar overrides it to show immediately after explicit activation; its startup
+`Execute()` still respects the startup visibility preference. Repeated loads do not
+create duplicate utility instances, and shutdown closes active utilities.
+
+The host tracks active utility extensions and starts/stops them as add-ins are enabled
+or disabled. `UtilityAddin.OnEnabled()` defaults to `Execute()` for compatibility.
+Sidebar overrides it to show immediately after explicit activation; its startup
+`Execute()` still respects the startup visibility preference. Repeated loads do not
+create duplicate utility instances, and shutdown closes active utilities.

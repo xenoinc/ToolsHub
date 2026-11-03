@@ -1,4 +1,4 @@
-﻿/* Copyright Xeno Innovations, Inc. 2019
+/* Copyright Xeno Innovations, Inc. 2019
  * Date:    2019-4-21
  * Author:  Damian Suess
  * File:    LinkIcon.cs
@@ -8,32 +8,28 @@
 
 using System;
 
-namespace Xeno.ToolsHub.SidebarAddin.Models
+namespace Xeno.ToolsHub.SidebarAddin.Models;
+
+public class DockItem
 {
-  public class DockItem
+  private readonly Action _clickAction;
+  private readonly string _image;
+  private readonly string _text;
+
+  public DockItem(string text, string image, Action clickAction)
   {
-    private readonly string _text;
-    private readonly string _image;
-    private readonly Action _clickAction;
+    _text = text;
+    _image = image;
+    _clickAction = clickAction;
 
-    public DockItem(string text, string image, Action clickAction)
-    {
-      _text = text;
-      _image = image;
-      _clickAction = clickAction;
-
-      DockItemImage = new ItemImage();
-    }
-
-    public ItemImage DockItemImage { get; set; }
-
-    public string Text => _text;
-
-    public string Image => DockItemImage.ImagePath;
-
-    public Action OnClick
-    {
-      get { return _clickAction; }
-    }
+    DockItemImage = new ItemImage();
   }
+
+  public ItemImage DockItemImage { get; set; }
+
+  public string Image => DockItemImage.ImagePath;
+
+  public Action OnClick => _clickAction;
+
+  public string Text => _text;
 }

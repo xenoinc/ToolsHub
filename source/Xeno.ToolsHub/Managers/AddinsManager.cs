@@ -25,6 +25,8 @@ public class AddinsManager : IDisposable
   private Dictionary<string, UtilityAddin> _utilityAddins;
 
   private bool _verboseErrorMessage = true;
+  private bool _utilitiesStarted;
+  private bool _disposed;
 
   /// <summary>Initializes a new instance of the <see cref="AddinsManager"/> class.</summary>
   public AddinsManager()
@@ -64,11 +66,16 @@ public class AddinsManager : IDisposable
 
   public void Dispose()
   {
+    if (_disposed)
+      return;
+    _disposed = true;
     Mono.Addins.AddinManager.AddinLoaded -= OnAddinLoaded;
     Mono.Addins.AddinManager.AddinUnloaded -= OnAddinUnloaded;
     Mono.Addins.AddinManager.RemoveExtensionNodeHandler(ExtensionPath.OnStartup, OnStartupAddins_ExtensionHandler);
     Mono.Addins.AddinManager.RemoveExtensionNodeHandler(ExtensionPath.SystemTray, OnSystemTrayAddins_ExtensionHandler);
     Mono.Addins.AddinManager.RemoveExtensionNodeHandler(ExtensionPath.Utility, OnUtilityAddins_ExtensionHandler);
+    foreach (string id in new List<string>(_utilityAddins.Keys))
+      OnDisableAddin(id);
   }
 
   /// <summary>Get all add-ins found in system</summary>
@@ -110,6 +117,8 @@ public class AddinsManager : IDisposable
   /// <summary>Load utility add-ins</summary>
   public void LoadUtilityAddins()
   {
+    ObjectDisposedException.ThrowIf(_disposed, this);
+    _utilitiesStarted = true;
     Mono.Addins.ExtensionNodeList nodes = Mono.Addins.AddinManager.GetExtensionNodes(ExtensionPath.Utility);
     foreach (Mono.Addins.ExtensionNode node in nodes)
     {
@@ -117,6 +126,8 @@ public class AddinsManager : IDisposable
 
       try
       {
+        if (_utilityAddins.ContainsKey(typeNode.Id))
+          continue;
         UtilityAddin utility = CreateAddin(typeNode) as UtilityAddin;
 
         LoadUtilityAddin(utility, typeNode.Id, typeNode.TypeName);
@@ -140,21 +151,28 @@ public class AddinsManager : IDisposable
   /// <param name="addin">Add-in to load.</param>
   /// <param name="addinId">Add-in Id.</param>
   /// <param name="addinTypeName">Add-in assembly type name.</param>
-  private void LoadUtilityAddin(UtilityAddin addin, string addinId, string addinTypeName)
+  /// <param name="enabledByUser">True for explicit activation after startup.</param>
+  private void LoadUtilityAddin(UtilityAddin addin, string addinId, string addinTypeName, bool enabledByUser = false)
   {
     try
     {
-      // Removed for now until needed
-      // addin.Initialize();
-
-      // TODO: Add add-in to managed list for later callings
+      if (_utilityAddins.ContainsKey(addinId))
+        return;
       if (addin.IsInitialized)
-        addin.Execute();
+      {
+        _utilityAddins.Add(addinId, addin);
+        if (enabledByUser)
+          addin.OnEnabled();
+        else
+          addin.Execute();
+      }
       else
         Log.Debug("Add-in not initialized; not executing.");
     }
     catch (Exception ex)
     {
+      if (_utilityAddins.TryGetValue(addinId, out var active) && ReferenceEquals(active, addin))
+        OnDisableAddin(addinId);
       string msg = $"Error while attempting to initialize UtilityAddin, Id: '{addinId}', TypeName: '{addinTypeName}': {ex.Message}";
       Log.Error(msg);
 
@@ -238,7 +256,16 @@ public class AddinsManager : IDisposable
 
   private void OnDisableAddin(string extensionNodeId)
   {
-    throw new NotImplementedException();
+    if (!_utilityAddins.Remove(extensionNodeId, out var utility))
+      return;
+    try
+    {
+      utility.Shutdown();
+    }
+    catch (Exception ex)
+    {
+      Log.Error($"Error shutting down utility '{extensionNodeId}': {ex.Message}");
+    }
   }
 
   private void OnStartupAddins_ExtensionHandler(object sender, Mono.Addins.ExtensionNodeEventArgs args)
@@ -288,9 +315,17 @@ public class AddinsManager : IDisposable
 
   private void OnUtilityAddinEnable(Mono.Addins.ExtensionNodeEventArgs args)
   {
-    Log.Debug("Entering (not used)");
-
-    // Cycle through and attach to in-memory
+    if (!_utilitiesStarted || _disposed || args.ExtensionNode is not TypeExtensionNode node
+      || _utilityAddins.ContainsKey(node.Id))
+      return;
+    try
+    {
+      LoadUtilityAddin(CreateAddin(node) as UtilityAddin, node.Id, node.TypeName, enabledByUser: true);
+    }
+    catch (Exception ex)
+    {
+      Log.Error($"Error enabling utility '{node.Id}': {ex.Message}");
+    }
   }
 
   private void OnUtilityHandle_Example()

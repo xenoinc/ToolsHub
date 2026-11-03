@@ -12,8 +12,6 @@
  *    - http://www.pinvoke.net/default.aspx/Enums/AnimateWindowFlags.html
  */
 
-using System;
-
 namespace Xeno.ToolsHub.SidebarAddin.Domain;
 
 ///// <summary>AnimateWindow USER32 API</summary>
@@ -46,11 +44,13 @@ public enum DockPosition
   Bottom
 }
 
-/// <summary>Toolbar layout orientation</summary>
-public enum ScreenOrientation
+/// <summary>Toolbar icon OnHover effect</summary>
+public enum IconEffect
 {
-  Vertical,
-  Horizontal
+  None,
+  Umber,
+  Bounce,
+  Rocking
 }
 
 /// <summary>On hiding effect via AnimateWindowFlags </summary>
@@ -59,15 +59,6 @@ public enum OnHideEffect
   Slide,
   Fade,
   ////CenterShrink
-}
-
-/// <summary>Toolbar icon OnHover effect</summary>
-public enum IconEffect
-{
-  None,
-  Umber,
-  Bounce,
-  Rocking
 }
 
 /// <summary>Position of toolbar</summary>
@@ -80,17 +71,24 @@ public enum ScreenArea
   Bottom
 }
 
+/// <summary>Toolbar layout orientation</summary>
+public enum ScreenOrientation
+{
+  Vertical,
+  Horizontal
+}
+
 [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1649:File name should match first type name", Justification = "ok")]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.NamingRules", "SA1310:Field names should not contain underscore", Justification = "WinAPI")]
 public class AnimateWindowFlags
 {
-  public const int AW_HOR_POSITIVE = 0x00000001;
-  public const int AW_HOR_NEGATIVE = 0x00000002;
-  public const int AW_VER_POSITIVE = 0x00000004;
-  public const int AW_VER_NEGATIVE = 0x00000008;
+  public const int AW_ACTIVATE = 0x00020000;
+  public const int AW_BLEND = 0x00080000;
   public const int AW_CENTER = 0x00000010;
   public const int AW_HIDE = 0x00010000;
-  public const int AW_ACTIVATE = 0x00020000;
+  public const int AW_HOR_NEGATIVE = 0x00000002;
+  public const int AW_HOR_POSITIVE = 0x00000001;
   public const int AW_SLIDE = 0x00040000;
-  public const int AW_BLEND = 0x00080000;
+  public const int AW_VER_NEGATIVE = 0x00000008;
+  public const int AW_VER_POSITIVE = 0x00000004;
 }

@@ -34,8 +34,27 @@ Author: [Damian Suess](https://www.linkedin.com/in/damiansuess/)
 
 ### Sidebar Launcher
 
-* **Status:** _n/a_
-* (_i.e. RocketDock, ObjectDock_)
+* Launch apps, files, folders, Windows shortcuts, and web links from an icon dock.
+* Drop items onto the dock to add them; drag icons to reorder them. Changes save immediately.
+  While reordering, the grabbed icon follows the pointer and a blue marker shows its destination.
+* Hover to enlarge an icon, click to launch, or right-click to add/remove launchers.
+* In **Settings > Sidebar**, choose the monitor and Left, Right, Top, or Bottom edge.
+  Layout follows the selected edge. Long lists scroll with the mouse wheel.
+* Auto-hide slides the dock away after a short idle delay. Hover its thin edge strip
+  to bring it back. The slide is clipped to the selected monitor, including shared edges.
+  Turn **Auto-hide** off to keep the dock visible.
+* A small dot beneath an icon indicates that the app has an open window. Indicators
+  refresh automatically and support executable targets and Windows shortcuts.
+* Sidebar appearance settings preview immediately. **Apply/OK** keeps them;
+  **Cancel** restores the last saved appearance without changing launcher items.
+* Enabling the Sidebar add-in shows it immediately; disabling it closes the dock.
+  The startup visibility setting only controls display when the app starts.
+* Enabling the Sidebar add-in shows it immediately; disabling it closes the dock.
+  The startup visibility setting only controls display when the app starts.
+
+If Explorer shows a blocked cursor when dropping onto the dock, run ToolsHub without
+administrator privileges. When debugging, start Visual Studio normally too: Windows
+[does not allow drag-and-drop from a non-elevated app into an elevated app](https://learn.microsoft.com/en-us/windows/win32/com/the-com-elevation-moniker).
 
 ### VeraCrypt
 

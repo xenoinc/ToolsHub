@@ -1,4 +1,4 @@
-﻿/* Copyright Xeno Innovations, Inc. 2019
+/* Copyright Xeno Innovations, Inc. 2019
  * Date:    2019-4-9
  * Author:  Damian Suess
  * File:    UtilityHandler.cs
@@ -30,7 +30,6 @@ namespace Xeno.ToolsHub.SidebarAddin.Handlers
       // [ ] Check if background image exists; else, use default
       // [ ] Disable icons with dead shortcuts
       // [ ] Check if ShortcutItem icons are dead; else, use default
-
       _initialized = true;
     }
 
@@ -43,6 +42,8 @@ namespace Xeno.ToolsHub.SidebarAddin.Handlers
       if (_manager.SettingsShowSidebar)
         _manager.ShowSidebars();
     }
+
+    public override void OnEnabled() => _manager.ShowSidebars();
 
     public override void Shutdown()
     {

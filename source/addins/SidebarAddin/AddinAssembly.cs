@@ -34,6 +34,8 @@ namespace Xeno.ToolsHub.SidebarAddin
 
     public static string KeyShortcuts => "Shortcuts";
 
+    public static string KeyLaunchers => "LauncherItems";
+
     public static string KeyBackground => "BackgroundImage";
 
     public static string KeyOpacity => "Opacity";
