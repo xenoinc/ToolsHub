@@ -11,6 +11,7 @@ public sealed class ServiceModule : IAddinServiceModule
 {
   public void ConfigureServices(IServiceCollection services)
   {
+    services.TryAddSingleton<IRunningApplications, WindowsRunningApplications>();
     services.TryAddSingleton<ILauncherStore, JsonLauncherStore>();
     services.TryAddSingleton<ILauncherShell, WindowsLauncherShell>();
     services.TryAddSingleton<ISidebarWindowFactory, SidebarWindowFactory>();

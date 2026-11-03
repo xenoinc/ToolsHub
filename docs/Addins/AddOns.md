@@ -71,6 +71,22 @@ Left/right layouts are vertical, top/bottom layouts horizontal. Saving sidebar
 preferences refreshes an already-open dock. Display changes reposition the dock, and
 closing it detaches display and collection event subscriptions.
 
+Appearance changes now update that same window through `ISidebarWindow.ApplySettings`.
+The preference page passes a `SidebarAppearance` snapshot for previews without writing
+to `ISettingsService`; disposing the page restores committed settings. Apply/OK writes
+the snapshot's settings, so subsequent Cancel restores the latest committed values.
+
+`DockAutoHide` controls the idle delay and reversible slide. `ToolbarView` keeps its
+native window inside the selected monitor, translates content inside a clipped viewport,
+and limits the native paint/input region to the visible portion. A three-DIP edge strip
+remains as the hover target. Drag operations, open context menus, and the file picker
+keep the dock visible. Animation and running-app polling timers stop when the dock closes.
+
+`IRunningApplications` supplies a snapshot of executable paths belonging to visible,
+uncloaked top-level windows. Its Windows implementation resolves `.lnk` targets without
+launching them and releases process/COM resources after use. The view model updates
+`LauncherIcon.IsRunning` once per second; the template displays a dot for matching targets.
+
 The host tracks active utility extensions and starts/stops them as add-ins are enabled
 or disabled. `UtilityAddin.OnEnabled()` defaults to `Execute()` for compatibility.
 Sidebar overrides it to show immediately after explicit activation; its startup

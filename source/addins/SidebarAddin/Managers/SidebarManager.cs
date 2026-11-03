@@ -2,6 +2,7 @@
 
 using System;
 using Xeno.ToolsHub.Services;
+using Xeno.ToolsHub.SidebarAddin.Domain;
 using Xeno.ToolsHub.SidebarAddin.Services;
 
 public sealed class SidebarManager : IDisposable
@@ -55,9 +56,10 @@ public sealed class SidebarManager : IDisposable
   {
     if (_window == null)
       return;
-    CloseSidebars();
-    ShowSidebars();
+    _window.ApplySettings(SidebarAppearance.Load(_settings));
   }
+
+  public void PreviewSettings(SidebarAppearance appearance) => _window?.ApplySettings(appearance);
 
   public void Dispose()
   {

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Windows.Controls;
 using Xeno.ToolsHub.Services;
 using Xeno.ToolsHub.Services.Logging;
+using Xeno.ToolsHub.SidebarAddin.Domain;
 using Xeno.ToolsHub.SidebarAddin.Models;
 using Xeno.ToolsHub.SidebarAddin.Services;
 
@@ -15,16 +16,18 @@ public sealed class ToolbarViewModel : INotifyPropertyChanged
 {
   private readonly ILauncherStore _store;
   private readonly ILauncherShell _shell;
-  private readonly ISettingsService _settings;
+  private readonly IRunningApplications _running;
   private readonly ObservableCollection<LauncherIcon> _items = new();
   private readonly bool _loadFailed;
+  private SidebarAppearance _appearance;
   private string _error;
 
-  public ToolbarViewModel(ILauncherStore store, ILauncherShell shell, ISettingsService settings)
+  public ToolbarViewModel(ILauncherStore store, ILauncherShell shell, ISettingsService settings, IRunningApplications running = null)
   {
     _store = store;
     _shell = shell;
-    _settings = settings;
+    _appearance = SidebarAppearance.Load(settings);
+    _running = running ?? new WindowsRunningApplications();
     Items = new ReadOnlyObservableCollection<LauncherIcon>(_items);
     try
     {
@@ -42,15 +45,17 @@ public sealed class ToolbarViewModel : INotifyPropertyChanged
 
   public ReadOnlyObservableCollection<LauncherIcon> Items { get; }
 
-  public int ScreenArea => _settings.GetInt(Constants.AddinId, Constants.KeyScreenArea, 1);
+  public int ScreenArea => _appearance.ScreenArea;
 
-  public int ScreenNumber => _settings.GetInt(Constants.AddinId, Constants.KeyScreenNumber, 1);
+  public int ScreenNumber => _appearance.ScreenNumber;
 
   public Orientation Orientation => ScreenArea == 3 || ScreenArea == 4 ? Orientation.Horizontal : Orientation.Vertical;
 
-  public double Opacity => Math.Clamp(_settings.GetInt(Constants.AddinId, Constants.KeyOpacity, 90), 20, 100) / 100.0;
+  public double Opacity => Math.Clamp(_appearance.Opacity, 20, 100) / 100.0;
 
-  public bool OnTop => _settings.GetBool(Constants.AddinId, "OnTop", true);
+  public bool OnTop => _appearance.OnTop;
+
+  public bool AutoHide => _appearance.AutoHide;
 
   public string Error
   {
@@ -59,6 +64,29 @@ public sealed class ToolbarViewModel : INotifyPropertyChanged
     {
       _error = value;
       PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Error)));
+    }
+  }
+
+  public void ApplyAppearance(SidebarAppearance appearance)
+  {
+    _appearance = appearance;
+    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(string.Empty));
+  }
+
+  public void RefreshRunningState()
+  {
+    try
+    {
+      var open = _running.GetOpenExecutables();
+      foreach (var icon in _items)
+      {
+        string target = _running.ResolveExecutable(icon.Item.Target);
+        icon.IsRunning = target != null && open.Contains(target);
+      }
+    }
+    catch (Exception ex)
+    {
+      Log.Debug($"Unable to refresh sidebar running indicators: {ex.Message}");
     }
   }
 

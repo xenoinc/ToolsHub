@@ -31,11 +31,8 @@ public partial class ToolbarView : Window
     _drops = new LauncherDropHandler(model);
     InitializeComponent();
     DataContext = model;
-    if (model.Orientation == Orientation.Horizontal)
-    {
-      LauncherScroll.HorizontalScrollBarVisibility = ScrollBarVisibility.Hidden;
-      LauncherScroll.VerticalScrollBarVisibility = ScrollBarVisibility.Disabled;
-    }
+    ConfigureOrientation();
+    InitializeDockBehavior();
 
     SourceInitialized += (_, _) => PositionDock();
     Loaded += (_, _) => PositionDock();
@@ -83,6 +80,10 @@ public partial class ToolbarView : Window
       // Native placement keeps negative coordinates and per-monitor DPI in physical pixels.
       SetWindowPos(handle, IntPtr.Zero, (int)Math.Round(bounds.X), (int)Math.Round(bounds.Y),
         (int)Math.Round(bounds.Width), (int)Math.Round(bounds.Height), 0x14);
+      _nativeBounds = bounds;
+      _autoHide.Reveal();
+      _lastRegion = Rect.Empty;
+      UpdateSlide();
     }
     finally
     {
@@ -93,6 +94,13 @@ public partial class ToolbarView : Window
   [DllImport("user32.dll")]
   [return: MarshalAs(UnmanagedType.Bool)]
   private static extern bool SetWindowPos(IntPtr window, IntPtr insertAfter, int x, int y, int width, int height, uint flags);
+
+  private void ConfigureOrientation()
+  {
+    bool horizontal = _model.Orientation == Orientation.Horizontal;
+    LauncherScroll.HorizontalScrollBarVisibility = horizontal ? ScrollBarVisibility.Hidden : ScrollBarVisibility.Disabled;
+    LauncherScroll.VerticalScrollBarVisibility = horizontal ? ScrollBarVisibility.Disabled : ScrollBarVisibility.Hidden;
+  }
 
   private void OnItemsChanged(object sender, NotifyCollectionChangedEventArgs args) => QueuePosition();
 
@@ -109,6 +117,7 @@ public partial class ToolbarView : Window
   private void OnClosed(object sender, EventArgs args)
   {
     _closed = true;
+    StopDockBehavior();
     ClearDragFeedback();
     SystemEvents.DisplaySettingsChanged -= OnDisplayChanged;
     ((INotifyCollectionChanged)_model.Items).CollectionChanged -= OnItemsChanged;
@@ -139,8 +148,18 @@ public partial class ToolbarView : Window
       Multiselect = true,
       DereferenceLinks = false,
     };
-    if (dialog.ShowDialog(this) == true)
-      _model.AddPaths(dialog.FileNames, _model.Items.Count);
+    _modalOpen = true;
+    try
+    {
+      if (dialog.ShowDialog(this) == true)
+        _model.AddPaths(dialog.FileNames, _model.Items.Count);
+    }
+    finally
+    {
+      _modalOpen = false;
+      _autoHide.Reveal();
+      UpdateSlide();
+    }
   }
 
   private void OnRemoveLauncher(object sender, RoutedEventArgs args)
@@ -189,6 +208,7 @@ public partial class ToolbarView : Window
 
   private void OnDragOver(object sender, DragEventArgs args)
   {
+    _lastDropAt = _clock.Elapsed.TotalSeconds;
     args.Effects = _drops.GetEffect(args.Data, args.AllowedEffects);
     DockSurface.BorderBrush = args.Effects == DragDropEffects.None ? new SolidColorBrush(Color.FromRgb(126, 139, 160)) : Brushes.LightSkyBlue;
     AutoScroll(args.GetPosition(LauncherScroll));

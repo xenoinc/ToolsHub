@@ -154,12 +154,54 @@ public class BundledAddinTests
     utility.OnEnabled();
     Assert.AreEqual(1, fixture.Windows.Created);
     manager.ApplySettings();
-    Assert.AreEqual(2, fixture.Windows.Created);
+    Assert.AreEqual(1, fixture.Windows.Created);
     var window = fixture.Windows.Last;
     utility.Shutdown();
     Assert.AreEqual(1, window.CloseCount);
     utility.OnEnabled();
-    Assert.AreEqual(3, fixture.Windows.Created);
+    Assert.AreEqual(2, fixture.Windows.Created);
+  }
+
+  [TestMethod]
+  public void SidebarSettingsPreviewImmediatelyAndCancelRestoresSavedAppearance()
+  {
+    RunSta(() =>
+    {
+      using var fixture = new Fixture();
+      fixture.Settings.SetValue("Sidebar", "ScreenArea", "1");
+      fixture.Settings.SetValue("Sidebar", "Opacity", "90");
+      var manager = fixture.Provider.GetRequiredService<SidebarManager>();
+      manager.ShowSidebars();
+      var window = fixture.Windows.Last;
+      using (var scope = fixture.Provider.CreateScope())
+      {
+        var page = scope.ServiceProvider.GetRequiredService<Xeno.ToolsHub.SidebarAddin.Views.PreferencesPage>();
+        Find<ComboBox>(page, "ComboScreenArea").SelectedIndex = 3;
+        Find<TrackBar>(page, "Opacity").Value = 60;
+        Find<CheckBox>(page, "ChkAutoHide").Checked = false;
+        Assert.AreEqual(3, window.Appearance.ScreenArea);
+        Assert.AreEqual(60, window.Appearance.Opacity);
+        Assert.IsFalse(window.Appearance.AutoHide);
+        Assert.AreEqual("1", fixture.Settings.GetValue("Sidebar", "ScreenArea"));
+      }
+
+      Assert.AreEqual(1, window.Appearance.ScreenArea);
+      Assert.AreEqual(90, window.Appearance.Opacity);
+      Assert.IsTrue(window.Appearance.AutoHide);
+      Assert.AreEqual(1, fixture.Windows.Created);
+      using (var scope = fixture.Provider.CreateScope())
+      {
+        var page = scope.ServiceProvider.GetRequiredService<Xeno.ToolsHub.SidebarAddin.Views.PreferencesPage>();
+        Find<ComboBox>(page, "ComboScreenArea").SelectedIndex = 2;
+        Find<CheckBox>(page, "ChkAutoHide").Checked = false;
+        Assert.IsTrue(page.OnSave());
+        Find<ComboBox>(page, "ComboScreenArea").SelectedIndex = 4;
+      }
+
+      Assert.AreEqual(2, window.Appearance.ScreenArea);
+      Assert.IsFalse(window.Appearance.AutoHide);
+      Assert.AreEqual("2", fixture.Settings.GetValue("Sidebar", "ScreenArea"));
+    });
   }
 
   [TestMethod]
@@ -349,7 +391,11 @@ public class BundledAddinTests
 
     public int CloseCount { get; private set; }
 
+    public Xeno.ToolsHub.SidebarAddin.Domain.SidebarAppearance Appearance { get; private set; }
+
     public int SubscriberCount => Closed?.GetInvocationList().Length ?? 0;
+
+    public void ApplySettings(Xeno.ToolsHub.SidebarAddin.Domain.SidebarAppearance appearance) => Appearance = appearance;
 
     public void Show()
     {

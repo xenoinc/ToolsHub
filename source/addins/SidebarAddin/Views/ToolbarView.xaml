@@ -17,6 +17,7 @@
       <Setter Property="Template">
         <Setter.Value>
           <ControlTemplate TargetType="Button">
+            <Grid>
             <Border x:Name="Tile" Background="{TemplateBinding Background}" CornerRadius="12"
                     BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
               <Image x:Name="Icon" Source="{Binding Image}" Width="40" Height="40"
@@ -24,6 +25,17 @@
                 <Image.RenderTransform><ScaleTransform /></Image.RenderTransform>
               </Image>
             </Border>
+              <Ellipse Width="5" Height="5" Fill="#FFE5F2FF" VerticalAlignment="Bottom" Margin="0,0,0,3">
+                <Ellipse.Style>
+                  <Style TargetType="Ellipse">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                    <Style.Triggers>
+                      <DataTrigger Binding="{Binding IsRunning}" Value="True"><Setter Property="Visibility" Value="Visible" /></DataTrigger>
+                    </Style.Triggers>
+                  </Style>
+                </Ellipse.Style>
+              </Ellipse>
+            </Grid>
             <ControlTemplate.Triggers>
               <Trigger Property="IsMouseOver" Value="True">
                 <Setter TargetName="Tile" Property="Background" Value="#354E657C" />
@@ -56,7 +68,7 @@
       </Setter>
     </Style>
   </Window.Resources>
-  <Grid x:Name="DockRoot">
+  <Grid x:Name="DockRoot" ClipToBounds="True">
   <Border x:Name="DockSurface" Background="#F0202632" BorderBrush="#607E8BA0"
           BorderThickness="1" CornerRadius="16" Padding="7">
     <Border.ContextMenu>
@@ -116,6 +128,7 @@
       </TextBlock>
     </Grid>
   </Border>
+    <Border x:Name="EdgeGrip" Width="3" HorizontalAlignment="Left" Background="#B08ACBFF" CornerRadius="1" Visibility="Collapsed" />
     <Canvas x:Name="DragOverlay" IsHitTestVisible="False" ClipToBounds="True">
       <Border x:Name="InsertionMarker" Panel.ZIndex="1" Background="#FF8ACBFF" CornerRadius="2" Visibility="Collapsed" />
       <Border x:Name="DragPreview" Width="56" Height="56" CornerRadius="12" Background="#E83B4C60"

@@ -81,6 +81,158 @@ public class SidebarLauncherTests
   }
 
   [TestMethod]
+  public void AutoHideWaitsThenSlidesAndReversesWhenHovered()
+  {
+    var hide = new DockAutoHide();
+    for (int tick = 0; tick < 6; tick++)
+      hide.Tick(0.1, true, false);
+    Assert.AreEqual(0, hide.Progress);
+    hide.Tick(0.05, true, false);
+    Assert.IsTrue(hide.Progress > 0 && hide.Progress < 1);
+    double sliding = hide.Progress;
+    hide.Tick(0.02, true, true);
+    Assert.IsTrue(hide.Progress < sliding);
+    for (int tick = 0; tick < 10; tick++)
+      hide.Tick(0.1, true, false);
+    Assert.AreEqual(1, hide.Progress);
+    for (int tick = 0; tick < 3; tick++)
+      hide.Tick(0.1, false, false);
+    Assert.AreEqual(0, hide.Progress);
+  }
+
+  [TestMethod]
+  [DataRow(1)]
+  [DataRow(2)]
+  [DataRow(3)]
+  [DataRow(4)]
+  public void HiddenDockKeepsOnlyAnEdgeStripAndNeverPaintsOnAdjacentMonitor(int edge)
+  {
+    var size = edge >= 3 ? new Size(272, 80) : new Size(80, 272);
+    var viewport = new Rect(size);
+    for (int frame = 0; frame <= 100; frame++)
+    {
+      var visible = DockAutoHide.VisibleArea(size, edge, frame / 100.0);
+      Assert.IsTrue(viewport.Contains(visible));
+    }
+
+    var strip = DockAutoHide.VisibleArea(size, edge, 1);
+    Assert.AreEqual(3, edge >= 3 ? strip.Height : strip.Width);
+    if (edge == 1)
+      Assert.AreEqual(0, strip.Left);
+    else if (edge == 2)
+      Assert.AreEqual(size.Width, strip.Right);
+    else if (edge == 3)
+      Assert.AreEqual(0, strip.Top);
+    else
+      Assert.AreEqual(size.Height, strip.Bottom);
+  }
+
+  [TestMethod]
+  public void RunningIndicatorsFollowOpenWindowsForExecutableAndLinkTargets()
+  {
+    var running = new FakeRunningApplications();
+    var model = new ToolbarViewModel(new MemoryStore(), new FakeShell(),
+      new ApplicationSettings(new SettingsManager(StorageMethod.UnitTest)), running);
+    model.AddPaths(new[] { "one.exe", "one.lnk", "two.exe" }, 0);
+    int changes = 0;
+    model.Items[0].PropertyChanged += (_, _) => changes++;
+    running.Open.Add("one.exe");
+    model.RefreshRunningState();
+    Assert.IsTrue(model.Items[0].IsRunning);
+    Assert.IsTrue(model.Items[1].IsRunning);
+    Assert.IsFalse(model.Items[2].IsRunning);
+    model.RefreshRunningState();
+    Assert.AreEqual(1, changes);
+    running.Open.Clear();
+    model.RefreshRunningState();
+    Assert.IsFalse(model.Items[0].IsRunning);
+    Assert.IsFalse(model.Items[1].IsRunning);
+  }
+
+  [TestMethod]
+  public void NativeRunningApplicationsRecognizesAVisibleWindow()
+  {
+    RunSta(() =>
+    {
+      var view = new Window { Title = "Sidebar running indicator test", Width = 100, Height = 80, ShowActivated = false };
+      try
+      {
+        view.Show();
+        var running = new WindowsRunningApplications();
+        Assert.IsTrue(running.GetOpenExecutables().Contains(Environment.ProcessPath));
+        string link = Path.Combine(Helpers.GetStorageFolder(StorageMethod.UnitTest), "running-app.lnk");
+        object shell = Activator.CreateInstance(Type.GetTypeFromProgID("WScript.Shell"));
+        object shortcut = null;
+        try
+        {
+          shortcut = ((dynamic)shell).CreateShortcut(link);
+          ((dynamic)shortcut).TargetPath = Environment.ProcessPath;
+          ((dynamic)shortcut).Save();
+          Assert.AreEqual(Environment.ProcessPath, running.ResolveExecutable(link));
+          Assert.IsTrue(running.GetOpenExecutables().Contains(running.ResolveExecutable(link)));
+        }
+        finally
+        {
+          if (shortcut != null)
+            System.Runtime.InteropServices.Marshal.FinalReleaseComObject(shortcut);
+          System.Runtime.InteropServices.Marshal.FinalReleaseComObject(shell);
+        }
+      }
+      finally
+      {
+        view.Close();
+      }
+    });
+  }
+
+  [TestMethod]
+  public void NativeAutoHideClipsItsInputRegionAndRestoresTheSameWindow()
+  {
+    RunSta(() =>
+    {
+      var screen = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea;
+      int edge = System.Windows.Forms.Cursor.Position.X < screen.Left + (screen.Width / 2) ? 2 : 1;
+      var settings = new SettingsManager(StorageMethod.UnitTest);
+      settings.SetValue("Sidebar", "ScreenArea", edge.ToString());
+      var model = new ToolbarViewModel(new MemoryStore(), new FakeShell(), new ApplicationSettings(settings));
+      var view = new ToolbarView(model);
+      IntPtr region = CreateRectRgn(0, 0, 0, 0);
+      try
+      {
+        view.Show();
+        var frame = new System.Windows.Threading.DispatcherFrame();
+        var timer = new System.Windows.Threading.DispatcherTimer { Interval = TimeSpan.FromSeconds(1.4) };
+        timer.Tick += (_, _) =>
+        {
+          timer.Stop();
+          frame.Continue = false;
+        };
+        timer.Start();
+        System.Windows.Threading.Dispatcher.PushFrame(frame);
+        Assert.AreEqual(1, view.HiddenProgress, 0.001);
+        IntPtr handle = new System.Windows.Interop.WindowInteropHelper(view).Handle;
+        Assert.IsTrue(GetWindowRect(handle, out var bounds));
+        Assert.IsTrue(bounds.Left >= screen.Left && bounds.Right <= screen.Right);
+        Assert.IsTrue(bounds.Top >= screen.Top && bounds.Bottom <= screen.Bottom);
+        Assert.AreNotEqual(0, GetWindowRgn(handle, region));
+        GetRgnBox(region, out var hidden);
+        double dpi = VisualTreeHelper.GetDpi(view).DpiScaleX;
+        Assert.IsTrue(hidden.Right - hidden.Left <= Math.Ceiling(3 * dpi) + 1);
+        view.ApplySettings(new SidebarAppearance(edge, 1, 90, true, false));
+        Assert.AreEqual(0, view.HiddenProgress);
+        Assert.AreNotEqual(0, GetWindowRgn(handle, region));
+        GetRgnBox(region, out var shown);
+        Assert.AreEqual(bounds.Right - bounds.Left, shown.Right - shown.Left, 1);
+      }
+      finally
+      {
+        view.Close();
+        DeleteObject(region);
+      }
+    });
+  }
+
+  [TestMethod]
   public void SaveFailureKeepsItemsAndCorruptFileIsNotOverwritten()
   {
     var settings = new ApplicationSettings(new SettingsManager(StorageMethod.UnitTest));
@@ -183,6 +335,12 @@ public class SidebarLauncherTests
         Assert.IsNotNull(button);
         button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
         Assert.AreEqual("one.exe", shell.Launched.Target);
+        view.ApplySettings(new SidebarAppearance(2, 1, 60, false, false));
+        view.UpdateLayout();
+        Assert.AreEqual(Orientation.Vertical, FindVisual<StackPanel>(launchers).Orientation);
+        Assert.AreEqual(0.6, view.Opacity, 0.001);
+        Assert.IsFalse(view.Topmost);
+        Assert.IsFalse(model.AutoHide);
         Assert.IsTrue(model.Move(model.Items[1], 0));
         Assert.AreEqual("two.lnk", model.Items[0].Item.Target);
         Assert.AreEqual("one.exe", shell.Launched.Target);
@@ -193,6 +351,23 @@ public class SidebarLauncherTests
       }
     });
   }
+
+  [System.Runtime.InteropServices.DllImport("user32.dll")]
+  [return: System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.Bool)]
+  private static extern bool GetWindowRect(IntPtr window, out NativeRectangle rectangle);
+
+  [System.Runtime.InteropServices.DllImport("user32.dll")]
+  private static extern int GetWindowRgn(IntPtr window, IntPtr region);
+
+  [System.Runtime.InteropServices.DllImport("gdi32.dll")]
+  private static extern IntPtr CreateRectRgn(int left, int top, int right, int bottom);
+
+  [System.Runtime.InteropServices.DllImport("gdi32.dll")]
+  private static extern int GetRgnBox(IntPtr region, out NativeRectangle rectangle);
+
+  [System.Runtime.InteropServices.DllImport("gdi32.dll")]
+  [return: System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.Bool)]
+  private static extern bool DeleteObject(IntPtr value);
 
   private static T FindVisual<T>(DependencyObject parent)
     where T : DependencyObject
@@ -229,6 +404,27 @@ public class SidebarLauncherTests
     Assert.IsTrue(thread.Join(TimeSpan.FromSeconds(20)), "Sidebar UI test did not finish.");
     if (error != null)
       System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(error).Throw();
+  }
+
+  [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
+  private struct NativeRectangle
+  {
+    public int Left;
+
+    public int Top;
+
+    public int Right;
+
+    public int Bottom;
+  }
+
+  private sealed class FakeRunningApplications : IRunningApplications
+  {
+    public HashSet<string> Open { get; } = new(StringComparer.OrdinalIgnoreCase);
+
+    public IReadOnlySet<string> GetOpenExecutables() => Open;
+
+    public string ResolveExecutable(string target) => target == "one.lnk" ? "one.exe" : target;
   }
 
   private sealed class FakeShell : ILauncherShell
