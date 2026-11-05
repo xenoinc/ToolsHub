@@ -43,7 +43,7 @@ namespace Xeno.Dockzi.Managers
     public StorageMethod StorageMethod { get; set; }
 
     /// <summary>Gets the settings file</summary>
-    /// <value>Full path to Dockzi.json</value>
+    /// <value>Full path to Dockzi.config</value>
     public string SettingsFilePath
     {
       get

@@ -27,7 +27,7 @@ public static class SettingsLoader
         string sidebar = Path.Combine(directory, "SidebarLaunchers.json");
         if (!File.Exists(sidebar) && File.Exists(legacySidebar))
           File.Copy(legacySidebar, sidebar);
-        Log.Info("Imported legacy ToolsHub settings into Dockzi; the original files have been preserved.");
+        Log.Info("Imported legacy settings into Dockzi.config; the original files have been preserved.");
       }
     }
 
@@ -48,10 +48,12 @@ public static class SettingsLoader
 
   private static IEnumerable<string> LegacyPaths(StorageMethod method)
   {
+    yield return Path.Combine(Helpers.GetStorageFolder(method), "Dockzi.db");
     yield return Path.Combine(Helpers.GetStorageFolder(method), "ToolsHub.db");
     if (method == StorageMethod.AllUsers || method == StorageMethod.SingleUser)
     {
       var folder = method == StorageMethod.AllUsers ? Environment.SpecialFolder.CommonApplicationData : Environment.SpecialFolder.LocalApplicationData;
+      yield return Path.Combine(Environment.GetFolderPath(folder), "XI", "ToolsHub", "Dockzi.db");
       yield return Path.Combine(Environment.GetFolderPath(folder), "XI", "ToolsHub", "ToolsHub.db");
     }
   }

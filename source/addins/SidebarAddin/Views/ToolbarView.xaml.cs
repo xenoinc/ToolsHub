@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using Microsoft.Win32;
+using Xeno.Dockzi.Services;
 using Xeno.Dockzi.SidebarAddin.Domain;
 using Xeno.Dockzi.SidebarAddin.ViewModels;
 using Screen = System.Windows.Forms.Screen;
@@ -18,6 +19,7 @@ using Screen = System.Windows.Forms.Screen;
 public partial class ToolbarView : Window
 {
   private readonly ToolbarViewModel _model;
+  private readonly IPreferencesDialogService _preferences;
   private readonly LauncherDropHandler _drops;
   private Point _dragStart;
   private LauncherIcon _dragItem;
@@ -25,9 +27,10 @@ public partial class ToolbarView : Window
   private bool _positioning;
   private bool _closed;
 
-  public ToolbarView(ToolbarViewModel model)
+  public ToolbarView(ToolbarViewModel model, IPreferencesDialogService preferences = null)
   {
     _model = model;
+    _preferences = preferences;
     _drops = new LauncherDropHandler(model);
     InitializeComponent();
     DataContext = model;
@@ -63,7 +66,7 @@ public partial class ToolbarView : Window
       var area = screen.WorkingArea;
       var dpi = VisualTreeHelper.GetDpi(this);
       bool horizontal = _model.Orientation == Orientation.Horizontal;
-      double length = Math.Max(180, (_model.Items.Count * 64) + 16);
+      double length = Math.Max(180, ((_model.Items.Count + 1) * 64) + 16);
       double width = Math.Min(area.Width / dpi.DpiScaleX, horizontal ? length : 80);
       double height = Math.Min(area.Height / dpi.DpiScaleY, horizontal ? 80 : length);
       if (!string.IsNullOrEmpty(_model.Error))
@@ -98,6 +101,7 @@ public partial class ToolbarView : Window
   private void ConfigureOrientation()
   {
     bool horizontal = _model.Orientation == Orientation.Horizontal;
+    DockPanel.SetDock(AddLauncherButton, horizontal ? Dock.Right : Dock.Bottom);
     LauncherScroll.HorizontalScrollBarVisibility = horizontal ? ScrollBarVisibility.Hidden : ScrollBarVisibility.Disabled;
     LauncherScroll.VerticalScrollBarVisibility = horizontal ? ScrollBarVisibility.Disabled : ScrollBarVisibility.Hidden;
   }
@@ -162,6 +166,21 @@ public partial class ToolbarView : Window
     }
   }
 
+  private void OnOpenSettings(object sender, RoutedEventArgs args)
+  {
+    _modalOpen = true;
+    try
+    {
+      _preferences?.Show("Sidebar");
+    }
+    finally
+    {
+      _modalOpen = false;
+      _autoHide.Reveal();
+      UpdateSlide();
+    }
+  }
+
   private void OnRemoveLauncher(object sender, RoutedEventArgs args)
   {
     if (((FrameworkElement)sender).DataContext is LauncherIcon item)
@@ -213,7 +232,7 @@ public partial class ToolbarView : Window
     DockSurface.BorderBrush = args.Effects == DragDropEffects.None ? new SolidColorBrush(Color.FromRgb(126, 139, 160)) : Brushes.LightSkyBlue;
     AutoScroll(args.GetPosition(LauncherScroll));
     if (args.Effects != DragDropEffects.None)
-      UpdateDragFeedback(args.GetPosition(DragOverlay), FindInsertion(args.GetPosition(Launchers)));
+      UpdateDragFeedback(args.GetPosition(DragOverlay), AddLauncherButton.IsMouseOver ? _model.Items.Count : FindInsertion(args.GetPosition(Launchers)));
     else
       ClearDragFeedback();
     args.Handled = true;
@@ -221,7 +240,7 @@ public partial class ToolbarView : Window
 
   private void OnDrop(object sender, DragEventArgs args)
   {
-    int insertion = FindInsertion(args.GetPosition(Launchers));
+    int insertion = AddLauncherButton.IsMouseOver ? _model.Items.Count : FindInsertion(args.GetPosition(Launchers));
     args.Effects = _drops.GetEffect(args.Data, args.AllowedEffects);
     if (args.Effects == DragDropEffects.None || !_drops.Drop(args.Data, insertion))
       args.Effects = DragDropEffects.None;

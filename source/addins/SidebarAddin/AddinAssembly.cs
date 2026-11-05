@@ -1,4 +1,4 @@
-﻿/* Copyright Xeno Innovations, Inc. 2019
+/* Copyright Xeno Innovations, Inc. 2019
  * Date:    2019-4-6
  * Author:  Damian Suess
  * File:    AddinAssembly.cs
@@ -15,7 +15,7 @@ using Mono.Addins;
   Version = "0.3",
   Category = "Tools",
   CompatVersion = "0.3",
-  EnabledByDefault = false,
+  EnabledByDefault = true,
   Flags = Mono.Addins.Description.AddinFlags.None,
   Url = "https://github.com/xenoinc/ToolsHub")]
 

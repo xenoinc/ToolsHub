@@ -1,4 +1,4 @@
-namespace Xeno.Dockzi.SidebarAddin.Services;
+﻿namespace Xeno.Dockzi.SidebarAddin.Services;
 
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using Xeno.Dockzi.Managers;
 using Xeno.Dockzi.SidebarAddin.Models;
 using JsonOptions = Xeno.Dockzi.Config.JsonOptions;
 
-/// <summary>Stores sidebar launchers in the Sidebar property bag in Dockzi.db.</summary>
+/// <summary>Stores sidebar launchers in the Sidebar property bag in Dockzi.config.</summary>
 public sealed class SettingsLauncherStore : ILauncherStore
 {
   private readonly string _legacyPath;
