@@ -83,9 +83,21 @@ Read our wiki to learn how to help and make your own add-in.
 Use the .NET 10 SDK on Windows:
 
 ```powershell
+# Build for Release
+.\build.ps1
+
+# Build solution
 dotnet build source/ToolsHub.slnx --configuration Release
+
+# Run Tests
 dotnet test --project source/Xeno.ToolsHub.Tests/Xeno.ToolsHub.Tests.csproj --configuration Release
 ```
+
+You can also run `build.bat`, which uses PowerShell 7 when available and falls back to
+Windows PowerShell. Both scripts work from any current directory and rebuild the full
+solution in Release after clearing generated files from `output`. Close ToolsHub first.
+The cleanup preserves `ToolsHub.db`, `SidebarLaunchers.json`, logs, `.bak` backups, and
+`readme.txt`. Use `-SkipRestore` with either script when packages are already restored.
 
 Tests use Microsoft Testing Platform, selected by `global.json`. Pass the project with
 `--project`; VSTest options such as `--logger` no longer apply.
