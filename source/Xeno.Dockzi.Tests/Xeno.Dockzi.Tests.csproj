@@ -19,8 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MSTest.TestAdapter" Version="4.2.2" />
-    <PackageReference Include="MSTest.TestFramework" Version="4.2.2" />
+    <PackageReference Include="MSTest.TestAdapter" Version="4.5.2" />
+    <PackageReference Include="MSTest.TestFramework" Version="4.5.2" />
     <PackageReference Include="StyleCop.Analyzers.Unstable" Version="1.2.0.556">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
