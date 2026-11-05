@@ -9,6 +9,7 @@
     <Project Path="Xeno.Dockzi.SampleXmlAddin/SampleXmlAddin.csproj" />
   </Folder>
   <Folder Name="/Solution Items/">
+    <File Path="../Directory.Packages.props" />
     <File Path=".editorconfig" />
     <File Path="CodeMaid.config" />
     <File Path="stylecop.json" />
