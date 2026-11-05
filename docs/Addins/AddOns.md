@@ -57,7 +57,7 @@ Managers and their runtime services are application singletons. Preference pages
 
 Sidebar owns its launcher list through `ILauncherStore` and `ILauncherShell`.
 `SettingsLauncherStore` stores an ordered list of `Id`, `Title`, and `Target` values
-under `Sidebar / LauncherItems` in `Dockzi.db`, using the host's Base64 JSON object
+under `Sidebar / LauncherItems` in `Dockzi.config`, using the host's Base64 JSON object
 format. Appearance preferences use the same Sidebar property bag. The Shortcuts add-in's
 property bag remains independent. Import, reorder, and remove operations save immediately.
 `SettingsManager.SaveFileOrThrow` atomically replaces the settings file, and a failed

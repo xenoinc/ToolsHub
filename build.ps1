@@ -3,7 +3,7 @@
 .SYNOPSIS
 Clears generated output and rebuilds the Dockzi solution in Release.
 .DESCRIPTION
-Preserves Dockzi.db, ToolsHub.db, the legacy SidebarLaunchers.json, logs, backups, and readme.txt.
+Preserves Dockzi.config, Dockzi.db, ToolsHub.db, the legacy SidebarLaunchers.json, logs, backups, and readme.txt.
 Requires the .NET 10 SDK or newer. Close Dockzi before building.
 .PARAMETER SkipRestore
 Uses the packages already restored on this machine.
@@ -66,7 +66,7 @@ try
     Write-Host "Cleaning generated files in $outputPath..."
     foreach ($item in Get-ChildItem -LiteralPath $outputPath -Force) {
       if (-not $item.PSIsContainer -and
-          ($item.Name -in @('Dockzi.db', 'ToolsHub.db', 'SidebarLaunchers.json', 'readme.txt') -or $item.Extension -in @('.log', '.bak'))) {
+          ($item.Name -in @('Dockzi.config', 'SidebarLaunchers.json', 'readme.txt') -or $item.Extension -in @('.log', '.bak'))) {
         continue
       }
 

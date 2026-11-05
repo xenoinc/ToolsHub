@@ -24,7 +24,7 @@ namespace Xeno.Dockzi.Config
 
     public static readonly string RemoteUpdateStablePath = Path.Combine(RemoteBase, "releases");
 
-    public static string SettingsFile => "Dockzi.db";
+    public static string SettingsFile => "Dockzi.config";
 
     public static string LocalSettingsPath => Path.Combine(LocalFolder, SettingsFile);
 

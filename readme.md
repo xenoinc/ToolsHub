@@ -38,6 +38,8 @@ Author: [Damian Suess](https://www.linkedin.com/in/damiansuess/)
 * Drop items onto the dock to add them; drag icons to reorder them. Changes save immediately.
   While reordering, the grabbed icon follows the pointer and a blue marker shows its destination.
 * Hover to enlarge an icon, click to launch, or right-click to add/remove launchers.
+* The permanent **+** button opens the launcher picker and also accepts dropped apps.
+  Right-click the dock or any launcher and choose **Sidebar settings…** to open its preference page.
 * In **Settings > Sidebar**, choose the monitor and Left, Right, Top, or Bottom edge.
   Layout follows the selected edge. Long lists scroll with the mouse wheel.
 * Auto-hide slides the dock away after a short idle delay. Hover its thin edge strip
@@ -96,19 +98,19 @@ dotnet test --project source/Xeno.Dockzi.Tests/Xeno.Dockzi.Tests.csproj --config
 You can also run `build.bat`, which uses PowerShell 7 when available and falls back to
 Windows PowerShell. Both scripts work from any current directory and rebuild the full
 solution in Release after clearing generated files from `output`. Close Dockzi first.
-The cleanup preserves `Dockzi.db`, legacy `ToolsHub.db`, `SidebarLaunchers.json`, logs, `.bak` backups, and
+The cleanup preserves `Dockzi.config`, legacy `Dockzi.db` and `ToolsHub.db`, `SidebarLaunchers.json`, logs, `.bak` backups, and
 `readme.txt`. Use `-SkipRestore` with either script when packages are already restored.
 
 Tests use Microsoft Testing Platform, selected by `global.json`. Pass the project with
 `--project`; VSTest options such as `--logger` no longer apply.
 
-Settings use the built-in `System.Text.Json` serializer. Existing `Dockzi.db` files
-retain their property-bag format and Base64-encoded objects; no file conversion is needed.
+Settings use the built-in `System.Text.Json` serializer. The `Dockzi.config` file
+retains their property-bag format and Base64-encoded objects; no file conversion is needed.
 
 Dockzi uses the `Xeno.Dockzi` base namespace and writes the launcher to `output/Dockzi.exe`.
-On first launch, an existing `ToolsHub.db` is copied to `Dockzi.db` without changing the
-original. All-users and per-user installations also check their previous `XI/ToolsHub`
-settings folders. Existing Dockzi settings always take precedence. An enabled Windows
+On first launch, existing `Dockzi.db` or `ToolsHub.db` settings are copied to `Dockzi.config`
+without changing the original files. All-users and per-user installations also check their previous `XI/ToolsHub`
+settings folders. Existing `Dockzi.config` settings always take precedence. An enabled Windows
 startup entry for `ToolsHub.exe` in the same installation folder is updated to `Dockzi.exe`;
 other installations' entries are preserved. Add-ins must be rebuilt against the renamed
 host and its `/Dockzi` extension points. Repository and update URLs keep their original addresses.

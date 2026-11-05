@@ -57,6 +57,24 @@ namespace Xeno.Dockzi.Views
       _addinManager.OnApplicationAddinListChanged += OnAppAddinListChanged;
     }
 
+    /// <summary>Selects a preference page before or while the dialog is visible.</summary>
+    public bool SelectPreferencePage(string pageTitle)
+    {
+      if (string.IsNullOrWhiteSpace(pageTitle))
+        return false;
+      var node = AddinTree.Nodes.Cast<TreeNode>().FirstOrDefault(item =>
+        string.Equals(item.Text, pageTitle, StringComparison.OrdinalIgnoreCase));
+      if (node == null)
+        return false;
+      tabControl1.SelectedTab = tabPage1;
+      AddinTree.SelectedNode = node;
+      if (node.Tag == _generalPage)
+        ShowGeneralPage();
+      else
+        ShowPage(node.Tag.ToString());
+      return true;
+    }
+
     protected override void OnFormClosed(FormClosedEventArgs e)
     {
       DisposePreferencePages();

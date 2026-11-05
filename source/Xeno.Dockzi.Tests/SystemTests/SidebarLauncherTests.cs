@@ -389,7 +389,8 @@ public class SidebarLauncherTests
       var shell = new FakeShell();
       var model = new ToolbarViewModel(new MemoryStore(), shell, new ApplicationSettings(settings));
       Assert.AreEqual(Orientation.Horizontal, model.Orientation);
-      var view = new ToolbarView(model);
+      var preferences = new FakePreferencesDialog();
+      var view = new ToolbarView(model, preferences);
       try
       {
         Assert.IsTrue(model.AddPaths(new[] { "one.exe", "two.lnk" }, 0));
@@ -399,6 +400,14 @@ public class SidebarLauncherTests
         view.Dispatcher.Invoke(new Action(() => { }), System.Windows.Threading.DispatcherPriority.ApplicationIdle);
         view.UpdateLayout();
         Assert.AreEqual(2, launchers.Items.Count);
+        var addButton = (Button)view.FindName("AddLauncherButton");
+        Assert.AreEqual(Visibility.Visible, addButton.Visibility);
+        Assert.IsTrue(addButton.AllowDrop);
+        Assert.AreEqual(Dock.Right, DockPanel.GetDock(addButton));
+        var surface = (Border)view.FindName("DockSurface");
+        var settingsMenu = surface.ContextMenu.Items.OfType<MenuItem>().Single(item => (string)item.Header == "Sidebar settings…");
+        settingsMenu.RaiseEvent(new RoutedEventArgs(MenuItem.ClickEvent));
+        Assert.AreEqual("Sidebar", preferences.SelectedPage);
         var presenter = (ContentPresenter)launchers.ItemContainerGenerator.ContainerFromIndex(0);
         presenter.ApplyTemplate();
         var button = FindVisual<Button>(presenter);
@@ -411,6 +420,8 @@ public class SidebarLauncherTests
         Assert.AreEqual(0.6, view.Opacity, 0.001);
         Assert.IsFalse(view.Topmost);
         Assert.IsFalse(model.AutoHide);
+        Assert.AreEqual(Dock.Bottom, DockPanel.GetDock(addButton));
+        Assert.AreEqual(Visibility.Visible, addButton.Visibility);
         Assert.IsTrue(model.Move(model.Items[1], 0));
         Assert.AreEqual("two.lnk", model.Items[0].Item.Target);
         Assert.AreEqual("one.exe", shell.Launched.Target);
@@ -486,6 +497,15 @@ public class SidebarLauncherTests
     public int Right;
 
     public int Bottom;
+  }
+
+  private sealed class FakePreferencesDialog : IPreferencesDialogService
+  {
+    public string SelectedPage { get; private set; }
+
+    public void Show() => SelectedPage = "General";
+
+    public void Show(string pageTitle) => SelectedPage = pageTitle;
   }
 
   private sealed class FakeRunningApplications : IRunningApplications

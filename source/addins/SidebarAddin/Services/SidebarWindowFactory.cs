@@ -1,4 +1,4 @@
-namespace Xeno.Dockzi.SidebarAddin.Services;
+﻿namespace Xeno.Dockzi.SidebarAddin.Services;
 
 using System;
 using Xeno.Dockzi.Services;
@@ -8,20 +8,22 @@ using Xeno.Dockzi.SidebarAddin.Views;
 
 public sealed class SidebarWindowFactory : ISidebarWindowFactory
 {
+  private readonly IPreferencesDialogService _preferences;
   private readonly IRunningApplications _running;
   private readonly ISettingsService _settings;
   private readonly ILauncherShell _shell;
   private readonly ILauncherStore _store;
 
-  public SidebarWindowFactory(ILauncherStore store, ILauncherShell shell, ISettingsService settings, IRunningApplications running)
+  public SidebarWindowFactory(ILauncherStore store, ILauncherShell shell, ISettingsService settings, IRunningApplications running, IPreferencesDialogService preferences)
   {
     _store = store;
     _shell = shell;
     _settings = settings;
     _running = running;
+    _preferences = preferences;
   }
 
-  public ISidebarWindow Create() => new SidebarWindow(new ToolbarView(new ToolbarViewModel(_store, _shell, _settings, _running)));
+  public ISidebarWindow Create() => new SidebarWindow(new ToolbarView(new ToolbarViewModel(_store, _shell, _settings, _running), _preferences));
 
   private sealed class SidebarWindow : ISidebarWindow
   {
