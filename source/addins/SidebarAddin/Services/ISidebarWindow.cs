@@ -1,7 +1,7 @@
-namespace Xeno.ToolsHub.SidebarAddin.Services;
+namespace Xeno.Dockzi.SidebarAddin.Services;
 
 using System;
-using Xeno.ToolsHub.SidebarAddin.Domain;
+using Xeno.Dockzi.SidebarAddin.Domain;
 
 public interface ISidebarWindow
 {

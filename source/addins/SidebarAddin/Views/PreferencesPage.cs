@@ -9,12 +9,12 @@
 using System;
 using System.ComponentModel;
 using System.Windows.Forms;
-using Xeno.ToolsHub.ExtensionModel;
-using Xeno.ToolsHub.Services;
-using Xeno.ToolsHub.SidebarAddin.Domain;
-using Xeno.ToolsHub.SidebarAddin.Managers;
+using Xeno.Dockzi.ExtensionModel;
+using Xeno.Dockzi.Services;
+using Xeno.Dockzi.SidebarAddin.Domain;
+using Xeno.Dockzi.SidebarAddin.Managers;
 
-namespace Xeno.ToolsHub.SidebarAddin.Views;
+namespace Xeno.Dockzi.SidebarAddin.Views;
 
 /// <summary>Preferences Page.</summary>
 public partial class PreferencesPage : Form, IPreferencePageActions

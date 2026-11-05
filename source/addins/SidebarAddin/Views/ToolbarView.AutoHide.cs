@@ -1,4 +1,4 @@
-namespace Xeno.ToolsHub.SidebarAddin.Views;
+namespace Xeno.Dockzi.SidebarAddin.Views;
 
 using System;
 using System.Diagnostics;
@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Threading;
-using Xeno.ToolsHub.SidebarAddin.Domain;
+using Xeno.Dockzi.SidebarAddin.Domain;
 
 /// <summary>ToolbarView AutoHide.</summary>
 public partial class ToolbarView

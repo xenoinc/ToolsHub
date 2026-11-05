@@ -6,7 +6,7 @@
  *  
  */
 
-namespace PomodoroAddin.Views
+namespace Xeno.Dockzi.PomodoroAddin.Views
 {
   partial class PreferencePage
   {

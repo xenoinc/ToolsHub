@@ -1,4 +1,4 @@
-namespace Xeno.ToolsHub.SidebarAddin.ViewModels;
+namespace Xeno.Dockzi.SidebarAddin.ViewModels;
 
 using System;
 using System.Collections.Generic;
@@ -6,11 +6,11 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Controls;
-using Xeno.ToolsHub.Services;
-using Xeno.ToolsHub.Services.Logging;
-using Xeno.ToolsHub.SidebarAddin.Domain;
-using Xeno.ToolsHub.SidebarAddin.Models;
-using Xeno.ToolsHub.SidebarAddin.Services;
+using Xeno.Dockzi.Services;
+using Xeno.Dockzi.Services.Logging;
+using Xeno.Dockzi.SidebarAddin.Domain;
+using Xeno.Dockzi.SidebarAddin.Models;
+using Xeno.Dockzi.SidebarAddin.Services;
 
 public sealed class ToolbarViewModel : INotifyPropertyChanged
 {

@@ -12,7 +12,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("PomodoroAddin")]
-[assembly: AssemblyDescription("Pomodoro timer add-in for ToolsHub")]
+[assembly: AssemblyDescription("Pomodoro timer add-in for Dockzi")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Xeno Innovations")]
 [assembly: AssemblyProduct("PomodoroAddin")]

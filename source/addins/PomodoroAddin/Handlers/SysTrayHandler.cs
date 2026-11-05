@@ -6,18 +6,18 @@
  *  System Tray extension point for Pomodoro add-in
  */
 
-namespace PomodoroAddin.Handlers
+namespace Xeno.Dockzi.PomodoroAddin.Handlers
 {
   using System.Collections.Generic;
   using System.Windows.Forms;
-  using PomodoroAddin.Managers;
-  using Xeno.ToolsHub.ExtensionModel;
-  using Xeno.ToolsHub.ExtensionModel.SystemTray;
+  using Xeno.Dockzi.PomodoroAddin.Managers;
+  using Xeno.Dockzi.ExtensionModel;
+  using Xeno.Dockzi.ExtensionModel.SystemTray;
 
   [Mono.Addins.Extension(
     NodeName = ExtensionName.SysTrayAddin,
     Path = ExtensionPath.SystemTray)]
-  public class SysTrayHandler : Xeno.ToolsHub.ExtensionModel.SystemTray.SysTrayAddin
+  public class SysTrayHandler : Xeno.Dockzi.ExtensionModel.SystemTray.SysTrayAddin
   {
     private readonly PomodoroManager _pomodoro;
 

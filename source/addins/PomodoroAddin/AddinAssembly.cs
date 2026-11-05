@@ -23,9 +23,9 @@
 [assembly: Mono.Addins.AddinAuthor("Damian Suess")]
 
 // Attach to add-in host
-[assembly: Mono.Addins.AddinDependency("XenoInnovations.ToolsHub", "0.3")]
+[assembly: Mono.Addins.AddinDependency("Xeno.Dockzi", "0.3")]
 
-namespace PomodoroAddin;
+namespace Xeno.Dockzi.PomodoroAddin;
 
 public static class Constants
 {

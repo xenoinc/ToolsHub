@@ -10,7 +10,7 @@ using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
 
-namespace Xeno.ToolsHub.SidebarAddin.Domain
+namespace Xeno.Dockzi.SidebarAddin.Domain
 {
   public class Sidebar
   {

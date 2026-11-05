@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <EnableMSTestRunner>true</EnableMSTestRunner>
+    <RootNamespace>Xeno.Dockzi.Tests</RootNamespace>
+    <AssemblyName>Xeno.Dockzi.Tests</AssemblyName>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <UseWPF>true</UseWPF>
+    <OutputPath>..\..\output\tests\</OutputPath>
+    <CodeAnalysisRuleSet>..\stylecop.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Xeno.Dockzi\Xeno.Dockzi.csproj" />
+    <ProjectReference Include="..\addins\PomodoroAddin\PomodoroAddin.csproj" />
+    <ProjectReference Include="..\addins\SidebarAddin\SidebarAddin.csproj" />
+    <ProjectReference Include="..\Xeno.Dockzi.VeraCryptAddin\VeraCryptAddin.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MSTest.TestAdapter" Version="4.2.2" />
+    <PackageReference Include="MSTest.TestFramework" Version="4.2.2" />
+    <PackageReference Include="StyleCop.Analyzers.Unstable" Version="1.2.0.556">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+</Project>

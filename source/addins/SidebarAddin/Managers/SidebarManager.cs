@@ -1,9 +1,9 @@
-namespace Xeno.ToolsHub.SidebarAddin.Managers;
+namespace Xeno.Dockzi.SidebarAddin.Managers;
 
 using System;
-using Xeno.ToolsHub.Services;
-using Xeno.ToolsHub.SidebarAddin.Domain;
-using Xeno.ToolsHub.SidebarAddin.Services;
+using Xeno.Dockzi.Services;
+using Xeno.Dockzi.SidebarAddin.Domain;
+using Xeno.Dockzi.SidebarAddin.Services;
 
 public sealed class SidebarManager : IDisposable
 {

@@ -8,12 +8,12 @@
 
 using System;
 using Lite.EventIpc;
-using PomodoroAddin.Domain;
-using Xeno.ToolsHub.ExtensionModel.SystemTray;
-using Xeno.ToolsHub.Services;
-using Xeno.ToolsHub.Services.Logging;
+using Xeno.Dockzi.PomodoroAddin.Domain;
+using Xeno.Dockzi.ExtensionModel.SystemTray;
+using Xeno.Dockzi.Services;
+using Xeno.Dockzi.Services.Logging;
 
-namespace PomodoroAddin.Managers
+namespace Xeno.Dockzi.PomodoroAddin.Managers
 {
   public class PomodoroManager : IDisposable
   {
@@ -144,7 +144,7 @@ namespace PomodoroAddin.Managers
         for (uint cnt = 1; cnt <= repeat; ++cnt)
         {
           System.Reflection.Assembly a = System.Reflection.Assembly.GetExecutingAssembly();
-          System.IO.Stream s = a.GetManifestResourceStream("PomodoroAddin.chime2.wav");
+          System.IO.Stream s = a.GetManifestResourceStream("Xeno.Dockzi.PomodoroAddin.chime2.wav");
           using (System.Media.SoundPlayer player = new System.Media.SoundPlayer(s))
           {
             player.PlaySync();

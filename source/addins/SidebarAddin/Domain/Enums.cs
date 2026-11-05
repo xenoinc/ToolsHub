@@ -12,7 +12,7 @@
  *    - http://www.pinvoke.net/default.aspx/Enums/AnimateWindowFlags.html
  */
 
-namespace Xeno.ToolsHub.SidebarAddin.Domain;
+namespace Xeno.Dockzi.SidebarAddin.Domain;
 
 ///// <summary>AnimateWindow USER32 API</summary>
 ///// <example>

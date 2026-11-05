@@ -1,11 +1,11 @@
-﻿namespace Xeno.ToolsHub.SidebarAddin;
+﻿namespace Xeno.Dockzi.SidebarAddin;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Xeno.ToolsHub.Services.Addins;
-using Xeno.ToolsHub.SidebarAddin.Managers;
-using Xeno.ToolsHub.SidebarAddin.Services;
-using Xeno.ToolsHub.SidebarAddin.Views;
+using Xeno.Dockzi.Services.Addins;
+using Xeno.Dockzi.SidebarAddin.Managers;
+using Xeno.Dockzi.SidebarAddin.Services;
+using Xeno.Dockzi.SidebarAddin.Views;
 
 public sealed class ServiceModule : IAddinServiceModule
 {

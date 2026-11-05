@@ -1,4 +1,4 @@
-﻿namespace Xeno.ToolsHub.SidebarAddin.Domain;
+﻿namespace Xeno.Dockzi.SidebarAddin.Domain;
 
 using System;
 using System.Windows;

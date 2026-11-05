@@ -1,4 +1,4 @@
-namespace Xeno.ToolsHub.SidebarAddin.Services;
+namespace Xeno.Dockzi.SidebarAddin.Services;
 
 using System;
 using System.Diagnostics;
@@ -8,7 +8,7 @@ using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Xeno.ToolsHub.SidebarAddin.Models;
+using Xeno.Dockzi.SidebarAddin.Models;
 
 public sealed class WindowsLauncherShell : ILauncherShell
 {

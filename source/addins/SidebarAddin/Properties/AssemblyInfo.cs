@@ -5,11 +5,11 @@ using System.Windows;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Xeno.ToolsHub.SidebarAddin")]
+[assembly: AssemblyTitle("Xeno.Dockzi.SidebarAddin")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Xeno Innovations")]
-[assembly: AssemblyProduct("Xeno.ToolsHub.SidebarAddin")]
+[assembly: AssemblyProduct("Xeno.Dockzi.SidebarAddin")]
 [assembly: AssemblyCopyright("Copyright © Xeno Innovations, Inc. 2018-2026")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

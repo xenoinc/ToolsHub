@@ -8,7 +8,7 @@
 
 using System.Windows.Controls;
 
-namespace Xeno.ToolsHub.SidebarAddin.Views
+namespace Xeno.Dockzi.SidebarAddin.Views
 {
   /// <summary>
   /// Interaction logic for IconCtrl.xaml
