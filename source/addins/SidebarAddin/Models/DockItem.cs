@@ -8,7 +8,7 @@
 
 using System;
 
-namespace Xeno.ToolsHub.SidebarAddin.Models;
+namespace Xeno.Dockzi.SidebarAddin.Models;
 
 public class DockItem
 {

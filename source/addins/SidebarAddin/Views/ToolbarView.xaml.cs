@@ -1,4 +1,4 @@
-﻿namespace Xeno.ToolsHub.SidebarAddin.Views;
+﻿namespace Xeno.Dockzi.SidebarAddin.Views;
 
 using System;
 using System.Collections.Specialized;
@@ -11,8 +11,8 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using Microsoft.Win32;
-using Xeno.ToolsHub.SidebarAddin.Domain;
-using Xeno.ToolsHub.SidebarAddin.ViewModels;
+using Xeno.Dockzi.SidebarAddin.Domain;
+using Xeno.Dockzi.SidebarAddin.ViewModels;
 using Screen = System.Windows.Forms.Screen;
 
 public partial class ToolbarView : Window

@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--
+Copyright Xeno Innovations, Inc. 2018
+Dockzi add-in manifest
+-->
+<Addin namespace="Xeno"
+       id="Dockzi"
+       version="0.3"
+       compatVersion="0.3"
+       author="Damian Suess"
+       copyright="Xeno Innovations, Inc. 2018"
+       description="Customizable Desktop Launcher"
+       isRoot="true">
+
+  <Runtime>
+    <Import assembly="Dockzi.dll" />
+  </Runtime>
+
+  <!-- Define Extension Points -->
+  <ExtensionPoint path="/Dockzi/OnStartup">
+    <ExtensionNode name="OnStartupAddin" objectType="Xeno.Dockzi.ExtensionModel.IOnStartupExtension" />
+  </ExtensionPoint>
+
+  <ExtensionPoint path="/Dockzi/PreferencePage">
+    <ExtensionNode name="PreferencePageAddin" objectType="Xeno.Dockzi.ExtensionModel.IPreferencePageExtension" />
+  </ExtensionPoint>
+
+  <ExtensionPoint path="/Dockzi/SystemTray">
+    <ExtensionNode name="SysTrayAddin" objectType="Xeno.Dockzi.ExtensionModel.SystemTray.SysTrayAddin" />
+    <!--<ExtensionNode name="SysTrayAddin" objectType="Xeno.Dockzi.ExtensionModel.ISystemTrayExtension" />-->
+  </ExtensionPoint>
+
+  <ExtensionPoint path="/Dockzi/Utility">
+    <ExtensionNode name="UtilityAddin" objectType="Xeno.Dockzi.ExtensionModel.UtilityAddin" />
+  </ExtensionPoint>
+
+  <!--
+  <ExtensionPoint Path="/Dockzi/OnSystemShutdownAddins">
+    <ExtensionNode Name="OnSystemShutdownAddin" ObjectType="Xeno.Dockzi.ExtensionModel.ApplicationAddin" />
+  </ExtensionPoint>
+    -->
+
+  <!-- Call our add-ins -->
+  <Extension path="/Dockzi/OnStartup">
+    <OnStartupAddin type="Xeno.Dockzi.LocalAddins.SampleStartup.SampleStartupAddin" />
+  </Extension>
+
+  <Extension path="/Dockzi/Utility">
+    <UtilityAddin type="Xeno.Dockzi.LocalAddins.SampleUtility.SampleUtilityAddin" />
+  </Extension>
+</Addin>

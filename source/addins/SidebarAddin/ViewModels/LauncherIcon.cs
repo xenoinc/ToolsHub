@@ -1,8 +1,8 @@
-namespace Xeno.ToolsHub.SidebarAddin.ViewModels;
+namespace Xeno.Dockzi.SidebarAddin.ViewModels;
 
 using System.ComponentModel;
 using System.Windows.Media;
-using Xeno.ToolsHub.SidebarAddin.Models;
+using Xeno.Dockzi.SidebarAddin.Models;
 
 public sealed class LauncherIcon : INotifyPropertyChanged
 {

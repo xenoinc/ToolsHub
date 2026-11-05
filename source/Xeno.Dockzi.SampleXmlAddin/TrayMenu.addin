@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<!--
+  Description:
+    Sample SystemTray sub-menu item set
+-->
+<!--
+<ExtensionModel>
+  <Extension Path="/Dockzi/SysTray">
+    <SysTray id="SampleAddin" Text="Sample Add-in">
+      <Command Text="Hello" Id="Xeno.Dockzi.SampleAddin.SysTrayHandlers.HelloCommand" />
+      <Command Text="World" Id="Xeno.Dockzi.SampleAddin.SysTrayHandlers.HelloCommand" />
+    </SysTray>
+  </Extension>
+</ExtensionModel>
+-->

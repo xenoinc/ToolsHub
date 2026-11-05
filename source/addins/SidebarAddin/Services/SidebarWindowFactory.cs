@@ -1,10 +1,10 @@
-namespace Xeno.ToolsHub.SidebarAddin.Services;
+namespace Xeno.Dockzi.SidebarAddin.Services;
 
 using System;
-using Xeno.ToolsHub.Services;
-using Xeno.ToolsHub.SidebarAddin.Domain;
-using Xeno.ToolsHub.SidebarAddin.ViewModels;
-using Xeno.ToolsHub.SidebarAddin.Views;
+using Xeno.Dockzi.Services;
+using Xeno.Dockzi.SidebarAddin.Domain;
+using Xeno.Dockzi.SidebarAddin.ViewModels;
+using Xeno.Dockzi.SidebarAddin.Views;
 
 public sealed class SidebarWindowFactory : ISidebarWindowFactory
 {

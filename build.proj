@@ -12,7 +12,7 @@
   </Target>
 
   <Target Name="Help">
-    <Message Text="ToolsHub MSBuild Commands" />
+    <Message Text="Dockzi MSBuild Commands" />
     <Message Text="- - - - - - - - - - - - - - - -" />
     <Message Text="MSBuild /t:CompileCode   - Builds project from scratch" />
     <Message Text="MSBuild /t:CleanOutput   - Deletes previous builds" />

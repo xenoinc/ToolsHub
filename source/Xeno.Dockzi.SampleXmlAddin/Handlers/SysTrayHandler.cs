@@ -1,0 +1,22 @@
+﻿/* Copyright Xeno Innovations, Inc. 2018
+ * Date:    2018-10-24
+ * Author:  Damian Suess
+ * File:    AddinUtilityHandler.cs
+ * Description:
+ *  SampleXml SystemTray extension
+ */
+
+using System.Windows.Forms;
+
+namespace Xeno.Dockzi.SampleXmlAddin.SysTrayHandlers.Handlers
+{
+  //// [Command("Hello", Id = "SampleHelloCommand")]
+  ////public class SysTrayHandler //: ICommand
+  ////{
+  ////  public void Exec()
+  ////  {
+  ////    Xeno.Dockzi.Config.Log.Debug("Hello command, clicked");
+  ////    MessageBox.Show("Hello World!", "BooOOOoring!");
+  ////  }
+  ////}
+}

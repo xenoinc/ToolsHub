@@ -1,0 +1,190 @@
+﻿/* Copyright Xeno Innovations, Inc. 2018
+ * Date:    2018-7-17
+ * Author:  Damian Suess
+ * File:    Program.cs
+ * Description:
+ *  Main entry point
+ */
+
+namespace Xeno.Dockzi
+{
+  using System;
+  using System.Linq;
+  using System.Threading;
+  using System.Threading.Tasks;
+  using System.Windows.Forms;
+#if USE_SQUIRREL
+  // Disabled 2022-08-15
+  ////using Squirrel;
+#endif
+  using Lite.EventIpc;
+  using Microsoft.Extensions.DependencyInjection;
+  using Xeno.Dockzi.Config;
+  using Xeno.Dockzi.Services;
+  using Xeno.Dockzi.Services.Addins;
+  using Xeno.Dockzi.Services.Logging;
+  using Xeno.Dockzi.Services.Messaging;
+
+  internal static class Program
+  {
+    private static Mutex _mutex = null;
+
+    public static bool AbortShutdown { get; set; }
+
+    /// <summary>Gets or sets compatibility access for add-ins not yet using injected settings.</summary>
+    /// <value>System settings</value>
+    public static Xeno.Dockzi.Managers.SettingsManager Settings { get; set; }
+
+    /// <summary>
+    /// The main entry point for the application.
+    /// </summary>
+    [STAThread]
+    private static void Main(string[] args)
+    {
+      // Windows startup does not guarantee the application's working directory.
+      if (args.Contains("--auto-start", StringComparer.OrdinalIgnoreCase))
+        System.IO.Directory.SetCurrentDirectory(AppContext.BaseDirectory);
+
+      Log.Debug("Starting system");
+      if (HasPrevInstance())
+      {
+        Log.Debug("App already running. Goodbye!");
+        return;
+      }
+
+      Log.Debug("Let's do this!!   ლ(｀ー´ლ)");
+
+      // Disabled 2022-08-15
+      ////Task.Run(async () =>
+      ////{
+      ////  await SquirrelAutoUpdateAsync();
+      ////});
+
+      Application.EnableVisualStyles();
+      Application.SetCompatibleTextRenderingDefault(false);
+
+      AbortShutdown = false;
+      using var services = new ServiceCollection().AddDockzi().AddBundledAddinServices().BuildServiceProvider(new ServiceProviderOptions
+      {
+        ValidateScopes = true,
+        ValidateOnBuild = true,
+      });
+
+      // Compatibility bridge for add-ins that have not migrated to constructor injection yet.
+      Settings = services.GetRequiredService<Managers.SettingsManager>();
+      AppEvents.Instance = services.GetRequiredService<IEventAggregator>();
+      services.GetRequiredService<IAutoStartService>();
+      Application.Run(services.GetRequiredService<MainHandler>());
+
+      // Application.Run(new Views.MainForm());
+      // Application.Run(new Views.PreferencesForm());
+    }
+
+    /// <summary>Update application asynchronously</summary>
+    /// <returns>Task</returns>
+    private static async Task SquirrelAutoUpdateAsync()
+    {
+      ////try
+      ////{
+      ////  SquirrelSetCredentials();
+      ////}
+      ////catch (Exception ex)
+      ////{
+      ////  Log.Error($"Error attempting to set network creds for update location. Ex: {ex.Message}");
+      ////}
+
+      await Task.Yield();
+
+#if USE_SQUIRREL
+      // Disabled 2022-08-15
+      ////try
+      ////{
+      ////  ReleaseEntry release = null;
+      ////
+      ////  // TODO: Network creds https://github.com/Squirrel/Squirrel.Windows/issues/946
+      ////  using (var mgr = new UpdateManager(Constants.RemoteUpdateStablePath))
+      ////  {
+      ////    SquirrelAwareApp.HandleEvents(
+      ////      onInitialInstall: _ => mgr.CreateShortcutForThisExe(),
+      ////      onAppUpdate: _ => mgr.CreateShortcutForThisExe(),
+      ////      onAppUninstall: _ => mgr.RemoveShortcutForThisExe(),
+      ////      onFirstRun: SquirrelWelcomeMessage);
+      ////
+      ////    UpdateInfo updateInfo = await mgr.CheckForUpdate();
+      ////    if (updateInfo.ReleasesToApply.Any())
+      ////    {
+      ////      Log.Debug("Update found! Applying it to application...");
+      ////      release = await mgr.UpdateApp();
+      ////    }
+      ////    else
+      ////    {
+      ////      Log.Debug("No updates found in repository.");
+      ////    }
+      ////  }
+      ////
+      ////  if (release != null)
+      ////  {
+      ////    Log.Debug("Restarting application...");
+      ////    UpdateManager.RestartApp();
+      ////  }
+      ////  else
+      ////  {
+      ////    Log.Debug("No updates are required.");
+      ////  }
+      ////}
+      ////catch (Exception exUpdate)
+      ////{
+      ////  Log.Error($"Issue looking for updates. {exUpdate.Message}");
+      ////}
+#else
+      Log.Debug($"Squirrel Updater is not enabled.");
+#endif
+    }
+
+    private static void SquirrelWelcomeMessage()
+    {
+      Log.Debug("App running for the first time. YAY!!");
+    }
+
+    /////// <summary>Set network credentials</summary>
+    ////private static void SquirrelSetCredentials()
+    ////{
+    ////  // Method 1: https://stackoverflow.com/questions/3700871/connect-to-network-drive-with-user-name-and-password
+    ////  // Method 2: https://stackoverflow.com/questions/295538/how-to-provide-user-name-and-password-when-connecting-to-a-network-share
+    ////  Log.Debug("Enforcing credentials");
+    ////
+    ////  try
+    ////  {
+    ////    System.Net.NetworkCredential netCreds = new System.Net.NetworkCredential(Constants.RemoteUserName, Constants.RemoteUserPass);
+    ////    System.Net.CredentialCache credCache = new System.Net.CredentialCache();
+    ////    credCache.Add(new Uri(Constants.RemoteUri), "Basic", netCreds);
+    ////    // string[] theFolders = Directory.GetDirectories(@"\\computer\share");
+    ////  }
+    ////  catch (Exception ex)
+    ////  {
+    ////    Log.Error($"Problem applying domain creds. {ex.Message}");
+    ////  }
+    ////}
+
+    /// <summary>Check for previous instance</summary>
+    /// <returns>Returns true is app is already running</returns>
+    private static bool HasPrevInstance()
+    {
+      const string appName = "Dockzi-{AC52F444-759A-4681-9D5D-1E234502B5E1}";
+      string dbg = string.Empty;
+      bool createdNew;
+
+      // Allows us to run from VS and live
+      if (Helpers.IsDebugging)
+      {
+        dbg = "-IsDebugging";
+      }
+
+      _mutex = new Mutex(true, appName + dbg, out createdNew);
+      if (!createdNew)
+        return true;
+      else
+        return false;
+    }
+  }
+}

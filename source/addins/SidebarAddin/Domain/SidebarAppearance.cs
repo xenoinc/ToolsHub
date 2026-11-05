@@ -1,6 +1,6 @@
-﻿namespace Xeno.ToolsHub.SidebarAddin.Domain;
+﻿namespace Xeno.Dockzi.SidebarAddin.Domain;
 
-using Xeno.ToolsHub.Services;
+using Xeno.Dockzi.Services;
 
 public sealed record SidebarAppearance(int ScreenArea, int ScreenNumber, int Opacity, bool OnTop, bool AutoHide)
 {

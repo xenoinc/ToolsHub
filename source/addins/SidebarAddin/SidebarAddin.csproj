@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <RootNamespace>Xeno.ToolsHub.SidebarAddin</RootNamespace>
+    <RootNamespace>Xeno.Dockzi.SidebarAddin</RootNamespace>
     <AssemblyName>SidebarAddin</AssemblyName>
     <UseWPF>true</UseWPF>
     <OutputPath>..\..\..\output\</OutputPath>
@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Xeno.ToolsHub\Xeno.ToolsHub.csproj" Private="false" />
+    <ProjectReference Include="..\..\Xeno.Dockzi\Xeno.Dockzi.csproj" Private="false" />
   </ItemGroup>
 
   <ItemGroup>

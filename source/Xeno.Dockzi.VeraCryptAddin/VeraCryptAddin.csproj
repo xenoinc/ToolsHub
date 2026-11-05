@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Xeno.Dockzi.VeraCryptAddin</RootNamespace>
+    <AssemblyName>VeraCryptAddin</AssemblyName>
+    <OutputPath>..\..\output\</OutputPath>
+    <CodeAnalysisRuleSet>..\stylecop.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Xeno.Dockzi\Xeno.Dockzi.csproj" Private="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="VeraCrypt.addin.xml" />
+    <EmbeddedResource Include="VeraCrypt.addin.xml" />
+    <Content Include="VeraCrypt.addin.xml" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Mono.Addins" Version="1.4.1" />
+    <PackageReference Include="StyleCop.Analyzers.Unstable" Version="1.2.0.556">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="10.0.8" />
+  </ItemGroup>
+</Project>

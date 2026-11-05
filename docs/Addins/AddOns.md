@@ -4,9 +4,9 @@
 
 | Node Name | Path |
 |---|---|
-| StartupAddin | ToolsHub/AppStartup |
-|  | ToolsHub/Sidebar |
-|  | ToolsHub/SystemTray |
+| StartupAddin | Dockzi/AppStartup |
+|  | Dockzi/Sidebar |
+|  | Dockzi/SystemTray |
 
 ## Creating WPF Add-in
 1. Create new project: WPF User Control
@@ -20,8 +20,8 @@
 The host and all in-process add-ins share `AppEvents.Instance`, an `IEventAggregator` from [Lite.EventIpc 1.2.0](https://github.com/SuessLabs/Lite.EventIpc). Use typed events instead of the former `MessagingCenter` API:
 
 ```csharp
-using Xeno.ToolsHub.ExtensionModel.SystemTray;
-using Xeno.ToolsHub.Services.Messaging;
+using Xeno.Dockzi.ExtensionModel.SystemTray;
+using Xeno.Dockzi.Services.Messaging;
 
 AppEvents.Instance.Publish(new SystemTrayRefreshRequest());
 AppEvents.Instance.Publish(new SystemTrayNotificationRequest("Work completed"));
@@ -57,7 +57,7 @@ Managers and their runtime services are application singletons. Preference pages
 
 Sidebar owns its launcher list through `ILauncherStore` and `ILauncherShell`.
 `SettingsLauncherStore` stores an ordered list of `Id`, `Title`, and `Target` values
-under `Sidebar / LauncherItems` in `ToolsHub.db`, using the host's Base64 JSON object
+under `Sidebar / LauncherItems` in `Dockzi.db`, using the host's Base64 JSON object
 format. Appearance preferences use the same Sidebar property bag. The Shortcuts add-in's
 property bag remains independent. Import, reorder, and remove operations save immediately.
 `SettingsManager.SaveFileOrThrow` atomically replaces the settings file, and a failed

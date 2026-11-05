@@ -1,4 +1,4 @@
-<Window x:Class="Xeno.ToolsHub.SidebarAddin.Views.ToolbarView"
+<Window x:Class="Xeno.Dockzi.SidebarAddin.Views.ToolbarView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Sidebar launcher"

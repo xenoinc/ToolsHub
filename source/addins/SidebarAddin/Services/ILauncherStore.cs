@@ -1,7 +1,7 @@
-﻿namespace Xeno.ToolsHub.SidebarAddin.Services;
+﻿namespace Xeno.Dockzi.SidebarAddin.Services;
 
 using System.Collections.Generic;
-using Xeno.ToolsHub.SidebarAddin.Models;
+using Xeno.Dockzi.SidebarAddin.Models;
 
 public interface ILauncherStore
 {

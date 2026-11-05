@@ -1,15 +1,15 @@
-namespace Xeno.ToolsHub.SidebarAddin.Services;
+namespace Xeno.Dockzi.SidebarAddin.Services;
 
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
-using Xeno.ToolsHub.Managers;
-using Xeno.ToolsHub.SidebarAddin.Models;
-using JsonOptions = Xeno.ToolsHub.Config.JsonOptions;
+using Xeno.Dockzi.Managers;
+using Xeno.Dockzi.SidebarAddin.Models;
+using JsonOptions = Xeno.Dockzi.Config.JsonOptions;
 
-/// <summary>Stores sidebar launchers in the Sidebar property bag in ToolsHub.db.</summary>
+/// <summary>Stores sidebar launchers in the Sidebar property bag in Dockzi.db.</summary>
 public sealed class SettingsLauncherStore : ILauncherStore
 {
   private readonly string _legacyPath;

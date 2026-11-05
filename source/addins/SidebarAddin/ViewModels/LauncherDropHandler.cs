@@ -1,4 +1,4 @@
-namespace Xeno.ToolsHub.SidebarAddin.ViewModels;
+namespace Xeno.Dockzi.SidebarAddin.ViewModels;
 
 using System;
 using System.IO;
@@ -7,7 +7,7 @@ using System.Windows;
 /// <summary>Interprets Explorer and browser drag data without launching items during a drop.</summary>
 public sealed class LauncherDropHandler
 {
-  public const string ItemDragFormat = "ToolsHub.Sidebar.Launcher";
+  public const string ItemDragFormat = "Dockzi.Sidebar.Launcher";
   private readonly ToolbarViewModel _model;
 
   public LauncherDropHandler(ToolbarViewModel model) => _model = model;

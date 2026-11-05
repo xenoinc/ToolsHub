@@ -1,10 +1,10 @@
 ﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-Clears generated output and rebuilds the ToolsHub solution in Release.
+Clears generated output and rebuilds the Dockzi solution in Release.
 .DESCRIPTION
-Preserves ToolsHub.db, the legacy SidebarLaunchers.json, logs, backups, and readme.txt.
-Requires the .NET 10 SDK or newer. Close ToolsHub before building.
+Preserves Dockzi.db, ToolsHub.db, the legacy SidebarLaunchers.json, logs, backups, and readme.txt.
+Requires the .NET 10 SDK or newer. Close Dockzi before building.
 .PARAMETER SkipRestore
 Uses the packages already restored on this machine.
 #>
@@ -17,7 +17,7 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
 $repositoryPath = [IO.Path]::GetFullPath($PSScriptRoot)
-$solutionPath = Join-Path $repositoryPath 'source\ToolsHub.slnx'
+$solutionPath = Join-Path $repositoryPath 'source\Dockzi.slnx'
 $outputPath = [IO.Path]::GetFullPath((Join-Path $repositoryPath 'output'))
 
 Push-Location -LiteralPath $repositoryPath
@@ -30,7 +30,7 @@ try
   $dotnetPath = (Get-Command dotnet -CommandType Application -ErrorAction Stop).Source
   $sdkVersion = & $dotnetPath --version
   if ($LASTEXITCODE -ne 0 -or $sdkVersion -notmatch '^(\d+)\.' -or [int]$Matches[1] -lt 10) {
-    throw 'Install the .NET 10 SDK or newer before building ToolsHub.'
+    throw 'Install the .NET 10 SDK or newer before building Dockzi.'
   }
 
   if (-not $SkipRestore)
@@ -66,7 +66,7 @@ try
     Write-Host "Cleaning generated files in $outputPath..."
     foreach ($item in Get-ChildItem -LiteralPath $outputPath -Force) {
       if (-not $item.PSIsContainer -and
-          ($item.Name -in @('ToolsHub.db', 'SidebarLaunchers.json', 'readme.txt') -or $item.Extension -in @('.log', '.bak'))) {
+          ($item.Name -in @('Dockzi.db', 'ToolsHub.db', 'SidebarLaunchers.json', 'readme.txt') -or $item.Extension -in @('.log', '.bak'))) {
         continue
       }
 
@@ -81,7 +81,7 @@ try
       }
       catch
       {
-        throw "Could not clean '$targetPath'. Close ToolsHub and any active debugging/test sessions, then retry. $($_.Exception.Message)"
+        throw "Could not clean '$targetPath'. Close Dockzi and any active debugging/test sessions, then retry. $($_.Exception.Message)"
       }
     }
   }

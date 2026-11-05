@@ -1,4 +1,4 @@
-# Xeno.ToolsHub
+# Dockzi
 
 Flexible tools launcher desktop app which is "_not your average extensible sidebar_"
 
@@ -52,7 +52,7 @@ Author: [Damian Suess](https://www.linkedin.com/in/damiansuess/)
 * Enabling the Sidebar add-in shows it immediately; disabling it closes the dock.
   The startup visibility setting only controls display when the app starts.
 
-If Explorer shows a blocked cursor when dropping onto the dock, run ToolsHub without
+If Explorer shows a blocked cursor when dropping onto the dock, run Dockzi without
 administrator privileges. When debugging, start Visual Studio normally too: Windows
 [does not allow drag-and-drop from a non-elevated app into an elevated app](https://learn.microsoft.com/en-us/windows/win32/com/the-com-elevation-moniker).
 
@@ -87,23 +87,31 @@ Use the .NET 10 SDK on Windows:
 .\build.ps1
 
 # Build solution
-dotnet build source/ToolsHub.slnx --configuration Release
+dotnet build source/Dockzi.slnx --configuration Release
 
 # Run Tests
-dotnet test --project source/Xeno.ToolsHub.Tests/Xeno.ToolsHub.Tests.csproj --configuration Release
+dotnet test --project source/Xeno.Dockzi.Tests/Xeno.Dockzi.Tests.csproj --configuration Release
 ```
 
 You can also run `build.bat`, which uses PowerShell 7 when available and falls back to
 Windows PowerShell. Both scripts work from any current directory and rebuild the full
-solution in Release after clearing generated files from `output`. Close ToolsHub first.
-The cleanup preserves `ToolsHub.db`, `SidebarLaunchers.json`, logs, `.bak` backups, and
+solution in Release after clearing generated files from `output`. Close Dockzi first.
+The cleanup preserves `Dockzi.db`, legacy `ToolsHub.db`, `SidebarLaunchers.json`, logs, `.bak` backups, and
 `readme.txt`. Use `-SkipRestore` with either script when packages are already restored.
 
 Tests use Microsoft Testing Platform, selected by `global.json`. Pass the project with
 `--project`; VSTest options such as `--logger` no longer apply.
 
-Settings use the built-in `System.Text.Json` serializer. Existing `ToolsHub.db` files
+Settings use the built-in `System.Text.Json` serializer. Existing `Dockzi.db` files
 retain their property-bag format and Base64-encoded objects; no file conversion is needed.
+
+Dockzi uses the `Xeno.Dockzi` base namespace and writes the launcher to `output/Dockzi.exe`.
+On first launch, an existing `ToolsHub.db` is copied to `Dockzi.db` without changing the
+original. All-users and per-user installations also check their previous `XI/ToolsHub`
+settings folders. Existing Dockzi settings always take precedence. An enabled Windows
+startup entry for `ToolsHub.exe` in the same installation folder is updated to `Dockzi.exe`;
+other installations' entries are preserved. Add-ins must be rebuilt against the renamed
+host and its `/Dockzi` extension points. Repository and update URLs keep their original addresses.
 
 ## Squirrel Updater
 
@@ -136,6 +144,6 @@ Only perform this method if the **MSBuild** one does not.
     3. Example:
 ```powershell
 PM> cd ..
-PM> Squirrel --releasify ToolsHub.1.1.53.nupkg
+PM> Squirrel --releasify Dockzi.1.1.53.nupkg
 ```
 5. Copy "Releases" output to our network share for archiving

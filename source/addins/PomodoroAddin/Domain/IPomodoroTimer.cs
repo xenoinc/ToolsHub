@@ -1,4 +1,4 @@
-﻿namespace PomodoroAddin.Domain;
+﻿namespace Xeno.Dockzi.PomodoroAddin.Domain;
 
 using System;
 
