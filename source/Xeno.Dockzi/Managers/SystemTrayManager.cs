@@ -34,14 +34,16 @@ namespace Xeno.Dockzi.Managers
 
     private readonly AddinsManager _addins;
     private readonly IPreferencesDialogService _preferences;
+    private readonly ApplicationUpdates _updates;
 
     private ToolStripItem[] _trayMenu;
     private NotifyIcon _trayNotify = new();
 
-    public SystemTrayManager(AddinsManager addins, IEventAggregator events, IPreferencesDialogService preferences)
+    public SystemTrayManager(AddinsManager addins, IEventAggregator events, IPreferencesDialogService preferences, ApplicationUpdates updates = null)
     {
       _addins = addins;
       _preferences = preferences;
+      _updates = updates;
       _eventDispatcher.CreateControl();
       _eventSubscriptions = new TrayEventSubscriptions(
         events, MenuRefresh, OnTrayNotification, OnTrayIconChanged, DispatchEvent);
@@ -136,6 +138,8 @@ namespace Xeno.Dockzi.Managers
         menuBuilder.AddRange(epMenus);
 
       menuBuilder.Add(new ToolStripMenuItem("About", null, OnMenuAbout));
+      if (_updates?.IsConfigured == true)
+        menuBuilder.Add(new ToolStripMenuItem("Check for updates…", null, async (_, _) => await _updates.CheckAndInstallAsync()));
       menuBuilder.Add(new ToolStripMenuItem("Exit", null, OnMenuExit));
 
       _trayMenu = menuBuilder.ToArray();

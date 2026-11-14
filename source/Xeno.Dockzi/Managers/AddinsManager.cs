@@ -14,11 +14,13 @@ using System.IO;
 using Mono.Addins;
 using Xeno.Dockzi.Config;
 using Xeno.Dockzi.ExtensionModel;
+using Xeno.Dockzi.Services;
 using Xeno.Dockzi.Services.Logging;
 
 public class AddinsManager : IDisposable
 {
   private readonly string _configDir;
+  private readonly string _addinsDir;
   private readonly Func<TypeExtensionNode, object> _activate;
 
   /// <remarks>Key = TypeExtensionNode.Id</remarks
@@ -54,8 +56,9 @@ public class AddinsManager : IDisposable
     _activate = activate ?? throw new ArgumentNullException(nameof(activate));
     _utilityAddins = new Dictionary<string, UtilityAddin>();
     _configDir = string.IsNullOrWhiteSpace(configDir)
-      ? AppContext.BaseDirectory
+      ? ApplicationPaths.Current.AddinRegistryDirectory
       : Path.GetFullPath(configDir);
+    _addinsDir = string.IsNullOrWhiteSpace(configDir) ? ApplicationPaths.Current.UserAddinsDirectory : _configDir;
 
     InitAddins();
   }
@@ -189,7 +192,9 @@ public class AddinsManager : IDisposable
     Mono.Addins.AddinManager.AddinLoaded += OnAddinLoaded;
     Mono.Addins.AddinManager.AddinUnloaded += OnAddinUnloaded;
 
-    Mono.Addins.AddinManager.Initialize(_configDir, _configDir, _configDir);
+    Directory.CreateDirectory(_configDir);
+    Directory.CreateDirectory(_addinsDir);
+    Mono.Addins.AddinManager.Initialize(_configDir, _addinsDir, Path.Combine(_configDir, "cache"));
 
     // Rebuild registry when debugging.
     if (Helpers.IsDebugging)

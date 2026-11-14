@@ -85,8 +85,11 @@ Read our wiki to learn how to help and make your own add-in.
 Use the .NET 10 SDK on Windows:
 
 ```powershell
-# Build for Release
+# Build Release and create the installer in publish
 .\build.ps1
+
+# Compile without packaging
+.\build.ps1 -SkipInstaller
 
 # Build solution
 dotnet build source/Dockzi.slnx --configuration Release
@@ -100,6 +103,9 @@ Windows PowerShell. Both scripts work from any current directory and rebuild the
 solution in Release after clearing generated files from `output`. Close Dockzi first.
 The cleanup preserves `Dockzi.config`, legacy `Dockzi.db` and `ToolsHub.db`, `SidebarLaunchers.json`, logs, `.bak` backups, and
 `readme.txt`. Use `-SkipRestore` with either script when packages are already restored.
+The default build also restores the pinned Velopack tool and creates a self-contained
+installer and update packages in `publish`. See [Installer and updates](docs/Installer.md)
+for release versions, signing, update feeds, and persistent data locations.
 
 Tests use Microsoft Testing Platform, selected by `global.json`. Pass the project with
 `--project`; VSTest options such as `--logger` no longer apply.

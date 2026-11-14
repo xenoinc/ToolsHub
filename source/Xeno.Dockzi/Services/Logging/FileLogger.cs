@@ -39,13 +39,14 @@ public class FileLogger : ILogger
 
   public uint MaxSize { get; set; } = 5000000;  // 5 MB
 
-  public string LogFile => _baseName + ".log";
+  public string LogFile => Path.Combine(ApplicationPaths.Current.LogsDirectory, _baseName + ".log");
 
   ////private ConsoleLogger _console;
   public void Log(Level level, string message, params object[] args)
   {
     lock (_lock)
     {
+      Directory.CreateDirectory(ApplicationPaths.Current.LogsDirectory);
       RolloverChecker();
 
       using (StreamWriter writer = File.AppendText(LogFile))
@@ -65,7 +66,7 @@ public class FileLogger : ILogger
     var info = new FileInfo(LogFile);
     if (info.Length > MaxSize)
     {
-      info.MoveTo(_baseName + "1.log");
+      File.Move(LogFile, Path.Combine(ApplicationPaths.Current.LogsDirectory, _baseName + "1.log"), true);
     }
   }
 }

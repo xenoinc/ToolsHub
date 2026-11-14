@@ -67,6 +67,12 @@ TestResult.xml
 # Output
 /output/*
 !/output/readme.txt
+/publish/
+/AddinRegistry/
+/Addins/
+/AddinData/
+/Downloads/
+/Logs/
 
 # Squirrel Installer
 Update.exe
