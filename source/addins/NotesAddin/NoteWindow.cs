@@ -10,19 +10,22 @@ using System.Windows.Shell;
 
 public sealed class NoteWindow : Window
 {
+  private readonly Action _delete;
   private readonly TextBox _editor;
   private readonly FlowDocumentScrollViewer _preview;
   private readonly Func<string, Note> _save;
   private readonly TextBlock _title;
-  private bool _hasSaved;
   private bool _discardOnClose;
+  private bool _hasSaved;
   private string _savedText;
 
-  public NoteWindow(Note note, Func<string, Note> save, bool edit = false)
+  public NoteWindow(Note note, Func<string, Note> save, bool edit = false, Action delete = null)
   {
     _save = save;
+    _delete = delete;
     _savedText = note.Text;
     _hasSaved = note.SavedUtc != default;
+
     Width = 360;
     Height = 380;
     MinWidth = 240;
@@ -41,7 +44,11 @@ public sealed class NoteWindow : Window
 
     var header = new Grid { Background = new SolidColorBrush(Color.FromRgb(247, 227, 125)) };
     header.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(38) });
+    header.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(38) });
     header.ColumnDefinitions.Add(new ColumnDefinition());
+    header.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(38) });
+
+    // Balance the left-hand actions so the title stays centered in the window.
     header.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(38) });
 
     var saveButton = new Button
@@ -58,18 +65,34 @@ public sealed class NoteWindow : Window
 
     saveButton.Click += (_, _) => SaveNote();
 
+    var deleteButton = new Button
+    {
+      Content = "\uE74D",
+      FontFamily = new FontFamily("Segoe MDL2 Assets"),
+      FontSize = 14,
+      Background = Brushes.Transparent,
+      BorderThickness = new Thickness(0),
+      ToolTip = "Delete note",
+      IsEnabled = delete != null,
+    };
+
+    System.Windows.Automation.AutomationProperties.SetName(deleteButton, "Delete note");
+    Grid.SetColumn(deleteButton, 1);
+    deleteButton.Click += (_, _) => DeleteNote();
+
     _title = new TextBlock { VerticalAlignment = VerticalAlignment.Center, TextAlignment = TextAlignment.Center, TextTrimming = TextTrimming.CharacterEllipsis, FontWeight = FontWeights.SemiBold };
     _title.MouseLeftButtonDown += (_, e) => { if (e.ButtonState == MouseButtonState.Pressed) DragMove(); };
 
-    Grid.SetColumn(_title, 1);
+    Grid.SetColumn(_title, 2);
     var closeButton = new Button { Content = "×", FontSize = 22, Background = Brushes.Transparent, BorderThickness = new Thickness(0), ToolTip = "Close note" };
     System.Windows.Automation.AutomationProperties.SetName(closeButton, "Close note");
 
-    Grid.SetColumn(closeButton, 2);
+    Grid.SetColumn(closeButton, 4);
 
     closeButton.Click += (_, _) => Close();
 
     header.Children.Add(saveButton);
+    header.Children.Add(deleteButton);
     header.Children.Add(_title);
     header.Children.Add(closeButton);
 
@@ -101,7 +124,9 @@ public sealed class NoteWindow : Window
     _preview.PreviewMouseLeftButtonDown += (_, e) =>
     {
       // Leave the scrollbar available for scrolling longer notes.
-      if (e.OriginalSource is DependencyObject source && FindScrollBar(source)) return;
+      if (e.OriginalSource is DependencyObject source && FindScrollBar(source))
+        return;
+
       BeginEdit();
       e.Handled = true;
     };
@@ -160,10 +185,16 @@ public sealed class NoteWindow : Window
     if (edit)
     {
       _preview.Visibility = Visibility.Collapsed;
-      Loaded += (_, _) => { _editor.Focus(); _editor.CaretIndex = _editor.Text.Length; };
+      Loaded += (_, _) =>
+      {
+        _editor.Focus();
+        _editor.CaretIndex = _editor.Text.Length;
+      };
     }
     else
+    {
       ShowPreview();
+    }
   }
 
   public bool IsEditing => _editor.Visibility == Visibility.Visible;
@@ -179,6 +210,30 @@ public sealed class NoteWindow : Window
     _preview.Visibility = Visibility.Collapsed;
     _editor.Visibility = Visibility.Visible;
     _editor.Focus();
+  }
+
+  public void CloseWithoutSaving()
+  {
+    _discardOnClose = true;
+    Close();
+  }
+
+  public bool DeleteNote()
+  {
+    if (_delete == null) return false;
+    try
+    {
+      _delete();
+      if (IsVisible)
+        CloseWithoutSaving();
+
+      return true;
+    }
+    catch (Exception ex) when (ex is IOException || ex is UnauthorizedAccessException)
+    {
+      MessageBox.Show(this, ex.Message, "Unable to delete note", MessageBoxButton.OK, MessageBoxImage.Error);
+      return false;
+    }
   }
 
   public bool SaveNote()
