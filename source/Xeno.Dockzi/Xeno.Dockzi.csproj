@@ -7,6 +7,7 @@
     <OutputPath>..\..\output\</OutputPath>
     <CodeAnalysisRuleSet>..\stylecop.ruleset</CodeAnalysisRuleSet>
     <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
     <NoWarn>$(NoWarn);CA1416</NoWarn>
     <ImplicitUsings>disable</ImplicitUsings>
     <Authors>Xeno Innovations, Inc.</Authors>
@@ -20,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Velopack" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
     <PackageReference Include="Lite.EventIpc" />
     <PackageReference Include="Mono.Addins" />

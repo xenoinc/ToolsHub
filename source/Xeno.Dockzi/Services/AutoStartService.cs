@@ -16,7 +16,7 @@
     private readonly string _command;
 
     public AutoStartService()
-      : this(Application.ExecutablePath, RunKeyPath, "Dockzi", "ToolsHub")
+      : this(ApplicationPaths.Current.LauncherPath, RunKeyPath, "Dockzi", "ToolsHub")
     {
     }
 

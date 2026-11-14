@@ -1,16 +1,25 @@
 ﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-Clears generated output and rebuilds the Dockzi solution in Release.
+Rebuilds Dockzi in Release and generates a Velopack installer in publish.
 .DESCRIPTION
 Preserves Dockzi.config, Dockzi.db, ToolsHub.db, the legacy SidebarLaunchers.json, logs, backups, and readme.txt.
-Requires the .NET 10 SDK or newer. Close Dockzi before building.
+Requires the .NET 10 SDK or newer. Restores the pinned local Velopack tool.
+Close Dockzi when running it from this checkout before building.
 .PARAMETER SkipRestore
 Uses the packages already restored on this machine.
 #>
 [CmdletBinding()]
 param(
-  [switch]$SkipRestore
+  [switch]$SkipRestore,
+  [switch]$SkipInstaller,
+  [string]$Version = '0.6.0',
+  [ValidateSet('win-x64', 'win-arm64')]
+  [string]$Runtime = 'win-x64',
+  [string]$UpdateUrl = '',
+  [ValidatePattern('^[a-zA-Z0-9_-]+$')]
+  [string]$Channel = 'win',
+  [string]$SignTemplate = ''
 )
 
 Set-StrictMode -Version Latest
@@ -40,6 +49,7 @@ try
     if ($LASTEXITCODE -ne 0) {
       exit $LASTEXITCODE
     }
+
   }
 
   # Verify the absolute cleanup target before any recursive deletion.
@@ -65,8 +75,12 @@ try
 
     Write-Host "Cleaning generated files in $outputPath..."
     foreach ($item in Get-ChildItem -LiteralPath $outputPath -Force) {
+      if ($item.PSIsContainer -and $item.Name -in @('Notes', 'Addins', 'AddinData', 'AddinRegistry', 'Downloads', 'Logs')) {
+        continue
+      }
+
       if (-not $item.PSIsContainer -and
-          ($item.Name -in @('Dockzi.config', 'SidebarLaunchers.json', 'readme.txt') -or $item.Extension -in @('.log', '.bak'))) {
+          ($item.Name -in @('Dockzi.config', 'Dockzi.db', 'ToolsHub.db', 'Dockzi.portable', 'SidebarLaunchers.json', 'readme.txt') -or $item.Extension -in @('.log', '.bak'))) {
         continue
       }
 
@@ -94,6 +108,10 @@ try
   }
 
   Write-Host "Release build completed: $outputPath"
+  if (-not $SkipInstaller) {
+    & (Join-Path $repositoryPath 'installer\pack.ps1') -Version $Version -Runtime $Runtime -UpdateUrl $UpdateUrl -Channel $Channel -SignTemplate $SignTemplate -SkipRestore:$SkipRestore
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+  }
 }
 catch {
   Write-Error $_ -ErrorAction Continue

@@ -17,6 +17,7 @@ public static class ApplicationServices
     services.AddSingleton<IEventAggregator, EventAggregator>();
     services.AddSingleton<ISettingsService, ApplicationSettings>();
     services.AddSingleton<IAutoStartService, AutoStartService>();
+    services.AddSingleton<ApplicationUpdates>();
     services.AddTransient<ShortcutsManager>(provider => new ShortcutsManager(
       provider.GetRequiredService<SettingsManager>(), provider.GetRequiredService<IEventAggregator>()));
     services.AddTransient<Xeno.Dockzi.LocalAddins.Shortcuts.Prefs.ShortcutsPreferences>();
