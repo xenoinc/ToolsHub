@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/Addins/">
+    <Project Path="addins/NotesAddin/NotesAddin.csproj" />
     <Project Path="addins/PomodoroAddin/PomodoroAddin.csproj" />
     <Project Path="addins/SidebarAddin/SidebarAddin.csproj" />
     <Project Path="Xeno.Dockzi.VeraCryptAddin/VeraCryptAddin.csproj" />

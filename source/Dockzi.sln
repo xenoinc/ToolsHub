@@ -33,6 +33,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SidebarAddin", "addins\Side
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AddinSamples", "AddinSamples", "{08CA5688-B633-46EB-9F75-17D2550482B5}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotesAddin", "addins\NotesAddin\NotesAddin.csproj", "{A4B352E4-CA66-405A-B136-ED6D5AE9B6E3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,10 @@ Global
 		{5728D1EF-2CF9-4D23-933D-35ACDDB38021}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5728D1EF-2CF9-4D23-933D-35ACDDB38021}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5728D1EF-2CF9-4D23-933D-35ACDDB38021}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4B352E4-CA66-405A-B136-ED6D5AE9B6E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4B352E4-CA66-405A-B136-ED6D5AE9B6E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4B352E4-CA66-405A-B136-ED6D5AE9B6E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4B352E4-CA66-405A-B136-ED6D5AE9B6E3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -78,6 +84,7 @@ Global
 		{E47834DE-8778-4B90-AF7F-C8A1564D2FAE} = {37DE3F0F-4238-4D03-B6D3-5B27C50BCF42}
 		{8A35B6CD-B222-481D-A73D-8AD73618D223} = {AE268EE2-8ECA-4ABC-A750-84970AFE053E}
 		{5728D1EF-2CF9-4D23-933D-35ACDDB38021} = {AE268EE2-8ECA-4ABC-A750-84970AFE053E}
+		{A4B352E4-CA66-405A-B136-ED6D5AE9B6E3} = {AE268EE2-8ECA-4ABC-A750-84970AFE053E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6B32460D-0DAC-4239-A1B9-A9AF3236C7EC}

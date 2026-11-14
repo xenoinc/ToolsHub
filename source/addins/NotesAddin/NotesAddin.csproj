@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Xeno.Dockzi.NotesAddin</RootNamespace>
+    <AssemblyName>NotesAddin</AssemblyName>
+    <UseWPF>true</UseWPF>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <OutputPath>..\..\..\output\</OutputPath>
+    <Authors>Damian Suess</Authors>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Xeno.Dockzi\Xeno.Dockzi.csproj" Private="false" />
+    <PackageReference Include="Mono.Addins" />
+    <PackageReference Include="Markdig" />
+  </ItemGroup>
+</Project>

@@ -6,6 +6,7 @@
     <UseWPF>true</UseWPF>
     <OutputPath>..\..\..\output\</OutputPath>
     <CodeAnalysisRuleSet>..\..\stylecop.ruleset</CodeAnalysisRuleSet>
+    <Authors>Damian Suess</Authors>
   </PropertyGroup>
 
   <ItemGroup>

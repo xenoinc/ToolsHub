@@ -137,7 +137,16 @@ namespace Xeno.Dockzi.Views
         var pageExt = addinPage.Value;
         if (pageExt.IsModified)
         {
-          pageExt.OnSave();
+          try
+          {
+            pageExt.OnSave();
+          }
+          catch (Exception ex)
+          {
+            MessageBox.Show(this, ex.Message, pageExt.Title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return false;
+          }
+
           Log.Info($"Add-in '{pageExt.Id}' saved");
 
           // TODO: If add-in fails to save, cancel the Form closing event
