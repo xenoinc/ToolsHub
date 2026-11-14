@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Xeno.Dockzi.SampleAssmAddin</RootNamespace>
+    <AssemblyName>SampleAssmAddin</AssemblyName>
+    <OutputPath>..\..\output\</OutputPath>
+    <CodeAnalysisRuleSet>..\stylecop.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Xeno.Dockzi\Xeno.Dockzi.csproj" Private="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Mono.Addins" />
+    <PackageReference Include="StyleCop.Analyzers.Unstable">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+</Project>

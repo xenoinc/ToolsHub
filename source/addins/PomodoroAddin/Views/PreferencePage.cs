@@ -9,25 +9,34 @@
 using System;
 using System.ComponentModel;
 using System.Windows.Forms;
-using PomodoroAddin.Domain;
-using PomodoroAddin.Managers;
-using Xeno.ToolsHub.ExtensionModel;
-using Xeno.ToolsHub.Services;
+using Xeno.Dockzi.PomodoroAddin.Domain;
+using Xeno.Dockzi.PomodoroAddin.Managers;
+using Xeno.Dockzi.ExtensionModel;
+using Xeno.Dockzi.Services;
 
-namespace PomodoroAddin.Views
+namespace Xeno.Dockzi.PomodoroAddin.Views
 {
   public partial class PreferencePage : Form, IPreferencePageActions
   {
-    private PomodoroManager _manager;
+    private readonly PomodoroManager _manager;
+    private readonly ISettingsService _settings;
 
-    public PreferencePage()
+    public PreferencePage(PomodoroManager manager, ISettingsService settings)
     {
+      _manager = manager;
+      _settings = settings;
       InitializeComponent();
       this.Text = "Pomodoro Timer 🍅";
 
-      _manager = new PomodoroManager();
       LoadSettings();
 
+      TxtDuration.TextChanged += MarkModified;
+      TxtBreakShort.TextChanged += MarkModified;
+      TxtBreakLong.TextChanged += MarkModified;
+      ChkPlaySound.CheckedChanged += MarkModified;
+      ChkFlashScreenEvents.CheckedChanged += MarkModified;
+      ChkSysTrayBubbles.CheckedChanged += MarkModified;
+      ChkSysTrayDurations.CheckedChanged += MarkModified;
       IsModified = false;
     }
 
@@ -37,18 +46,21 @@ namespace PomodoroAddin.Views
 
     public bool OnSave()
     {
-      SettingsService.SetValue(Constants.AddinId, Constants.KeyDuration, TxtDuration.Text);
-      SettingsService.SetValue(Constants.AddinId, Constants.KeyShortBreak, TxtBreakShort.Text);
-      SettingsService.SetValue(Constants.AddinId, Constants.KeyLongBreak, TxtBreakLong.Text);
+      _settings.SetValue(Constants.AddinId, Constants.KeyDuration, TxtDuration.Text);
+      _settings.SetValue(Constants.AddinId, Constants.KeyShortBreak, TxtBreakShort.Text);
+      _settings.SetValue(Constants.AddinId, Constants.KeyLongBreak, TxtBreakLong.Text);
 
-      SettingsService.SetValue(Constants.AddinId, Constants.KeyAlertSound, ChkPlaySound.Checked.ToString());
-      SettingsService.SetValue(Constants.AddinId, Constants.KeyAlertFlash, ChkFlashScreenEvents.Checked.ToString());
-      SettingsService.SetValue(Constants.AddinId, Constants.KeyAlertSysTrayBubble, ChkSysTrayBubbles.Checked.ToString());
-      SettingsService.SetValue(Constants.AddinId, Constants.KeyTrayShowDuration, ChkSysTrayDurations.Checked.ToString());
+      _settings.SetValue(Constants.AddinId, Constants.KeyAlertSound, ChkPlaySound.Checked.ToString());
+      _settings.SetValue(Constants.AddinId, Constants.KeyAlertFlash, ChkFlashScreenEvents.Checked.ToString());
+      _settings.SetValue(Constants.AddinId, Constants.KeyAlertSysTrayBubble, ChkSysTrayBubbles.Checked.ToString());
+      _settings.SetValue(Constants.AddinId, Constants.KeyTrayShowDuration, ChkSysTrayDurations.Checked.ToString());
 
-      // Save check boxes
+      _manager.RefreshMenu();
+      IsModified = false;
       return true;
     }
+
+    private void MarkModified(object sender, EventArgs args) => IsModified = true;
 
     private void PreferencePage_Load(object sender, EventArgs e)
     {
@@ -94,14 +106,14 @@ namespace PomodoroAddin.Views
       nIcon = new IconGenerator[5];
 
       _manager.SendMessageTrayIcon(icon.ToIcon());
-      Xeno.ToolsHub.Config.Helpers.Timeout(700);
+      Xeno.Dockzi.Config.Helpers.Timeout(700);
 
       for (int i = 1; i <= 5; i++)
       {
         nIcon[i - 1] = new IconGenerator(i.ToString());
 
         _manager.SendMessageTrayIcon(nIcon[i - 1].ToIcon());
-        Xeno.ToolsHub.Config.Helpers.Timeout(500);
+        Xeno.Dockzi.Config.Helpers.Timeout(500);
       }
 
       // Go back to default

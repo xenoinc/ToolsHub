@@ -1,0 +1,5 @@
+[assembly: Mono.Addins.Addin(Id = "NotesAddin", Version = "0.3", Category = "Tools", EnabledByDefault = true)]
+[assembly: Mono.Addins.AddinName("Notes")]
+[assembly: Mono.Addins.AddinDescription("Markdown sticky notes with a global keyboard shortcut and recent notes in the tray.")]
+[assembly: Mono.Addins.AddinAuthor("Xeno Innovations, Inc.")]
+[assembly: Mono.Addins.AddinDependency("Xeno.Dockzi", "0.3")]

@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ExtensionModel>
+
+  <!-- Shortcuts extension manifest -->
+  <Extension path="/Dockzi/SystemTray">
+    <SysTrayAddin type="Xeno.Dockzi.LocalAddins.Shortcuts.ShortcutsSysTrayAddin" />
+  </Extension>
+
+  <Extension path="/Dockzi/PreferencePage">
+    <PreferencePageAddin type="Xeno.Dockzi.LocalAddins.Shortcuts.Prefs.PreferencesHandler" />
+  </Extension>
+</ExtensionModel>

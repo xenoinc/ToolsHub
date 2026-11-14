@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Xeno.ToolsHub.SidebarAddin.Properties {
+namespace Xeno.Dockzi.SidebarAddin.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

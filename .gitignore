@@ -78,3 +78,4 @@ Update.exe
 /docs/*.csv
 /docs/backup
 /tests
+*.log

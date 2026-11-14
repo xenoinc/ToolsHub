@@ -1,4 +1,4 @@
-﻿/* Copyright Xeno Innovations, Inc. 2019
+/* Copyright Xeno Innovations, Inc. 2019
  * Date:    2019-4-6
  * Author:  Damian Suess
  * File:    AddinAssembly.cs
@@ -15,7 +15,7 @@ using Mono.Addins;
   Version = "0.3",
   Category = "Tools",
   CompatVersion = "0.3",
-  EnabledByDefault = false,
+  EnabledByDefault = true,
   Flags = Mono.Addins.Description.AddinFlags.None,
   Url = "https://github.com/xenoinc/ToolsHub")]
 
@@ -24,15 +24,17 @@ using Mono.Addins;
 [assembly:AddinDescription("Desktop dockable sidebar")]
 
 // Attach to add-in host
-[assembly: Mono.Addins.AddinDependency("XenoInnovations.ToolsHub", "0.3")]
+[assembly: Mono.Addins.AddinDependency("Xeno.Dockzi", "0.3")]
 
-namespace Xeno.ToolsHub.SidebarAddin
+namespace Xeno.Dockzi.SidebarAddin
 {
   public static class Constants
   {
     public static string AddinId => "Sidebar";
 
     public static string KeyShortcuts => "Shortcuts";
+
+    public static string KeyLaunchers => "LauncherItems";
 
     public static string KeyBackground => "BackgroundImage";
 
@@ -47,7 +49,7 @@ namespace Xeno.ToolsHub.SidebarAddin
     /// <summary>Monitor "1" (main)</summary>
     public static string KeyScreenNumber => "ScreenNumber";
 
-    /// <summary>Use show sidebar(s) when ToolsHub starts</summary>
+    /// <summary>Use show sidebar(s) when Dockzi starts</summary>
     public static string KeyShowSidebars => "ShowSidebars";
 
     public static string KeyTintColor => "TintColor";

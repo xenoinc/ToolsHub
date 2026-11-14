@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Xeno.Dockzi.SampleXmlAddin</RootNamespace>
+    <AssemblyName>SampleXmlAddin</AssemblyName>
+    <OutputPath>..\..\output\</OutputPath>
+    <CodeAnalysisRuleSet>..\stylecop.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Xeno.Dockzi\Xeno.Dockzi.csproj" Private="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="SampleXmlAddin.addin" />
+    <None Remove="TrayMenu.addin" />
+    <Content Include="SampleXmlAddin.addin" CopyToOutputDirectory="Always" />
+    <EmbeddedResource Include="TrayMenu.addin" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Mono.Addins" />
+    <PackageReference Include="StyleCop.Analyzers.Unstable">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+</Project>

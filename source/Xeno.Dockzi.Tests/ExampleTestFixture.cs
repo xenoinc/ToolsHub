@@ -1,0 +1,50 @@
+﻿/* Copyright Xeno Innovations, Inc. 2019
+ * Date:    2019-1-18
+ * Author:  Damian Suess
+ * File:    ExampleTestFixture.cs
+ * Description:
+ *  Example shit class configuration
+ */
+
+namespace Xeno.Dockzi.Tests
+{
+  using Microsoft.VisualStudio.TestTools.UnitTesting;
+  using Xeno.Dockzi.Services.Logging;
+
+  [TestClass]
+  public class ExampleTestFixture
+  {
+    [AssemblyInitialize]
+    public static void AssemblyInit(TestContext context)
+    {
+      Log.Debug("Assembly initialize");
+    }
+
+    [AssemblyCleanup]
+    public static void AssemblyCleanUp()
+    {
+      Log.Debug("Assembly Cleaned up");
+    }
+
+    [ClassInitialize]
+    public static void RunBeforeAllTestsInClass(TestContext context)
+    {
+      // string name = "ClassInit: " + context.TestName;
+    }
+
+    [ClassCleanup]
+    public static void RunAfterAllTestsInClass()
+    {
+    }
+
+    [TestInitialize]
+    public void RunBeforeEachTest()
+    {
+    }
+
+    [TestCleanup]
+    public void RunAfterEachTest()
+    {
+    }
+  }
+}

@@ -1,19 +1,24 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <RootNamespace>Xeno.ToolsHub.SidebarAddin</RootNamespace>
+    <RootNamespace>Xeno.Dockzi.SidebarAddin</RootNamespace>
     <AssemblyName>SidebarAddin</AssemblyName>
     <UseWPF>true</UseWPF>
     <OutputPath>..\..\..\output\</OutputPath>
     <CodeAnalysisRuleSet>..\..\stylecop.ruleset</CodeAnalysisRuleSet>
+    <Authors>Damian Suess</Authors>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Xeno.ToolsHub\Xeno.ToolsHub.csproj" />
+    <ProjectReference Include="..\..\Xeno.Dockzi\Xeno.Dockzi.csproj" Private="false" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Mono.Addins" Version="1.4.1" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="10.0.8" />
+    <PackageReference Include="Mono.Addins" />
+    <PackageReference Include="StyleCop.Analyzers.Unstable">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="System.Configuration.ConfigurationManager" />
   </ItemGroup>
 </Project>

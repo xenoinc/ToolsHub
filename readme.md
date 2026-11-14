@@ -1,4 +1,4 @@
-# Xeno.ToolsHub
+# Dockzi
 
 Flexible tools launcher desktop app which is "_not your average extensible sidebar_"
 
@@ -34,8 +34,29 @@ Author: [Damian Suess](https://www.linkedin.com/in/damiansuess/)
 
 ### Sidebar Launcher
 
-* **Status:** _n/a_
-* (_i.e. RocketDock, ObjectDock_)
+* Launch apps, files, folders, Windows shortcuts, and web links from an icon dock.
+* Drop items onto the dock to add them; drag icons to reorder them. Changes save immediately.
+  While reordering, the grabbed icon follows the pointer and a blue marker shows its destination.
+* Hover to enlarge an icon, click to launch, or right-click to add/remove launchers.
+* The permanent **+** button opens the launcher picker and also accepts dropped apps.
+  Right-click the dock or any launcher and choose **Sidebar settings…** to open its preference page.
+* In **Settings > Sidebar**, choose the monitor and Left, Right, Top, or Bottom edge.
+  Layout follows the selected edge. Long lists scroll with the mouse wheel.
+* Auto-hide slides the dock away after a short idle delay. Hover its thin edge strip
+  to bring it back. The slide is clipped to the selected monitor, including shared edges.
+  Turn **Auto-hide** off to keep the dock visible.
+* A small dot beneath an icon indicates that the app has an open window. Indicators
+  refresh automatically and support executable targets and Windows shortcuts.
+* Sidebar appearance settings preview immediately. **Apply/OK** keeps them;
+  **Cancel** restores the last saved appearance without changing launcher items.
+* Enabling the Sidebar add-in shows it immediately; disabling it closes the dock.
+  The startup visibility setting only controls display when the app starts.
+* Enabling the Sidebar add-in shows it immediately; disabling it closes the dock.
+  The startup visibility setting only controls display when the app starts.
+
+If Explorer shows a blocked cursor when dropping onto the dock, run Dockzi without
+administrator privileges. When debugging, start Visual Studio normally too: Windows
+[does not allow drag-and-drop from a non-elevated app into an elevated app](https://learn.microsoft.com/en-us/windows/win32/com/the-com-elevation-moniker).
 
 ### VeraCrypt
 
@@ -58,6 +79,41 @@ If closed and forgot the submodule:<br />
 ### How to contribute
 
 Read our wiki to learn how to help and make your own add-in.
+
+### Build and test
+
+Use the .NET 10 SDK on Windows:
+
+```powershell
+# Build for Release
+.\build.ps1
+
+# Build solution
+dotnet build source/Dockzi.slnx --configuration Release
+
+# Run Tests
+dotnet test --project source/Xeno.Dockzi.Tests/Xeno.Dockzi.Tests.csproj --configuration Release
+```
+
+You can also run `build.bat`, which uses PowerShell 7 when available and falls back to
+Windows PowerShell. Both scripts work from any current directory and rebuild the full
+solution in Release after clearing generated files from `output`. Close Dockzi first.
+The cleanup preserves `Dockzi.config`, legacy `Dockzi.db` and `ToolsHub.db`, `SidebarLaunchers.json`, logs, `.bak` backups, and
+`readme.txt`. Use `-SkipRestore` with either script when packages are already restored.
+
+Tests use Microsoft Testing Platform, selected by `global.json`. Pass the project with
+`--project`; VSTest options such as `--logger` no longer apply.
+
+Settings use the built-in `System.Text.Json` serializer. The `Dockzi.config` file
+retains their property-bag format and Base64-encoded objects; no file conversion is needed.
+
+Dockzi uses the `Xeno.Dockzi` base namespace and writes the launcher to `output/Dockzi.exe`.
+On first launch, existing `Dockzi.db` or `ToolsHub.db` settings are copied to `Dockzi.config`
+without changing the original files. All-users and per-user installations also check their previous `XI/ToolsHub`
+settings folders. Existing `Dockzi.config` settings always take precedence. An enabled Windows
+startup entry for `ToolsHub.exe` in the same installation folder is updated to `Dockzi.exe`;
+other installations' entries are preserved. Add-ins must be rebuilt against the renamed
+host and its `/Dockzi` extension points. Repository and update URLs keep their original addresses.
 
 ## Squirrel Updater
 
@@ -90,6 +146,6 @@ Only perform this method if the **MSBuild** one does not.
     3. Example:
 ```powershell
 PM> cd ..
-PM> Squirrel --releasify ToolsHub.1.1.53.nupkg
+PM> Squirrel --releasify Dockzi.1.1.53.nupkg
 ```
 5. Copy "Releases" output to our network share for archiving

@@ -6,18 +6,23 @@
  *
  */
 
-namespace PomodoroAddin.Handlers
+namespace Xeno.Dockzi.PomodoroAddin.Handlers
 {
   using System.Windows.Forms;
-  using PomodoroAddin.Views;
-  using Xeno.ToolsHub.ExtensionModel;
+  using Xeno.Dockzi.PomodoroAddin.Views;
+  using Xeno.Dockzi.ExtensionModel;
 
   [Mono.Addins.Extension(
     NodeName = ExtensionName.PreferencePageAddin,
     Path = ExtensionPath.PreferencePage)]
   public class PreferenceHandler : IPreferencePageExtension
   {
-    private PreferencePage _page;
+    private readonly PreferencePage _page;
+
+    public PreferenceHandler(PreferencePage page)
+    {
+      _page = page;
+    }
 
     public string Id { get; set; }
 
@@ -29,7 +34,7 @@ namespace PomodoroAddin.Handlers
 
     public void InitializePage()
     {
-      _page = new PreferencePage();
+      // Page dependencies and lifetime are supplied by the dialog scope.
     }
 
     public void OnSave()

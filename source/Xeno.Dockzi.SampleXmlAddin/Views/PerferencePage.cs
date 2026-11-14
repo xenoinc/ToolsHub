@@ -1,0 +1,50 @@
+﻿/* Copyright Xeno Innovations, Inc. 2018
+ * Date:    2018-12-17
+ * Author:  Damian Suess
+ * File:    SampleXmlPerferencePage.cs
+ * Description:
+ *
+ */
+
+namespace Xeno.Dockzi.SampleXmlAddin.Views
+{
+  using System;
+  using System.ComponentModel;
+  using System.Windows.Forms;
+  using Xeno.Dockzi.ExtensionModel;
+  using Xeno.Dockzi.Services.Logging;
+
+  /// <summary>Sample Preference page.</summary>
+  public partial class PerferencePage : Form, IPreferencePageActions
+  {
+    public PerferencePage()
+    {
+      InitializeComponent();
+    }
+
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public bool IsModified { get; set; }
+
+    public bool OnSave()
+    {
+      Log.Debug("Mock save, SampleXML's settings.");
+
+      IsModified = false;
+      lblIsModified.Text = "False";
+      return true;
+    }
+
+    private void SampleXmlPerferencePage_Load(object sender, EventArgs e)
+    {
+    }
+
+    private void SampleTextBox_TextChanged(object sender, EventArgs e)
+    {
+      if (!IsModified)
+        lblIsModified.Text = "True";
+
+      IsModified = true;
+    }
+  }
+}

@@ -9,7 +9,7 @@
 using System;
 using System.Drawing;
 
-namespace PomodoroAddin.Domain
+namespace Xeno.Dockzi.PomodoroAddin.Domain
 {
   public class IconGenerator
   {

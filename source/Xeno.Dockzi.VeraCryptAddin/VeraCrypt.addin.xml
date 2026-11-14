@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--
+Copyright Xeno Innovations, Inc. 2018
+ * Date:    2018-7-18
+ * Author:  Damian Suess
+ * File:    VeraCrypt.addin.xml
+ * Description:
+ *  Veracrypt addin
+-->
+<Addin namespace=""
+       id="VeraCryptAddin"
+       version="1.0"
+       compatVersion="0.3"
+       name="VeraCrypt Manager"
+       author="Damian Suess"
+       copyright="Xeno Innovations, Inc. 2018-2019"
+       description="Automatically handles VeraCrypt mounting &amp; dismounting of encrypted drives."
+       category="Tools"
+       defaultEnabled="true"
+       isRoot="false">
+  <Runtime>
+    <Import assembly="VeraCryptAddin.dll" />
+  </Runtime>
+
+  <Dependencies>
+    <Addin id="Xeno.Dockzi" version="0.3" />
+  </Dependencies>
+
+  <Extension path="/Dockzi/SystemTray">
+    <SysTrayAddin type="Xeno.Dockzi.VeraCryptAddin.Handlers.SysTrayHandler" />
+  </Extension>
+
+  <Extension path="/Dockzi/PreferencePage">
+    <PreferencePageAddin type="Xeno.Dockzi.VeraCryptAddin.Handlers.PreferencesHandler" />
+  </Extension>
+</Addin>

@@ -1,0 +1,52 @@
+﻿/* Copyright Xeno Innovations, Inc. 2019
+ * Date:    2019-2-27
+ * Author:  Damian Suess
+ * File:    SysTrayHandler.cs
+ * Description:
+ *  System Tray extension point for VeraCrypt add-in
+ */
+
+using System.Collections.Generic;
+using System.Windows.Forms;
+using Xeno.Dockzi.Config;
+using Xeno.Dockzi.ExtensionModel.SystemTray;
+
+namespace Xeno.Dockzi.VeraCryptAddin.Handlers
+{
+  public class SysTrayHandler : Xeno.Dockzi.ExtensionModel.SystemTray.SysTrayAddin
+  {
+    private readonly VeraCryptManager _veraCrypt;
+
+    public SysTrayHandler(VeraCryptManager manager)
+    {
+      _veraCrypt = manager;
+      this.IsInitialized = true;
+    }
+
+    public override bool IsInitialized { get; }
+
+    public override List<ToolStripItem> MenuItems()
+    {
+      // TODO: Use Domain.Utils to ask VeraCryptManager if the HC file was already mounted
+      // and display a "checked" box if it was.
+      // For now we're just manually mounting/dismounting for first pass
+      var volume = new Domain.VolumeInfo
+      {
+        Title = "Sample file",
+        FilePath = string.Empty,
+        IndexId = Helpers.GenerateGuid(),
+        Password = string.Empty
+      };
+
+      bool isMounted = false;   // await Domain.DriveUtils.IsMounted(volume.FilePath);
+
+      // When creating a SysTray entry, use the IndexId to tell which drive it is
+      // and the display text is, "Title". However below we're just testing individual components
+      ToolStripMenuItem menu = new ToolStripMenuItem("VeraCrypt");
+      menu.DropDownItems.Add(new TrayItem("Mount", volume.IndexId, true, _veraCrypt.OnMount) { Checked = isMounted });
+      menu.DropDownItems.Add(new TrayItem("Dismount", volume.IndexId, true, _veraCrypt.OnDismount));
+
+      return new List<ToolStripItem>() { menu };
+    }
+  }
+}

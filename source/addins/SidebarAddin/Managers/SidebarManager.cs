@@ -1,70 +1,86 @@
-﻿/* Copyright Xeno Innovations, Inc. 2019
- * Date:    2019-4-9
- * Author:  Damian Suess
- * File:    SidebarManager.cs
- * Description:
- *  Sidebar manager
- */
+namespace Xeno.Dockzi.SidebarAddin.Managers;
 
-using Xeno.ToolsHub.LocalAddins.Shortcuts;
-using Xeno.ToolsHub.Services;
-using Xeno.ToolsHub.Services.Logging;
-using Xeno.ToolsHub.Services.Messaging;
-using Xeno.ToolsHub.SidebarAddin.ViewModels;
+using System;
+using Xeno.Dockzi.Services;
+using Xeno.Dockzi.SidebarAddin.Domain;
+using Xeno.Dockzi.SidebarAddin.Services;
 
-namespace Xeno.ToolsHub.SidebarAddin.Managers
+public sealed class SidebarManager : IDisposable
 {
-  public class SidebarManager
+  private readonly ISettingsService _settings;
+  private readonly ISidebarWindowFactory _windows;
+
+  private bool _disposed;
+  private ISidebarWindow _window;
+
+  public SidebarManager(ISettingsService settings, ISidebarWindowFactory windows)
   {
-    public string SettingBackground => SettingsService.GetString(Constants.AddinId, Constants.KeyBackground, string.Empty);
+    _settings = settings;
+    _windows = windows;
+  }
 
-    public int SettingOpacity => SettingsService.GetInt(Constants.AddinId, Constants.KeyOpacity, 0);
+  public string SettingBackground => _settings.GetString(Constants.AddinId, Constants.KeyBackground, string.Empty);
 
-    public int SettingScreenArea => SettingsService.GetInt(Constants.AddinId, Constants.KeyScreenArea, 1);
+  public int SettingOpacity => _settings.GetInt(Constants.AddinId, Constants.KeyOpacity, 90);
 
-    public int SettingScreenOrientation => SettingsService.GetInt(Constants.AddinId, Constants.KeyScreenOrientation, 0);
+  public int SettingScreenArea => _settings.GetInt(Constants.AddinId, Constants.KeyScreenArea, 1);
 
-    public int SettingScreenNumber => SettingsService.GetInt(Constants.AddinId, Constants.KeyScreenNumber, 1);
+  public int SettingScreenNumber => _settings.GetInt(Constants.AddinId, Constants.KeyScreenNumber, 1);
 
-    public bool SettingsShowSidebar => SettingsService.GetBool(Constants.AddinId, Constants.KeyShowSidebars, true);
+  public int SettingScreenOrientation => _settings.GetInt(Constants.AddinId, Constants.KeyScreenOrientation, 0);
 
-    public string SettingTintColor => SettingsService.GetString(Constants.AddinId, Constants.KeyTintColor, string.Empty);
+  public bool SettingsShowSidebar => _settings.GetBool(Constants.AddinId, Constants.KeyShowSidebars, true);
 
-    public ShortcutItems GetShortcuts()
-    {
-      // Use Shortcut object, not string
-      Log.Warn("Feature not implemented yet.");
+  public string SettingTintColor => _settings.GetString(Constants.AddinId, Constants.KeyTintColor, string.Empty);
 
-      ShortcutsManager mngr = new ShortcutsManager();
-      var items = mngr.ShortcutItems;
+  public void ApplySettings()
+  {
+    if (_window == null)
+      return;
+    _window.ApplySettings(SidebarAppearance.Load(_settings));
+  }
 
-      return items;
-    }
+  public void CloseSidebars()
+  {
+    var window = _window;
+    _window = null;
 
-    public void ShowSidebars()
-    {
-      // TODO: In the future, iterate through sidebars we've created and display them
+    if (window == null)
+      return;
 
-      if (SettingsShowSidebar)
-      {
-        //// var viewModel = new ToolbarViewModel();
-        var form = new Views.ToolbarView()
-        {
-          //// form.DataContext = new ToolbarViewModel(),
-          //// Owner = System.Windows.Application.Current.MainWindow,
-          ShowInTaskbar = true
-        };
+    window.Closed -= OnClosed;
+    window.Close();
+  }
 
-        form.DataContext = new ToolbarViewModel(form.StackDynamic);
+  public void Dispose()
+  {
+    if (_disposed)
+      return;
 
-        form.Show();
-      }
-    }
+    _disposed = true;
+    CloseSidebars();
+  }
 
-    /// <summary>If we modified shortcuts, tell the rest of the system to update</summary>
-    public void SendMessageRefreshShortcuts()
-    {
-      MessagingCenter.Send<ShortcutsMessage>(new ShortcutsMessage(), ShortcutsMessage.Refresh);
-    }
+  public void PreviewSettings(SidebarAppearance appearance) => _window?.ApplySettings(appearance);
+
+  public void ShowSidebars()
+  {
+    ObjectDisposedException.ThrowIf(_disposed, this);
+
+    if (_window != null)
+      return;
+
+    _window = _windows.Create();
+    _window.Closed += OnClosed;
+    _window.Show();
+  }
+
+  private void OnClosed(object sender, EventArgs args)
+  {
+    if (sender is ISidebarWindow window)
+      window.Closed -= OnClosed;
+
+    if (ReferenceEquals(sender, _window))
+      _window = null;
   }
 }

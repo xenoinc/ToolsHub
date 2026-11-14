@@ -1,4 +1,4 @@
-﻿/* Copyright Xeno Innovations, Inc. 2019
+/* Copyright Xeno Innovations, Inc. 2019
  * Date:    2019-4-9
  * Author:  Damian Suess
  * File:    PreferenceHandler.cs
@@ -6,31 +6,36 @@
  *  Sidebar prefreferences add-in
  */
 
-using Xeno.ToolsHub.SidebarAddin.Views;
+using Xeno.Dockzi.SidebarAddin.Views;
 
-namespace Xeno.ToolsHub.SidebarAddin.Handlers
+namespace Xeno.Dockzi.SidebarAddin.Handlers
 {
   using System.Windows.Forms;
-  using Xeno.ToolsHub.ExtensionModel;
+  using Xeno.Dockzi.ExtensionModel;
 
   [Mono.Addins.Extension(
     NodeName = ExtensionName.PreferencePageAddin,
     Path = ExtensionPath.PreferencePage)]
   public class PreferenceHandler : IPreferencePageExtension
   {
-    private PreferencesPage _page;
+    private readonly PreferencesPage _page;
+
+    public PreferenceHandler(PreferencesPage page)
+    {
+      _page = page;
+    }
 
     public string Id { get; set; }
 
+    public bool IsModified => _page.IsModified;
+
     public Form Page => _page;
 
-    public string Title { get { return "Sidebar"; } }
-
-    public bool IsModified => _page.IsModified;
+    public string Title => "Sidebar";
 
     public void InitializePage()
     {
-      _page = new PreferencesPage();
+      // Page dependencies and lifetime are supplied by the dialog scope.
     }
 
     public void OnSave()

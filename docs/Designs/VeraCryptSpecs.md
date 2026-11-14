@@ -7,7 +7,7 @@ VeraCrypt add-in allows you to mount your encrypted virtual drives to keep pryin
 |---------|--------|-------------|
 | Mount VC container | TBD | Quickly mount VC and prompt you for your password |
 | Password store | TBD | Mount drives on-demand and auto fill-in your password |
-| Auto-mount | TBD | Automatically mount your selected drive(s) when ToolsHub starts |
+| Auto-mount | TBD | Automatically mount your selected drive(s) when Dockzi starts |
 | Fingerprints | TBD | Mount and authenticate via your device's fingerprint scanner |
 | YubiKey (2-auth) | TBD | Bypass your manual password and use your YubiKey, or 2-auth |
 

@@ -6,7 +6,7 @@
  *  
  */
 
-namespace Xeno.ToolsHub.SidebarAddin.Views
+namespace Xeno.Dockzi.SidebarAddin.Views
 {
   partial class PreferencesPage
   {
