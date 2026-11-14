@@ -15,6 +15,7 @@ public sealed class NoteWindow : Window
   private readonly Func<string, Note> _save;
   private readonly TextBlock _title;
   private bool _hasSaved;
+  private bool _discardOnClose;
   private string _savedText;
 
   public NoteWindow(Note note, Func<string, Note> save, bool edit = false)
@@ -123,11 +124,32 @@ public sealed class NoteWindow : Window
         BeginEdit();
         e.Handled = true;
       }
+      else if (e.Key == Key.Escape)
+      {
+        e.Handled = true;
+        if (e.IsRepeat)
+          return;
+
+        if (IsEditing)
+        {
+          _editor.Text = _savedText;
+          _editor.IsUndoEnabled = false;
+          _editor.IsUndoEnabled = true;
+          UpdateTitle();
+          ShowPreview();
+        }
+        else
+        {
+          // Escape dismisses a new, discarded draft without creating a saved note.
+          _discardOnClose = true;
+          Close();
+        }
+      }
     };
 
     Closing += (_, e) =>
     {
-      if ((_editor.Text != _savedText || !_hasSaved) && !SaveNote())
+      if (!_discardOnClose && (_editor.Text != _savedText || !_hasSaved) && !SaveNote())
       {
         e.Cancel = MessageBox.Show(this, "The note could not be saved. Close and discard these changes?", "Unsaved note", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes;
       }

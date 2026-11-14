@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Documents;
+using System.Windows.Input;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Xeno.Dockzi.NotesAddin;
@@ -32,13 +33,16 @@ public class NotesAddinTests
 
       File.WriteAllText(Path.Combine(store.DirectoryPath, "unrelated.md"), "leave me alone");
       var recent = store.Recent();
+
       Assert.AreEqual(10, recent.Count);
       Assert.AreEqual("Note 11", recent[0].Title);
       Assert.AreEqual("Note 2", recent[9].Title);
+
       var oldest = store.Recent(12).Last();
       Assert.AreEqual(Text, oldest.Text);
       Assert.AreEqual("Café 📝", oldest.Title);
       store.Save(oldest.Id, "# Updated\n\nNew text");
+
       Assert.AreEqual(oldest.Id, store.Recent()[0].Id);
       Assert.AreEqual(12, Directory.GetFiles(store.DirectoryPath, "*.md").Length - 1);
       Assert.AreEqual(0, Directory.GetFiles(store.DirectoryPath, "*.tmp").Length);
@@ -61,6 +65,7 @@ public class NotesAddinTests
       var id = Guid.NewGuid();
       var window = new NoteWindow(new Note(id, "# Draft\n\nHello **world**", default), text => store.Save(id, text), true);
       window.Show();
+
       try
       {
         Assert.IsTrue(window.IsEditing);
@@ -68,7 +73,9 @@ public class NotesAddinTests
         Assert.IsTrue(window.SaveNote());
         Assert.IsFalse(window.IsEditing);
         Assert.AreEqual("# Draft\n\nHello **world**", store.Load(id).Text);
+
         window.BeginEdit();
+
         Assert.IsTrue(window.IsEditing);
         window.NoteText = "# Renamed\n\nUnsaved changes";
         Assert.AreEqual("Renamed", window.Title);
@@ -86,6 +93,85 @@ public class NotesAddinTests
   }
 
   [TestMethod]
+  public void EscapeDiscardsEditsRestoresLatestSavedPreviewAndThenCloses()
+  {
+    RunSta(() => WithStore(store =>
+    {
+      var id = Guid.NewGuid();
+      int saves = 0;
+      var window = new NoteWindow(store.Save(id, "# Original\n\nOriginal text"), text =>
+      {
+        saves++;
+        return store.Save(id, text);
+      });
+
+      window.Show();
+
+      try
+      {
+        window.BeginEdit();
+        window.NoteText = "# Saved title\n\n**Saved text**";
+        Assert.IsTrue(window.SaveNote());
+        window.BeginEdit();
+        window.NoteText = "# Discarded title\n\nDiscarded edits";
+
+        PressEscape(window);
+
+        Assert.IsTrue(window.IsVisible);
+        Assert.IsFalse(window.IsEditing);
+        Assert.AreEqual("Saved title", window.Title);
+        Assert.AreEqual("# Saved title\n\n**Saved text**", window.NoteText);
+        var layout = (System.Windows.Controls.Grid)window.Content;
+        var preview = layout.Children.OfType<System.Windows.Controls.FlowDocumentScrollViewer>().Single();
+        StringAssert.Contains(new TextRange(preview.Document.ContentStart, preview.Document.ContentEnd).Text, "Saved text");
+        Assert.AreEqual(1, saves);
+
+        PressEscape(window);
+
+        Assert.IsFalse(window.IsVisible);
+        Assert.AreEqual(1, saves);
+        Assert.AreEqual("# Saved title\n\n**Saved text**", store.Load(id).Text);
+      }
+      finally
+      {
+        window.Close();
+      }
+    }));
+  }
+
+  [TestMethod]
+  public void EscapeDiscardsNewDraftWithoutSavingAndClosesFromPreview()
+  {
+    RunSta(() =>
+    {
+      int saves = 0;
+      var window = new NoteWindow(new Note(Guid.NewGuid(), "# New note\n\n", default), text =>
+      {
+        saves++;
+        return new Note(Guid.NewGuid(), text, DateTime.UtcNow);
+      }, true);
+
+      window.Show();
+
+      try
+      {
+        window.NoteText = "# Unsaved draft\n\nDiscard me";
+        PressEscape(window);
+        Assert.IsFalse(window.IsEditing);
+        Assert.IsTrue(window.IsVisible);
+        Assert.AreEqual("# New note\n\n", window.NoteText);
+        PressEscape(window);
+        Assert.IsFalse(window.IsVisible);
+        Assert.AreEqual(0, saves);
+      }
+      finally
+      {
+        window.Close();
+      }
+    });
+  }
+
+  [TestMethod]
   public void MarkdownPreviewFormatsHeadingsListsEmphasisAndCodeWithoutLoadingHtml()
   {
     RunSta(() =>
@@ -93,10 +179,12 @@ public class NotesAddinTests
       var document = MarkdownPreview.Render("# Title\n\nHello **bold** and *italic*.\n\n- First\n- Second\n\n```cs\nvar x = 1;\n```\n\n<script>alert('no')</script>");
       var heading = (Paragraph)document.Blocks.FirstBlock;
       Assert.AreEqual(26d, heading.FontSize);
+
       var body = (Paragraph)heading.NextBlock;
       Assert.IsTrue(body.Inlines.OfType<Bold>().Any());
       Assert.IsTrue(body.Inlines.OfType<Italic>().Any());
       Assert.AreEqual(2, ((System.Windows.Documents.List)body.NextBlock).ListItems.Count);
+
       string text = new TextRange(document.ContentStart, document.ContentEnd).Text;
       StringAssert.Contains(text, "var x = 1;");
       StringAssert.Contains(text, "<script>");
@@ -108,7 +196,8 @@ public class NotesAddinTests
   {
     var services = new ServiceCollection().AddDockzi();
     services.AddBundledAddinServices(Path.GetDirectoryName(typeof(NotesManager).Assembly.Location));
-    using var provider = services.BuildServiceProvider(new ServiceProviderOptions { ValidateOnBuild = true, ValidateScopes = true });
+    
+using var provider = services.BuildServiceProvider(new ServiceProviderOptions { ValidateOnBuild = true, ValidateScopes = true });
     Assert.IsNotNull(provider.GetRequiredService<NotesManager>());
   }
 
@@ -142,23 +231,40 @@ public class NotesAddinTests
       var events = provider.GetRequiredService<Lite.EventIpc.IEventAggregator>();
       var firstSettings = new ApplicationSettings(new SettingsManager(Config.StorageMethod.UnitTest));
       var secondSettings = new ApplicationSettings(new SettingsManager(Config.StorageMethod.UnitTest));
+
       firstSettings.SetValue(NotesManager.SettingsId, "ShortcutEnabled", false);
       secondSettings.SetValue(NotesManager.SettingsId, "ShortcutEnabled", false);
+
       using var first = new NotesManager(store, firstSettings, events);
       using var second = new NotesManager(store, secondSettings, events);
+
       first.Start();
       second.Start();
+
       var keys = System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Shift | System.Windows.Forms.Keys.F24;
       first.ConfigureShortcut(true, keys, false);
       first.Start();
+
       Assert.ThrowsExactly<Win32Exception>(() => second.ConfigureShortcut(true, keys, false));
       Assert.IsFalse(second.ShortcutEnabled);
       Assert.ThrowsExactly<ArgumentException>(() => first.ConfigureShortcut(true, System.Windows.Forms.Keys.N, false));
       Assert.AreEqual(keys, first.ShortcutKeys);
+
       first.Stop();
       second.ConfigureShortcut(true, keys, false);
       Assert.IsTrue(second.ShortcutEnabled);
     }));
+  }
+
+  private static void PressEscape(NoteWindow window)
+  {
+    var key = new KeyEventArgs(Keyboard.PrimaryDevice, PresentationSource.FromVisual(window), Environment.TickCount, Key.Escape)
+    {
+      RoutedEvent = Keyboard.PreviewKeyDownEvent,
+    };
+
+    window.RaiseEvent(key);
+    Assert.IsTrue(key.Handled);
   }
 
   private static void WithStore(Action<NoteStore> action)
@@ -183,9 +289,11 @@ public class NotesAddinTests
       try { action(); }
       catch (Exception ex) { failure = ex; }
     });
+
     thread.SetApartmentState(ApartmentState.STA);
     thread.Start();
     thread.Join();
+
     if (failure != null)
       System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(failure).Throw();
   }

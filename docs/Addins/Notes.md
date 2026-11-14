@@ -6,6 +6,7 @@ Notes is a bundled Dockzi add-in. Build either `source/Dockzi.slnx` or `source/D
 - Change or disable the global shortcut in **Preferences > Notes**. An optional Windows modifier is available. A conflicting shortcut reports an error; the tray command remains available.
 - Write Markdown or plain text. Use `# Title here` for the centered window title. Notes without a level-one heading are called **Untitled note**.
 - Click the rendered note (or press **F2**) to edit the source. Press **Ctrl+S** or click the small save icon to save and return to the formatted view.
+- Press **Esc** while editing to discard unsaved changes and return to the formatted view. Press **Esc** again from the formatted view to close. Dismissing a new, discarded draft this way does not save it.
 - Drag the title to move the note, resize its edges, and use **×** to close. Closing also saves pending changes. If saving fails, the note stays open unless you explicitly discard it.
 - The tray submenu shows the **10 most recently saved** notes, newest first. Saving an older note moves it to the top. Closing a note keeps its file.
 
