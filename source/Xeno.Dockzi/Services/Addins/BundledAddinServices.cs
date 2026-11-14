@@ -11,7 +11,7 @@ public static class BundledAddinServices
   public static IServiceCollection AddBundledAddinServices(this IServiceCollection services, string directory = null)
   {
     // Register disabled bundles too, so enabling an installed add-in does not require rebuilding the provider.
-    foreach (string file in new[] { "PomodoroAddin.dll", "SidebarAddin.dll", "VeraCryptAddin.dll" })
+    foreach (string file in new[] { "PomodoroAddin.dll", "SidebarAddin.dll", "VeraCryptAddin.dll", "NotesAddin.dll" })
     {
       string path = Path.Combine(directory ?? AppContext.BaseDirectory, file);
       if (!File.Exists(path))

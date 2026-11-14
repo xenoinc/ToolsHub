@@ -9,6 +9,7 @@
     <TargetFramework>net10.0-windows</TargetFramework>
     <NoWarn>$(NoWarn);CA1416</NoWarn>
     <ImplicitUsings>disable</ImplicitUsings>
+    <Authors>Xeno Innovations, Inc.</Authors>
   </PropertyGroup>
 
   <ItemGroup>

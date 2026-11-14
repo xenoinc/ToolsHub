@@ -14,6 +14,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Xeno.Dockzi\Xeno.Dockzi.csproj" />
     <ProjectReference Include="..\addins\PomodoroAddin\PomodoroAddin.csproj" />
+    <ProjectReference Include="..\addins\NotesAddin\NotesAddin.csproj" />
     <ProjectReference Include="..\addins\SidebarAddin\SidebarAddin.csproj" />
     <ProjectReference Include="..\Xeno.Dockzi.VeraCryptAddin\VeraCryptAddin.csproj" />
   </ItemGroup>
