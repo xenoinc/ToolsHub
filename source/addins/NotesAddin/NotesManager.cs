@@ -27,11 +27,17 @@ public sealed class NotesManager : IDisposable
     _events = events;
   }
 
+  public event EventHandler NotesChanged;
+
   public bool ShortcutEnabled => _settings.GetBool(SettingsId, "ShortcutEnabled", true);
+
   public Keys ShortcutKeys => (Keys)_settings.GetInt(SettingsId, "ShortcutKeys", (int)(Keys.Control | Keys.Alt | Keys.N));
 
   public bool ShortcutWindows => _settings.GetBool(SettingsId, "ShortcutWindows");
+
   public string StorageDirectory => _store.DirectoryPath;
+
+  public IReadOnlyList<Note> All() => _store.All();
 
   public void ConfigureShortcut(bool enabled, Keys keys, bool windows)
   {
@@ -56,6 +62,15 @@ public sealed class NotesManager : IDisposable
     _settings.SetValue(SettingsId, "ShortcutEnabled", enabled);
     _settings.SetValue(SettingsId, "ShortcutKeys", (int)keys);
     _settings.SetValue(SettingsId, "ShortcutWindows", windows);
+  }
+
+  public void Delete(Guid id)
+  {
+    _store.Delete(id);
+    if (_windows.TryGetValue(id, out var window))
+      window.CloseWithoutSaving();
+
+    NotifyChanged();
   }
 
   public void Dispose() => Stop();
@@ -95,9 +110,16 @@ public sealed class NotesManager : IDisposable
     _shortcut?.Dispose();
     _shortcut = null;
     _running = false;
+
     // Preserve drafts when the add-in is disabled or the host shuts down.
     foreach (var window in _windows.Values.ToArray())
       window.Close();
+  }
+
+  private void NotifyChanged()
+  {
+    _events.Publish(new SystemTrayRefreshRequest());
+    NotesChanged?.Invoke(this, EventArgs.Empty);
   }
 
   private void RegisterShortcut(bool enabled, Keys keys, bool windows)
@@ -117,9 +139,9 @@ public sealed class NotesManager : IDisposable
     var window = new NoteWindow(note, text =>
     {
       var saved = _store.Save(note.Id, text);
-      _events.Publish(new SystemTrayRefreshRequest());
+      NotifyChanged();
       return saved;
-    }, edit);
+    }, edit, () => Delete(note.Id));
 
     _windows.Add(note.Id, window);
 

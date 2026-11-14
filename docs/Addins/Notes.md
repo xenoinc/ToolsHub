@@ -9,7 +9,23 @@ Notes is a bundled Dockzi add-in. Build either `source/Dockzi.slnx` or `source/D
 - Press **Esc** while editing to discard unsaved changes and return to the formatted view. Press **Esc** again from the formatted view to close. Dismissing a new, discarded draft this way does not save it.
 - Drag the title to move the note, resize its edges, and use **×** to close. Closing also saves pending changes. If saving fails, the note stays open unless you explicitly discard it.
 - The tray submenu shows the **10 most recently saved** notes, newest first. Saving an older note moves it to the top. Closing a note keeps its file.
+- **Preferences > Notes** lists all saved notes with their title, saved date, and a trash icon. Double-click a note to open it. Click its trash icon, or the trash icon beside Save in a note window, to delete it immediately. Deleting also closes the note and discards any pending edits.
 
-Notes are UTF-8 `.md` files in the **Notes** directory beside the active `Dockzi.config`; the path is displayed in Preferences. All notes remain on disk, including those outside the recent ten. Open an older file in a text editor and save it to bring it back into the recent list. Back up this directory with your settings.
+Notes are UTF-8 `.md` files in the **Notes** directory beside the active `Dockzi.config`; the path is displayed in Preferences. All notes remain on disk until deleted, including those outside the recent ten. Back up this directory with your settings.
+
+Saved files begin with settings separated from the Markdown body by a blank line:
+
+```text
+!SaveDate: 2026-11-14_13:30:00
+!NoteColor: Yellow
+!Reminder:
+!ReminderSnooze: 5min
+
+# Title here
+
+Note content
+```
+
+`SaveDate` uses UTC and the 24-hour format `yyyy-MM-dd_HH:mm:ss`. Preferences displays that date in local time. An empty `Reminder` means unset; a reminder value uses the same date format. Color and reminder settings, including custom headers, are preserved when editing the note. These headers are file metadata and are hidden in both the editor and preview. Reminder scheduling and color controls are not currently provided. Older files without headers remain readable and acquire default settings on their next save.
 
 The preview uses [Markdig](https://github.com/xoofx/markdig) to parse CommonMark and renders native WPF text for headings, emphasis, lists, quotes, code, and separators. Links are displayed as text; remote images and embedded HTML are not loaded or executed. Markdown source is preserved when saving.

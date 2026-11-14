@@ -1,4 +1,4 @@
-﻿/* Copyright Xeno Innovations, Inc. 2018
+/* Copyright Xeno Innovations, Inc. 2018
  * Date:    2018-7-19
  * Author:  Damian Suess
  * File:    SystemTrayManager.cs
@@ -125,7 +125,7 @@ namespace Xeno.Dockzi.Managers
       }
 
       List<ToolStripItem> menuBuilder = new List<ToolStripItem>();
-      menuBuilder.Add(new ToolStripMenuItem("Dockzi" + dbgTag, null, OnMenuProperties));
+      menuBuilder.Add(new ToolStripMenuItem("Options" + dbgTag, null, OnMenuProperties));
       menuBuilder.Add(new ToolStripSeparator());
 
       List<ToolStripItem> epMenus = new List<ToolStripItem>();
