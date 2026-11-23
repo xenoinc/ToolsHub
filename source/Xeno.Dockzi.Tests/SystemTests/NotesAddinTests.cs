@@ -17,6 +17,7 @@ using Xeno.Dockzi.Services.Addins;
 
 [TestClass]
 [DoNotParallelize]
+[OSCondition(OperatingSystems.Windows)]
 public class NotesAddinTests
 {
   [TestMethod]
@@ -58,8 +59,10 @@ public class NotesAddinTests
       {
         window.NoteText = "# Unsaved changes";
         var header = (System.Windows.Controls.Grid)((System.Windows.Controls.Grid)window.Content).Children[0];
+
         var button = header.Children.OfType<System.Windows.Controls.Button>().Single(button =>
           System.Windows.Automation.AutomationProperties.GetName(button) == "Delete note");
+
         button.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Button.ClickEvent));
 
         Assert.IsFalse(window.IsVisible);
@@ -189,7 +192,7 @@ public class NotesAddinTests
       string contents = File.ReadAllText(path);
 
       Assert.IsTrue(contents.StartsWith("!SaveDate: ", StringComparison.Ordinal));
-      Assert.AreEqual(1, System.Text.RegularExpressions.Regex.Matches(contents, "(?m)^!SaveDate:").Count);
+      Assert.HasCount(1, System.Text.RegularExpressions.Regex.Matches(contents, "(?m)^!SaveDate:"));
     });
   }
 
@@ -257,7 +260,7 @@ public class NotesAddinTests
       var list = (System.Windows.Forms.ListView)page.Controls.Find("SavedNotes", true).Single();
 
       Assert.AreEqual(3, list.Columns.Count);
-      Assert.IsTrue(list.Height >= 100, "Saved notes should remain usable at the host's preference-page size.");
+      Assert.IsGreaterThanOrEqualTo(100, list.Height, "Saved notes should remain usable at the host's preference-page size.");
       Assert.AreEqual(12, list.Items.Count);
 
       var note = (Note)list.Items[0].Tag;
@@ -277,7 +280,7 @@ public class NotesAddinTests
         window.NoteText = "# Renamed from the note window";
 
         Assert.IsTrue(window.SaveNote());
-        Assert.IsTrue(list.Items.Cast<System.Windows.Forms.ListViewItem>().Any(item => item.Text == "Renamed from the note window"));
+        Assert.Contains(item => item.Text == "Renamed from the note window", list.Items.Cast<System.Windows.Forms.ListViewItem>());
 
         window.BeginEdit();
         window.NoteText = "# Dirty draft";
@@ -286,8 +289,8 @@ public class NotesAddinTests
 
         Assert.IsFalse(window.IsVisible);
         Assert.AreEqual(11, list.Items.Count);
-        Assert.AreEqual(11, store.All().Count);
-        Assert.IsFalse(store.All().Any(saved => saved.Id == note.Id));
+        Assert.HasCount(11, store.All());
+        Assert.DoesNotContain(saved => saved.Id == note.Id, store.All());
       }
       finally
       {
@@ -312,7 +315,7 @@ public class NotesAddinTests
       File.WriteAllText(Path.Combine(store.DirectoryPath, "unrelated.md"), "leave me alone");
       var recent = store.Recent();
 
-      Assert.AreEqual(10, recent.Count);
+      Assert.HasCount(10, recent);
       Assert.AreEqual("Note 11", recent[0].Title);
       Assert.AreEqual("Note 2", recent[9].Title);
 
@@ -323,7 +326,7 @@ public class NotesAddinTests
 
       Assert.AreEqual(oldest.Id, store.Recent()[0].Id);
       Assert.AreEqual(12, Directory.GetFiles(store.DirectoryPath, "*.md").Length - 1);
-      Assert.AreEqual(0, Directory.GetFiles(store.DirectoryPath, "*.tmp").Length);
+      Assert.IsEmpty(Directory.GetFiles(store.DirectoryPath, "*.tmp"));
     });
   }
 
@@ -383,6 +386,7 @@ public class NotesAddinTests
       using var provider = new ServiceCollection().AddDockzi().BuildServiceProvider();
       using var manager = new NotesManager(store, provider.GetRequiredService<ISettingsService>(), provider.GetRequiredService<Lite.EventIpc.IEventAggregator>());
       using var menu = (System.Windows.Forms.ToolStripMenuItem)new SysTrayHandler(manager).MenuItems()[0];
+
       Assert.AreEqual("New note", menu.DropDownItems[0].Text);
       Assert.AreEqual(12, menu.DropDownItems.Count); // New, separator, ten notes.
       Assert.AreEqual("Note 11", menu.DropDownItems[2].Text);
@@ -410,6 +414,7 @@ public class NotesAddinTests
         window.BeginEdit();
 
         Assert.IsTrue(window.IsEditing);
+
         window.NoteText = "# Renamed\n\nUnsaved changes";
         Assert.AreEqual("Renamed", window.Title);
       }
@@ -445,8 +450,14 @@ public class NotesAddinTests
     Exception failure = null;
     var thread = new Thread(() =>
     {
-      try { action(); }
-      catch (Exception ex) { failure = ex; }
+      try
+      {
+        action();
+      }
+      catch (Exception ex)
+      {
+        failure = ex;
+      }
     });
 
     thread.SetApartmentState(ApartmentState.STA);
@@ -458,11 +469,12 @@ public class NotesAddinTests
   }
 
   private static void SetSavedDate(NoteStore store, Note note, DateTime savedUtc) =>
-      File.WriteAllText(Path.Combine(store.DirectoryPath, note.Id.ToString("N") + ".md"), NoteFile.Serialize(note with { SavedUtc = savedUtc }));
+    File.WriteAllText(Path.Combine(store.DirectoryPath, note.Id.ToString("N") + ".md"), NoteFile.Serialize(note with { SavedUtc = savedUtc }));
 
   private static void WithStore(Action<NoteStore> action)
   {
     string path = Path.Combine(Path.GetTempPath(), "DockziNotesTests-" + Guid.NewGuid().ToString("N"));
+
     try
     {
       action(new NoteStore(path));

@@ -17,6 +17,7 @@ using Xeno.Dockzi.SidebarAddin.Models;
 using Xeno.Dockzi.SidebarAddin.Services;
 using Xeno.Dockzi.SidebarAddin.ViewModels;
 using Xeno.Dockzi.SidebarAddin.Views;
+using Xeno.Dockzi.Tests.Helpers;
 
 [TestClass]
 [DoNotParallelize]
@@ -610,6 +611,7 @@ public class SidebarLauncherTests
   private sealed class FakeShell : ILauncherShell
   {
     public bool FailLaunch { get; set; }
+
     public DockLauncher Launched { get; private set; }
 
     public ImageSource GetIcon(string target) => null;

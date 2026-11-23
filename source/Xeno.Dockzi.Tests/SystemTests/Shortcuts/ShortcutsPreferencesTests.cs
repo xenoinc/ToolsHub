@@ -1,4 +1,4 @@
-﻿namespace Xeno.Dockzi.Tests.SystemTests.Shortcuts
+namespace Xeno.Dockzi.Tests.SystemTests.Shortcuts
 {
   using System;
   using System.Threading;
@@ -9,6 +9,7 @@
   using Xeno.Dockzi.LocalAddins.Shortcuts;
   using Xeno.Dockzi.LocalAddins.Shortcuts.Prefs;
   using Xeno.Dockzi.Managers;
+  using Xeno.Dockzi.Tests.Helpers;
 
   [TestClass]
   [DoNotParallelize]

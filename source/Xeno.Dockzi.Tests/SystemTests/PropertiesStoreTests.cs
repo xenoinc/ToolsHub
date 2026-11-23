@@ -1,4 +1,4 @@
-﻿/* Copyright Xeno Innovations, Inc. 2018
+/* Copyright Xeno Innovations, Inc. 2018
  * Date:    2018-12-26
  * Author:  Damian Suess
  * File:    PropertiesManagerTests.cs
@@ -19,7 +19,7 @@ namespace Xeno.Dockzi.Tests.SystemTests
   [TestClass]
   public class PropertiesStoreTests
   {
-    private SettingsManager _settings = new SettingsManager(Config.StorageMethod.UnitTest);
+    private SettingsManager _settings = new(Config.StorageMethod.UnitTest);
 
     [TestInitialize]
     public void TestInit()
@@ -53,8 +53,8 @@ namespace Xeno.Dockzi.Tests.SystemTests
       Assert.IsTrue(bag.Items.ContainsKey("key1"));
       Assert.IsTrue(bag.Items.ContainsKey("key2"));
 
-      Assert.AreEqual(bag.Items["key1"], "value1");
-      Assert.AreNotEqual(bag.Items["key2"], "value1");
+      Assert.AreEqual("value1", bag.Items["key1"]);
+      Assert.AreNotEqual("value1", bag.Items["key2"]);
     }
 
     [TestMethod]
@@ -94,10 +94,10 @@ namespace Xeno.Dockzi.Tests.SystemTests
 
       _settings.SaveFile();
       store.ClearAll();
-      Assert.AreEqual(store.PropertyBags.Count, 0);
+      Assert.IsEmpty(store.PropertyBags);
 
       _settings.LoadFile();
-      Assert.AreNotEqual(store.PropertyBags.Count, 0);
+      Assert.IsNotEmpty(store.PropertyBags);
 
       string json = JsonSerializer.Serialize(store.PropertyBags, JsonOptions.Indented);
       Log.Debug(json);

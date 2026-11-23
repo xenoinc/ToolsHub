@@ -1,4 +1,4 @@
-﻿/* Copyright Xeno Innovations, Inc. 2019
+/* Copyright Xeno Innovations, Inc. 2019
  * Date:    2019-4-9
  * Author:  Damian Suess
  * File:    ShortcutsTests.cs
@@ -12,6 +12,7 @@ namespace Xeno.Dockzi.Tests.SystemTests.Shortcuts
   using Xeno.Dockzi.LocalAddins.Shortcuts;
   using Xeno.Dockzi.Managers;
   using Xeno.Dockzi.Services.Logging;
+  using Xeno.Dockzi.Tests.Helpers;
 
   /// <summary>Shortcut Manager Unit Tests.</summary>
   [TestClass]
