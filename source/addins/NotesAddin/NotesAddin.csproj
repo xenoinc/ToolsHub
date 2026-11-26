@@ -8,6 +8,7 @@
     <OutputPath>..\..\..\output\</OutputPath>
     <Authors>Damian Suess</Authors>
   </PropertyGroup>
+  
   <ItemGroup>
     <ProjectReference Include="..\..\Xeno.Dockzi\Xeno.Dockzi.csproj" Private="false" />
     <PackageReference Include="Mono.Addins" />

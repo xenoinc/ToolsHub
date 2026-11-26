@@ -2,6 +2,8 @@
 
 Notes is a bundled Dockzi add-in. Build either `source/Dockzi.slnx` or `source/Dockzi.sln`, then enable **Notes** in the Add-Ins manager.
 
+Addins metadata is declared in `source/addins/NotesAddin/AddinAssembly.cs`.
+
 - Create a sticky note from **Notes > New note** in the system tray, or press **Ctrl+Alt+N** anywhere in Windows.
 - New notes start with numbered titles such as **Note 1**, **Note 2**, and **Note 3**. The next number follows the highest numbered title among saved notes and open drafts.
 - Change or disable the global shortcut in **Preferences > Notes**. An optional Windows modifier is available. A conflicting shortcut reports an error; the tray command remains available.
