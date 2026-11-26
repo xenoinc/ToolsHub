@@ -79,12 +79,16 @@
     public bool TrySave(out string error)
     {
       error = null;
-      if (!_enableAutoStart.Enabled || _enableAutoStart.Checked == _originalAutoStart)
+      if (!_enableAutoStart.Enabled)
         return true;
 
       try
       {
-        _autoStart.SetEnabled(_enableAutoStart.Checked);
+        if (_enableAutoStart.Checked != _originalAutoStart)
+          _autoStart.SetEnabled(_enableAutoStart.Checked);
+        else if (_enableAutoStart.Checked)
+          _autoStart.RepairRegistration();
+
         _originalAutoStart = _enableAutoStart.Checked;
         return true;
       }
