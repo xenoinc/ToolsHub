@@ -76,7 +76,21 @@ namespace Xeno.Dockzi
         // Compatibility bridge for add-ins that have not migrated to constructor injection yet.
         Settings = services.GetRequiredService<Managers.SettingsManager>();
         AppEvents.Instance = services.GetRequiredService<IEventAggregator>();
-        services.GetRequiredService<IAutoStartService>();
+        var autoStart = services.GetRequiredService<IAutoStartService>();
+
+        // Repair stale paths on manual launches, not while Windows processes its Run entries.
+        if (!args.Contains("--auto-start", StringComparer.OrdinalIgnoreCase))
+        {
+          try
+          {
+            autoStart.RepairRegistration();
+          }
+          catch (Exception ex) when (ex is UnauthorizedAccessException || ex is System.IO.IOException || ex is System.Security.SecurityException)
+          {
+            Log.Warn($"Unable to repair Windows startup registration: {ex.Message}");
+          }
+        }
+
         updates = services.GetRequiredService<ApplicationUpdates>();
         Application.Run(services.GetRequiredService<MainHandler>());
       }

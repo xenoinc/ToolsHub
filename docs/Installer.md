@@ -69,3 +69,5 @@ For production, sign the application and installer using your certificate/signin
 `SignTemplate` is forwarded to Velopack. Keep certificate credentials in your signing service or CI secret storage. Without it, the generated installer is unsigned. SHA-256 checksum files help verify transfer integrity; they do not authenticate a publisher by themselves.
 
 References: [Velopack .NET integration](https://docs.velopack.io/getting-started/csharp), [Windows installation layout](https://docs.velopack.io/packaging/operating-systems/windows).
+
+The General setting **Enable Auto-Start with OS** registers a quoted launcher path with `--auto-start` in the current user's `HKCU\Software\Microsoft\Windows\CurrentVersion\Run` key, under the value `Dockzi`. Windows runs it when that user signs in. Manual launches and saving the enabled setting repair a registration whose old Dockzi executable has been removed. Repair preserves disabled settings, custom commands, and registrations pointing to another existing installation.
