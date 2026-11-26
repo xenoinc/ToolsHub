@@ -36,12 +36,14 @@ public class NotesAddinTests
   }
 
   [TestMethod]
-  public void DeleteButtonRemovesDirtyNoteWithoutSavingItAgain()
+  public void DeleteMenuConfirmsBeforeRemovingDirtyNoteWithoutSavingItAgain()
   {
     RunSta(() => WithStore(store =>
     {
       var note = store.Save(Guid.NewGuid(), "# Delete me");
       int saves = 0;
+      int confirmations = 0;
+      bool confirmed = false;
 
       var window = new NoteWindow(
         note,
@@ -51,7 +53,8 @@ public class NotesAddinTests
           return store.Save(note.Id, saveText);
         },
         edit: true,
-        delete: () => store.Delete(note.Id));
+        delete: () => store.Delete(note.Id),
+        confirmDelete: () => { confirmations++; return confirmed; });
 
       window.Show();
 
@@ -61,11 +64,29 @@ public class NotesAddinTests
         var header = (System.Windows.Controls.Grid)((System.Windows.Controls.Grid)window.Content).Children[0];
 
         var button = header.Children.OfType<System.Windows.Controls.Button>().Single(button =>
-          System.Windows.Automation.AutomationProperties.GetName(button) == "Delete note");
+          System.Windows.Automation.AutomationProperties.GetName(button) == "Note options");
+
+        Assert.AreEqual(3, System.Windows.Controls.Grid.GetColumn(button));
+        Assert.IsFalse(header.Children.OfType<System.Windows.Controls.Button>().Any(item =>
+          System.Windows.Automation.AutomationProperties.GetName(item) == "Delete note"));
 
         button.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Button.ClickEvent));
+        Assert.IsTrue(button.ContextMenu.IsOpen);
+        var delete = (System.Windows.Controls.MenuItem)button.ContextMenu.Items[0];
+        Assert.AreEqual("Delete", delete.Header);
+        Assert.IsNotNull(delete.Icon);
+        delete.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.MenuItem.ClickEvent));
+        Assert.AreEqual(1, confirmations);
+        Assert.IsTrue(window.IsVisible);
+        Assert.IsTrue(window.IsEditing);
+        Assert.AreEqual("# Unsaved changes", window.NoteText);
+        Assert.AreEqual(1, store.All().Count);
+
+        confirmed = true;
+        delete.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.MenuItem.ClickEvent));
 
         Assert.IsFalse(window.IsVisible);
+        Assert.AreEqual(2, confirmations);
         Assert.AreEqual(0, saves);
         Assert.IsEmpty(store.All());
       }
@@ -254,7 +275,8 @@ public class NotesAddinTests
 
       using var provider = new ServiceCollection().AddDockzi().BuildServiceProvider();
       using var manager = new NotesManager(store, provider.GetRequiredService<ISettingsService>(), provider.GetRequiredService<Lite.EventIpc.IEventAggregator>());
-      using var page = new Xeno.Dockzi.NotesAddin.PreferencesPage(manager) { ClientSize = new System.Drawing.Size(463, 380) };
+      bool confirmed = false;
+      using var page = new Xeno.Dockzi.NotesAddin.PreferencesPage(manager, () => confirmed) { ClientSize = new System.Drawing.Size(463, 380) };
 
       page.Show();
       var list = (System.Windows.Forms.ListView)page.Controls.Find("SavedNotes", true).Single();
@@ -285,6 +307,10 @@ public class NotesAddinTests
         window.BeginEdit();
         window.NoteText = "# Dirty draft";
         var row = list.Items.Cast<System.Windows.Forms.ListViewItem>().Single(item => ((Note)item.Tag).Id == note.Id);
+        RaiseMouseEvent(list, "OnMouseClick", row.SubItems[2].Bounds);
+        Assert.IsTrue(window.IsVisible);
+        Assert.AreEqual(12, list.Items.Count);
+        confirmed = true;
         RaiseMouseEvent(list, "OnMouseClick", row.SubItems[2].Bounds);
 
         Assert.IsFalse(window.IsVisible);
@@ -429,6 +455,63 @@ public class NotesAddinTests
       reopened.Close();
     }));
   }
+
+  [TestMethod]
+  public void NewNotesStartAtOneAndReserveNumbersForOpenDraftsAndTheirRestorableTitles()
+  {
+    RunSta(() => WithStore(store =>
+    {
+      using var provider = new ServiceCollection().AddDockzi().BuildServiceProvider();
+      using var manager = new NotesManager(store, provider.GetRequiredService<ISettingsService>(), provider.GetRequiredService<Lite.EventIpc.IEventAggregator>());
+      try
+      {
+        manager.NewNote();
+        var first = OpenNotes().Single();
+        Assert.AreEqual("Note 1", first.Title);
+        Assert.AreEqual("# Note 1\n\n", first.NoteText);
+        first.NoteText = "# Renamed unsaved draft";
+        manager.NewNote();
+        Assert.IsTrue(OpenNotes().Any(window => window.Title == "Note 2"));
+        PressEscape(first);
+        Assert.AreEqual("Note 1", first.Title);
+        Assert.IsEmpty(store.All());
+      }
+      finally
+      {
+        foreach (var window in OpenNotes()) window.CloseWithoutSaving();
+      }
+    }));
+  }
+
+  [TestMethod]
+  public void NewNoteNumbersUseAllSavedNotesAndSkipGaps()
+  {
+    RunSta(() => WithStore(store =>
+    {
+      var highest = store.Save(Guid.NewGuid(), "# Note 27");
+      SetSavedDate(store, highest, new DateTime(2020, 1, 1, 0, 0, 0, DateTimeKind.Utc));
+      store.Save(Guid.NewGuid(), "# note 3");
+      for (int i = 0; i < 12; i++) store.Save(Guid.NewGuid(), "# Other note " + i);
+      using var provider = new ServiceCollection().AddDockzi().BuildServiceProvider();
+      using var manager = new NotesManager(store, provider.GetRequiredService<ISettingsService>(), provider.GetRequiredService<Lite.EventIpc.IEventAggregator>());
+      try
+      {
+        manager.NewNote();
+        Assert.AreEqual("Note 28", OpenNotes().Single().Title);
+        Assert.IsTrue(OpenNotes().Single().SaveNote());
+        OpenNotes().Single().Close();
+        manager.NewNote();
+        Assert.AreEqual("Note 29", OpenNotes().Single().Title);
+      }
+      finally
+      {
+        foreach (var window in OpenNotes()) window.CloseWithoutSaving();
+      }
+    }));
+  }
+
+  private static NoteWindow[] OpenNotes() => PresentationSource.CurrentSources.OfType<System.Windows.Interop.HwndSource>()
+    .Select(source => source.RootVisual).OfType<NoteWindow>().Where(window => window.IsVisible).ToArray();
 
   private static void PressEscape(NoteWindow window)
   {
