@@ -40,7 +40,7 @@ namespace Xeno.Dockzi.Tests.SystemTests.Shortcuts
       _settings.Clear();
       ShortcutItems items = _settings.GetObject<ShortcutItems>("RandomCrap", "InvalidKey");
 
-      Assert.AreEqual(items, null);
+      Assert.IsNull(items);
     }
 
     [TestMethod]
@@ -56,7 +56,7 @@ namespace Xeno.Dockzi.Tests.SystemTests.Shortcuts
       _settings.SetValue(TestProperty, TestKey1, TestValue1);
       string ret = _settings.GetValue(TestProperty, TestKey1, string.Empty);
 
-      Assert.AreEqual(ret, TestValue1);
+      Assert.AreEqual(TestValue1, ret);
 
       // Clean the slate and re-load
       _settings.SaveFile();
@@ -90,7 +90,7 @@ namespace Xeno.Dockzi.Tests.SystemTests.Shortcuts
       Log.Debug(_settings.ToString);
 
       Assert.IsNotNull(items2, "Failed to get test Shortcut Items");
-      Assert.AreEqual(items2.Count, 6, "Missing ShortcutItems");
+      Assert.AreEqual(6, items2.Count, "Missing ShortcutItems");
     }
   }
 }

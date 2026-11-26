@@ -1,4 +1,4 @@
-﻿/* Copyright Xeno Innovations, Inc. 2019
+/* Copyright Xeno Innovations, Inc. 2019
  * Date:    2019-4-9
  * Author:  Damian Suess
  * File:    PreferencesPage.cs
@@ -44,7 +44,7 @@ public partial class PreferencesPage : Form, IPreferencePageActions
     };
     ComboScreenOrientaiton.SelectedIndexChanged += MarkModified;
     UpDownScreenNumber.ValueChanged += MarkModified;
-    Opacity.ValueChanged += MarkModified;
+    OpacitySlider.ValueChanged += MarkModified;
     ChkShowOnStart.CheckedChanged += MarkModified;
     ChkOnTop.CheckedChanged += MarkModified;
     ChkAutoHide.CheckedChanged += MarkModified;
@@ -62,7 +62,7 @@ public partial class PreferencesPage : Form, IPreferencePageActions
 
   public bool OnSave()
   {
-    _settings.SetValue(Constants.AddinId, Constants.KeyOpacity, Opacity.Value);
+    _settings.SetValue(Constants.AddinId, Constants.KeyOpacity, OpacitySlider.Value);
     _settings.SetValue(Constants.AddinId, Constants.KeyScreenArea, ComboScreenArea.SelectedIndex);
     _settings.SetValue(Constants.AddinId, Constants.KeyScreenOrientation, ComboScreenArea.SelectedIndex >= 3 ? 1 : 0);
     _settings.SetValue(Constants.AddinId, Constants.KeyScreenNumber, (int)UpDownScreenNumber.Value);
@@ -80,7 +80,7 @@ public partial class PreferencesPage : Form, IPreferencePageActions
     ComboScreenArea.SelectedIndex = Math.Clamp(_manager.SettingScreenArea, 0, ComboScreenArea.Items.Count - 1);
     ComboScreenOrientaiton.SelectedIndex = ComboScreenArea.SelectedIndex >= 3 ? 1 : 0;
     UpDownScreenNumber.Value = Math.Clamp(_manager.SettingScreenNumber, UpDownScreenNumber.Minimum, UpDownScreenNumber.Maximum);
-    Opacity.Value = Math.Clamp(_manager.SettingOpacity, Opacity.Minimum, Opacity.Maximum);
+    OpacitySlider.Value = Math.Clamp(_manager.SettingOpacity, OpacitySlider.Minimum, OpacitySlider.Maximum);
     ChkAutoHide.Checked = _settings.GetBool(Constants.AddinId, "AutoHide", true);
     ChkOnTop.Checked = _settings.GetBool(Constants.AddinId, "OnTop", true);
     ChkShowOnStart.Checked = _manager.SettingsShowSidebar;
@@ -90,8 +90,12 @@ public partial class PreferencesPage : Form, IPreferencePageActions
   {
     IsModified = true;
     _previewed = true;
-    _manager.PreviewSettings(new SidebarAppearance(ComboScreenArea.SelectedIndex,
-      (int)UpDownScreenNumber.Value, Opacity.Value, ChkOnTop.Checked, ChkAutoHide.Checked));
+    _manager.PreviewSettings(new SidebarAppearance(
+      ComboScreenArea.SelectedIndex,
+      (int)UpDownScreenNumber.Value,
+      OpacitySlider.Value,
+      ChkOnTop.Checked,
+      ChkAutoHide.Checked));
   }
 
   private void PreferencesPage_Load(object sender, EventArgs e)

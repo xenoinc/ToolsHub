@@ -9,8 +9,8 @@
 namespace Xeno.Dockzi.PomodoroAddin.Handlers
 {
   using System.Windows.Forms;
-  using Xeno.Dockzi.PomodoroAddin.Views;
   using Xeno.Dockzi.ExtensionModel;
+  using Xeno.Dockzi.PomodoroAddin.Views;
 
   [Mono.Addins.Extension(
     NodeName = ExtensionName.PreferencePageAddin,
@@ -30,7 +30,10 @@ namespace Xeno.Dockzi.PomodoroAddin.Handlers
 
     public Form Page => _page;
 
-    public string Title { get { return "Pomodoro"; } }
+    public string Title
+    {
+      get { return "Pomodoro"; }
+    }
 
     public void InitializePage()
     {

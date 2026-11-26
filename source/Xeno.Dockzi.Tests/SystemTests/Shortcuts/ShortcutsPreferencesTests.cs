@@ -1,9 +1,9 @@
 namespace Xeno.Dockzi.Tests.SystemTests.Shortcuts
 {
   using System;
+  using System.Text.Json;
   using System.Threading;
   using System.Windows.Forms;
-  using System.Text.Json;
   using Microsoft.VisualStudio.TestTools.UnitTesting;
   using Xeno.Dockzi.Config;
   using Xeno.Dockzi.LocalAddins.Shortcuts;

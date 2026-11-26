@@ -14,8 +14,8 @@ namespace Xeno.Dockzi.Views
   using System.Windows.Forms;
   using Xeno.Dockzi.ExtensionModel;
   using Xeno.Dockzi.Managers;
-  using Xeno.Dockzi.Services.Logging;
   using Xeno.Dockzi.Services.Addins;
+  using Xeno.Dockzi.Services.Logging;
 
   /// <summary>Preferences Window main form.</summary>
   public partial class PreferencesForm : Form

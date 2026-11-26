@@ -264,18 +264,6 @@ public partial class ShortcutsPreferences : Form, IPreferencePageActions
     return shortcuts;
   }
 
-  /// <summary>Create ListView row from ShortcutItems object</summary>
-  /// <param name="shortcutItems">ShortcutItems object.</param>
-  /// <returns>Collection of ListView data.</returns>
-  private ListViewItemCollection ToListViewItemArray(ShortcutItems shortcutItems)
-  {
-    throw new NotImplementedException();
-
-    ListViewItemCollection items = new ListViewItemCollection(LvShortcuts);
-    //// ListViewItem[] items = new ListViewItem[shortcutItems.Count];
-    return items;
-  }
-
   /// <summary>Validate ListView for invalid user inputs.</summary>
   /// <returns>True if passing.</returns>
   private bool ValidateListViewShortcuts(out ShortcutItems shortcuts)

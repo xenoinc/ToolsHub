@@ -31,7 +31,8 @@ public sealed class ApplicationUpdates
 
   public async Task CheckAndInstallAsync()
   {
-    if (_busy || !IsConfigured) return;
+    if (_busy || !IsConfigured)
+      return;
     _busy = true;
     try
     {

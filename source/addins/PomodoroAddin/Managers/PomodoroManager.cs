@@ -8,14 +8,14 @@
 
 using System;
 using Lite.EventIpc;
-using Xeno.Dockzi.PomodoroAddin.Domain;
 using Xeno.Dockzi.ExtensionModel.SystemTray;
+using Xeno.Dockzi.PomodoroAddin.Domain;
 using Xeno.Dockzi.Services;
 using Xeno.Dockzi.Services.Logging;
 
 namespace Xeno.Dockzi.PomodoroAddin.Managers
 {
-  public class PomodoroManager : IDisposable
+  public sealed class PomodoroManager : IDisposable
   {
     private readonly ISettingsService _settings;
     private readonly IEventAggregator _events;
@@ -130,7 +130,6 @@ namespace Xeno.Dockzi.PomodoroAddin.Managers
       Log.Warn("Method currently not in use.");
 
       // TODO: Create infrastructure to inform MenuItems which ones to enable/disable/change-text
-      //
       _events.Publish(new SystemTrayUpdateRequest(itemInfo));
     }
 
@@ -194,8 +193,8 @@ namespace Xeno.Dockzi.PomodoroAddin.Managers
           case TimerState.Done:
             Log.Debug($"Timer stopped");
             _timer.Stop();
-            // _running = false;
 
+            // _running = false;
             UpdateTrayIcon();
             break;
         }
@@ -212,7 +211,6 @@ namespace Xeno.Dockzi.PomodoroAddin.Managers
       // TODO:
       //  [ ] Flash on screen
       //  [ ] System Tray Bubble
-
       Log.Debug($"Alert user we're at state: {state}!!");
       Log.Warn("Notify state change feature is currently not available!");
 
@@ -234,7 +232,8 @@ namespace Xeno.Dockzi.PomodoroAddin.Managers
       else
       {
         IconGenerator icon = new IconGenerator(number.ToString());
-        this.SendMessageTrayIcon(icon.ToIcon());
+        using var trayIcon = icon.ToIcon();
+        this.SendMessageTrayIcon(trayIcon);
       }
     }
 
@@ -289,6 +288,7 @@ namespace Xeno.Dockzi.PomodoroAddin.Managers
       SendMessageTrayData(new TrayItemInfo(Constants.AddinId, "Start", $"Start ({SettingTimerDuration}", string.Empty, start));
       SendMessageTrayData(new TrayItemInfo(Constants.AddinId, "BreakShort", $"Take short break ({SettingTimerShortBreak} min)", string.Empty, breakShort));
       SendMessageTrayData(new TrayItemInfo(Constants.AddinId, "BreakLong", $"Take long break ({SettingTimerLongBreak} min)", string.Empty, breakLong));
+
       // SendmessageTrayUpdate(new TrayItemInfo(Constants.AddinId, "Pause", $"Pause", string.Empty, pause));
       SendMessageTrayData(new TrayItemInfo(Constants.AddinId, "Stop", $"Stop", string.Empty, stop));
     }
@@ -315,6 +315,7 @@ namespace Xeno.Dockzi.PomodoroAddin.Managers
           // We're done!
           ChangeTimerState(TimerState.Done);
           UpdateMenuItems(TimerState.Done);
+
           // NotifyStateChanged(TimerState.Done);
 
           // TODO: Update stats for successful pomodoro here

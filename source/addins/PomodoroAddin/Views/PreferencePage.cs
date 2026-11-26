@@ -1,4 +1,4 @@
-﻿/* Copyright Xeno Innovations, Inc. 2018
+/* Copyright Xeno Innovations, Inc. 2018
  * Date:    2018-12-31
  * Author:  Damian Suess
  * File:    PreferencePage.cs
@@ -9,9 +9,9 @@
 using System;
 using System.ComponentModel;
 using System.Windows.Forms;
+using Xeno.Dockzi.ExtensionModel;
 using Xeno.Dockzi.PomodoroAddin.Domain;
 using Xeno.Dockzi.PomodoroAddin.Managers;
-using Xeno.Dockzi.ExtensionModel;
 using Xeno.Dockzi.Services;
 
 namespace Xeno.Dockzi.PomodoroAddin.Views
@@ -69,7 +69,6 @@ namespace Xeno.Dockzi.PomodoroAddin.Views
     private void TextBox_KeyPress(object sender, KeyPressEventArgs e)
     {
       // Currently, NO decimals places
-
       if (!IsValidateNumber(e.KeyChar))
       {
         e.Handled = true;
@@ -105,14 +104,16 @@ namespace Xeno.Dockzi.PomodoroAddin.Views
       IconGenerator[] nIcon;
       nIcon = new IconGenerator[5];
 
-      _manager.SendMessageTrayIcon(icon.ToIcon());
+      using var initialIcon = icon.ToIcon();
+      _manager.SendMessageTrayIcon(initialIcon);
       Xeno.Dockzi.Config.Helpers.Timeout(700);
 
       for (int i = 1; i <= 5; i++)
       {
         nIcon[i - 1] = new IconGenerator(i.ToString());
 
-        _manager.SendMessageTrayIcon(nIcon[i - 1].ToIcon());
+        using var numberedIcon = nIcon[i - 1].ToIcon();
+        _manager.SendMessageTrayIcon(numberedIcon);
         Xeno.Dockzi.Config.Helpers.Timeout(500);
       }
 

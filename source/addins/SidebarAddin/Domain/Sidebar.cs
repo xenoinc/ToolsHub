@@ -59,9 +59,6 @@ namespace Xeno.Dockzi.SidebarAddin.Domain
 
     public string TintColor { get; set; } = string.Empty;
 
-    [DllImport("user32")]
-    private static extern bool AnimateWindow(IntPtr hwnd, int time, AnimateWindowFlags flags);
-
     private static string ColorToHex(Color c)
     {
       // return $"#{c.R:X2}{c.G:X2}{c.B:X2}";

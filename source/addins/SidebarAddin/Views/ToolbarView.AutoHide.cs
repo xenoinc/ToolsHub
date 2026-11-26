@@ -32,20 +32,6 @@ public partial class ToolbarView
     PositionDock();
   }
 
-  [DllImport("user32.dll")]
-  [return: MarshalAs(UnmanagedType.Bool)]
-  private static extern bool GetCursorPos(out NativePoint point);
-
-  [DllImport("gdi32.dll")]
-  private static extern IntPtr CreateRectRgn(int left, int top, int right, int bottom);
-
-  [DllImport("user32.dll")]
-  private static extern int SetWindowRgn(IntPtr window, IntPtr region, [MarshalAs(UnmanagedType.Bool)] bool redraw);
-
-  [DllImport("gdi32.dll")]
-  [return: MarshalAs(UnmanagedType.Bool)]
-  private static extern bool DeleteObject(IntPtr value);
-
   private void InitializeDockBehavior()
   {
     DockSurface.RenderTransform = _slide;
@@ -74,7 +60,7 @@ public partial class ToolbarView
     var size = new Size(ActualWidth, ActualHeight);
     var visible = DockAutoHide.VisibleArea(size, _model.ScreenArea, _autoHide.Progress);
     bool hovered = false;
-    if (GetCursorPos(out var cursor))
+    if (NativeMethods.GetCursorPos(out var cursor))
     {
       var point = new Point((cursor.X - _nativeBounds.X) * ActualWidth / _nativeBounds.Width,
         (cursor.Y - _nativeBounds.Y) * ActualHeight / _nativeBounds.Height);
@@ -105,20 +91,22 @@ public partial class ToolbarView
     var visible = DockAutoHide.VisibleArea(size, _model.ScreenArea, _autoHide.Progress);
     double scaleX = _nativeBounds.Width / ActualWidth;
     double scaleY = _nativeBounds.Height / ActualHeight;
-    var region = new Rect(Math.Floor(visible.X * scaleX), Math.Floor(visible.Y * scaleY),
+    var region = new Rect(
+      Math.Floor(visible.X * scaleX),
+      Math.Floor(visible.Y * scaleY),
       Math.Ceiling(visible.Right * scaleX) - Math.Floor(visible.X * scaleX),
       Math.Ceiling(visible.Bottom * scaleY) - Math.Floor(visible.Y * scaleY));
 
     if (region == _lastRegion)
       return;
 
-    IntPtr nativeRegion = CreateRectRgn((int)region.Left, (int)region.Top, (int)region.Right, (int)region.Bottom);
+    IntPtr nativeRegion = NativeMethods.CreateRectRgn((int)region.Left, (int)region.Top, (int)region.Right, (int)region.Bottom);
 
     if (nativeRegion == IntPtr.Zero)
       return;
 
-    if (SetWindowRgn(new System.Windows.Interop.WindowInteropHelper(this).Handle, nativeRegion, true) == 0)
-      DeleteObject(nativeRegion);
+    if (NativeMethods.SetWindowRgn(new System.Windows.Interop.WindowInteropHelper(this).Handle, nativeRegion, true) == 0)
+      NativeMethods.DeleteObject(nativeRegion);
     else
       _lastRegion = region;
   }
@@ -137,5 +125,26 @@ public partial class ToolbarView
     public int X;
 
     public int Y;
+  }
+
+  private static class NativeMethods
+  {
+    [DllImport("user32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool SetWindowPos(IntPtr window, IntPtr insertAfter, int x, int y, int width, int height, uint flags);
+
+    [DllImport("user32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool GetCursorPos(out NativePoint point);
+
+    [DllImport("gdi32.dll")]
+    public static extern IntPtr CreateRectRgn(int left, int top, int right, int bottom);
+
+    [DllImport("user32.dll")]
+    public static extern int SetWindowRgn(IntPtr window, IntPtr region, [MarshalAs(UnmanagedType.Bool)] bool redraw);
+
+    [DllImport("gdi32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool DeleteObject(IntPtr value);
   }
 }

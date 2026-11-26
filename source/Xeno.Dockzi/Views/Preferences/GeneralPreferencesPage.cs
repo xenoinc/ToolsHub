@@ -11,7 +11,9 @@
   public sealed class GeneralPreferencesPage : UserControl
   {
     private readonly IAutoStartService _autoStart;
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2213:Disposable fields should be disposed", Justification = "Owned by the form control tree and disposed by Form.Dispose.")]
     private readonly CheckBox _enableAutoStart;
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2213:Disposable fields should be disposed", Justification = "Owned by the form control tree and disposed by Form.Dispose.")]
     private readonly Label _status;
     private bool _originalAutoStart;
 

@@ -23,8 +23,11 @@ public sealed class LauncherDropHandler
   public DragDropEffects GetEffect(IDataObject data, DragDropEffects allowedEffects)
   {
     if (data.GetDataPresent(ItemDragFormat))
+    {
       return data.GetData(ItemDragFormat) is LauncherIcon item && _model.Items.Contains(item)
         ? allowedEffects & DragDropEffects.Move : DragDropEffects.None;
+    }
+
     if (GetPaths(data).Length == 0)
       return DragDropEffects.None;
     if ((allowedEffects & DragDropEffects.Copy) != 0)

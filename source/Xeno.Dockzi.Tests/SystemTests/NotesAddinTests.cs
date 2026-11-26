@@ -54,7 +54,11 @@ public class NotesAddinTests
         },
         edit: true,
         delete: () => store.Delete(note.Id),
-        confirmDelete: () => { confirmations++; return confirmed; });
+        confirmDelete: () =>
+        {
+          confirmations++;
+          return confirmed;
+        });
 
       window.Show();
 
@@ -299,7 +303,8 @@ public class NotesAddinTests
       }
       finally
       {
-        foreach (var window in OpenNotes()) window.CloseWithoutSaving();
+        foreach (var window in OpenNotes())
+          window.CloseWithoutSaving();
       }
     }));
   }
@@ -332,7 +337,8 @@ public class NotesAddinTests
       }
       finally
       {
-        foreach (var window in OpenNotes()) window.CloseWithoutSaving();
+        foreach (var window in OpenNotes())
+          window.CloseWithoutSaving();
       }
     }));
   }
@@ -550,7 +556,7 @@ public class NotesAddinTests
 
   private static void RaiseMouseEvent(System.Windows.Forms.Control control, string name, System.Drawing.Rectangle bounds) =>
     typeof(System.Windows.Forms.Control).GetMethod(name, System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)
-    .Invoke(control, new object[] { new System.Windows.Forms.MouseEventArgs(System.Windows.Forms.MouseButtons.Left, name == "OnMouseDoubleClick" ? 2 : 1, bounds.Left + 8, bounds.Top + bounds.Height / 2, 0) });
+    .Invoke(control, new object[] { new System.Windows.Forms.MouseEventArgs(System.Windows.Forms.MouseButtons.Left, name == "OnMouseDoubleClick" ? 2 : 1, bounds.Left + 8, bounds.Top + (bounds.Height / 2), 0) });
 
   private static void RunSta(Action action)
   {

@@ -39,11 +39,11 @@ namespace Xeno.Dockzi.Views
         NativeMethods.AW_ACTIVATE | (_useSlideAnimation ? NativeMethods.AW_HOR_POSITIVE | NativeMethods.AW_SLIDE : NativeMethods.AW_BLEND));
     }
 
-    /// <summary>Raises the <see cref="E:System.Windows.Forms.Form.Closing"/> event.</summary>
-    /// <param name="e">A <see cref="T:System.ComponentModel.CancelEventArgs"/> that contains the event data.</param>
-    protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+    /// <summary>Raises the <see cref="E:System.Windows.Forms.Form.FormClosing"/> event.</summary>
+    /// <param name="e">A <see cref="T:System.Windows.Forms.FormClosingEventArgs"/> that contains the event data.</param>
+    protected override void OnFormClosing(System.Windows.Forms.FormClosingEventArgs e)
     {
-      base.OnClosing(e);
+      base.OnFormClosing(e);
       if (e.Cancel == false)
       {
         NativeMethods.AnimateWindow(

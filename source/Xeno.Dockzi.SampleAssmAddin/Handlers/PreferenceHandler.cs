@@ -15,7 +15,7 @@ namespace Xeno.Dockzi.SampleAssmAddin.Handlers
   [Mono.Addins.Extension(
     NodeName = ExtensionName.PreferencePageAddin,
     Path = ExtensionPath.PreferencePage)]
-  public class PreferenceHandler : IPreferencePageExtension
+  public sealed class PreferenceHandler : IPreferencePageExtension, System.IDisposable
   {
     private PreferencesPage _page;
 
@@ -27,8 +27,11 @@ namespace Xeno.Dockzi.SampleAssmAddin.Handlers
 
     public bool IsModified => _page.IsModified;
 
+    public void Dispose() => _page?.Dispose();
+
     public void InitializePage()
     {
+      _page?.Dispose();
       _page = new PreferencesPage();
     }
 

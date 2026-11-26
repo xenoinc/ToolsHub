@@ -20,34 +20,36 @@ public sealed class WindowsRunningApplications : IRunningApplications
   {
     var paths = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
     var processes = new HashSet<uint>();
-    EnumWindows((window, _) =>
-    {
-      if (!IsWindowVisible(window))
+    NativeMethods.EnumWindows(
+      (window, _) =>
+      {
+        if (!NativeMethods.IsWindowVisible(window))
+          return true;
+
+        NativeMethods.DwmGetWindowAttribute(window, 14, out int cloaked, sizeof(int));
+
+        if (cloaked != 0)
+          return true;
+
+        NativeMethods.GetWindowThreadProcessId(window, out uint processId);
+
+        if (!processes.Add(processId))
+          return true;
+
+        using var process = NativeMethods.OpenProcess(0x1000, false, processId);
+
+        if (process.IsInvalid)
+          return true;
+
+        var path = new StringBuilder(32768);
+        int length = path.Capacity;
+
+        if (NativeMethods.QueryFullProcessImageName(process, 0, path, ref length))
+          paths.Add(path.ToString());
+
         return true;
-
-      DwmGetWindowAttribute(window, 14, out int cloaked, sizeof(int));
-
-      if (cloaked != 0)
-        return true;
-
-      GetWindowThreadProcessId(window, out uint processId);
-
-      if (!processes.Add(processId))
-        return true;
-
-      using var process = OpenProcess(0x1000, false, processId);
-
-      if (process.IsInvalid)
-        return true;
-
-      var path = new StringBuilder(32768);
-      int length = path.Capacity;
-
-      if (QueryFullProcessImageName(process, 0, path, ref length))
-        paths.Add(path.ToString());
-
-      return true;
-    }, IntPtr.Zero);
+      },
+      IntPtr.Zero);
     return paths;
   }
 
@@ -73,27 +75,6 @@ public sealed class WindowsRunningApplications : IRunningApplications
       ? Path.GetFullPath(target) : null;
   }
 
-  [DllImport("dwmapi.dll")]
-  private static extern int DwmGetWindowAttribute(IntPtr window, int attribute, out int value, int size);
-
-  [DllImport("user32.dll")]
-  [return: MarshalAs(UnmanagedType.Bool)]
-  private static extern bool EnumWindows(EnumWindowCallback callback, IntPtr parameter);
-
-  [DllImport("user32.dll")]
-  private static extern uint GetWindowThreadProcessId(IntPtr window, out uint processId);
-
-  [DllImport("user32.dll")]
-  [return: MarshalAs(UnmanagedType.Bool)]
-  private static extern bool IsWindowVisible(IntPtr window);
-
-  [DllImport("kernel32.dll")]
-  private static extern SafeProcessHandle OpenProcess(uint access, [MarshalAs(UnmanagedType.Bool)] bool inherit, uint processId);
-
-  [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
-  [return: MarshalAs(UnmanagedType.Bool)]
-  private static extern bool QueryFullProcessImageName(SafeProcessHandle process, uint flags, StringBuilder name, ref int size);
-
   private static string ResolveLink(string target)
   {
     object link = null;
@@ -118,5 +99,29 @@ public sealed class WindowsRunningApplications : IRunningApplications
       if (link != null)
         Marshal.FinalReleaseComObject(link);
     }
+  }
+
+  private static class NativeMethods
+  {
+    [DllImport("dwmapi.dll")]
+    public static extern int DwmGetWindowAttribute(IntPtr window, int attribute, out int value, int size);
+
+    [DllImport("user32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool EnumWindows(EnumWindowCallback callback, IntPtr parameter);
+
+    [DllImport("user32.dll")]
+    public static extern uint GetWindowThreadProcessId(IntPtr window, out uint processId);
+
+    [DllImport("user32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool IsWindowVisible(IntPtr window);
+
+    [DllImport("kernel32.dll")]
+    public static extern SafeProcessHandle OpenProcess(uint access, [MarshalAs(UnmanagedType.Bool)] bool inherit, uint processId);
+
+    [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool QueryFullProcessImageName(SafeProcessHandle process, uint flags, StringBuilder name, ref int size);
   }
 }
