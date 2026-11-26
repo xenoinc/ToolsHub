@@ -71,16 +71,21 @@ public class NotesAddinTests
           System.Windows.Automation.AutomationProperties.GetName(item) == "Delete note"));
 
         button.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Button.ClickEvent));
+
         Assert.IsTrue(button.ContextMenu.IsOpen);
+
         var delete = (System.Windows.Controls.MenuItem)button.ContextMenu.Items[0];
+
         Assert.AreEqual("Delete", delete.Header);
         Assert.IsNotNull(delete.Icon);
+
         delete.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.MenuItem.ClickEvent));
+
         Assert.AreEqual(1, confirmations);
         Assert.IsTrue(window.IsVisible);
         Assert.IsTrue(window.IsEditing);
         Assert.AreEqual("# Unsaved changes", window.NoteText);
-        Assert.AreEqual(1, store.All().Count);
+        Assert.HasCount(1, store.All());
 
         confirmed = true;
         delete.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.MenuItem.ClickEvent));
@@ -225,6 +230,7 @@ public class NotesAddinTests
       Directory.CreateDirectory(store.DirectoryPath);
       var id = Guid.NewGuid();
       string path = Path.Combine(store.DirectoryPath, id.ToString("N") + ".md");
+
       File.WriteAllText(path, "# Legacy\n\nPlain text");
       var loaded = store.Load(id);
 
@@ -266,6 +272,72 @@ public class NotesAddinTests
   }
 
   [TestMethod]
+  public void NewNoteNumbersUseAllSavedNotesAndSkipGaps()
+  {
+    RunSta(() => WithStore(store =>
+    {
+      var highest = store.Save(Guid.NewGuid(), "# Note 27");
+      SetSavedDate(store, highest, new DateTime(2020, 1, 1, 0, 0, 0, DateTimeKind.Utc));
+      store.Save(Guid.NewGuid(), "# note 3");
+
+      for (int i = 0; i < 12; i++)
+        store.Save(Guid.NewGuid(), "# Other note " + i);
+
+      using var provider = new ServiceCollection().AddDockzi().BuildServiceProvider();
+      using var manager = new NotesManager(store, provider.GetRequiredService<ISettingsService>(), provider.GetRequiredService<Lite.EventIpc.IEventAggregator>());
+      try
+      {
+        manager.NewNote();
+
+        Assert.AreEqual("Note 28", OpenNotes().Single().Title);
+        Assert.IsTrue(OpenNotes().Single().SaveNote());
+
+        OpenNotes().Single().Close();
+        manager.NewNote();
+
+        Assert.AreEqual("Note 29", OpenNotes().Single().Title);
+      }
+      finally
+      {
+        foreach (var window in OpenNotes()) window.CloseWithoutSaving();
+      }
+    }));
+  }
+
+  [TestMethod]
+  public void NewNotesStartAtOneAndReserveNumbersForOpenDraftsAndTheirRestorableTitles()
+  {
+    RunSta(() => WithStore(store =>
+    {
+      using var provider = new ServiceCollection().AddDockzi().BuildServiceProvider();
+      using var manager = new NotesManager(store, provider.GetRequiredService<ISettingsService>(), provider.GetRequiredService<Lite.EventIpc.IEventAggregator>());
+
+      try
+      {
+        manager.NewNote();
+        var first = OpenNotes().Single();
+
+        Assert.AreEqual("Note 1", first.Title);
+        Assert.AreEqual("# Note 1\n\n", first.NoteText);
+
+        first.NoteText = "# Renamed unsaved draft";
+        manager.NewNote();
+
+        Assert.Contains(window => window.Title == "Note 2", OpenNotes());
+
+        PressEscape(first);
+
+        Assert.AreEqual("Note 1", first.Title);
+        Assert.IsEmpty(store.All());
+      }
+      finally
+      {
+        foreach (var window in OpenNotes()) window.CloseWithoutSaving();
+      }
+    }));
+  }
+
+  [TestMethod]
   public void PreferencesListShowsAllNotesOpensOnDoubleClickAndDeletesOpenDraft()
   {
     RunSta(() => WithStore(store =>
@@ -275,7 +347,9 @@ public class NotesAddinTests
 
       using var provider = new ServiceCollection().AddDockzi().BuildServiceProvider();
       using var manager = new NotesManager(store, provider.GetRequiredService<ISettingsService>(), provider.GetRequiredService<Lite.EventIpc.IEventAggregator>());
+
       bool confirmed = false;
+
       using var page = new Xeno.Dockzi.NotesAddin.PreferencesPage(manager, () => confirmed) { ClientSize = new System.Drawing.Size(463, 380) };
 
       page.Show();
@@ -308,8 +382,10 @@ public class NotesAddinTests
         window.NoteText = "# Dirty draft";
         var row = list.Items.Cast<System.Windows.Forms.ListViewItem>().Single(item => ((Note)item.Tag).Id == note.Id);
         RaiseMouseEvent(list, "OnMouseClick", row.SubItems[2].Bounds);
+
         Assert.IsTrue(window.IsVisible);
         Assert.AreEqual(12, list.Items.Count);
+
         confirmed = true;
         RaiseMouseEvent(list, "OnMouseClick", row.SubItems[2].Bounds);
 
@@ -450,63 +526,11 @@ public class NotesAddinTests
       }
 
       Assert.AreEqual("# Renamed\n\nUnsaved changes", store.Load(id).Text);
+
       var reopened = new NoteWindow(store.Load(id), text => store.Save(id, text));
       Assert.IsFalse(reopened.IsEditing);
+
       reopened.Close();
-    }));
-  }
-
-  [TestMethod]
-  public void NewNotesStartAtOneAndReserveNumbersForOpenDraftsAndTheirRestorableTitles()
-  {
-    RunSta(() => WithStore(store =>
-    {
-      using var provider = new ServiceCollection().AddDockzi().BuildServiceProvider();
-      using var manager = new NotesManager(store, provider.GetRequiredService<ISettingsService>(), provider.GetRequiredService<Lite.EventIpc.IEventAggregator>());
-      try
-      {
-        manager.NewNote();
-        var first = OpenNotes().Single();
-        Assert.AreEqual("Note 1", first.Title);
-        Assert.AreEqual("# Note 1\n\n", first.NoteText);
-        first.NoteText = "# Renamed unsaved draft";
-        manager.NewNote();
-        Assert.IsTrue(OpenNotes().Any(window => window.Title == "Note 2"));
-        PressEscape(first);
-        Assert.AreEqual("Note 1", first.Title);
-        Assert.IsEmpty(store.All());
-      }
-      finally
-      {
-        foreach (var window in OpenNotes()) window.CloseWithoutSaving();
-      }
-    }));
-  }
-
-  [TestMethod]
-  public void NewNoteNumbersUseAllSavedNotesAndSkipGaps()
-  {
-    RunSta(() => WithStore(store =>
-    {
-      var highest = store.Save(Guid.NewGuid(), "# Note 27");
-      SetSavedDate(store, highest, new DateTime(2020, 1, 1, 0, 0, 0, DateTimeKind.Utc));
-      store.Save(Guid.NewGuid(), "# note 3");
-      for (int i = 0; i < 12; i++) store.Save(Guid.NewGuid(), "# Other note " + i);
-      using var provider = new ServiceCollection().AddDockzi().BuildServiceProvider();
-      using var manager = new NotesManager(store, provider.GetRequiredService<ISettingsService>(), provider.GetRequiredService<Lite.EventIpc.IEventAggregator>());
-      try
-      {
-        manager.NewNote();
-        Assert.AreEqual("Note 28", OpenNotes().Single().Title);
-        Assert.IsTrue(OpenNotes().Single().SaveNote());
-        OpenNotes().Single().Close();
-        manager.NewNote();
-        Assert.AreEqual("Note 29", OpenNotes().Single().Title);
-      }
-      finally
-      {
-        foreach (var window in OpenNotes()) window.CloseWithoutSaving();
-      }
     }));
   }
 
