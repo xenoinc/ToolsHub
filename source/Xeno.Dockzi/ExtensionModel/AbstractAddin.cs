@@ -29,7 +29,6 @@ namespace Xeno.Dockzi.ExtensionModel
 
     public void Dispose()
     {
-      _disposing = true;
       Dispose(true);
 
       GC.SuppressFinalize(this);
@@ -37,6 +36,7 @@ namespace Xeno.Dockzi.ExtensionModel
 
     protected virtual void Dispose(bool disposing)
     {
+      _disposing = true;
     }
   }
 }

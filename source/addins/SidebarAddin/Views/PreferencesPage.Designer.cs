@@ -47,12 +47,12 @@ namespace Xeno.Dockzi.SidebarAddin.Views
       this.ChkOnTop = new System.Windows.Forms.CheckBox();
       this.ChkShowOnStart = new System.Windows.Forms.CheckBox();
       this.ChkAutoHide = new System.Windows.Forms.CheckBox();
-      this.Opacity = new System.Windows.Forms.TrackBar();
+      this.OpacitySlider = new System.Windows.Forms.TrackBar();
       this.label4 = new System.Windows.Forms.Label();
       this.flowLayoutPanel1.SuspendLayout();
       this.groupBox3.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.UpDownScreenNumber)).BeginInit();
-      ((System.ComponentModel.ISupportInitialize)(this.Opacity)).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)(this.OpacitySlider)).BeginInit();
       this.SuspendLayout();
       // 
       // flowLayoutPanel1
@@ -67,7 +67,7 @@ namespace Xeno.Dockzi.SidebarAddin.Views
       // groupBox3
       // 
       this.groupBox3.Controls.Add(this.label4);
-      this.groupBox3.Controls.Add(this.Opacity);
+      this.groupBox3.Controls.Add(this.OpacitySlider);
       this.groupBox3.Controls.Add(this.ComboScreenOrientaiton);
       this.groupBox3.Controls.Add(this.ComboScreenArea);
       this.groupBox3.Controls.Add(this.label3);
@@ -196,16 +196,16 @@ namespace Xeno.Dockzi.SidebarAddin.Views
       this.ChkAutoHide.Text = "Auto-hide";
       this.ChkAutoHide.UseVisualStyleBackColor = true;
       // 
-      // Opacity
+      // OpacitySlider
       // 
-      this.Opacity.Location = new System.Drawing.Point(6, 198);
-      this.Opacity.Maximum = 100;
-      this.Opacity.Minimum = 20;
-      this.Opacity.Name = "Opacity";
-      this.Opacity.Size = new System.Drawing.Size(251, 45);
-      this.Opacity.TabIndex = 17;
-      this.Opacity.TickFrequency = 10;
-      this.Opacity.Value = 20;
+      this.OpacitySlider.Location = new System.Drawing.Point(6, 198);
+      this.OpacitySlider.Maximum = 100;
+      this.OpacitySlider.Minimum = 20;
+      this.OpacitySlider.Name = "Opacity";
+      this.OpacitySlider.Size = new System.Drawing.Size(251, 45);
+      this.OpacitySlider.TabIndex = 17;
+      this.OpacitySlider.TickFrequency = 10;
+      this.OpacitySlider.Value = 20;
       // 
       // label4
       // 
@@ -229,7 +229,7 @@ namespace Xeno.Dockzi.SidebarAddin.Views
       this.groupBox3.ResumeLayout(false);
       this.groupBox3.PerformLayout();
       ((System.ComponentModel.ISupportInitialize)(this.UpDownScreenNumber)).EndInit();
-      ((System.ComponentModel.ISupportInitialize)(this.Opacity)).EndInit();
+      ((System.ComponentModel.ISupportInitialize)(this.OpacitySlider)).EndInit();
       this.ResumeLayout(false);
 
     }
@@ -248,6 +248,6 @@ namespace Xeno.Dockzi.SidebarAddin.Views
     private System.Windows.Forms.ComboBox ComboScreenOrientaiton;
     private System.Windows.Forms.ComboBox ComboScreenArea;
     private System.Windows.Forms.Label label4;
-    private System.Windows.Forms.TrackBar Opacity;
+    private System.Windows.Forms.TrackBar OpacitySlider;
   }
 }

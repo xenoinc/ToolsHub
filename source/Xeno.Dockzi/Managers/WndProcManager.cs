@@ -21,6 +21,8 @@ namespace Xeno.Dockzi.Managers
 {
   public class WndProcManager : NativeWindow
   {
+    private readonly object _sync = new();
+
     private readonly string _caption;
 
     public WndProcManager(string caption)
@@ -82,7 +84,7 @@ namespace Xeno.Dockzi.Managers
         return;
       }
 
-      lock (this)
+      lock (_sync)
       {
         if (destroyHwnd)
           base.DestroyHandle();

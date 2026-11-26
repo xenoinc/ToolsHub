@@ -17,7 +17,7 @@ using Xeno.Dockzi.ExtensionModel;
 using Xeno.Dockzi.Services;
 using Xeno.Dockzi.Services.Logging;
 
-public class AddinsManager : IDisposable
+public sealed class AddinsManager : IDisposable
 {
   private readonly string _configDir;
   private readonly string _addinsDir;
@@ -170,7 +170,9 @@ public class AddinsManager : IDisposable
           addin.Execute();
       }
       else
+      {
         Log.Debug("Add-in not initialized; not executing.");
+      }
     }
     catch (Exception ex)
     {

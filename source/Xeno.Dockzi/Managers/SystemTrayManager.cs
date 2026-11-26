@@ -36,6 +36,7 @@ namespace Xeno.Dockzi.Managers
     private readonly IPreferencesDialogService _preferences;
     private readonly ApplicationUpdates _updates;
 
+    private System.Drawing.Icon _customIcon;
     private ToolStripItem[] _trayMenu;
     private NotifyIcon _trayNotify = new();
 
@@ -84,6 +85,8 @@ namespace Xeno.Dockzi.Managers
         _eventDispatcher.Dispose();
         _trayNotify.DoubleClick -= OnMenuDoubleClick;
         _trayNotify.Dispose();
+        _customIcon?.Dispose();
+        _customIcon = null;
       }
 
       base.Dispose(disposing);
@@ -112,7 +115,7 @@ namespace Xeno.Dockzi.Managers
     /// <summary>Redraw SysTray menu from memory</summary>
     private void DrawTrayNotifacation()
     {
-      _trayNotify.Icon = ApplicationIcon;
+      OnTrayIconChanged(null);
       _trayNotify.ContextMenuStrip?.Dispose();
       _trayNotify.ContextMenuStrip = BuildContextMenuStrip(_trayMenu);
       _trayNotify.Visible = true;
@@ -192,7 +195,11 @@ namespace Xeno.Dockzi.Managers
     private void OnTrayIconChanged(System.Drawing.Icon icon)
     {
       Log.Debug(icon == null ? "Changing SystemTrayIcon to default" : "Changing SystemTrayIcon to custom");
-      _trayNotify.Icon = icon ?? Properties.Resources.AppIcon;
+      var previous = _customIcon;
+      _trayNotify.Icon = icon ?? ApplicationIcon;
+      _customIcon = icon;
+      if (!ReferenceEquals(previous, icon))
+        previous?.Dispose();
     }
 
     private void OnMenuAbout(object sender, EventArgs e)

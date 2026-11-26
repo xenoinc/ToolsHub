@@ -28,16 +28,7 @@ using System.Windows;
 // the line below to match the UICulture setting in the project file.
 
 // [assembly: NeutralResourcesLanguage("en-US", UltimateResourceFallbackLocation.Satellite)]
-
-[assembly: ThemeInfo(
-  // Theme Specific Resource Dictionary Location
-  //    Used if a resource is not found in the page,
-  //    or application resource dictionaries
-  ResourceDictionaryLocation.None,
-  // Generic Theme Resource Dictionary Location
-  //    Used if a resource is not found in the page, app,
-  //    or any theme specific resource dictionaries)
-  ResourceDictionaryLocation.SourceAssembly)]
+[assembly: ThemeInfo(ResourceDictionaryLocation.None, ResourceDictionaryLocation.SourceAssembly)]
 
 // Version information for an assembly consists of the following four values:
 //

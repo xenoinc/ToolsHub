@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <RuleSet Name="Xeno Innovations Rules for StyleCop.Analyzers" Description="Based on, Microsoft Managed Recommended Rules. This rulset includes custom code analysis rules for StyleCop.Analyzers." ToolsVersion="16.0">
   <Rules AnalyzerId="AsyncUsageAnalyzers" RuleNamespace="AsyncUsageAnalyzers">
     <Rule Id="UseConfigureAwait" Action="Warning" />
@@ -98,7 +98,8 @@
     <Rule Id="SA1124" Action="None" />
     <Rule Id="SA1200" Action="None" />
     <Rule Id="SA1309" Action="None" />
-    <Rule Id="SA1412" Action="Warning" />
+    <!-- Match source/.editorconfig: UTF-8 without requiring a byte order mark. -->
+    <Rule Id="SA1412" Action="None" />
     <Rule Id="SA1413" Action="None" />
     <Rule Id="SA1503" Action="None" />
     <Rule Id="SA1504" Action="None" />

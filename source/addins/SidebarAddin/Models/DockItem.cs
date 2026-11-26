@@ -22,7 +22,7 @@ public class DockItem
     _image = image;
     _clickAction = clickAction;
 
-    DockItemImage = new ItemImage();
+    DockItemImage = default(ItemImage);
   }
 
   public ItemImage DockItemImage { get; set; }

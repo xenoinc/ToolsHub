@@ -12,7 +12,7 @@ using Xeno.Dockzi.SampleXmlAddin.Views;
 
 namespace Xeno.Dockzi.SampleXmlAddin.Handlers
 {
-  public class PreferenceHandler : IPreferencePageExtension
+  public sealed class PreferenceHandler : IPreferencePageExtension, System.IDisposable
   {
     private PerferencePage _page;
 
@@ -24,8 +24,11 @@ namespace Xeno.Dockzi.SampleXmlAddin.Handlers
 
     public bool IsModified => _page.IsModified;
 
+    public void Dispose() => _page?.Dispose();
+
     public void InitializePage()
     {
+      _page?.Dispose();
       _page = new PerferencePage();
     }
 

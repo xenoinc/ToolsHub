@@ -39,11 +39,26 @@ public sealed class TrayEventSubscriptions : IDisposable
         notify(message.Message);
     });
 
-    _icon = message => dispatch(() =>
+    _icon = message =>
     {
-      if (!_disposed)
-        changeIcon(message.Icon);
-    });
+      // Snapshot before dispatch so publishers may dispose their source icon immediately.
+      var snapshot = (System.Drawing.Icon)message.Icon?.Clone();
+      try
+      {
+        dispatch(() =>
+        {
+          if (!_disposed)
+            changeIcon(snapshot);
+          else
+            snapshot?.Dispose();
+        });
+      }
+      catch
+      {
+        snapshot?.Dispose();
+        throw;
+      }
+    };
 
     _events.Subscribe(_refresh);
     _events.Subscribe(_notify);

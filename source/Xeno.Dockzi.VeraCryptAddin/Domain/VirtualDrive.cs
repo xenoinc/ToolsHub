@@ -17,7 +17,6 @@ namespace Xeno.Dockzi.VeraCryptAddin.Domain
     private string _driveLetter = string.Empty;
     private string _hcPath = string.Empty;
     private string _veraCryptPath = string.Empty;
-    private Process _proc = new Process();
     private ProcessStartInfo _procInfo = new ProcessStartInfo();
 
     public VirtualDrive(string vcPath, string driveLetter, string hcPath = "", string password = "")
@@ -95,11 +94,10 @@ namespace Xeno.Dockzi.VeraCryptAddin.Domain
 
       try
       {
-        _proc.StartInfo = _procInfo;
-        _proc.Start();
-        _proc.WaitForExit();
-        exitCode = _proc.ExitCode;
-        _proc.Close();
+        using var process = new Process { StartInfo = _procInfo };
+        process.Start();
+        process.WaitForExit();
+        exitCode = process.ExitCode;
       }
       catch (Exception ex)
       {

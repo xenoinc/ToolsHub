@@ -1,4 +1,4 @@
-﻿namespace Xeno.Dockzi.SidebarAddin.Views;
+namespace Xeno.Dockzi.SidebarAddin.Views;
 
 using System;
 using System.Collections.Specialized;
@@ -77,12 +77,21 @@ public partial class ToolbarView : Window
 
       Width = width;
       Height = height;
-      var bounds = DockLayout.Calculate(new Rect(area.X, area.Y, area.Width, area.Height),
-        _model.ScreenArea, width * dpi.DpiScaleX, height * dpi.DpiScaleY);
+      var bounds = DockLayout.Calculate(
+        new Rect(area.X, area.Y, area.Width, area.Height),
+        _model.ScreenArea,
+        width * dpi.DpiScaleX,
+        height * dpi.DpiScaleY);
 
       // Native placement keeps negative coordinates and per-monitor DPI in physical pixels.
-      SetWindowPos(handle, IntPtr.Zero, (int)Math.Round(bounds.X), (int)Math.Round(bounds.Y),
-        (int)Math.Round(bounds.Width), (int)Math.Round(bounds.Height), 0x14);
+      NativeMethods.SetWindowPos(
+        handle,
+        IntPtr.Zero,
+        (int)Math.Round(bounds.X),
+        (int)Math.Round(bounds.Y),
+        (int)Math.Round(bounds.Width),
+        (int)Math.Round(bounds.Height),
+        0x14);
       _nativeBounds = bounds;
       _autoHide.Reveal();
       _lastRegion = Rect.Empty;
@@ -93,10 +102,6 @@ public partial class ToolbarView : Window
       _positioning = false;
     }
   }
-
-  [DllImport("user32.dll")]
-  [return: MarshalAs(UnmanagedType.Bool)]
-  private static extern bool SetWindowPos(IntPtr window, IntPtr insertAfter, int x, int y, int width, int height, uint flags);
 
   private void ConfigureOrientation()
   {
@@ -277,16 +282,18 @@ public partial class ToolbarView : Window
     int index = Math.Min(insertionIndex, _model.Items.Count - 1);
     if (Launchers.ItemContainerGenerator.ContainerFromIndex(index) is not FrameworkElement container)
       return;
-    Point origin = container.TranslatePoint(new Point(), DragOverlay);
+    Point origin = container.TranslatePoint(default(Point), DragOverlay);
     bool afterLast = insertionIndex == _model.Items.Count;
     InsertionMarker.Width = horizontal ? 3 : 48;
     InsertionMarker.Height = horizontal ? 48 : 3;
-    Canvas.SetLeft(InsertionMarker, horizontal
+    double markerLeft = horizontal
       ? origin.X + (afterLast ? container.ActualWidth : 0) - 1.5
-      : origin.X + ((container.ActualWidth - 48) / 2));
-    Canvas.SetTop(InsertionMarker, horizontal
+      : origin.X + ((container.ActualWidth - 48) / 2);
+    Canvas.SetLeft(InsertionMarker, markerLeft);
+    double markerTop = horizontal
       ? origin.Y + ((container.ActualHeight - 48) / 2)
-      : origin.Y + (afterLast ? container.ActualHeight : 0) - 1.5);
+      : origin.Y + (afterLast ? container.ActualHeight : 0) - 1.5;
+    Canvas.SetTop(InsertionMarker, markerTop);
     InsertionMarker.Visibility = Visibility.Visible;
   }
 
@@ -305,7 +312,7 @@ public partial class ToolbarView : Window
     {
       if (Launchers.ItemContainerGenerator.ContainerFromIndex(index) is not FrameworkElement container)
         continue;
-      Point origin = container.TranslatePoint(new Point(), Launchers);
+      Point origin = container.TranslatePoint(default(Point), Launchers);
       if (horizontal ? position.X < origin.X + (container.ActualWidth / 2) : position.Y < origin.Y + (container.ActualHeight / 2))
         return index;
     }

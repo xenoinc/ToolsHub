@@ -10,9 +10,9 @@ namespace Xeno.Dockzi.PomodoroAddin.Handlers
 {
   using System.Collections.Generic;
   using System.Windows.Forms;
-  using Xeno.Dockzi.PomodoroAddin.Managers;
   using Xeno.Dockzi.ExtensionModel;
   using Xeno.Dockzi.ExtensionModel.SystemTray;
+  using Xeno.Dockzi.PomodoroAddin.Managers;
 
   [Mono.Addins.Extension(
     NodeName = ExtensionName.SysTrayAddin,
