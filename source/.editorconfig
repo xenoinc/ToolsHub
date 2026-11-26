@@ -39,6 +39,7 @@ root = true
 [*]
 end_of_line = crlf
 indent_style = space
+charset = utf-8
 
 # VSSPELL: Spell checker settings for all files
 vsspell_section_id = 001

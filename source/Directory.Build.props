@@ -1,4 +1,14 @@
 <Project>
+  <!-- Core executable only: Major.Minor.Revision.Build. Add-ins retain their own versions. -->
+  <PropertyGroup Condition="'$(MSBuildProjectName)' == 'Xeno.Dockzi'">
+    <DockziVersion>0.9.1.57</DockziVersion>
+    <Version>$(DockziVersion)</Version>
+    <AssemblyVersion>$(DockziVersion)</AssemblyVersion>
+    <FileVersion>$(DockziVersion)</FileVersion>
+    <InformationalVersion>$(DockziVersion)</InformationalVersion>
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+  </PropertyGroup>
+
   <PropertyGroup>
     <TargetFramework>net10.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
@@ -7,5 +17,16 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <!-- Generate core version attributes; preserve its existing descriptive metadata. -->
+  <PropertyGroup Condition="'$(MSBuildProjectName)' == 'Xeno.Dockzi'">
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
+    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
   </PropertyGroup>
 </Project>

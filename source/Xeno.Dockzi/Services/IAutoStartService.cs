@@ -5,5 +5,7 @@
     bool IsEnabled { get; }
 
     void SetEnabled(bool enabled);
+
+    void RepairRegistration();
   }
 }

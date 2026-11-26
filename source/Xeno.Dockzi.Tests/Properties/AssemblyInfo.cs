@@ -1,4 +1,4 @@
-﻿/* Copyright Xeno Innovations, Inc. 2018
+/* Copyright Xeno Innovations, Inc. 2018
  * Date:    2018-12-27
  * Author:  Damian Suess
  * File:    AssemblyInfo.cs

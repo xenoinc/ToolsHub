@@ -1,4 +1,4 @@
-﻿/* Copyright Xeno Innovations, Inc. 2018
+/* Copyright Xeno Innovations, Inc. 2018
  * Date:    2018-12-19
  * Author:  Damian Suess
  * File:    PropertyService.cs
@@ -6,9 +6,8 @@
  *
  */
 
-namespace Xeno.Dockzi.Tests.SystemTests.PropertySingleton
+namespace Xeno.Dockzi.Tests.Prototypes.PropertySingleton;
+
+public class PropertyService
 {
-  public class PropertyService
-  {
-  }
 }

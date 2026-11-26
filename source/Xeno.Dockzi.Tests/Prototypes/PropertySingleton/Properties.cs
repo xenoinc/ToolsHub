@@ -1,4 +1,4 @@
-﻿/* Copyright Xeno Innovations, Inc. 2018
+/* Copyright Xeno Innovations, Inc. 2018
  * Date:    2018-12-19
  * Author:  Damian Suess
  * File:    Properties.cs
@@ -6,63 +6,61 @@
  *  Property Collection (PROTYPE TESTING)
  */
 
-namespace Xeno.Dockzi.Tests.SystemTests.PropertySingleton
+namespace Xeno.Dockzi.Tests.Prototypes.PropertySingleton;
+
+using System;
+using System.Collections.Generic;
+using Xeno.Dockzi.Services.Logging;
+
+public class Properties
 {
-  using System;
-  using System.Collections.Generic;
-  using Xeno.Dockzi.Services.Logging;
+  private static Dictionary<string, object> _props = [];
 
-  public class Properties
+  private readonly object _mutex;
+
+  public Properties()
   {
-    private static Dictionary<string, object> _props = new Dictionary<string, object>();
+    _mutex = new object();
+  }
 
-    private readonly object _mutex;
-
-    public Properties()
+  public T Get<T>(string key, T defaultValue)
+  {
+    if (_props.TryGetValue(key, out object val))
     {
-      _mutex = new object();
-    }
-
-    public T Get<T>(string key, T defaultValue)
-    {
-      object val;
-      if (_props.TryGetValue(key, out val))
+      try
       {
-        try
-        {
-          return (T)val;
-        }
-        catch (Exception ex)
-        {
-          Log.Warn(ex.Message);
-          return defaultValue;
-        }
+        return (T)val;
       }
-      else
+      catch (Exception ex)
       {
+        Log.Warn(ex.Message);
         return defaultValue;
       }
     }
-
-    ////public void Set<T>(string key, T value)
-    ////{
-    ////  if (value == null)
-    ////  {
-    ////    // Remove(key);
-    ////    return;
-    ////  }
-    ////
-    ////  lock(_mutex)
-    ////  {
-    ////    object oldValue;
-    ////    if (_dict.TryGetValue(key, out oldValue))
-    ////    {
-    ////      if (object.Equals(serializedValue, oldValue))
-    ////        return;
-    ////      HandleOldValue(oldValue);
-    ////    }
-    ////    _dict[key] = serializedValue;
-    ////  }
-    ////}
+    else
+    {
+      return defaultValue;
+    }
   }
+
+  ////public void Set<T>(string key, T value)
+  ////{
+  ////  if (value == null)
+  ////  {
+  ////    // Remove(key);
+  ////    return;
+  ////  }
+  ////
+  ////  lock(_mutex)
+  ////  {
+  ////    object oldValue;
+  ////    if (_dict.TryGetValue(key, out oldValue))
+  ////    {
+  ////      if (object.Equals(serializedValue, oldValue))
+  ////        return;
+  ////      HandleOldValue(oldValue);
+  ////    }
+  ////    _dict[key] = serializedValue;
+  ////  }
+  ////}
 }

@@ -1,4 +1,4 @@
-﻿namespace Xeno.Dockzi.Tests.SystemTests;
+namespace Xeno.Dockzi.Tests.SystemTests;
 
 using System;
 using System.IO;
@@ -7,6 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Xeno.Dockzi.Config;
 using Xeno.Dockzi.LocalAddins.Shortcuts;
 using Xeno.Dockzi.Managers;
+using Xeno.Dockzi.Tests.Helpers;
 
 [TestClass]
 [DoNotParallelize]
@@ -28,6 +29,7 @@ public class JsonCompatibilityTests
     // This is the existing settings-file shape, including the dictionary and opaque values.
     File.WriteAllText(settings.SettingsFilePath,
       "[{\"Items\":{\"ShortcutItems\":\"" + encoded + "\",\"Secret\":\"opaque+/=\"},\"Id\":\"Shortcuts\"}]");
+
     settings.LoadFile();
     var items = settings.GetObject<ShortcutItems>("Shortcuts", "ShortcutItems");
     Assert.HasCount(1, items);
@@ -40,8 +42,10 @@ public class JsonCompatibilityTests
     settings.SaveFile();
     var reloaded = new SettingsManager(StorageMethod.UnitTest);
     reloaded.LoadFile();
+
     Assert.AreEqual("opaque+/=", reloaded.GetValue("Shortcuts", "Secret"));
     Assert.AreEqual(items[0].Title, reloaded.GetObject<ShortcutItems>("Shortcuts", "ShortcutItems")[0].Title);
+
     using var saved = JsonDocument.Parse(File.ReadAllText(settings.SettingsFilePath));
     Assert.AreEqual("Shortcuts", saved.RootElement[0].GetProperty("Id").GetString());
     Assert.AreEqual(JsonValueKind.Object, saved.RootElement[0].GetProperty("Items").ValueKind);
@@ -60,6 +64,7 @@ public class JsonCompatibilityTests
 
     settings.SetValue("test", "items", "invalid base64!");
     Assert.ThrowsExactly<FormatException>(() => settings.GetObject<ShortcutItems>("test", "items"));
+
     settings.SetValue("test", "items", Helpers.Base64Encode("[broken"));
     Assert.ThrowsExactly<JsonException>(() => settings.GetObject<ShortcutItems>("test", "items"));
     Assert.IsNull(Helpers.ToObject<ShortcutItems>(" "));
@@ -71,12 +76,15 @@ public class JsonCompatibilityTests
     const string json = "[/* legacy */{\"title\":\"Launcher\",\"target\":\"app.exe\",},]";
     var items = (ShortcutItems)Helpers.ToObject<ShortcutItems>(json);
     Assert.AreEqual("Launcher", items[0].Title);
+
     string path = Path.Combine(Helpers.GetStorageFolder(StorageMethod.UnitTest), "shortcuts.json");
     object value = items;
     string formatted = Helpers.FileSerialize(value, path);
+
     Assert.IsTrue(formatted.Contains('\n'));
     Assert.IsFalse(Helpers.ToJson(value).Contains('\n'));
     Assert.AreEqual("app.exe", Helpers.FileDeserialize<ShortcutItems>(path)[0].Target);
+
     var manager = new ShortcutsManager(new SettingsManager(StorageMethod.UnitTest));
     Assert.IsTrue(manager.ValidateJson(json, out _));
     Assert.IsFalse(manager.ValidateJson("[broken", out string error));
@@ -88,8 +96,10 @@ public class JsonCompatibilityTests
   {
     var settings = new SettingsManager(StorageMethod.UnitTest);
     File.WriteAllText(settings.SettingsFilePath, "null");
+
     settings.LoadFile();
     settings.SetValue("test", "key", "value");
+
     Assert.AreEqual("value", settings.GetValue("test", "key"));
   }
 }

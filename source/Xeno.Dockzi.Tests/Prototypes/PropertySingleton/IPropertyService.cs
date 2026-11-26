@@ -1,4 +1,4 @@
-﻿/* Copyright Xeno Innovations, Inc. 2018
+/* Copyright Xeno Innovations, Inc. 2018
  * Date:    2018-12-19
  * Author:  Damian Suess
  * File:    IPropertyService.cs
@@ -6,10 +6,9 @@
  *
  */
 
-namespace Xeno.Dockzi.Tests.SystemTests.PropertySingleton
+namespace Xeno.Dockzi.Tests.Prototypes.PropertySingleton;
+
+public interface IPropertyService
 {
-  public interface IPropertyService
-  {
-    void Set<T>(string key, T value);
-  }
+  void Set<T>(string key, T value);
 }

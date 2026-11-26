@@ -1,0 +1,86 @@
+name: Increment Dockzi build version
+
+on:
+  pull_request_target:
+    branches: [develop]
+    types: [closed]
+
+permissions:
+  contents: read
+
+jobs:
+  increment:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+
+    steps:
+      # Only check out the trusted base branch, never the PR head.
+      - uses: actions/checkout@v6
+        with:
+          ref: develop
+          fetch-depth: 0
+
+      - name: Test version increment script
+        shell: pwsh
+        run: ./scripts/Test-DockziVersion.ps1
+
+      - name: Increment and commit core Build component
+        shell: pwsh
+
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          MERGE_SHA: ${{ github.event.pull_request.merge_commit_sha }}
+
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $PSNativeCommandUseErrorActionPreference = $false
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+          $marker = "Dockzi-Version-Bump: PR #$env:PR_NUMBER ($env:MERGE_SHA)"
+
+          # Optimistic retries let every merge increment once, without cancelling queued runs.
+          for ($attempt = 1; $attempt -le 10; $attempt++)
+          {
+            git fetch origin develop
+            if ($LASTEXITCODE -ne 0) {
+              throw 'Unable to fetch develop.' }
+
+            # This reset is confined to the disposable Actions checkout.
+            git reset --hard origin/develop
+            if ($LASTEXITCODE -ne 0) {
+              throw 'Unable to reset the Actions checkout.' }
+
+            $existing = git log --format=%H --fixed-strings --grep="$marker"
+            if ($LASTEXITCODE -ne 0) {
+              throw 'Unable to check version history.' }
+
+            if ($existing) {
+              Write-Host 'This merged PR already incremented the version.'
+              exit 0
+            }
+
+            $version = & ./scripts/Increment-DockziVersion.ps1
+
+            git add -- source/Directory.Build.props
+            if ($LASTEXITCODE -ne 0) {
+              throw 'Unable to stage version change.' }
+
+            git commit -m "chore: bump Dockzi to $version" -m "$marker"
+            if ($LASTEXITCODE -ne 0) {
+              throw 'Unable to commit version change.' }
+
+            git push origin HEAD:develop
+            if ($LASTEXITCODE -eq 0) {
+              Write-Host "Dockzi version updated to $version."
+              exit 0
+            }
+
+            Start-Sleep -Seconds 2
+          }
+
+          throw 'Unable to push the version increment. Check branch permissions, then rerun this job.'

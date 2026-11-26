@@ -9,6 +9,8 @@ using System.Text.RegularExpressions;
 
 public sealed record Note(Guid Id, string Text, DateTime SavedUtc)
 {
+  public IReadOnlyDictionary<string, string> Metadata { get; init; } = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
   public string Title => GetTitle(Text);
 
   public static string GetTitle(string text)
@@ -58,20 +60,14 @@ public sealed class NoteStore
 
   public string DirectoryPath { get; }
 
-  public Note Load(Guid id)
+  public IReadOnlyList<Note> All()
   {
-    string path = GetPath(id);
-    return new Note(id, File.ReadAllText(path), File.GetLastWriteTimeUtc(path));
-  }
-
-  public IReadOnlyList<Note> Recent(int count = 10)
-  {
-    if (count <= 0 || !Directory.Exists(DirectoryPath))
+    if (!Directory.Exists(DirectoryPath))
       return Array.Empty<Note>();
 
     var notes = new List<Note>();
 
-    foreach (var file in new DirectoryInfo(DirectoryPath).EnumerateFiles("*.md").OrderByDescending(file => file.LastWriteTimeUtc))
+    foreach (var file in new DirectoryInfo(DirectoryPath).EnumerateFiles("*.md"))
     {
       if (!Guid.TryParseExact(Path.GetFileNameWithoutExtension(file.Name), "N", out var id))
         continue;
@@ -88,22 +84,33 @@ public sealed class NoteStore
       {
         continue;
       }
-
-      if (notes.Count >= count)
-        break;
     }
 
-    return notes;
+    return notes.OrderByDescending(note => note.SavedUtc)
+      .ThenByDescending(note => File.GetLastWriteTimeUtc(GetPath(note.Id))).ThenBy(note => note.Id).ToArray();
   }
+
+  public void Delete(Guid id) => File.Delete(GetPath(id));
+
+  public Note Load(Guid id)
+  {
+    string path = GetPath(id);
+    return NoteFile.Parse(id, File.ReadAllText(path), File.GetLastWriteTimeUtc(path));
+  }
+
+  public IReadOnlyList<Note> Recent(int count = 10) => All().Take(Math.Max(0, count)).ToArray();
 
   public Note Save(Guid id, string text)
   {
     Directory.CreateDirectory(DirectoryPath);
     string path = GetPath(id);
+    var metadata = File.Exists(path) ? Load(id).Metadata : new Dictionary<string, string>();
+    var note = new Note(id, text, DateTime.UtcNow) { Metadata = metadata };
     string temporary = path + "." + Guid.NewGuid().ToString("N") + ".tmp";
+
     try
     {
-      File.WriteAllText(temporary, text, new UTF8Encoding(false));
+      File.WriteAllText(temporary, NoteFile.Serialize(note), new UTF8Encoding(false));
       File.Move(temporary, path, true);
     }
     finally

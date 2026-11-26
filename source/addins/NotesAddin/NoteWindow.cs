@@ -10,26 +10,57 @@ using System.Windows.Shell;
 
 public sealed class NoteWindow : Window
 {
+  private readonly Func<bool> _confirmDelete;
+  private readonly Action _delete;
   private readonly TextBox _editor;
   private readonly FlowDocumentScrollViewer _preview;
   private readonly Func<string, Note> _save;
   private readonly TextBlock _title;
-  private bool _hasSaved;
   private bool _discardOnClose;
+  private bool _hasSaved;
   private string _savedText;
 
-  public NoteWindow(Note note, Func<string, Note> save, bool edit = false)
+  /// <summary>
+  /// Initializes a new note window with editing, saving, preview, and optional deletion support.
+  /// </summary>
+  /// <remarks>If not provided, deletion confirmation uses a default warning dialog. When closing with unsaved
+  /// changes, the window prompts to discard changes if saving fails.</remarks>
+  /// <param name="note">The note to display and edit, including initial text and saved state.</param>
+  /// <param name="save">A callback that persists note text and returns the saved note.</param>
+  /// <param name="edit">true to open in edit mode with focus in the editor; false to open in preview mode.</param>
+  /// <param name="delete">An optional callback that deletes the note.</param>
+  /// <param name="confirmDelete">An optional callback that determines whether note deletion is confirmed.</param>
+  public NoteWindow(
+    Note note,
+    Func<string, Note> save,
+    bool edit = false,
+    Action delete = null,
+    Func<bool> confirmDelete = null)
   {
     _save = save;
+    _delete = delete;
+
+    _confirmDelete = confirmDelete ?? (
+      () => MessageBox.Show(
+        this,
+        "Are you sure you want to delete note?",
+        "Delete note",
+        MessageBoxButton.YesNo,
+        MessageBoxImage.Warning,
+        MessageBoxResult.No) == MessageBoxResult.Yes);
+
     _savedText = note.Text;
     _hasSaved = note.SavedUtc != default;
+
     Width = 360;
     Height = 380;
     MinWidth = 240;
     MinHeight = 180;
+
     WindowStartupLocation = WindowStartupLocation.CenterScreen;
     WindowStyle = WindowStyle.None;
     ResizeMode = ResizeMode.CanResizeWithGrip;
+
     Background = new SolidColorBrush(Color.FromRgb(255, 246, 174));
     Foreground = new SolidColorBrush(Color.FromRgb(62, 53, 28));
 
@@ -41,7 +72,11 @@ public sealed class NoteWindow : Window
 
     var header = new Grid { Background = new SolidColorBrush(Color.FromRgb(247, 227, 125)) };
     header.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(38) });
+    header.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(38) });
     header.ColumnDefinitions.Add(new ColumnDefinition());
+    header.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(38) });
+
+    // Balance Save and a spacer against the menu and Close to keep the title centered.
     header.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(38) });
 
     var saveButton = new Button
@@ -58,18 +93,67 @@ public sealed class NoteWindow : Window
 
     saveButton.Click += (_, _) => SaveNote();
 
-    _title = new TextBlock { VerticalAlignment = VerticalAlignment.Center, TextAlignment = TextAlignment.Center, TextTrimming = TextTrimming.CharacterEllipsis, FontWeight = FontWeights.SemiBold };
-    _title.MouseLeftButtonDown += (_, e) => { if (e.ButtonState == MouseButtonState.Pressed) DragMove(); };
+    var moreButton = new Button
+    {
+      Content = "\uE712",
+      FontFamily = new FontFamily("Segoe MDL2 Assets"),
+      FontSize = 14,
+      Background = Brushes.Transparent,
+      BorderThickness = new Thickness(0),
+      ToolTip = "Note options",
+    };
 
-    Grid.SetColumn(_title, 1);
-    var closeButton = new Button { Content = "×", FontSize = 22, Background = Brushes.Transparent, BorderThickness = new Thickness(0), ToolTip = "Close note" };
+    var deleteItem = new MenuItem
+    {
+      Header = "Delete",
+      Icon = new TextBlock { Text = "\uE74D", FontFamily = new FontFamily("Segoe MDL2 Assets"), FontSize = 14 },
+      IsEnabled = delete != null,
+    };
+
+    deleteItem.Click += (_, _) => DeleteNote();
+
+    var menu = new ContextMenu { PlacementTarget = moreButton, Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom };
+    menu.Items.Add(deleteItem);
+
+    moreButton.ContextMenu = menu;
+    System.Windows.Automation.AutomationProperties.SetName(moreButton, "Note options");
+    Grid.SetColumn(moreButton, 3);
+
+    moreButton.Click += (_, _) => menu.IsOpen = true;
+    Closed += (_, _) => menu.IsOpen = false;
+
+    _title = new TextBlock
+    {
+      VerticalAlignment = VerticalAlignment.Center,
+      TextAlignment = TextAlignment.Center,
+      TextTrimming = TextTrimming.CharacterEllipsis,
+      FontWeight = FontWeights.SemiBold,
+    };
+
+    _title.MouseLeftButtonDown += (_, e) =>
+    {
+      if (e.ButtonState == MouseButtonState.Pressed)
+        DragMove();
+    };
+
+    Grid.SetColumn(_title, 2);
+    var closeButton = new Button
+    {
+      Content = "×",
+      FontSize = 22,
+      Background = Brushes.Transparent,
+      BorderThickness = new Thickness(0),
+      ToolTip = "Close note",
+    };
+
     System.Windows.Automation.AutomationProperties.SetName(closeButton, "Close note");
 
-    Grid.SetColumn(closeButton, 2);
+    Grid.SetColumn(closeButton, 4);
 
     closeButton.Click += (_, _) => Close();
 
     header.Children.Add(saveButton);
+    header.Children.Add(moreButton);
     header.Children.Add(_title);
     header.Children.Add(closeButton);
 
@@ -101,7 +185,9 @@ public sealed class NoteWindow : Window
     _preview.PreviewMouseLeftButtonDown += (_, e) =>
     {
       // Leave the scrollbar available for scrolling longer notes.
-      if (e.OriginalSource is DependencyObject source && FindScrollBar(source)) return;
+      if (e.OriginalSource is DependencyObject source && FindScrollBar(source))
+        return;
+
       BeginEdit();
       e.Handled = true;
     };
@@ -135,6 +221,7 @@ public sealed class NoteWindow : Window
           _editor.Text = _savedText;
           _editor.IsUndoEnabled = false;
           _editor.IsUndoEnabled = true;
+
           UpdateTitle();
           ShowPreview();
         }
@@ -160,10 +247,16 @@ public sealed class NoteWindow : Window
     if (edit)
     {
       _preview.Visibility = Visibility.Collapsed;
-      Loaded += (_, _) => { _editor.Focus(); _editor.CaretIndex = _editor.Text.Length; };
+      Loaded += (_, _) =>
+      {
+        _editor.Focus();
+        _editor.CaretIndex = _editor.Text.Length;
+      };
     }
     else
+    {
       ShowPreview();
+    }
   }
 
   public bool IsEditing => _editor.Visibility == Visibility.Visible;
@@ -174,11 +267,38 @@ public sealed class NoteWindow : Window
     set => _editor.Text = value;
   }
 
+  public string SavedTitle => Note.GetTitle(_savedText);
+
   public void BeginEdit()
   {
     _preview.Visibility = Visibility.Collapsed;
     _editor.Visibility = Visibility.Visible;
     _editor.Focus();
+  }
+
+  public void CloseWithoutSaving()
+  {
+    _discardOnClose = true;
+    Close();
+  }
+
+  public bool DeleteNote()
+  {
+    if (_delete == null || !_confirmDelete()) return false;
+    try
+    {
+      _delete();
+      if (IsVisible)
+        CloseWithoutSaving();
+
+      return true;
+    }
+    catch (Exception ex)
+    when (ex is IOException || ex is UnauthorizedAccessException)
+    {
+      MessageBox.Show(this, ex.Message, "Unable to delete note", MessageBoxButton.OK, MessageBoxImage.Error);
+      return false;
+    }
   }
 
   public bool SaveNote()
@@ -192,7 +312,8 @@ public sealed class NoteWindow : Window
       ShowPreview();
       return true;
     }
-    catch (Exception ex) when (ex is IOException || ex is UnauthorizedAccessException)
+    catch (Exception ex)
+    when (ex is IOException || ex is UnauthorizedAccessException)
     {
       MessageBox.Show(this, ex.Message, "Unable to save note", MessageBoxButton.OK, MessageBoxImage.Error);
       return false;

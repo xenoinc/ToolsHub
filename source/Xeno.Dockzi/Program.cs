@@ -41,6 +41,8 @@ namespace Xeno.Dockzi
     [STAThread]
     private static void Main(string[] args)
     {
+      Velopack.VelopackApp.Build().Run();
+
       // Windows startup does not guarantee the application's working directory.
       if (args.Contains("--auto-start", StringComparer.OrdinalIgnoreCase))
         System.IO.Directory.SetCurrentDirectory(AppContext.BaseDirectory);
@@ -64,17 +66,36 @@ namespace Xeno.Dockzi
       Application.SetCompatibleTextRenderingDefault(false);
 
       AbortShutdown = false;
-      using var services = new ServiceCollection().AddDockzi().AddBundledAddinServices().BuildServiceProvider(new ServiceProviderOptions
+      ApplicationUpdates updates;
+      using (var services = new ServiceCollection().AddDockzi().AddBundledAddinServices().BuildServiceProvider(new ServiceProviderOptions
       {
         ValidateScopes = true,
         ValidateOnBuild = true,
-      });
+      }))
+      {
+        // Compatibility bridge for add-ins that have not migrated to constructor injection yet.
+        Settings = services.GetRequiredService<Managers.SettingsManager>();
+        AppEvents.Instance = services.GetRequiredService<IEventAggregator>();
+        var autoStart = services.GetRequiredService<IAutoStartService>();
 
-      // Compatibility bridge for add-ins that have not migrated to constructor injection yet.
-      Settings = services.GetRequiredService<Managers.SettingsManager>();
-      AppEvents.Instance = services.GetRequiredService<IEventAggregator>();
-      services.GetRequiredService<IAutoStartService>();
-      Application.Run(services.GetRequiredService<MainHandler>());
+        // Repair stale paths on manual launches, not while Windows processes its Run entries.
+        if (!args.Contains("--auto-start", StringComparer.OrdinalIgnoreCase))
+        {
+          try
+          {
+            autoStart.RepairRegistration();
+          }
+          catch (Exception ex) when (ex is UnauthorizedAccessException || ex is System.IO.IOException || ex is System.Security.SecurityException)
+          {
+            Log.Warn($"Unable to repair Windows startup registration: {ex.Message}");
+          }
+        }
+
+        updates = services.GetRequiredService<ApplicationUpdates>();
+        Application.Run(services.GetRequiredService<MainHandler>());
+      }
+
+      updates.ApplyPendingUpdate();
 
       // Application.Run(new Views.MainForm());
       // Application.Run(new Views.PreferencesForm());

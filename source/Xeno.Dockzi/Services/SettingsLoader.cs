@@ -35,8 +35,13 @@ public static class SettingsLoader
     return settings;
   }
 
-  public static StorageMethod SelectStorageMethod()
+  public static StorageMethod SelectStorageMethod(ApplicationPaths paths = null)
   {
+    // Packaged installations must never save into Velopack's replaceable current directory.
+    paths ??= ApplicationPaths.Current;
+    if (paths.IsPackaged)
+      return paths.IsPortable ? StorageMethod.PortableApp : StorageMethod.SingleUser;
+
     foreach (var method in new[] { StorageMethod.PortableApp, StorageMethod.AllUsers, StorageMethod.SingleUser })
     {
       if (File.Exists(Path.Combine(Helpers.GetStorageFolder(method), Constants.SettingsFile)) || LegacyPaths(method).Any(File.Exists))
