@@ -19,9 +19,11 @@ public class InstallerTests
       Directory.CreateDirectory(second);
       File.WriteAllText(Path.Combine(first, "Dockzi.install.json"), "{}");
       File.WriteAllText(Path.Combine(second, "Dockzi.install.json"), "{}");
+
       string local = Path.Combine(root, "user-data");
       var oldPaths = new ApplicationPaths(first, local);
       var newPaths = new ApplicationPaths(second, local);
+
       Assert.IsFalse(oldPaths.IsPortable);
       Assert.AreEqual(Config.StorageMethod.SingleUser, SettingsLoader.SelectStorageMethod(oldPaths));
       Assert.AreEqual(Path.Combine(local, "XI", "Dockzi"), oldPaths.DataDirectory);
@@ -42,13 +44,16 @@ public class InstallerTests
       string portableData = Path.Combine(root, "portable-data");
       Directory.CreateDirectory(app);
       var development = new ApplicationPaths(app, root, portableData);
+
       Assert.IsTrue(development.IsPortable);
       Assert.AreEqual(portableData, development.DataDirectory);
+
       File.WriteAllText(Path.Combine(app, "Dockzi.install.json"), "{}");
       File.WriteAllText(Path.Combine(root, "Dockzi.exe"), string.Empty);
       Assert.AreEqual(Path.Combine(root, "Dockzi.exe"), new ApplicationPaths(app, root).LauncherPath);
       File.WriteAllText(Path.Combine(app, "Dockzi.portable"), string.Empty);
       var portable = new ApplicationPaths(app, root, portableData);
+
       Assert.AreEqual(portableData, portable.DataDirectory);
       Assert.AreEqual(Config.StorageMethod.PortableApp, SettingsLoader.SelectStorageMethod(portable));
     });
@@ -63,10 +68,13 @@ public class InstallerTests
       string path = Path.Combine(root, "Dockzi.install.json");
       File.WriteAllText(path, "{\"UpdateUrl\":\"https://updates.example.com/dockzi/\",\"Channel\":\"win\"}");
       var configuration = InstallationConfiguration.Load(root);
+
       Assert.AreEqual("https://updates.example.com/dockzi/", configuration.UpdateUrl);
       Assert.AreEqual("win", configuration.Channel);
+
       File.WriteAllText(path, "{\"UpdateUrl\":\"http://updates.example.com/\"}");
       Assert.ThrowsExactly<InvalidDataException>(() => InstallationConfiguration.Load(root));
+
       File.WriteAllText(path, "{\"UpdateUrl\":\"C:\\\\packages\"}");
       Assert.ThrowsExactly<InvalidDataException>(() => InstallationConfiguration.Load(root));
     });

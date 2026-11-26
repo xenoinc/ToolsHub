@@ -1,4 +1,4 @@
-﻿/* Copyright Xeno Innovations, Inc. 2018
+/* Copyright Xeno Innovations, Inc. 2018
  * Date:    2018-12-27
  * Author:  Damian Suess
  * File:    SystemTestHelpers.cs
@@ -6,40 +6,39 @@
  *  Basic tests helper
  */
 
-namespace Xeno.Dockzi.Tests.SystemTests
+namespace Xeno.Dockzi.Tests.Helpers;
+
+using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xeno.Dockzi.Config;
+
+public static class TestHelpers
 {
-  using System;
-  using Microsoft.VisualStudio.TestTools.UnitTesting;
-  using Xeno.Dockzi.Config;
-
-  public static class TestHelpers
+  /// <summary>Clear and create test folder.</summary>
+  public static void PrepareTestsFolder()
   {
-    /// <summary>Clear and create test folder</summary>
-    public static void PrepareTestsFolder()
+    try
     {
-      try
-      {
-        // WARNING: ONLY USE StorageMethod.UnitTest!!
-        System.IO.Directory.CreateDirectory(Helpers.GetStorageFolder(StorageMethod.UnitTest));
-      }
-      catch (Exception ex)
-      {
-        Assert.Fail($"Failed to create UnitTest folder. {ex.Message}");
-      }
+      // WARNING: ONLY USE StorageMethod.UnitTest!!
+      System.IO.Directory.CreateDirectory(Helpers.GetStorageFolder(StorageMethod.UnitTest));
     }
-
-    /// <summary>Remove all documents from test folder</summary>
-    public static void CleanTestsFolder()
+    catch (Exception ex)
     {
-      try
-      {
-        if (System.IO.Directory.Exists(Helpers.GetStorageFolder(StorageMethod.UnitTest)))
-          System.IO.Directory.Delete(Helpers.GetStorageFolder(StorageMethod.UnitTest), true);
-      }
-      catch (Exception ex)
-      {
-        Assert.Fail($"Failed to delete UnitTest folder. {ex.Message}");
-      }
+      Assert.Fail($"Failed to create UnitTest folder. {ex.Message}");
+    }
+  }
+
+  /// <summary>Remove all documents from test folder.</summary>
+  public static void CleanTestsFolder()
+  {
+    try
+    {
+      if (System.IO.Directory.Exists(Helpers.GetStorageFolder(StorageMethod.UnitTest)))
+        System.IO.Directory.Delete(Helpers.GetStorageFolder(StorageMethod.UnitTest), true);
+    }
+    catch (Exception ex)
+    {
+      Assert.Fail($"Failed to delete UnitTest folder. {ex.Message}");
     }
   }
 }

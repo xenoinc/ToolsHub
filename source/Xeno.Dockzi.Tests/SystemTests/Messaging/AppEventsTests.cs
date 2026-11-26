@@ -1,4 +1,4 @@
-﻿namespace Xeno.Dockzi.Tests.SystemTests.Messaging;
+namespace Xeno.Dockzi.Tests.SystemTests.Messaging;
 
 using System;
 using System.Collections.Generic;
@@ -14,6 +14,54 @@ using Xeno.Dockzi.Services.Messaging;
 [TestClass]
 public class AppEventsTests
 {
+  [TestMethod]
+  public async Task BackgroundPublisherUsesDispatcherBeforeUpdatingTrayAsync()
+  {
+    var events = new EventAggregator();
+    var queued = new System.Collections.Concurrent.ConcurrentQueue<Action>();
+    int callbackThread = 0;
+
+    using var subscriptions = new TrayEventSubscriptions(
+      events, () => callbackThread = Environment.CurrentManagedThreadId, _ => { }, _ => { }, queued.Enqueue);
+
+    await Task.Run(() => events.Publish(new SystemTrayRefreshRequest()));
+    Assert.AreEqual(0, callbackThread);
+    Assert.IsTrue(queued.TryDequeue(out var action));
+
+    int dispatchThread = Environment.CurrentManagedThreadId;
+    action();
+
+    Assert.AreEqual(dispatchThread, callbackThread);
+  }
+
+  [TestMethod]
+  public void DisposingTraySubscriptionsStopsAllDeliveryIncludingQueuedEvents()
+  {
+    var events = new EventAggregator();
+    var queued = new List<Action>();
+    int callbackCount = 0;
+
+    var subscriptions = new TrayEventSubscriptions(
+      events, () => callbackCount++, _ => callbackCount++, _ => callbackCount++, queued.Add);
+
+    events.Publish(new SystemTrayRefreshRequest());
+    events.Publish(new SystemTrayNotificationRequest("queued"));
+    events.Publish(new SystemTrayChangeIconRequest(null));
+    Assert.HasCount(3, queued);
+
+    subscriptions.Dispose();
+    subscriptions.Dispose();
+
+    foreach (var action in queued)
+      action();
+
+    events.Publish(new SystemTrayRefreshRequest());
+    events.Publish(new SystemTrayNotificationRequest("disposed"));
+    events.Publish(new SystemTrayChangeIconRequest(null));
+    Assert.AreEqual(0, callbackCount);
+    Assert.HasCount(3, queued);
+  }
+
   [TestMethod]
   public void ShortcutManagerPublishesRefreshOnSharedAggregator()
   {
@@ -35,6 +83,30 @@ public class AppEventsTests
 
     AppEvents.Instance.Publish(new SystemTrayRefreshRequest());
     Assert.AreEqual(2, count);
+  }
+
+  [TestMethod]
+  public void TraySubscriptionsRetainHandlersAcrossGarbageCollection()
+  {
+    var events = new EventAggregator();
+    int refreshCount = 0;
+    string notification = null;
+    bool iconReset = false;
+
+    using var subscriptions = new TrayEventSubscriptions(
+      events, () => refreshCount++, message => notification = message, icon => iconReset = icon == null, action => action());
+
+    GC.Collect();
+    GC.WaitForPendingFinalizers();
+    GC.Collect();
+
+    events.Publish(new SystemTrayRefreshRequest());
+    events.Publish(new SystemTrayNotificationRequest("Hello"));
+    events.Publish(new SystemTrayChangeIconRequest(null));
+
+    Assert.AreEqual(1, refreshCount);
+    Assert.AreEqual("Hello", notification);
+    Assert.IsTrue(iconReset);
   }
 
   [TestMethod]
@@ -66,77 +138,5 @@ public class AppEventsTests
     GC.KeepAlive(notification);
     GC.KeepAlive(update);
     GC.KeepAlive(refresh);
-  }
-
-  [TestMethod]
-  public void TraySubscriptionsRetainHandlersAcrossGarbageCollection()
-  {
-    var events = new EventAggregator();
-    int refreshCount = 0;
-    string notification = null;
-    bool iconReset = false;
-
-    using var subscriptions = new TrayEventSubscriptions(
-      events, () => refreshCount++, message => notification = message, icon => iconReset = icon == null, action => action());
-
-    GC.Collect();
-    GC.WaitForPendingFinalizers();
-    GC.Collect();
-
-    events.Publish(new SystemTrayRefreshRequest());
-    events.Publish(new SystemTrayNotificationRequest("Hello"));
-    events.Publish(new SystemTrayChangeIconRequest(null));
-
-    Assert.AreEqual(1, refreshCount);
-    Assert.AreEqual("Hello", notification);
-    Assert.IsTrue(iconReset);
-  }
-
-  [TestMethod]
-  public void DisposingTraySubscriptionsStopsAllDeliveryIncludingQueuedEvents()
-  {
-    var events = new EventAggregator();
-    var queued = new List<Action>();
-    int callbackCount = 0;
-
-    var subscriptions = new TrayEventSubscriptions(
-      events, () => callbackCount++, _ => callbackCount++, _ => callbackCount++, queued.Add);
-
-    events.Publish(new SystemTrayRefreshRequest());
-    events.Publish(new SystemTrayNotificationRequest("queued"));
-    events.Publish(new SystemTrayChangeIconRequest(null));
-    Assert.AreEqual(3, queued.Count);
-
-    subscriptions.Dispose();
-    subscriptions.Dispose();
-
-    foreach (var action in queued)
-      action();
-
-    events.Publish(new SystemTrayRefreshRequest());
-    events.Publish(new SystemTrayNotificationRequest("disposed"));
-    events.Publish(new SystemTrayChangeIconRequest(null));
-    Assert.AreEqual(0, callbackCount);
-    Assert.AreEqual(3, queued.Count);
-  }
-
-  [TestMethod]
-  public async Task BackgroundPublisherUsesDispatcherBeforeUpdatingTray()
-  {
-    var events = new EventAggregator();
-    var queued = new System.Collections.Concurrent.ConcurrentQueue<Action>();
-    int callbackThread = 0;
-
-    using var subscriptions = new TrayEventSubscriptions(
-      events, () => callbackThread = Environment.CurrentManagedThreadId, _ => { }, _ => { }, queued.Enqueue);
-
-    await Task.Run(() => events.Publish(new SystemTrayRefreshRequest()));
-    Assert.AreEqual(0, callbackThread);
-    Assert.IsTrue(queued.TryDequeue(out var action));
-
-    int dispatchThread = Environment.CurrentManagedThreadId;
-    action();
-
-    Assert.AreEqual(dispatchThread, callbackThread);
   }
 }

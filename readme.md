@@ -1,8 +1,8 @@
 # Dockzi
 
-Flexible tools launcher desktop app which is "_not your average extensible sidebar_"
+Dockzi is a flexible app launcher for the Windows Desktop with Pop-up sidebar dock, System Tray, and extendable with your own custom add-ins! Formerly known as "_ToolsHub_" and rebranded as "_**Dockzi**_" in 2026 to emphasize on its key sidebar dock feature.
 
-**_This project is a Work in Progress_**
+> "_Not your average extensible sidebar_"
 
 |||
 | --- | --- |

@@ -1,4 +1,4 @@
-﻿/* Copyright Xeno Innovations, Inc. 2018
+/* Copyright Xeno Innovations, Inc. 2018
  * Date:    2018-12-19
  * Author:  Damian Suess
  * File:    PropertyTests.cs
@@ -33,7 +33,7 @@ namespace Xeno.Dockzi.Tests.SystemTests
     public void Create1PropertyAndSerializationTest()
     {
       string guid = System.Guid.NewGuid().ToString();
-      Properties bag1 = new Properties(guid)
+      Properties bag1 = new(guid)
       {
         Items = new Properties.ItemCollection { { "key1", "value" } }
       };
@@ -61,7 +61,7 @@ namespace Xeno.Dockzi.Tests.SystemTests
       Log.Debug(json);
 
       Assert.IsNotNull(bag2);
-      Assert.AreEqual(bags1.Count, bags2.Count);
+      Assert.HasCount(bags1.Count, bags2);
     }
   }
 }

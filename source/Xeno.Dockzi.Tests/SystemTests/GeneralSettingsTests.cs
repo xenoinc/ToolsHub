@@ -1,4 +1,4 @@
-﻿namespace Xeno.Dockzi.Tests.SystemTests
+namespace Xeno.Dockzi.Tests.SystemTests
 {
   using System;
   using System.IO;
@@ -10,7 +10,7 @@
   using Xeno.Dockzi.Views.Preferences;
 
   [TestClass]
-  [System.Runtime.Versioning.SupportedOSPlatform("windows7.0")]
+  [OSCondition(OperatingSystems.Windows)]
   public class GeneralSettingsTests
   {
     [TestMethod]
@@ -24,16 +24,19 @@
 
         var service = new AutoStartService(@"C:\Program Files\Dockzi\Dockzi.exe", testPath, "TestApp");
         Assert.IsFalse(service.IsEnabled);
+
         service.SetEnabled(false);
         service.SetEnabled(true);
         Assert.IsTrue(service.IsEnabled);
         service.SetEnabled(true);
+
         using (var key = Registry.CurrentUser.OpenSubKey(testPath))
           Assert.AreEqual(@"""C:\Program Files\Dockzi\Dockzi.exe"" --auto-start", key.GetValue("TestApp"));
 
         service.SetEnabled(false);
         service.SetEnabled(false);
         Assert.IsFalse(service.IsEnabled);
+
         using (var key = Registry.CurrentUser.OpenSubKey(testPath))
           Assert.AreEqual("leave this alone", key.GetValue("OtherApp"));
       }
@@ -67,8 +70,10 @@
         service.SetEnabled(false);
         using (var key = Registry.CurrentUser.CreateSubKey(testPath))
           key.SetValue("ToolsHub", @"""C:\OtherInstallation\ToolsHub.exe"" --auto-start");
+
         service = new AutoStartService(@"C:\Apps\Dockzi.exe", testPath, "Dockzi", "ToolsHub");
         Assert.IsFalse(service.IsEnabled);
+
         using (var key = Registry.CurrentUser.OpenSubKey(testPath))
           Assert.AreEqual(@"""C:\OtherInstallation\ToolsHub.exe"" --auto-start", key.GetValue("ToolsHub"));
       }
@@ -86,14 +91,18 @@
         var service = new FakeAutoStartService();
         using var page = new GeneralPreferencesPage(service);
         var checkBox = (CheckBox)page.Controls.Find("EnableAutoStart", true)[0];
+
         Assert.IsFalse(checkBox.Checked);
+
         checkBox.Checked = true;
+
         Assert.AreEqual(0, service.SaveCount);
         Assert.IsTrue(page.TrySave(out _));
         Assert.IsTrue(service.IsEnabled);
         Assert.AreEqual(1, service.SaveCount);
         Assert.IsTrue(page.TrySave(out _));
         Assert.AreEqual(1, service.SaveCount);
+
         checkBox.Checked = false;
         Assert.IsTrue(page.TrySave(out _));
         Assert.IsFalse(service.IsEnabled);
@@ -126,9 +135,11 @@
         var service = new FakeAutoStartService { FailSave = true };
         using var page = new GeneralPreferencesPage(service);
         ((CheckBox)page.Controls.Find("EnableAutoStart", true)[0]).Checked = true;
+
         Assert.IsFalse(page.TrySave(out string error));
-        StringAssert.Contains(error, "Unable to update Windows startup settings");
+        Assert.Contains("Unable to update Windows startup settings", error);
         Assert.IsFalse(service.IsEnabled);
+
         service.FailSave = false;
         Assert.IsTrue(page.TrySave(out _));
         Assert.IsTrue(service.IsEnabled);
@@ -149,9 +160,11 @@
           failure = ex;
         }
       });
+
       thread.SetApartmentState(ApartmentState.STA);
       thread.Start();
       thread.Join();
+
       if (failure != null)
         System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(failure).Throw();
     }
@@ -168,6 +181,7 @@
       {
         if (FailSave)
           throw new IOException("Startup settings unavailable.");
+
         IsEnabled = enabled;
         SaveCount++;
       }
