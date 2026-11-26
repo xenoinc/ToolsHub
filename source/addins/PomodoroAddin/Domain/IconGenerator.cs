@@ -1,3 +1,11 @@
+/* Copyright Xeno Innovations, Inc. 2019
+ * Date:    2019-1-22
+ * Author:  Damian Suess
+ * File:    IconGenerator.cs
+ * Description:
+ *  Generate an icon from text
+ */
+
 namespace Xeno.Dockzi.PomodoroAddin.Domain;
 
 using System;
