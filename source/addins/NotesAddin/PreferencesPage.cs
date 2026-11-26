@@ -4,31 +4,26 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
+using System.Runtime.Versioning;
 using System.Windows.Forms;
 
+[SupportedOSPlatform("windows")]
 public sealed class PreferencesPage : Form
 {
-  private readonly Func<bool> _confirmDelete;
-
-  private readonly CheckBox _enabled = new()
+  private readonly CheckBox _chkNewNoteGlobalShortcut = new()
   {
     Text = "Enable global shortcut for a new note",
     AutoSize = true,
   };
 
-  private readonly Label _error = new()
+  private readonly Func<bool> _confirmDelete;
+
+  private readonly Label _lblErrorMessage = new()
   {
     AutoSize = true,
     ForeColor = Color.Firebrick,
     MaximumSize = new Size(420, 0),
     Visible = false,
-  };
-
-  private readonly TextBox _keys = new()
-  {
-    ReadOnly = true,
-    Width = 180,
-    AccessibleName = "New note shortcut",
   };
 
   private readonly NotesManager _manager;
@@ -45,6 +40,14 @@ public sealed class PreferencesPage : Form
   };
 
   private readonly Font _trashFont = new("Segoe MDL2 Assets", 11);
+
+  private readonly TextBox _txtNewNoteShortcutKeys = new()
+  {
+    ReadOnly = true,
+    Width = 180,
+    AccessibleName = "New note shortcut",
+  };
+
   private readonly CheckBox _windows = new() { Text = "Include Windows key", AutoSize = true };
   private Keys _selected;
 
@@ -63,18 +66,18 @@ public sealed class PreferencesPage : Form
     Text = "Notes";
 
     _selected = manager.ShortcutKeys;
-    _enabled.Checked = manager.ShortcutEnabled;
+    _chkNewNoteGlobalShortcut.Checked = manager.ShortcutEnabled;
     _windows.Checked = manager.ShortcutWindows;
 
-    _keys.Text = new KeysConverter().ConvertToString(_selected);
+    _txtNewNoteShortcutKeys.Text = new KeysConverter().ConvertToString(_selected);
 
     var layout = new FlowLayoutPanel { Dock = DockStyle.Fill, FlowDirection = FlowDirection.TopDown, WrapContents = false, AutoSize = true };
 
-    layout.Controls.Add(_enabled);
+    layout.Controls.Add(_chkNewNoteGlobalShortcut);
 
     var shortcutRow = new FlowLayoutPanel { AutoSize = true, WrapContents = false, Margin = new Padding(0) };
 
-    shortcutRow.Controls.Add(_keys);
+    shortcutRow.Controls.Add(_txtNewNoteShortcutKeys);
     shortcutRow.Controls.Add(_windows);
     layout.Controls.Add(shortcutRow);
     layout.Controls.Add(new Label { Text = "Click the shortcut box and press a key combination (default: Ctrl+Alt+N).\nCtrl+S saves; Esc discards edits. Use # Title for the note title.", AutoSize = true, MaximumSize = new Size(420, 0) });
@@ -97,7 +100,7 @@ public sealed class PreferencesPage : Form
     var footer = new FlowLayoutPanel { Dock = DockStyle.Fill, AutoSize = true, FlowDirection = FlowDirection.TopDown, WrapContents = false };
 
     footer.Controls.Add(new Label { Text = "Notes folder: " + manager.StorageDirectory, AutoSize = true, MaximumSize = new Size(420, 0), Margin = new Padding(3, 8, 3, 3) });
-    footer.Controls.Add(_error);
+    footer.Controls.Add(_lblErrorMessage);
     container.Controls.Add(footer, 0, 3);
 
     Controls.Add(container);
@@ -135,17 +138,17 @@ public sealed class PreferencesPage : Form
 
     RefreshNotes();
 
-    _enabled.CheckedChanged += (_, _) => IsModified = true;
+    _chkNewNoteGlobalShortcut.CheckedChanged += (_, _) => IsModified = true;
     _windows.CheckedChanged += (_, _) => IsModified = true;
 
-    _keys.KeyDown += (_, e) =>
+    _txtNewNoteShortcutKeys.KeyDown += (_, e) =>
     {
       e.SuppressKeyPress = true;
       if (e.KeyCode is Keys.ControlKey or Keys.ShiftKey or Keys.Menu or Keys.LWin or Keys.RWin)
         return;
 
       _selected = e.KeyData;
-      _keys.Text = new KeysConverter().ConvertToString(_selected);
+      _txtNewNoteShortcutKeys.Text = new KeysConverter().ConvertToString(_selected);
       IsModified = true;
     };
   }
@@ -184,8 +187,8 @@ public sealed class PreferencesPage : Form
     }
     catch (Exception ex) when (ex is IOException || ex is UnauthorizedAccessException)
     {
-      _error.Text = "Unable to list notes: " + ex.Message;
-      _error.Visible = true;
+      _lblErrorMessage.Text = "Unable to list notes: " + ex.Message;
+      _lblErrorMessage.Visible = true;
     }
     finally
     {
@@ -197,16 +200,16 @@ public sealed class PreferencesPage : Form
   {
     try
     {
-      _manager.ConfigureShortcut(_enabled.Checked, _selected, _windows.Checked);
+      _manager.ConfigureShortcut(_chkNewNoteGlobalShortcut.Checked, _selected, _windows.Checked);
 
       IsModified = false;
-      _error.Text = string.Empty;
-      _error.Visible = false;
+      _lblErrorMessage.Text = string.Empty;
+      _lblErrorMessage.Visible = false;
     }
     catch (Exception ex) when (ex is ArgumentException || ex is Win32Exception)
     {
-      _error.Text = ex.Message;
-      _error.Visible = true;
+      _lblErrorMessage.Text = ex.Message;
+      _lblErrorMessage.Visible = true;
       // Keep the host dialog open when a shortcut cannot be applied.
       throw new InvalidOperationException(ex.Message, ex);
     }

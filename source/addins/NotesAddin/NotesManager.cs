@@ -7,12 +7,14 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Numerics;
+using System.Runtime.Versioning;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Lite.EventIpc;
 using Xeno.Dockzi.ExtensionModel.SystemTray;
 using Xeno.Dockzi.Services;
 
+[SupportedOSPlatform("windows")]
 public sealed partial class NotesManager : IDisposable
 {
   public const string SettingsId = "NotesAddin";
