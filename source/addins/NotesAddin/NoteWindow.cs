@@ -82,12 +82,7 @@ public sealed class NoteWindow : Window
     header.ColumnDefinitions.Add(new ColumnDefinition());
     header.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(38) });
 
-    // Balance Save and a spacer against the menu and Close to keep the title centered.
     header.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(38) });
-
-    var noteIcon = new Image { Source = Icon, Width = 20, Height = 20, IsHitTestVisible = false, ToolTip = "Dockzi Notes" };
-    Grid.SetColumn(noteIcon, 1);
-    header.Children.Add(noteIcon);
 
     var saveButton = new Button
     {
@@ -146,7 +141,8 @@ public sealed class NoteWindow : Window
         DragMove();
     };
 
-    Grid.SetColumn(_title, 2);
+    Grid.SetColumn(_title, 1);
+    Grid.SetColumnSpan(_title, 2);
     var closeButton = new Button
     {
       Content = "×",
