@@ -22,6 +22,10 @@ public class ApplicationUpdatesTests
     Assert.IsTrue(previous > SemanticVersion.Parse("0.6.0"));
     Assert.IsTrue(SemanticVersion.Parse("0.9.2-build.0") > next);
     Assert.IsTrue(SemanticVersion.Parse("0.9.1-build.100") > next);
+
+    var stable = SemanticVersion.Parse("0.9.1-build.58.stable");
+    Assert.IsTrue(stable > next);
+    Assert.IsTrue(SemanticVersion.Parse("0.9.1-build.59") > stable);
   }
 
   [TestMethod]

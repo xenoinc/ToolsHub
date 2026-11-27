@@ -1,86 +1,132 @@
-name: Increment Dockzi build version
+name: Merged PR releases
 
 on:
   pull_request_target:
-    branches: [develop]
+    branches: [develop, master]
     types: [closed]
 
 permissions:
   contents: read
 
+# Preserve every merge event, rather than replacing pending version increments.
+concurrency:
+  group: dockzi-release-${{ github.event.pull_request.base.ref }}
+  queue: max
+
 jobs:
-  increment:
+  prepare:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     permissions:
       contents: write
-
+    outputs:
+      commit: ${{ steps.plan.outputs.commit }}
+      tag: ${{ steps.plan.outputs.tag }}
+      package_version: ${{ steps.plan.outputs.package_version }}
+      branch: ${{ steps.plan.outputs.branch }}
     steps:
-      # Only check out the trusted base branch, never the PR head.
+      # Only merged base-branch code is checked out. Never use the PR head.
       - uses: actions/checkout@v6
         with:
-          ref: develop
+          ref: ${{ github.event.pull_request.base.ref }}
           fetch-depth: 0
 
-      - name: Test version increment script
+      - name: Prepare version and pin the release commit
+        id: plan
         shell: pwsh
-        run: ./scripts/Test-DockziVersion.ps1
-
-      - name: Increment and commit core Build component
-        shell: pwsh
-
         env:
-          PR_NUMBER: ${{ github.event.pull_request.number }}
+          BASE_BRANCH: ${{ github.event.pull_request.base.ref }}
           MERGE_SHA: ${{ github.event.pull_request.merge_commit_sha }}
-
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_LABELS_JSON: ${{ toJSON(github.event.pull_request.labels.*.name) }}
         run: |
-          $ErrorActionPreference = 'Stop'
-          $PSNativeCommandUseErrorActionPreference = $false
-
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-
-          $marker = "Dockzi-Version-Bump: PR #$env:PR_NUMBER ($env:MERGE_SHA)"
-
-          # Optimistic retries let every merge increment once, without cancelling queued runs.
-          for ($attempt = 1; $attempt -le 10; $attempt++)
-          {
-            git fetch origin develop
-            if ($LASTEXITCODE -ne 0) {
-              throw 'Unable to fetch develop.' }
-
-            # This reset is confined to the disposable Actions checkout.
-            git reset --hard origin/develop
-            if ($LASTEXITCODE -ne 0) {
-              throw 'Unable to reset the Actions checkout.' }
-
-            $existing = git log --format=%H --fixed-strings --grep="$marker"
-            if ($LASTEXITCODE -ne 0) {
-              throw 'Unable to check version history.' }
-
-            if ($existing) {
-              Write-Host 'This merged PR already incremented the version.'
-              exit 0
-            }
-
-            $version = & ./scripts/Increment-DockziVersion.ps1
-
-            git add -- source/Directory.Build.props
-            if ($LASTEXITCODE -ne 0) {
-              throw 'Unable to stage version change.' }
-
-            git commit -m "chore: bump Dockzi to $version" -m "$marker"
-            if ($LASTEXITCODE -ne 0) {
-              throw 'Unable to commit version change.' }
-
-            git push origin HEAD:develop
-            if ($LASTEXITCODE -eq 0) {
-              Write-Host "Dockzi version updated to $version."
-              exit 0
-            }
-
-            Start-Sleep -Seconds 2
+          $masterBump = 'Revision'
+          $labels = @($env:PR_LABELS_JSON | ConvertFrom-Json)
+          if ($env:BASE_BRANCH -eq 'master') {
+            if ('release:major' -in $labels -and 'release:minor' -in $labels) { throw 'Choose one release label: release:major or release:minor.' }
+            if ('release:major' -in $labels) { $masterBump = 'Major' }
+            elseif ('release:minor' -in $labels) { $masterBump = 'Minor' }
           }
+          $planPath = Join-Path $env:RUNNER_TEMP 'release-plan.json'
+          ./scripts/Prepare-MergedRelease.ps1 -BaseBranch $env:BASE_BRANCH -MergeCommit $env:MERGE_SHA -PullRequestNumber ([int]$env:PR_NUMBER) -OutputPath $planPath -MasterBump $masterBump
+          $plan = Get-Content -LiteralPath $planPath -Raw | ConvertFrom-Json
+          "commit=$($plan.Commit)" >> $env:GITHUB_OUTPUT
+          "tag=$($plan.Tag)" >> $env:GITHUB_OUTPUT
+          "package_version=$($plan.PackageVersion)" >> $env:GITHUB_OUTPUT
+          "branch=$($plan.BaseBranch)" >> $env:GITHUB_OUTPUT
 
-          throw 'Unable to push the version increment. Check branch permissions, then rerun this job.'
+  build:
+    needs: prepare
+    runs-on: windows-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ needs.prepare.outputs.commit }}
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 10.0.x
+          dotnet-quality: ga
+      - name: Validate the exact release commit
+        shell: pwsh
+        run: ./scripts/Invoke-CI.ps1 -Configuration Release -ResultsDirectory (Join-Path $env:RUNNER_TEMP 'release-validation')
+      - name: Build installer and update feed
+        shell: pwsh
+        env:
+          PACKAGE_VERSION: ${{ needs.prepare.outputs.package_version }}
+        run: |
+          $log = Join-Path $env:RUNNER_TEMP 'release-validation/packaging.log'
+          ./installer/pack.ps1 -Version $env:PACKAGE_VERSION -UpdateUrl ('https://github.com/' + $env:GITHUB_REPOSITORY) *> $log
+          if ($LASTEXITCODE -ne 0) { Get-Content $log -Tail 60; throw 'Release packaging failed.' }
+          Get-Content $log -Tail 20
+      - name: Upload complete release assets
+        uses: actions/upload-artifact@v7
+        with:
+          name: release-${{ needs.prepare.outputs.tag }}
+          if-no-files-found: error
+          retention-days: 14
+          path: |
+            publish/*.exe
+            publish/*.nupkg
+            publish/releases.*.json
+            publish/assets.*.json
+            publish/checksums-*.json
+            publish/RELEASES*
+      - name: Upload validation logs
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: release-validation-${{ needs.prepare.outputs.tag }}
+          path: ${{ runner.temp }}/release-validation/
+          if-no-files-found: ignore
+          retention-days: 14
+
+  publish:
+    needs: [prepare, build]
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ needs.prepare.outputs.commit }}
+          fetch-depth: 0
+      - uses: actions/download-artifact@v8
+        with:
+          name: release-${{ needs.prepare.outputs.tag }}
+          path: ${{ runner.temp }}/release-assets
+      - name: Tag and publish the completed release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_BRANCH: ${{ needs.prepare.outputs.branch }}
+          RELEASE_COMMIT: ${{ needs.prepare.outputs.commit }}
+        run: >-
+          ./scripts/Publish-GitHubRelease.ps1
+          -Repository $env:GITHUB_REPOSITORY
+          -BaseBranch $env:RELEASE_BRANCH
+          -Commit $env:RELEASE_COMMIT
+          -AssetsDirectory (Join-Path $env:RUNNER_TEMP 'release-assets')
