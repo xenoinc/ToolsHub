@@ -19,7 +19,20 @@ Only merged PRs trigger releases; closing an unmerged PR or directly pushing a b
 
 Every release contains Setup.exe, the full `.nupkg`, channel feed JSON, generated asset metadata, and checksums. Releases run in the same workflow as version preparation because GitHub token-created commits/tags do not trigger ordinary push workflows. Per-branch [`queue: max` concurrency](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#example-queueing-multiple-pending-runs) preserves queued merge events; optimistic push retries handle intervening branch changes.
 
-The workflow checks out merged base-branch code, never an unmerged PR head. Build jobs have read-only repository permissions. Version preparation and publication use the built-in `GITHUB_TOKEN` with `contents: write`. Enable Actions and ensure branch/tag rules permit the bot's version commits on both branches and its release tags. Install the workflow and helper scripts on both `develop` and `master`. No repository policies are changed by these files.
+The workflow checks out merged base-branch code, never an unmerged PR head. Build jobs have read-only repository permissions. Version preparation authenticates with a GitHub App installation token restricted to this repository with Contents write permission. Publication uses the built-in `GITHUB_TOKEN` with `contents: write`. Install the workflow and helper scripts on both `develop` and `master`. No repository policies are changed by these files.
+
+### Release App setup
+
+Install the dedicated release App on ToolsHub with repository **Contents: Read and write** permission. Add that App to the ruleset covering `develop` and `master` with **Always allow** bypass mode, retaining the PR requirement for contributors. A repository-admin bypass does not apply to the default Actions token.
+
+Under repository **Settings → Secrets and variables → Actions**, create these repository secrets:
+
+- `RELEASE_APP_ID`: the numeric App ID from the App's General settings.
+- `RELEASE_APP_PRIVATE_KEY`: the full downloaded PEM private key, including its BEGIN/END lines.
+
+The workflow checks that both secrets are present before checkout and uses `actions/create-github-app-token@v2` to authenticate Git pushes as the App. The action revokes its token when the job finishes. The Git commit author name does not grant bypass access; the credential used for the push determines the actor. Ensure tag rules also permit publication using `GITHUB_TOKEN`.
+
+Merge the updated workflow through a new PR to activate it. Rerunning an older failed run reuses that run's original workflow definition, so it cannot acquire this authentication change. The new PR's merge starts a new run with the corrected workflow.
 
 ## Major and minor releases
 
