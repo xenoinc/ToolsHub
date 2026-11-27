@@ -130,6 +130,7 @@ namespace Xeno.Dockzi.Managers
       _trayNotify.Visible = true;
     }
 
+    /// <summary>Initialize System Tray Menu.</summary>
     private void InitTrayMenu()
     {
       string dbgTag = string.Empty;
@@ -142,16 +143,20 @@ namespace Xeno.Dockzi.Managers
       menuBuilder.Add(new ToolStripMenuItem("Options" + dbgTag, null, OnMenuProperties));
       menuBuilder.Add(new ToolStripSeparator());
 
-      List<ToolStripItem> epMenus = new List<ToolStripItem>();
+      List<ToolStripItem> epMenus = [];
 
       // Load add-in menus
       epMenus = LoadMenuFromExtensionPoint();
       if (epMenus.Count > 0)
         menuBuilder.AddRange(epMenus);
 
+      // Separator > About > Check for updates > Exit
+      menuBuilder.Add(new ToolStripSeparator());
+
       menuBuilder.Add(new ToolStripMenuItem("About", null, OnMenuAbout));
       if (_updates?.IsConfigured == true)
         menuBuilder.Add(new ToolStripMenuItem("Check for updates…", null, async (_, _) => await _updates.CheckAndInstallAsync()));
+
       menuBuilder.Add(new ToolStripMenuItem("Exit", null, OnMenuExit));
 
       _trayMenu = menuBuilder.ToArray();
