@@ -1,5 +1,34 @@
 # Contributing
 
+## Automated PR validation
+
+Every pull request runs **Build and test (Debug)** and **Build and test (Release)**
+on Windows with the .NET 10 SDK. Both checks restore dependencies, build the entire
+`source/Dockzi.slnx` solution with warnings treated as errors, run the PowerShell
+version-increment regression checks, and execute the complete
+`Xeno.Dockzi.Tests` suite. Merge queues and manual workflow runs are also supported.
+New commits cancel superseded validation runs for the same PR.
+
+The workflow uploads validation logs and test-platform diagnostics for 14 days,
+including when a check fails. It does not package or publish releases. The historical
+`tests/TestVeraCrypt` project is a manual GUI harness, not an automated test suite.
+
+To run the same checks locally on Windows with PowerShell 7:
+
+```powershell
+./scripts/Invoke-CI.ps1 -Configuration Release
+./scripts/Invoke-CI.ps1 -Configuration Debug
+```
+
+Logs and test working files default to a new directory under the system temporary
+folder. Use `-ResultsDirectory` to select another location.
+
+To make these checks mandatory before merging, add **Build and test (Debug)** and
+**Build and test (Release)** as required status checks in the target branch's
+GitHub ruleset or branch protection settings after the workflow has run once.
+
+## Contributing changes
+
 This is an open-source project under it's license. We encourage community members like yourself to contribute.
 
 You can contribute today by creating a **feature request**, **issue**, or **discussion** on the forum. From there we can have a brief discussion as to where this fits into the backlog priority. If this is something that fits within the Prism architecture, we'll kindly ask you to create a **Pull Request**. Any PR made without first having an issue/discussion may be closed.
