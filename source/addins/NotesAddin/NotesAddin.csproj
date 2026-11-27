@@ -10,6 +10,7 @@
   </PropertyGroup>
   
   <ItemGroup>
+    <Resource Include="Resources\NoteIcon.ico" />
     <ProjectReference Include="..\..\Xeno.Dockzi\Xeno.Dockzi.csproj" Private="false" />
     <PackageReference Include="Mono.Addins" />
     <PackageReference Include="Markdig" />

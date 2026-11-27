@@ -344,6 +344,33 @@ public class NotesAddinTests
   }
 
   [TestMethod]
+  public void PopupNotesUseTheirOwnEmbeddedIconInTheWindowAndHeader()
+  {
+    RunSta(() =>
+    {
+      var note = new Note(Guid.NewGuid(), "# Icon preview", default);
+      var window = new NoteWindow(note, _ => note);
+      try
+      {
+        Assert.IsNotNull(window.Icon);
+
+        var header = (System.Windows.Controls.Grid)((System.Windows.Controls.Grid)window.Content).Children[0];
+        var icon = header.Children.OfType<System.Windows.Controls.Image>().Single();
+
+        Assert.AreSame(window.Icon, icon.Source);
+
+        var frame = (System.Windows.Media.Imaging.BitmapFrame)window.Icon;
+        Assert.Contains(item => item.PixelWidth == 16, frame.Decoder.Frames);
+        Assert.Contains(item => item.PixelWidth == 256, frame.Decoder.Frames);
+      }
+      finally
+      {
+        window.CloseWithoutSaving();
+      }
+    });
+  }
+
+  [TestMethod]
   public void PreferencesListShowsAllNotesOpensOnDoubleClickAndDeletesOpenDraft()
   {
     RunSta(() => WithStore(store =>

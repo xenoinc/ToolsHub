@@ -29,16 +29,15 @@ namespace Xeno.Dockzi.Managers
 {
   public class SystemTrayManager : ApplicationContext
   {
-    private readonly Control _eventDispatcher = new Control();
-    private readonly TrayEventSubscriptions _eventSubscriptions;
-
     private readonly AddinsManager _addins;
+    private readonly Control _eventDispatcher = new();
+    private readonly TrayEventSubscriptions _eventSubscriptions;
     private readonly IPreferencesDialogService _preferences;
+    private readonly NotifyIcon _trayNotify = new();
     private readonly ApplicationUpdates _updates;
 
     private System.Drawing.Icon _customIcon;
     private ToolStripItem[] _trayMenu;
-    private NotifyIcon _trayNotify = new();
 
     public SystemTrayManager(AddinsManager addins, IEventAggregator events, IPreferencesDialogService preferences, ApplicationUpdates updates = null)
     {
@@ -46,8 +45,7 @@ namespace Xeno.Dockzi.Managers
       _preferences = preferences;
       _updates = updates;
       _eventDispatcher.CreateControl();
-      _eventSubscriptions = new TrayEventSubscriptions(
-        events, MenuRefresh, OnTrayNotification, OnTrayIconChanged, DispatchEvent);
+      _eventSubscriptions = new TrayEventSubscriptions(events, MenuRefresh, OnTrayNotification, OnTrayIconChanged, DispatchEvent);
       _trayNotify.DoubleClick += OnMenuDoubleClick;
       MenuRefresh();
     }
@@ -58,7 +56,7 @@ namespace Xeno.Dockzi.Managers
       {
         if (Helpers.IsDebugging)
         {
-          System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(16, 16);
+          System.Drawing.Bitmap bmp = new(16, 16);
           using (System.Drawing.Graphics gfx = System.Drawing.Graphics.FromImage(bmp))
             gfx.FillEllipse(System.Drawing.Brushes.Red, 0, 0, 16, 16);
 
@@ -110,6 +108,17 @@ namespace Xeno.Dockzi.Managers
       _trayNotify.BalloonTipTitle = message;
       _trayNotify.BalloonTipText = title;
       _trayNotify.ShowBalloonTip(displayTime, title, message, icon);
+    }
+
+    private void DispatchEvent(Action action)
+    {
+      if (_eventDispatcher.IsDisposed)
+        return;
+
+      if (_eventDispatcher.InvokeRequired)
+        _eventDispatcher.BeginInvoke(action);
+      else
+        action();
     }
 
     /// <summary>Redraw SysTray menu from memory</summary>
@@ -175,33 +184,6 @@ namespace Xeno.Dockzi.Managers
       return addinItems;
     }
 
-    private void DispatchEvent(Action action)
-    {
-      if (_eventDispatcher.IsDisposed)
-        return;
-
-      if (_eventDispatcher.InvokeRequired)
-        _eventDispatcher.BeginInvoke(action);
-      else
-        action();
-    }
-
-    private void OnTrayNotification(string message)
-    {
-      Log.Debug($"Alert bubble msg:'{message}'");
-      AlertBubble(string.Empty, message);
-    }
-
-    private void OnTrayIconChanged(System.Drawing.Icon icon)
-    {
-      Log.Debug(icon == null ? "Changing SystemTrayIcon to default" : "Changing SystemTrayIcon to custom");
-      var previous = _customIcon;
-      _trayNotify.Icon = icon ?? ApplicationIcon;
-      _customIcon = icon;
-      if (!ReferenceEquals(previous, icon))
-        previous?.Dispose();
-    }
-
     private void OnMenuAbout(object sender, EventArgs e)
     {
       Form f = new Views.AboutForm();
@@ -223,6 +205,22 @@ namespace Xeno.Dockzi.Managers
     private void OnMenuProperties(object sender, EventArgs e)
     {
       ShowPreferences();
+    }
+
+    private void OnTrayIconChanged(System.Drawing.Icon icon)
+    {
+      Log.Debug(icon == null ? "Changing SystemTrayIcon to default" : "Changing SystemTrayIcon to custom");
+      var previous = _customIcon;
+      _trayNotify.Icon = icon ?? ApplicationIcon;
+      _customIcon = icon;
+      if (!ReferenceEquals(previous, icon))
+        previous?.Dispose();
+    }
+
+    private void OnTrayNotification(string message)
+    {
+      Log.Debug($"Alert bubble msg:'{message}'");
+      AlertBubble(string.Empty, message);
     }
 
     private void ShowPreferences()
