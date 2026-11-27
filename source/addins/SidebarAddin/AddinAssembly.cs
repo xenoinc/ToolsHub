@@ -9,6 +9,9 @@
 // Define our add-in
 using Mono.Addins;
 
+// Attach to add-in host
+[assembly: Mono.Addins.AddinDependency("Xeno.Dockzi", "0.3")]
+
 [assembly: Mono.Addins.Addin(
   Namespace = "",
   Id = "SidebarAddin",
@@ -19,39 +22,7 @@ using Mono.Addins;
   Flags = Mono.Addins.Description.AddinFlags.None,
   Url = "https://github.com/xenoinc/ToolsHub")]
 
-[assembly:AddinProperty("Name", "Sidebar Add-in")]
 //// [assembly:AddinName("Sidebar Add-in")]
-[assembly:AddinDescription("Desktop dockable sidebar")]
-
-// Attach to add-in host
-[assembly: Mono.Addins.AddinDependency("Xeno.Dockzi", "0.3")]
-
-namespace Xeno.Dockzi.SidebarAddin
-{
-  public static class Constants
-  {
-    public static string AddinId => "Sidebar";
-
-    public static string KeyShortcuts => "Shortcuts";
-
-    public static string KeyLaunchers => "LauncherItems";
-
-    public static string KeyBackground => "BackgroundImage";
-
-    public static string KeyOpacity => "Opacity";
-
-    /// <summary>Screen side: None, Left, top, bottom, right</summary>
-    public static string KeyScreenArea => "ScreenArea";
-
-    /// <summary>Vertical, horizontal</summary>
-    public static string KeyScreenOrientation => "ScreenOrientation";
-
-    /// <summary>Monitor "1" (main)</summary>
-    public static string KeyScreenNumber => "ScreenNumber";
-
-    /// <summary>Use show sidebar(s) when Dockzi starts</summary>
-    public static string KeyShowSidebars => "ShowSidebars";
-
-    public static string KeyTintColor => "TintColor";
-  }
-}
+[assembly: AddinProperty("Name", "Sidebar Add-in")]
+[assembly: AddinDescription("Desktop dockable sidebar")]
+[assembly: Mono.Addins.AddinAuthor("Damian Suess")]

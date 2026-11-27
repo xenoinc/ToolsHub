@@ -1,4 +1,4 @@
-﻿namespace Xeno.Dockzi.Views.Preferences
+namespace Xeno.Dockzi.Views.Preferences
 {
   using System;
   using System.IO;
@@ -11,18 +11,35 @@
   public sealed class GeneralPreferencesPage : UserControl
   {
     private readonly IAutoStartService _autoStart;
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2213:Disposable fields should be disposed", Justification = "Owned by the form control tree and disposed by Form.Dispose.")]
     private readonly CheckBox _enableAutoStart;
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2213:Disposable fields should be disposed", Justification = "Owned and disposed by the form control tree.")]
+    private readonly CheckBox _receivePreviewUpdates;
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2213:Disposable fields should be disposed", Justification = "Owned by the form control tree and disposed by Form.Dispose.")]
     private readonly Label _status;
+
+    private readonly UpdatePreferences _updatePreferences;
+
     private bool _originalAutoStart;
+    private bool _originalPreviewUpdates;
 
     public GeneralPreferencesPage()
-      : this(new AutoStartService())
+      : this(new AutoStartService(), new UpdatePreferences(Program.Settings ?? SettingsLoader.Load()))
     {
     }
 
     public GeneralPreferencesPage(IAutoStartService autoStart)
+      : this(autoStart, null)
+    {
+    }
+
+    public GeneralPreferencesPage(IAutoStartService autoStart, UpdatePreferences updatePreferences)
     {
       _autoStart = autoStart ?? throw new ArgumentNullException(nameof(autoStart));
+      _updatePreferences = updatePreferences;
       AutoScaleMode = AutoScaleMode.Font;
       AutoScroll = true;
       Padding = new Padding(12);
@@ -51,16 +68,37 @@
         Margin = new Padding(0, 0, 0, 12),
       };
 
+      _originalPreviewUpdates = _updatePreferences?.ReceivePreviewUpdates ?? false;
+      _receivePreviewUpdates = new CheckBox
+      {
+        Name = "ReceivePreviewUpdates",
+        Text = "Bleeding-Edge Preview Updates",
+        AutoSize = true,
+        Checked = _originalPreviewUpdates,
+        Enabled = _updatePreferences != null,
+        Margin = new Padding(0, 0, 0, 8),
+      };
+
+      var previewDescription = new Label
+      {
+        Text = "Include GitHub prereleases when checking for Dockzi updates.",
+        AutoSize = true,
+        MaximumSize = new System.Drawing.Size(380, 0),
+        Margin = new Padding(0, 0, 0, 12),
+      };
+
       _status = new Label
       {
         AutoSize = true,
         MaximumSize = new System.Drawing.Size(380, 0),
         ForeColor = System.Drawing.SystemColors.GrayText,
-        Text = "Changes take effect when you click OK. Applies to your Windows account.",
+        Text = "Changes take effect when you click OK.",
       };
 
       layout.Controls.Add(_enableAutoStart);
       layout.Controls.Add(description);
+      layout.Controls.Add(_receivePreviewUpdates);
+      layout.Controls.Add(previewDescription);
       layout.Controls.Add(_status);
       Controls.Add(layout);
 
@@ -79,22 +117,34 @@
     public bool TrySave(out string error)
     {
       error = null;
-      if (!_enableAutoStart.Enabled)
-        return true;
-
       try
       {
-        if (_enableAutoStart.Checked != _originalAutoStart)
+        if (_enableAutoStart.Enabled && _enableAutoStart.Checked != _originalAutoStart)
           _autoStart.SetEnabled(_enableAutoStart.Checked);
-        else if (_enableAutoStart.Checked)
+        else if (_enableAutoStart.Enabled && _enableAutoStart.Checked)
           _autoStart.RepairRegistration();
 
         _originalAutoStart = _enableAutoStart.Checked;
-        return true;
       }
       catch (Exception ex) when (IsStartupAccessError(ex))
       {
         error = "Unable to update Windows startup settings: " + ex.Message;
+        return false;
+      }
+
+      try
+      {
+        if (_updatePreferences != null && _receivePreviewUpdates.Checked != _originalPreviewUpdates)
+        {
+          _updatePreferences.SaveReceivePreviewUpdates(_receivePreviewUpdates.Checked);
+          _originalPreviewUpdates = _receivePreviewUpdates.Checked;
+        }
+
+        return true;
+      }
+      catch (Exception ex) when (IsStartupAccessError(ex))
+      {
+        error = "Unable to save update settings: " + ex.Message;
         return false;
       }
     }

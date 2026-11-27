@@ -31,8 +31,8 @@ public sealed class WindowsLauncherShell : ILauncherShell
   public ImageSource GetIcon(string target)
   {
     // SHGetFileInfo resolves executable, file, directory and Windows shortcut icons.
-    var info = new ShellFileInfo();
-    SHGetFileInfo(target, 0, ref info, (uint)Marshal.SizeOf<ShellFileInfo>(), 0x100);
+    var info = default(ShellFileInfo);
+    NativeMethods.SHGetFileInfo(target, 0, ref info, (uint)Marshal.SizeOf<ShellFileInfo>(), 0x100);
     if (info.Icon == IntPtr.Zero)
       return CreateImage(System.Drawing.SystemIcons.Application.Handle);
 
@@ -42,7 +42,7 @@ public sealed class WindowsLauncherShell : ILauncherShell
     }
     finally
     {
-      DestroyIcon(info.Icon);
+      NativeMethods.DestroyIcon(info.Icon);
     }
   }
 
@@ -76,13 +76,6 @@ public sealed class WindowsLauncherShell : ILauncherShell
     return image;
   }
 
-  [DllImport("user32.dll")]
-  [return: MarshalAs(UnmanagedType.Bool)]
-  private static extern bool DestroyIcon(IntPtr icon);
-
-  [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
-  private static extern IntPtr SHGetFileInfo(string path, uint attributes, ref ShellFileInfo info, uint size, uint flags);
-
   [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
   private struct ShellFileInfo
   {
@@ -97,5 +90,15 @@ public sealed class WindowsLauncherShell : ILauncherShell
 
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 80)]
     public string TypeName;
+  }
+
+  private static class NativeMethods
+  {
+    [DllImport("user32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool DestroyIcon(IntPtr icon);
+
+    [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
+    public static extern IntPtr SHGetFileInfo(string path, uint attributes, ref ShellFileInfo info, uint size, uint flags);
   }
 }

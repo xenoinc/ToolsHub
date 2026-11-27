@@ -247,7 +247,7 @@ public class SidebarLauncherTests
 
       var model = new ToolbarViewModel(new MemoryStore(), new FakeShell(), new ApplicationSettings(settings));
       var view = new ToolbarView(model);
-      IntPtr region = CreateRectRgn(0, 0, 0, 0);
+      IntPtr region = NativeMethods.CreateRectRgn(0, 0, 0, 0);
 
       try
       {
@@ -268,27 +268,27 @@ public class SidebarLauncherTests
 
         IntPtr handle = new System.Windows.Interop.WindowInteropHelper(view).Handle;
 
-        Assert.IsTrue(GetWindowRect(handle, out var bounds));
+        Assert.IsTrue(NativeMethods.GetWindowRect(handle, out var bounds));
         Assert.IsTrue(bounds.Left >= screen.Left && bounds.Right <= screen.Right);
         Assert.IsTrue(bounds.Top >= screen.Top && bounds.Bottom <= screen.Bottom);
-        Assert.AreNotEqual(0, GetWindowRgn(handle, region));
+        Assert.AreNotEqual(0, NativeMethods.GetWindowRgn(handle, region));
 
-        _ = GetRgnBox(region, out var hidden);
+        _ = NativeMethods.GetRgnBox(region, out var hidden);
         double dpi = VisualTreeHelper.GetDpi(view).DpiScaleX;
 
         Assert.IsLessThanOrEqualTo(Math.Ceiling(3 * dpi) + 1, hidden.Right - hidden.Left);
 
         view.ApplySettings(new SidebarAppearance(edge, 1, 90, true, false));
         Assert.AreEqual(0, view.HiddenProgress);
-        Assert.AreNotEqual(0, GetWindowRgn(handle, region));
+        Assert.AreNotEqual(0, NativeMethods.GetWindowRgn(handle, region));
 
-        _ = GetRgnBox(region, out var shown);
+        _ = NativeMethods.GetRgnBox(region, out var shown);
         Assert.AreEqual(bounds.Right - bounds.Left, shown.Right - shown.Left, 1);
       }
       finally
       {
         view.Close();
-        DeleteObject(region);
+        NativeMethods.DeleteObject(region);
       }
     });
   }
@@ -519,13 +519,6 @@ public class SidebarLauncherTests
     });
   }
 
-  [System.Runtime.InteropServices.DllImport("gdi32.dll")]
-  private static extern IntPtr CreateRectRgn(int left, int top, int right, int bottom);
-
-  [System.Runtime.InteropServices.DllImport("gdi32.dll")]
-  [return: System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.Bool)]
-  private static extern bool DeleteObject(IntPtr value);
-
   private static T FindVisual<T>(DependencyObject parent)
     where T : DependencyObject
   {
@@ -543,16 +536,6 @@ public class SidebarLauncherTests
 
     return null;
   }
-
-  [System.Runtime.InteropServices.DllImport("gdi32.dll")]
-  private static extern int GetRgnBox(IntPtr region, out NativeRectangle rectangle);
-
-  [System.Runtime.InteropServices.DllImport("user32.dll")]
-  [return: System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.Bool)]
-  private static extern bool GetWindowRect(IntPtr window, out NativeRectangle rectangle);
-
-  [System.Runtime.InteropServices.DllImport("user32.dll")]
-  private static extern int GetWindowRgn(IntPtr window, IntPtr region);
 
   private static void RunSta(Action action)
   {
@@ -588,6 +571,26 @@ public class SidebarLauncherTests
     public int Right;
 
     public int Bottom;
+  }
+
+  private static class NativeMethods
+  {
+    [System.Runtime.InteropServices.DllImport("gdi32.dll")]
+    public static extern IntPtr CreateRectRgn(int left, int top, int right, int bottom);
+
+    [System.Runtime.InteropServices.DllImport("gdi32.dll")]
+    [return: System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.Bool)]
+    public static extern bool DeleteObject(IntPtr value);
+
+    [System.Runtime.InteropServices.DllImport("gdi32.dll")]
+    public static extern int GetRgnBox(IntPtr region, out NativeRectangle rectangle);
+
+    [System.Runtime.InteropServices.DllImport("user32.dll")]
+    [return: System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.Bool)]
+    public static extern bool GetWindowRect(IntPtr window, out NativeRectangle rectangle);
+
+    [System.Runtime.InteropServices.DllImport("user32.dll")]
+    public static extern int GetWindowRgn(IntPtr window, IntPtr region);
   }
 
   private sealed class FakePreferencesDialog : IPreferencesDialogService

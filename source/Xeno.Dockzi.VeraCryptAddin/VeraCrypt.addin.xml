@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!--
 Copyright Xeno Innovations, Inc. 2018
  * Date:    2018-7-18
@@ -9,11 +9,11 @@ Copyright Xeno Innovations, Inc. 2018
 -->
 <Addin namespace=""
        id="VeraCryptAddin"
-       version="1.0"
+       version="1.0.2"
        compatVersion="0.3"
        name="VeraCrypt Manager"
        author="Damian Suess"
-       copyright="Xeno Innovations, Inc. 2018-2019"
+       copyright="Xeno Innovations, Inc. 2018-2026"
        description="Automatically handles VeraCrypt mounting &amp; dismounting of encrypted drives."
        category="Tools"
        defaultEnabled="true"

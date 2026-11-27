@@ -29,7 +29,7 @@ internal class SysTrayExtensionNode : TypeExtensionNode
   public ToolStripMenuItem CreateMenuItem()
   {
     ToolStripMenuItem menuItem = new ToolStripMenuItem(Text);
-    foreach (var child in ChildNodes)
+    foreach (var child in GetChildNodes())
     {
       // menuItem.DropDownItems.Add(child.CreateMenuItem());
     }

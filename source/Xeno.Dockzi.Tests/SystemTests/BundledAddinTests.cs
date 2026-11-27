@@ -293,6 +293,15 @@ public class BundledAddinTests
       using (var scope = fixture.Provider.CreateScope())
       {
         var page = scope.ServiceProvider.GetRequiredService<Xeno.Dockzi.VeraCryptAddin.Views.PreferencesPage>();
+        var openExplorer = Find<CheckBox>(page, "ChkOpenExplorerAfterMount");
+
+        Assert.IsFalse(openExplorer.Checked);
+        Assert.IsFalse(page.IsModified);
+
+        openExplorer.Checked = true;
+        Assert.IsTrue(page.IsModified);
+        Assert.IsFalse(fixture.Provider.GetRequiredService<VeraCryptManager>().SettingOpenExplorerAfterMount);
+
         Find<TextBox>(page, "TxtHcPath").Text = "sample.hc";
         Find<TextBox>(page, "TxtHcPass").Text = "test-value";
         Find<CheckBox>(page, "ChkOnStartMount").Checked = true;
@@ -308,6 +317,16 @@ public class BundledAddinTests
       reloaded.LoadFile();
       Assert.AreEqual("protected:sample.hc", reloaded.GetValue("VeraCryptAddin", "HcPath"));
 
+      Assert.IsTrue(new ApplicationSettings(reloaded).GetBool("VeraCryptAddin", "OpenExplorerAfterMount", false));
+
+      using (var reopenedScope = fixture.Provider.CreateScope())
+      {
+        var reopened = reopenedScope.ServiceProvider.GetRequiredService<Xeno.Dockzi.VeraCryptAddin.Views.PreferencesPage>();
+        Assert.IsTrue(Find<CheckBox>(reopened, "ChkOpenExplorerAfterMount").Checked);
+        Find<CheckBox>(reopened, "ChkOpenExplorerAfterMount").Checked = false;
+      }
+
+      Assert.IsTrue(fixture.Provider.GetRequiredService<VeraCryptManager>().SettingOpenExplorerAfterMount);
       fixture.Provider.Dispose();
       Assert.AreEqual(0, fixture.Volumes.MountCount);
       Assert.AreEqual(0, fixture.Volumes.DismountCount);
@@ -330,6 +349,7 @@ public class BundledAddinTests
     Assert.AreEqual(17, manager.OnMount(string.Empty));
     Assert.AreEqual("volume.hc", fixture.Volumes.Path);
     Assert.AreEqual("test-value", fixture.Volumes.Password);
+    fixture.Volumes.Mounted = true;
     Assert.AreEqual(23, manager.OnDismount(string.Empty));
     Assert.IsTrue(fixture.Volumes.Force);
     Assert.AreEqual(1, fixture.Volumes.MountCount);
@@ -439,6 +459,8 @@ public class BundledAddinTests
 
     public int MountCount { get; private set; }
 
+    public bool Mounted { get; set; }
+
     public string Password { get; private set; }
 
     public string Path { get; private set; }
@@ -450,6 +472,10 @@ public class BundledAddinTests
       return 23;
     }
 
+    public System.Collections.Generic.IReadOnlyList<string> GetMountedDrives() => Mounted ? new[] { @"Z:\" } : Array.Empty<string>();
+
+    public bool IsDriveInUse(string drive) => Mounted;
+
     public bool IsInstalled(string executable) => true;
 
     public int Mount(string executable, string drive, string path, string password)
@@ -460,6 +486,8 @@ public class BundledAddinTests
 
       return 17;
     }
+
+    public void OpenInExplorer(string drive) => throw new NotSupportedException();
   }
 
   private sealed class TestWindow : ISidebarWindow

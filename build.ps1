@@ -13,10 +13,10 @@ Uses the packages already restored on this machine.
 param(
   [switch]$SkipRestore,
   [switch]$SkipInstaller,
-  [string]$Version = '0.6.0',
+  [string]$Version = '',
   [ValidateSet('win-x64', 'win-arm64')]
   [string]$Runtime = 'win-x64',
-  [string]$UpdateUrl = '',
+  [string]$UpdateUrl = 'https://github.com/xenoinc/ToolsHub',
   [ValidatePattern('^[a-zA-Z0-9_-]+$')]
   [string]$Channel = 'win',
   [string]$SignTemplate = ''

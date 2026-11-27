@@ -16,6 +16,7 @@
  */
 
 using System;
+using System.Buffers.Binary;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
@@ -25,7 +26,11 @@ namespace Xeno.Dockzi.VeraCryptAddin.Domain;
 
 public class Crypto
 {
-  private const string Version1 = "10"; // Version and cipher type
+  // Preserve the original AES helper format and PBKDF2 defaults for compatibility.
+  // These helpers are separate from the DPAPI settings path and are not a new encryption format.
+  private const int LegacyAesIterations = 1000;
+  private const int AesKeySizeBytes = 32;
+  private const int AesIvSizeBytes = 16;
 
   private readonly byte[] _entropy = { 8, 3, 198, 33, 7, 83, 1, 235 };
 
@@ -99,13 +104,10 @@ public class Crypto
     return Encoding.UTF8.GetBytes(data);
   }
 
-  /// <summary>
-  /// Encrypt the given string using AES.  The string can be decrypted using
-  /// DecryptStringAES().  The sharedSecret parameters must match.
-  /// </summary>
+  /// <summary>Encrypts text using the original password-based AES compatibility format.</summary>
   /// <param name="plainText">The text to encrypt.</param>
-  /// <param name="sharedSecret">A password used to generate a key for encryption.</param>
-  /// <returns>Encrypted string</returns>
+  /// <param name="sharedSecret">The password used to derive the encryption key.</param>
+  /// <returns>Base64 containing the little-endian IV length, IV, and AES-CBC ciphertext.</returns>
   private string EncryptStringAES(string plainText, string sharedSecret)
   {
     if (string.IsNullOrEmpty(plainText))
@@ -114,57 +116,38 @@ public class Crypto
     if (string.IsNullOrEmpty(sharedSecret))
       throw new ArgumentNullException(nameof(sharedSecret));
 
-    string outStr = null;                       // Encrypted string to return
-    RijndaelManaged aesAlg = null;              // RijndaelManaged object used to encrypt the data.
-
+    byte[] key = Rfc2898DeriveBytes.Pbkdf2(sharedSecret, _entropy, LegacyAesIterations, HashAlgorithmName.SHA1, AesKeySizeBytes);
     try
     {
-      // generate the key from the shared secret and the salt
-      Rfc2898DeriveBytes key = new Rfc2898DeriveBytes(sharedSecret, _entropy);
+      using var aes = Aes.Create();
+      aes.Key = key;
+      aes.Mode = CipherMode.CBC;
+      aes.Padding = PaddingMode.PKCS7;
+      aes.GenerateIV();
 
-      // Create a RijndaelManaged object
-      aesAlg = new RijndaelManaged();
-      aesAlg.Key = key.GetBytes(aesAlg.KeySize / 8);
+      using var output = new MemoryStream();
+      Span<byte> ivLength = stackalloc byte[sizeof(int)];
+      BinaryPrimitives.WriteInt32LittleEndian(ivLength, aes.IV.Length);
+      output.Write(ivLength);
+      output.Write(aes.IV);
 
-      // Create an encryptor to perform the stream transform.
-      ICryptoTransform encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
+      using (var encryptor = aes.CreateEncryptor())
+      using (var encrypted = new CryptoStream(output, encryptor, CryptoStreamMode.Write, leaveOpen: true))
+      using (var writer = new StreamWriter(encrypted))
+        writer.Write(plainText);
 
-      // Create the streams used for encryption.
-      using (MemoryStream memEncrypt = new MemoryStream())
-      {
-        // Suffix with the initialization vector (IV)
-        memEncrypt.Write(BitConverter.GetBytes(aesAlg.IV.Length), 0, sizeof(int));
-        memEncrypt.Write(aesAlg.IV, 0, aesAlg.IV.Length);
-        using (CryptoStream cstreamEncrypt = new CryptoStream(memEncrypt, encryptor, CryptoStreamMode.Write))
-        {
-          using (StreamWriter writerEncrypt = new StreamWriter(cstreamEncrypt))
-          {
-            // Write all data to the stream.
-            writerEncrypt.Write(plainText);
-          }
-        }
-
-        outStr = Convert.ToBase64String(memEncrypt.ToArray());
-      }
+      return Convert.ToBase64String(output.ToArray());
     }
     finally
     {
-      // Clear the RijndaelManaged object.
-      if (aesAlg != null)
-        aesAlg.Clear();
+      CryptographicOperations.ZeroMemory(key);
     }
-
-    // Return the encrypted bytes from the memory stream.
-    return outStr;
   }
 
-  /// <summary>
-  ///   Decrypt the given string.  Assumes the string was encrypted using
-  ///   EncryptStringAES(), using an identical sharedSecret.
-  /// </summary>
-  /// <param name="cipherText">The text to decrypt.</param>
-  /// <param name="sharedSecret">A password used to generate a key for decryption.</param>
-  /// <returns>Decrypted string</returns>
+  /// <summary>Decrypts text written by the original or updated AES compatibility helper.</summary>
+  /// <param name="cipherText">Base64 containing the IV length, IV, and AES-CBC ciphertext.</param>
+  /// <param name="sharedSecret">The password used for encryption.</param>
+  /// <returns>The decrypted text.</returns>
   private string DecryptStringAES(string cipherText, string sharedSecret)
   {
     if (string.IsNullOrEmpty(cipherText))
@@ -173,65 +156,40 @@ public class Crypto
     if (string.IsNullOrEmpty(sharedSecret))
       throw new ArgumentNullException(nameof(sharedSecret));
 
-    // Declare the RijndaelManaged object used to decrypt the data.
-    RijndaelManaged aesAlg = null;
+    using var input = new MemoryStream(Convert.FromBase64String(cipherText));
+    byte[] iv = ReadByteArray(input);
+    long remaining = input.Length - input.Position;
+    if (remaining == 0 || remaining % AesIvSizeBytes != 0)
+      throw new CryptographicException("The AES ciphertext must contain complete blocks.");
 
-    // Declare the string used to hold the decrypted text.
-    string plaintext = null;
-
+    byte[] key = Rfc2898DeriveBytes.Pbkdf2(sharedSecret, _entropy, LegacyAesIterations, HashAlgorithmName.SHA1, AesKeySizeBytes);
     try
     {
-      // generate the key from the shared secret and the salt
-      Rfc2898DeriveBytes key = new Rfc2898DeriveBytes(sharedSecret, _entropy);
-
-      // Create the streams used for decryption.
-      byte[] bytes = Convert.FromBase64String(cipherText);
-      using (MemoryStream memDecrypt = new MemoryStream(bytes))
-      {
-        // Create a RijndaelManaged object
-        // with the specified key and IV.
-        aesAlg = new RijndaelManaged();
-        aesAlg.Key = key.GetBytes(aesAlg.KeySize / 8);
-
-        // Get the initialization vector from the encrypted stream
-        aesAlg.IV = ReadByteArray(memDecrypt);
-
-        // Create a decryptor to perform the stream transform.
-        ICryptoTransform decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
-        using (CryptoStream cstreamDecrypt = new CryptoStream(memDecrypt, decryptor, CryptoStreamMode.Read))
-        {
-          using (StreamReader readerDecrypt = new StreamReader(cstreamDecrypt))
-
-            // Read the decrypted bytes from the decrypting stream
-            // and place them in a string.
-            plaintext = readerDecrypt.ReadToEnd();
-        }
-      }
+      using var aes = Aes.Create();
+      aes.Key = key;
+      aes.IV = iv;
+      aes.Mode = CipherMode.CBC;
+      aes.Padding = PaddingMode.PKCS7;
+      using var decryptor = aes.CreateDecryptor();
+      using var decrypted = new CryptoStream(input, decryptor, CryptoStreamMode.Read);
+      using var reader = new StreamReader(decrypted);
+      return reader.ReadToEnd();
     }
     finally
     {
-      // Clear the RijndaelManaged object.
-      if (aesAlg != null)
-        aesAlg.Clear();
+      CryptographicOperations.ZeroMemory(key);
     }
-
-    return plaintext;
   }
 
-  private byte[] ReadByteArray(Stream s)
+  private byte[] ReadByteArray(Stream stream)
   {
-    byte[] rawLength = new byte[sizeof(int)];
-    if (s.Read(rawLength, 0, rawLength.Length) != rawLength.Length)
-    {
-      throw new SystemException("Stream did not contain properly formatted byte array");
-    }
+    Span<byte> length = stackalloc byte[sizeof(int)];
+    stream.ReadExactly(length);
+    if (BinaryPrimitives.ReadInt32LittleEndian(length) != AesIvSizeBytes)
+      throw new CryptographicException("The AES initialization vector must be 16 bytes.");
 
-    byte[] buffer = new byte[BitConverter.ToInt32(rawLength, 0)];
-    if (s.Read(buffer, 0, buffer.Length) != buffer.Length)
-    {
-      throw new SystemException("Did not read byte array properly");
-    }
-
-    return buffer;
+    byte[] iv = new byte[AesIvSizeBytes];
+    stream.ReadExactly(iv);
+    return iv;
   }
 }

@@ -1,4 +1,4 @@
-﻿/* Copyright Xeno Innovations, Inc. 2018
+/* Copyright Xeno Innovations, Inc. 2018
  * Date:    2018-7-18
  * Author:  Damian Suess
  * File:    VeraCrypt.cs
@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Lite.EventIpc;
 using Microsoft.Win32;
 using Xeno.Dockzi.ExtensionModel.SystemTray;
@@ -18,36 +19,64 @@ using Xeno.Dockzi.VeraCryptAddin.Services;
 
 namespace Xeno.Dockzi.VeraCryptAddin;
 
-public class VeraCryptManager
+public class VeraCryptManager(
+  ISettingsService settings,
+  IEventAggregator events,
+  IVeraCryptOperations operations,
+  ISecretProtector secrets)
 {
-  private readonly ISettingsService _settings;
-  private readonly IEventAggregator _events;
-  private readonly IVeraCryptOperations _operations;
-  private readonly ISecretProtector _secrets;
+  private readonly IEventAggregator _events = events;
+  private readonly IVeraCryptOperations _operations = operations;
+  private readonly ISecretProtector _secrets = secrets;
+  private readonly ISettingsService _settings = settings;
 
-  public VeraCryptManager(ISettingsService settings, IEventAggregator events, IVeraCryptOperations operations, ISecretProtector secrets)
-  {
-    _settings = settings;
-    _events = events;
-    _operations = operations;
-    _secrets = secrets;
-  }
+  public bool CanDismount => IsValidInstall && IsMounted(ConfiguredDriveRoot);
+
+  public bool CanMount => IsValidInstall && ConfiguredDriveRoot != null
+    && !string.IsNullOrWhiteSpace(SettingHcPath) && !_operations.IsDriveInUse(ConfiguredDriveRoot);
+
+  public string ConfiguredDriveRoot => VeraCryptOperations.NormalizeDriveRoot(SettingHcDrive);
 
   public bool IsValidInstall => _operations.IsInstalled(SettingInstallPath);
 
-  public string SettingInstallPath => _settings.GetString(Constants.AddinId, Constants.KeyInstallPath, @"C:\Program Files\VeraCrypt\VeraCrypt.exe");
-
-  public bool SettingsForceDismounts => _settings.GetBool(Constants.AddinId, Constants.KeyForceDismounts, false);
-
   public string SettingHcDrive => _settings.GetString(Constants.AddinId, Constants.KeyHcDriveLetter, "Z");
-
-  public string SettingHcPath => SettingDecrypt(_settings.GetString(Constants.AddinId, Constants.KeyHcPath, string.Empty));
 
   public string SettingHcPass => SettingDecrypt(_settings.GetString(Constants.AddinId, Constants.KeyHcPass, string.Empty));
 
-  public bool SettingOnStartMount => _settings.GetBool(Constants.AddinId, Constants.KeyHcOnStartMount, false);
+  public string SettingHcPath => SettingDecrypt(_settings.GetString(Constants.AddinId, Constants.KeyHcPath, string.Empty));
+
+  public string SettingInstallPath => _settings.GetString(Constants.AddinId, Constants.KeyInstallPath, @"C:\Program Files\VeraCrypt\VeraCrypt.exe");
+
+  public bool SettingOpenExplorerAfterMount => _settings.GetBool(Constants.AddinId, Constants.KeyOpenExplorerAfterMount, false);
 
   public bool SettingOnExitDismount => _settings.GetBool(Constants.AddinId, Constants.KeyHcOnExitDismount, false);
+
+  public bool SettingOnStartMount => _settings.GetBool(Constants.AddinId, Constants.KeyHcOnStartMount, false);
+
+  public bool SettingsForceDismounts => _settings.GetBool(Constants.AddinId, Constants.KeyForceDismounts, false);
+
+  public static List<string> GetMountedVeraCryptDrives() => new(new VeraCryptOperations().GetMountedDrives());
+
+  /// <summary>Get list of drives not in use.</summary>
+  /// <returns>Available drives.</returns>
+  public List<string> GetAvailableDrives()
+  {
+    List<string> availDrives = new List<string>();
+
+    // pre-load A-Z
+    for (char c = 'A'; c <= 'Z'; c++)
+      availDrives.Add(c.ToString());
+
+    DriveInfo[] drivesInUse = DriveInfo.GetDrives();
+    foreach (DriveInfo d in drivesInUse)
+    {
+      string name = d.Name;
+      name = name.Replace(@":\", string.Empty);
+      availDrives.Remove(name);
+    }
+
+    return availDrives;
+  }
 
   /// <summary>Get VeraCrypt's install path</summary>
   /// <returns>Path of installed VeraCrypt.exe or empty</returns>
@@ -86,68 +115,65 @@ public class VeraCryptManager
     return pth;
   }
 
-  /// <summary>Get list of drives not in use</summary>
-  /// <returns>Available drives</returns>
-  public List<string> GetAvailableDrives()
-  {
-    List<string> availDrives = new List<string>();
+  public IReadOnlyList<string> GetMountedDrives() => _operations.GetMountedDrives();
 
-    // pre-load A-Z
-    for (char c = 'A'; c <= 'Z'; c++)
-      availDrives.Add(c.ToString());
-
-    DriveInfo[] drivesInUse = DriveInfo.GetDrives();
-    foreach (DriveInfo d in drivesInUse)
-    {
-      string name = d.Name;
-      name = name.Replace(@":\", string.Empty);
-      availDrives.Remove(name);
-    }
-
-    return availDrives;
-  }
-
-  /// <summary>Mount drive</summary>
-  /// <param name="targetIndexId">Index id of mount in settings db</param>
-  /// <returns>0 on success</returns>
-  public int OnMount(string targetIndexId)
-  {
-    if (!IsValidInstall)
-    {
-      Log.Warn($"Unable to mount. VeraCrypt install path is invalid '{SettingInstallPath}'");
-      return -1;
-    }
-
-    // 1. Use VolumeInfo lookup based on targetIndexId
-    // 2. Validate if it's already mounted or not
-    // 3. Update SysTray menu item's checkbox with mount state
-    string drive = SettingHcDrive;
-    string path = SettingHcPath;
-    string pass = SettingHcPass;
-
-    return _operations.Mount(SettingInstallPath, drive, path, pass);
-  }
-
-  /// <summary>Dismount VeraCrypt virtual drive</summary>
-  /// <param name="targetIndexId">Mounted drive id</param>
+  /// <summary>Dismount VeraCrypt virtual drive.</summary>
+  /// <param name="targetIndexId">Mounted drive id.</param>
   /// <returns>meh</returns>
   public int OnDismount(string targetIndexId)
   {
-    if (!IsValidInstall)
+    if (!CanDismount)
     {
-      Log.Warn($"Unable to dismount. VeraCrypt install path is invalid '{SettingInstallPath}'");
+      Log.Warn("Unable to dismount: the configured drive is not a mounted VeraCrypt drive or the installation is unavailable.");
       return -1;
     }
 
-    // 1. Use VolumeInfo lookup based on targetIndexId
-    // 2. Validate if it's already mounted or not
-    // 3. Update SysTray menu item's checkbox with mount state
-    string drive = SettingHcDrive;
+    string drive = ConfiguredDriveRoot[..1];
     string path = SettingHcPath;
     return _operations.Dismount(SettingInstallPath, drive, path, SettingsForceDismounts);
   }
 
-  /// <summary>Inform parent objects to refresh</summary>
+  /// <summary>Mount drive</summary>
+  /// <param name="targetIndexId">Index id of mount in settings db.</param>
+  /// <returns>0 on success</returns>
+  public int OnMount(string targetIndexId)
+  {
+    if (!CanMount)
+    {
+      Log.Warn("Unable to mount: the configured drive is occupied, the volume path is empty, or the installation is unavailable.");
+      return -1;
+    }
+
+    string root = ConfiguredDriveRoot;
+    string drive = root[..1];
+    string path = SettingHcPath;
+    string pass = SettingHcPass;
+    int result = _operations.Mount(SettingInstallPath, drive, path, pass);
+    if (result == 0 && SettingOpenExplorerAfterMount)
+      OnOpenInExplorer(root);
+
+    return result;
+  }
+
+  public int OnOpenInExplorer(string drive)
+  {
+    string root = VeraCryptOperations.NormalizeDriveRoot(drive);
+    if (!IsMounted(root))
+      return -1;
+
+    try
+    {
+      _operations.OpenInExplorer(root);
+      return 0;
+    }
+    catch (Exception ex)
+    {
+      Log.Warn("Unable to open the VeraCrypt drive in Explorer: " + ex.Message);
+      return -1;
+    }
+  }
+
+  /// <summary>Inform parent objects to refresh.</summary>
   public void RefreshSysTray()
   {
     // TODO: Inform parents to refresh (SysTray/Sidebar)
@@ -157,4 +183,6 @@ public class VeraCryptManager
   public string SettingDecrypt(string setting) => _secrets.Decrypt(setting);
 
   public string SettingEncrypt(string setting) => _secrets.Encrypt(setting);
+
+  private bool IsMounted(string root) => root != null && _operations.GetMountedDrives().Contains(root, StringComparer.OrdinalIgnoreCase);
 }

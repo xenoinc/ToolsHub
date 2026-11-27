@@ -13,9 +13,9 @@ namespace Xeno.Dockzi.LocalAddins.Shortcuts;
 
 using System;
 using System.Collections.Generic;
-using Lite.EventIpc;
-using System.Windows.Forms;
 using System.Text.Json;
+using System.Windows.Forms;
+using Lite.EventIpc;
 using Xeno.Dockzi.Config;
 using Xeno.Dockzi.ExtensionModel.SystemTray;
 using Xeno.Dockzi.Managers;

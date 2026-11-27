@@ -54,7 +54,11 @@ public class NotesAddinTests
         },
         edit: true,
         delete: () => store.Delete(note.Id),
-        confirmDelete: () => { confirmations++; return confirmed; });
+        confirmDelete: () =>
+        {
+          confirmations++;
+          return confirmed;
+        });
 
       window.Show();
 
@@ -299,7 +303,8 @@ public class NotesAddinTests
       }
       finally
       {
-        foreach (var window in OpenNotes()) window.CloseWithoutSaving();
+        foreach (var window in OpenNotes())
+          window.CloseWithoutSaving();
       }
     }));
   }
@@ -332,9 +337,37 @@ public class NotesAddinTests
       }
       finally
       {
-        foreach (var window in OpenNotes()) window.CloseWithoutSaving();
+        foreach (var window in OpenNotes())
+          window.CloseWithoutSaving();
       }
     }));
+  }
+
+  [TestMethod]
+  public void PopupNotesUseTheirOwnEmbeddedIconInTheWindowAndHeader()
+  {
+    RunSta(() =>
+    {
+      var note = new Note(Guid.NewGuid(), "# Icon preview", default);
+      var window = new NoteWindow(note, _ => note);
+      try
+      {
+        Assert.IsNotNull(window.Icon);
+
+        var header = (System.Windows.Controls.Grid)((System.Windows.Controls.Grid)window.Content).Children[0];
+        var icon = header.Children.OfType<System.Windows.Controls.Image>().Single();
+
+        Assert.AreSame(window.Icon, icon.Source);
+
+        var frame = (System.Windows.Media.Imaging.BitmapFrame)window.Icon;
+        Assert.Contains(item => item.PixelWidth == 16, frame.Decoder.Frames);
+        Assert.Contains(item => item.PixelWidth == 256, frame.Decoder.Frames);
+      }
+      finally
+      {
+        window.CloseWithoutSaving();
+      }
+    });
   }
 
   [TestMethod]
@@ -550,7 +583,7 @@ public class NotesAddinTests
 
   private static void RaiseMouseEvent(System.Windows.Forms.Control control, string name, System.Drawing.Rectangle bounds) =>
     typeof(System.Windows.Forms.Control).GetMethod(name, System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)
-    .Invoke(control, new object[] { new System.Windows.Forms.MouseEventArgs(System.Windows.Forms.MouseButtons.Left, name == "OnMouseDoubleClick" ? 2 : 1, bounds.Left + 8, bounds.Top + bounds.Height / 2, 0) });
+    .Invoke(control, new object[] { new System.Windows.Forms.MouseEventArgs(System.Windows.Forms.MouseButtons.Left, name == "OnMouseDoubleClick" ? 2 : 1, bounds.Left + 8, bounds.Top + (bounds.Height / 2), 0) });
 
   private static void RunSta(Action action)
   {

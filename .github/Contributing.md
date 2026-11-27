@@ -1,5 +1,46 @@
 # Contributing
 
+## Automated PR validation
+
+Every pull request runs **Build and test (Debug)** and **Build and test (Release)**
+on Windows with the .NET 10 SDK. Both checks restore dependencies, build the entire
+`source/Dockzi.slnx` solution with warnings treated as errors, run the PowerShell
+version-increment and release-automation regression checks, and execute the complete
+`Xeno.Dockzi.Tests` suite. Merge queues and manual workflow runs are also supported.
+New commits cancel superseded validation runs for the same PR.
+
+The workflow uploads validation logs and test-platform diagnostics for 14 days,
+including when a check fails. It does not package or publish releases. The historical
+`tests/TestVeraCrypt` project is a manual GUI harness, not an automated test suite.
+
+To run the same checks locally on Windows with PowerShell 7:
+
+```powershell
+./scripts/Invoke-CI.ps1 -Configuration Release
+./scripts/Invoke-CI.ps1 -Configuration Debug
+```
+
+Logs and test working files default to a new directory under the system temporary
+folder. Use `-ResultsDirectory` to select another location.
+
+To make these checks mandatory before merging, add **Build and test (Debug)** and
+**Build and test (Release)** as required status checks in the target branch's
+GitHub ruleset or branch protection settings after the workflow has run once.
+
+## Releases after merge
+
+PR merges into `develop` increment only the core Build number, validate/package that
+commit, and publish a tag such as `v0.9.1.58-preview` with a GitHub prerelease.
+PR merges into `master` increment Revision (preserving Build) and publish, for
+example, `v0.9.2.58` as a stable GitHub release. Label a master PR `release:major`
+for a milestone such as `v1.0.0.58`, or `release:minor` to increment Minor and
+reset Revision. These labels override the normal Revision increment. Both include the installer, update feed, and packages.
+General settings lets users opt into previews; the default is stable updates only.
+See [versioning and release automation](../docs/Versioning.md) for permissions,
+version mapping, retry behavior, and local regression tests.
+
+## Contributing changes
+
 This is an open-source project under it's license. We encourage community members like yourself to contribute.
 
 You can contribute today by creating a **feature request**, **issue**, or **discussion** on the forum. From there we can have a brief discussion as to where this fits into the backlog priority. If this is something that fits within the Prism architecture, we'll kindly ask you to create a **Pull Request**. Any PR made without first having an issue/discussion may be closed.
