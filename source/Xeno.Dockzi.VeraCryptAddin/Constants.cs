@@ -22,6 +22,8 @@ public static class Constants
 
   public static string KeyHcOnStartMount => "HcOnStartMount";
 
+  public static string KeyOpenExplorerAfterMount => "OpenExplorerAfterMount";
+
   public static string KeyHcPass => "HcPass";
 
   //// First-pass settings; these belong in an array

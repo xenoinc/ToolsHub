@@ -85,6 +85,27 @@ public class VeraCryptTrayTests
   }
 
   [TestMethod]
+  [DataRow(false, 0, true, false)]
+  [DataRow(true, 0, true, true)]
+  [DataRow(true, 1, true, false)]
+  [DataRow(true, 0, false, false)]
+  public void AutoOpenRequiresTheSettingASuccessfulExitAndAMountedDrive(bool enabled, int exitCode, bool mounted, bool opens)
+  {
+    var operations = new FakeOperations { MountResult = exitCode, ReportMountedAfterMount = mounted };
+    var manager = CreateManager(operations, openAfterMount: enabled);
+    Assert.AreEqual(exitCode, manager.OnMount(string.Empty));
+    Assert.AreEqual(opens ? @"Z:\" : null, operations.Opened);
+  }
+
+  [TestMethod]
+  public void ExplorerFailureDoesNotTurnASuccessfulMountIntoAFailure()
+  {
+    var operations = new FakeOperations { FailOpen = true };
+    Assert.AreEqual(0, CreateManager(operations, openAfterMount: true).OnMount(string.Empty));
+    Assert.HasCount(1, operations.Mounted);
+  }
+
+  [TestMethod]
   [DataRow("z")]
   [DataRow("Z:")]
   [DataRow("z:\\")]
@@ -109,11 +130,12 @@ public class VeraCryptTrayTests
     Assert.IsFalse(CreateManager(new FakeOperations(), drive).CanMount);
   }
 
-  private static VeraCryptManager CreateManager(FakeOperations operations, string drive = "Z")
+  private static VeraCryptManager CreateManager(FakeOperations operations, string drive = "Z", bool openAfterMount = false)
   {
     var settings = new SettingsManager(StorageMethod.UnitTest);
     settings.SetValue("VeraCryptAddin", "HcDrive", drive);
     settings.SetValue("VeraCryptAddin", "HcPath", "volume.hc");
+    settings.SetValue("VeraCryptAddin", "OpenExplorerAfterMount", openAfterMount.ToString());
     return new VeraCryptManager(new ApplicationSettings(settings), new EventAggregator(), operations, new PlainSecrets());
   }
 
@@ -152,6 +174,12 @@ public class VeraCryptTrayTests
   {
     public List<string> Mounted { get; } = new();
 
+    public int MountResult { get; set; }
+
+    public bool ReportMountedAfterMount { get; set; } = true;
+
+    public bool FailOpen { get; set; }
+
     public bool Occupied { get; set; }
 
     public bool Installed { get; set; } = true;
@@ -168,13 +196,21 @@ public class VeraCryptTrayTests
 
     public IReadOnlyList<string> GetMountedDrives() => Mounted;
 
-    public void OpenInExplorer(string drive) => Opened = drive;
+    public void OpenInExplorer(string drive)
+    {
+      if (FailOpen)
+        throw new InvalidOperationException("Test Explorer launch failure.");
+
+      Opened = drive;
+    }
 
     public int Mount(string executable, string drive, string path, string password)
     {
       MountCount++;
-      Mounted.Add(VeraCryptOperations.NormalizeDriveRoot(drive));
-      return 0;
+      if (MountResult == 0 && ReportMountedAfterMount)
+        Mounted.Add(VeraCryptOperations.NormalizeDriveRoot(drive));
+
+      return MountResult;
     }
 
     public int Dismount(string executable, string drive, string path, bool force)

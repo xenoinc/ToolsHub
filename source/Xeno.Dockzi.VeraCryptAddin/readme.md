@@ -9,6 +9,8 @@ The VeraCrypt submenu refreshes its drive state each time it opens. Mount is ena
 
 **Open in Explorer** lists all detected VeraCrypt-mounted drive letters, including volumes mounted outside Dockzi. It is disabled when none are mounted. Selecting a drive opens its root in Windows Explorer; browsing does not require the VeraCrypt executable to remain installed. The current settings still configure one volume for Mount/Dismount.
 
+In VeraCrypt settings, **Open in Windows Explorer after a successful mount** optionally opens the configured drive after Dockzi mounts it. It defaults to off and is saved with the other add-in settings. Explorer opens only when the mount returns success and the drive is detected as mounted. An Explorer launch failure does not change the mount result.
+
 ## Feature Wish-List
 We can't provide all features at once. Below is a quick wish-list of basic feature we want to provide you from with-in
 

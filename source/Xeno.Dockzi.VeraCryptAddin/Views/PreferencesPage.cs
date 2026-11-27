@@ -47,6 +47,7 @@ public partial class PreferencesPage : Form, IPreferencePageActions
     _settings.SetValue(Constants.AddinId, Constants.KeyHcPath, _manager.SettingEncrypt(TxtHcPath.Text));
     _settings.SetValue(Constants.AddinId, Constants.KeyHcPass, _manager.SettingEncrypt(TxtHcPass.Text));
 
+    _settings.SetValue(Constants.AddinId, Constants.KeyOpenExplorerAfterMount, ChkOpenExplorerAfterMount.Checked.ToString());
     _settings.SetValue(Constants.AddinId, Constants.KeyHcOnStartMount, ChkOnStartMount.Checked.ToString());
     _settings.SetValue(Constants.AddinId, Constants.KeyHcOnExitDismount, ChkOnExitDismount.Checked.ToString());
 
@@ -67,6 +68,7 @@ public partial class PreferencesPage : Form, IPreferencePageActions
     TxtHcPath.Text = _manager.SettingHcPath;
     TxtHcPass.Text = _manager.SettingHcPass;
 
+    ChkOpenExplorerAfterMount.Checked = _manager.SettingOpenExplorerAfterMount;
     ChkOnStartMount.Checked = _manager.SettingOnStartMount;
     ChkOnExitDismount.Checked = _manager.SettingOnExitDismount;
     ChkOnShutdownDismount.Checked = false;

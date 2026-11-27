@@ -1,4 +1,4 @@
-﻿namespace Xeno.Dockzi.VeraCryptAddin.Views
+namespace Xeno.Dockzi.VeraCryptAddin.Views
 {
   partial class PreferencesPage
   {
@@ -44,6 +44,7 @@
       ChkOnExitDismount = new System.Windows.Forms.CheckBox();
       groupBox2 = new System.Windows.Forms.GroupBox();
       CmboDrives = new System.Windows.Forms.ComboBox();
+      ChkOpenExplorerAfterMount = new System.Windows.Forms.CheckBox();
       BtnHcPath = new System.Windows.Forms.Button();
       TxtHcPath = new System.Windows.Forms.TextBox();
       label1 = new System.Windows.Forms.Label();
@@ -233,6 +234,7 @@
       // 
       // groupBox2
       // 
+      groupBox2.Controls.Add(ChkOpenExplorerAfterMount);
       groupBox2.Controls.Add(CmboDrives);
       groupBox2.Controls.Add(BtnHcPath);
       groupBox2.Controls.Add(TxtHcPath);
@@ -248,6 +250,17 @@
       groupBox2.TabIndex = 0;
       groupBox2.TabStop = false;
       groupBox2.Text = "Available Volumes";
+      //
+      // ChkOpenExplorerAfterMount
+      //
+      ChkOpenExplorerAfterMount.AutoSize = true;
+      ChkOpenExplorerAfterMount.Location = new System.Drawing.Point(7, 116);
+      ChkOpenExplorerAfterMount.Name = "ChkOpenExplorerAfterMount";
+      ChkOpenExplorerAfterMount.Size = new System.Drawing.Size(332, 19);
+      ChkOpenExplorerAfterMount.TabIndex = 17;
+      ChkOpenExplorerAfterMount.Text = "Open in Windows Explorer after a successful mount";
+      ChkOpenExplorerAfterMount.UseVisualStyleBackColor = true;
+      ChkOpenExplorerAfterMount.CheckedChanged += Check_CheckedChanged;
       // 
       // CmboDrives
       // 
@@ -365,6 +378,7 @@
     private System.Windows.Forms.Button BtnInstallAutoFind;
     private System.Windows.Forms.Button BtnHcPath;
     private System.Windows.Forms.ComboBox CmboDrives;
+    private System.Windows.Forms.CheckBox ChkOpenExplorerAfterMount;
     private System.Windows.Forms.Button BtnTestCipher;
     private System.Windows.Forms.Label lblCipherTest;
     private System.Windows.Forms.Label lblInstallFound;

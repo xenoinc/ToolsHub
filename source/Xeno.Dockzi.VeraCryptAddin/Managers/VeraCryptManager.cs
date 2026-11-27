@@ -47,6 +47,8 @@ public class VeraCryptManager(
 
   public string SettingInstallPath => _settings.GetString(Constants.AddinId, Constants.KeyInstallPath, @"C:\Program Files\VeraCrypt\VeraCrypt.exe");
 
+  public bool SettingOpenExplorerAfterMount => _settings.GetBool(Constants.AddinId, Constants.KeyOpenExplorerAfterMount, false);
+
   public bool SettingOnExitDismount => _settings.GetBool(Constants.AddinId, Constants.KeyHcOnExitDismount, false);
 
   public bool SettingOnStartMount => _settings.GetBool(Constants.AddinId, Constants.KeyHcOnStartMount, false);
@@ -142,11 +144,15 @@ public class VeraCryptManager(
       return -1;
     }
 
-    string drive = ConfiguredDriveRoot[..1];
+    string root = ConfiguredDriveRoot;
+    string drive = root[..1];
     string path = SettingHcPath;
     string pass = SettingHcPass;
+    int result = _operations.Mount(SettingInstallPath, drive, path, pass);
+    if (result == 0 && SettingOpenExplorerAfterMount)
+      OnOpenInExplorer(root);
 
-    return _operations.Mount(SettingInstallPath, drive, path, pass);
+    return result;
   }
 
   public int OnOpenInExplorer(string drive)

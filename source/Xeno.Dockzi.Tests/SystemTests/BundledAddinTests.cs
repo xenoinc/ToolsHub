@@ -293,6 +293,15 @@ public class BundledAddinTests
       using (var scope = fixture.Provider.CreateScope())
       {
         var page = scope.ServiceProvider.GetRequiredService<Xeno.Dockzi.VeraCryptAddin.Views.PreferencesPage>();
+        var openExplorer = Find<CheckBox>(page, "ChkOpenExplorerAfterMount");
+
+        Assert.IsFalse(openExplorer.Checked);
+        Assert.IsFalse(page.IsModified);
+
+        openExplorer.Checked = true;
+        Assert.IsTrue(page.IsModified);
+        Assert.IsFalse(fixture.Provider.GetRequiredService<VeraCryptManager>().SettingOpenExplorerAfterMount);
+
         Find<TextBox>(page, "TxtHcPath").Text = "sample.hc";
         Find<TextBox>(page, "TxtHcPass").Text = "test-value";
         Find<CheckBox>(page, "ChkOnStartMount").Checked = true;
@@ -308,6 +317,16 @@ public class BundledAddinTests
       reloaded.LoadFile();
       Assert.AreEqual("protected:sample.hc", reloaded.GetValue("VeraCryptAddin", "HcPath"));
 
+      Assert.IsTrue(new ApplicationSettings(reloaded).GetBool("VeraCryptAddin", "OpenExplorerAfterMount", false));
+
+      using (var reopenedScope = fixture.Provider.CreateScope())
+      {
+        var reopened = reopenedScope.ServiceProvider.GetRequiredService<Xeno.Dockzi.VeraCryptAddin.Views.PreferencesPage>();
+        Assert.IsTrue(Find<CheckBox>(reopened, "ChkOpenExplorerAfterMount").Checked);
+        Find<CheckBox>(reopened, "ChkOpenExplorerAfterMount").Checked = false;
+      }
+
+      Assert.IsTrue(fixture.Provider.GetRequiredService<VeraCryptManager>().SettingOpenExplorerAfterMount);
       fixture.Provider.Dispose();
       Assert.AreEqual(0, fixture.Volumes.MountCount);
       Assert.AreEqual(0, fixture.Volumes.DismountCount);
