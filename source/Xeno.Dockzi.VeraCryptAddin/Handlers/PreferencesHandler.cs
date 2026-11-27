@@ -1,4 +1,4 @@
-﻿/* Copyright Xeno Innovations, Inc. 2018
+/* Copyright Xeno Innovations, Inc. 2018
  * Date:    2018-7-18
  * Author:  Damian Suess
  * File:    VeraCryptPreferencesHandler.cs
@@ -9,37 +9,36 @@
 using System.Windows.Forms;
 using Xeno.Dockzi.ExtensionModel;
 
-namespace Xeno.Dockzi.VeraCryptAddin.Handlers
+namespace Xeno.Dockzi.VeraCryptAddin.Handlers;
+
+// We're using an "addin.xml" manifest
+////[Mono.Addins.Extension(
+////  NodeName = ExtensionName.PreferencePageAddin,
+////  Path = ExtensionPath.PreferencePage)]
+public class PreferencesHandler : IPreferencePageExtension
 {
-  // We're using an "addin.xml" manifest
-  ////[Mono.Addins.Extension(
-  ////  NodeName = ExtensionName.PreferencePageAddin,
-  ////  Path = ExtensionPath.PreferencePage)]
-  public class PreferencesHandler : IPreferencePageExtension
+  private readonly Views.PreferencesPage _page;
+
+  public PreferencesHandler(Views.PreferencesPage page)
   {
-    private readonly Views.PreferencesPage _page;
+    _page = page;
+  }
 
-    public PreferencesHandler(Views.PreferencesPage page)
-    {
-      _page = page;
-    }
+  public string Id { get; set; }
 
-    public string Title => "VeraCrypt";
+  public bool IsModified => _page.IsModified;
 
-    public Form Page => _page;
+  public Form Page => _page;
 
-    public bool IsModified => _page.IsModified;
+  public string Title => "VeraCrypt";
 
-    public string Id { get; set; }
+  public void InitializePage()
+  {
+    // Page dependencies and lifetime are supplied by the dialog scope.
+  }
 
-    public void InitializePage()
-    {
-      // Page dependencies and lifetime are supplied by the dialog scope.
-    }
-
-    public void OnSave()
-    {
-      _page.OnSave();
-    }
+  public void OnSave()
+  {
+    _page.OnSave();
   }
 }

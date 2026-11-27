@@ -1,4 +1,4 @@
-﻿/* Copyright Xeno Innovations, Inc. 2019
+/* Copyright Xeno Innovations, Inc. 2019
  * Date:    2019-2-27
  * Author:  Damian Suess
  * File:    SysTrayHandler.cs
@@ -8,45 +8,50 @@
 
 using System.Collections.Generic;
 using System.Windows.Forms;
-using Xeno.Dockzi.Config;
 using Xeno.Dockzi.ExtensionModel.SystemTray;
 
-namespace Xeno.Dockzi.VeraCryptAddin.Handlers
+namespace Xeno.Dockzi.VeraCryptAddin.Handlers;
+
+public class SysTrayHandler : Xeno.Dockzi.ExtensionModel.SystemTray.SysTrayAddin
 {
-  public class SysTrayHandler : Xeno.Dockzi.ExtensionModel.SystemTray.SysTrayAddin
+  private readonly VeraCryptManager _veraCrypt;
+
+  public SysTrayHandler(VeraCryptManager manager)
   {
-    private readonly VeraCryptManager _veraCrypt;
+    _veraCrypt = manager;
+    this.IsInitialized = true;
+  }
 
-    public SysTrayHandler(VeraCryptManager manager)
+  public override bool IsInitialized { get; }
+
+  public override List<ToolStripItem> MenuItems()
+  {
+    var menu = new ToolStripMenuItem(Constants.AddinTitle);
+    var mount = new TrayItem("Mount", string.Empty, false, _veraCrypt.OnMount);
+    var dismount = new TrayItem("Dismount", string.Empty, false, _veraCrypt.OnDismount);
+    var explore = new ToolStripMenuItem("Open in Explorer");
+    menu.DropDownItems.AddRange(new ToolStripItem[] { mount, dismount, new ToolStripSeparator(), explore });
+
+    void RefreshState()
     {
-      _veraCrypt = manager;
-      this.IsInitialized = true;
-    }
+      mount.Enabled = _veraCrypt.CanMount;
+      dismount.Enabled = _veraCrypt.CanDismount;
+      explore.Enabled = false;
 
-    public override bool IsInitialized { get; }
+      for (int index = explore.DropDownItems.Count - 1; index >= 0; index--)
+        explore.DropDownItems[index].Dispose();
 
-    public override List<ToolStripItem> MenuItems()
-    {
-      // TODO: Use Domain.Utils to ask VeraCryptManager if the HC file was already mounted
-      // and display a "checked" box if it was.
-      // For now we're just manually mounting/dismounting for first pass
-      var volume = new Domain.VolumeInfo
+      explore.DropDownItems.Clear();
+      foreach (string drive in _veraCrypt.GetMountedDrives())
       {
-        Title = "Sample file",
-        FilePath = string.Empty,
-        IndexId = Helpers.GenerateGuid(),
-        Password = string.Empty
-      };
-
-      bool isMounted = false;   // await Domain.DriveUtils.IsMounted(volume.FilePath);
-
-      // When creating a SysTray entry, use the IndexId to tell which drive it is
-      // and the display text is, "Title". However below we're just testing individual components
-      ToolStripMenuItem menu = new ToolStripMenuItem("VeraCrypt");
-      menu.DropDownItems.Add(new TrayItem("Mount", volume.IndexId, true, _veraCrypt.OnMount) { Checked = isMounted });
-      menu.DropDownItems.Add(new TrayItem("Dismount", volume.IndexId, true, _veraCrypt.OnDismount));
-
-      return new List<ToolStripItem>() { menu };
+        explore.DropDownItems.Add(new TrayItem(drive, drive, true, _veraCrypt.OnOpenInExplorer));
+        explore.Enabled = true;
+      }
     }
+
+    menu.DropDownOpening += (_, _) => RefreshState();
+    RefreshState();
+
+    return new List<ToolStripItem> { menu };
   }
 }
