@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Shell;
 
 public sealed class NoteWindow : Window
@@ -56,6 +57,7 @@ public sealed class NoteWindow : Window
     Height = 380;
     MinWidth = 240;
     MinHeight = 180;
+    Icon = BitmapFrame.Create(new Uri("pack://application:,,,/NotesAddin;component/Resources/NoteIcon.ico", UriKind.Absolute));
 
     WindowStartupLocation = WindowStartupLocation.CenterScreen;
     WindowStyle = WindowStyle.None;
@@ -78,6 +80,10 @@ public sealed class NoteWindow : Window
 
     // Balance Save and a spacer against the menu and Close to keep the title centered.
     header.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(38) });
+
+    var noteIcon = new Image { Source = Icon, Width = 20, Height = 20, IsHitTestVisible = false, ToolTip = "Dockzi Notes" };
+    Grid.SetColumn(noteIcon, 1);
+    header.Children.Add(noteIcon);
 
     var saveButton = new Button
     {

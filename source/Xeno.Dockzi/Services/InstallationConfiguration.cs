@@ -3,6 +3,7 @@ namespace Xeno.Dockzi.Services;
 using System;
 using System.IO;
 using System.Text.Json;
+using Velopack.Sources;
 
 public sealed class InstallationConfiguration
 {
@@ -19,5 +20,17 @@ public sealed class InstallationConfiguration
     if (!string.IsNullOrEmpty(config.UpdateUrl) && (!Uri.TryCreate(config.UpdateUrl, UriKind.Absolute, out var uri) || uri.Scheme != Uri.UriSchemeHttps))
       throw new InvalidDataException("The Dockzi update feed must use HTTPS.");
     return config;
+  }
+
+  public IUpdateSource CreateUpdateSource()
+  {
+    var uri = new Uri(UpdateUrl, UriKind.Absolute);
+    if (uri.Scheme != Uri.UriSchemeHttps)
+      throw new InvalidDataException("The Dockzi update feed must use HTTPS.");
+
+    if (string.Equals(uri.Host, "github.com", StringComparison.OrdinalIgnoreCase))
+      return new GithubSource(UpdateUrl, accessToken: null, prerelease: false);
+
+    return new SimpleWebSource(UpdateUrl);
   }
 }

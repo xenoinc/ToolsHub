@@ -8,11 +8,12 @@ Uses isolated staging; never packages the developer's output directory or user d
 #>
 [CmdletBinding()]
 param(
-  [ValidatePattern('^\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?$')]
-  [string]$Version = '0.6.0',
+  [AllowEmptyString()]
+  [ValidatePattern('^$|^\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?$')]
+  [string]$Version = '',
   [ValidateSet('win-x64', 'win-arm64')]
   [string]$Runtime = 'win-x64',
-  [string]$UpdateUrl = '',
+  [string]$UpdateUrl = 'https://github.com/xenoinc/ToolsHub',
   [ValidatePattern('^[a-zA-Z0-9_-]+$')]
   [string]$Channel = 'win',
   [string]$SignTemplate = '',
@@ -26,6 +27,19 @@ $publishPath = Join-Path $repositoryPath 'publish'
 $stagingPath = [IO.Path]::GetFullPath((Join-Path $publishPath ".staging\$Runtime"))
 $appPath = Join-Path $stagingPath 'app'
 $dotnetPath = (Get-Command dotnet -CommandType Application -ErrorAction Stop).Source
+
+# vpk pack requires SemVer2; retain the core Build number in an ordered release label.
+if ([string]::IsNullOrWhiteSpace($Version)) {
+  [xml]$versionProperties = [IO.File]::ReadAllText((Join-Path $repositoryPath 'source\Directory.Build.props'))
+  $versionNodes = $versionProperties.SelectNodes('/Project/PropertyGroup/DockziVersion')
+
+  if ($versionNodes.Count -ne 1 -or $versionNodes[0].InnerText -notmatch '^\d+\.\d+\.\d+\.\d+$') {
+    throw 'Expected exactly one four-part DockziVersion in source/Directory.Build.props.'
+  }
+
+  $coreVersion = [Version]$versionNodes[0].InnerText
+  $Version = '{0}.{1}.{2}-build.{3}' -f $coreVersion.Major, $coreVersion.Minor, $coreVersion.Build, $coreVersion.Revision
+}
 
 function Assert-RegularDirectoryTree([string]$Path) {
   if (Test-Path -LiteralPath $Path) {
@@ -54,7 +68,7 @@ try {
   if ($UpdateUrl) {
     $feedUri = $null
     if (-not [Uri]::TryCreate($UpdateUrl, [UriKind]::Absolute, [ref]$feedUri) -or $feedUri.Scheme -ne 'https') {
-      throw 'UpdateUrl must be an absolute HTTPS URL for a Velopack release feed directory.'
+      throw 'UpdateUrl must be an absolute HTTPS URL for a GitHub repository or Velopack release feed directory.'
     }
   }
 
