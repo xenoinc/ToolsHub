@@ -26,9 +26,32 @@ jobs:
       package_version: ${{ steps.plan.outputs.package_version }}
       branch: ${{ steps.plan.outputs.branch }}
     steps:
+      - name: Check release App configuration
+        shell: pwsh
+        env:
+          RELEASE_APP_ID: ${{ secrets.RELEASE_APP_ID }}
+          RELEASE_APP_PRIVATE_KEY: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+        run: |
+          foreach ($name in @('RELEASE_APP_ID', 'RELEASE_APP_PRIVATE_KEY')) {
+            if ([string]::IsNullOrWhiteSpace([Environment]::GetEnvironmentVariable($name))) {
+              throw "Missing repository Actions secret: $name. Configure the installed release App before running this workflow."
+            }
+          }
+
+      # v2 accepts the numeric App ID used by RELEASE_APP_ID.
+      # Limit the installation token to this repository and version-commit access.
+      - name: Authenticate as the release App
+        id: release-app
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ secrets.RELEASE_APP_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+          permission-contents: write
+
       # Only merged base-branch code is checked out. Never use the PR head.
       - uses: actions/checkout@v6
         with:
+          token: ${{ steps.release-app.outputs.token }}
           ref: ${{ github.event.pull_request.base.ref }}
           fetch-depth: 0
 
