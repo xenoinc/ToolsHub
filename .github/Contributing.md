@@ -31,8 +31,10 @@ GitHub ruleset or branch protection settings after the workflow has run once.
 
 PR merges into `develop` increment only the core Build number, validate/package that
 commit, and publish a tag such as `v0.9.1.58-preview` with a GitHub prerelease.
-PR merges into `master` keep the current core version and publish `v0.9.1.58` as
-a stable GitHub release. Both include the installer, update feed, and packages.
+PR merges into `master` increment Revision (preserving Build) and publish, for
+example, `v0.9.2.58` as a stable GitHub release. Label a master PR `release:major`
+for a milestone such as `v1.0.0.58`, or `release:minor` to increment Minor and
+reset Revision. These labels override the normal Revision increment. Both include the installer, update feed, and packages.
 General settings lets users opt into previews; the default is stable updates only.
 See [versioning and release automation](../docs/Versioning.md) for permissions,
 version mapping, retry behavior, and local regression tests.

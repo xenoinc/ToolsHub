@@ -9,8 +9,39 @@ param(
   [Parameter(Mandatory)][ValidatePattern('^[0-9a-f]{40}$')][string]$MergeCommit,
   [Parameter(Mandatory)][ValidateRange(1, [int]::MaxValue)][int]$PullRequestNumber,
   [Parameter(Mandatory)][string]$OutputPath,
+  [ValidateSet('Revision', 'Minor', 'Major')][string]$MasterBump = 'Revision',
   [switch]$AllowLocalRepository
 )
+
+function Get-VersionFloor {
+  $floor = [Version]'0.0.0.0'
+  $tags = @(git tag --list 'v*')
+  if ($LASTEXITCODE -ne 0) { throw 'Unable to inspect release version tags.' }
+  foreach ($tag in $tags) {
+    if ($tag -match '^v(\d+\.\d+\.\d+\.\d+)$') {
+      $version = [Version]$Matches[1]
+      if ($version -gt $floor) { $floor = $version }
+    }
+  }
+  $master = git ls-remote --heads origin refs/heads/master
+  if ($LASTEXITCODE -ne 0) { throw 'Unable to inspect master.' }
+  if ($master) {
+    git fetch origin master | Out-Host
+    if ($LASTEXITCODE -ne 0) { throw 'Unable to fetch the master version.' }
+    git cat-file -e 'origin/master:source/Directory.Build.props' 2>$null
+    if ($LASTEXITCODE -eq 0) {
+      $content = git show 'origin/master:source/Directory.Build.props'
+      if ($LASTEXITCODE -ne 0) { throw 'Unable to read the master version.' }
+      [xml]$properties = $content -join "`n"
+      $node = $properties.SelectSingleNode('/Project/PropertyGroup/DockziVersion')
+      if ($null -ne $node) {
+        $version = [Version]$node.InnerText
+        if ($version -gt $floor) { $floor = $version }
+      }
+    }
+  }
+  return $floor.ToString()
+}
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
@@ -27,17 +58,12 @@ $commit = $null
 
 for ($attempt = 1; $attempt -le 10; $attempt++)
 {
-  git fetch origin $BaseBranch
+  git fetch origin $BaseBranch --tags
   if ($LASTEXITCODE -ne 0) { throw 'Unable to fetch the target branch.' }
 
   git merge-base --is-ancestor $MergeCommit "origin/$BaseBranch"
 
   if ($LASTEXITCODE -ne 0) { throw 'The PR merge commit is not on the target branch.' }
-
-  if ($BaseBranch -eq 'master') {
-    $commit = $MergeCommit
-    break
-  }
 
   $existing = git log "origin/$BaseBranch" --format=%H -1 --fixed-strings --grep="$marker"
   if ($LASTEXITCODE -ne 0) { throw 'Unable to inspect version history.' }
@@ -62,14 +88,16 @@ for ($attempt = 1; $attempt -le 10; $attempt++)
   if ($LASTEXITCODE -ne 0) {
     throw 'Unable to configure the commit email.' }
 
-  & (Join-Path $PSScriptRoot 'Increment-DockziVersion.ps1') -PropsPath './source/Directory.Build.props'
+  $component = if ($BaseBranch -eq 'develop') { 'Build' } else { $MasterBump }
+  $minimumVersion = Get-VersionFloor
+  & (Join-Path $PSScriptRoot 'Increment-DockziVersion.ps1') -PropsPath './source/Directory.Build.props' -Component $component -MinimumVersion $minimumVersion
 
   git add -- source/Directory.Build.props
 
   if ($LASTEXITCODE -ne 0) {
     throw 'Unable to stage the version increment.' }
 
-  git commit -m "chore: bump Dockzi build after PR #$PullRequestNumber" -m $marker
+  git commit -m "chore: bump Dockzi $component after PR #$PullRequestNumber" -m $marker
 
   if ($LASTEXITCODE -ne 0) {
     throw 'Unable to commit the version increment.' }

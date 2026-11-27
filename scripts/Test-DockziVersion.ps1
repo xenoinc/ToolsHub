@@ -2,10 +2,12 @@
 # Standalone regression tests; no Pester installation required.
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
+$caseCount = 0
 $scriptPath = Join-Path $PSScriptRoot 'Increment-DockziVersion.ps1'
 
 function Test-VersionIncrement {
-  param([string]$Version, [string]$ExpectedVersion, [switch]$ShouldFail, [switch]$Duplicate)
+  param([string]$Version, [string]$ExpectedVersion, [switch]$ShouldFail, [switch]$Duplicate, [string]$Component = 'Build', [string]$MinimumVersion = '')
+  $script:caseCount++
 
   $temporaryFile = [IO.Path]::GetTempFileName()
   try
@@ -21,7 +23,7 @@ function Test-VersionIncrement {
     $failed = $false
     $result = $null
 
-    try { $result = & $scriptPath -PropsPath $temporaryFile }
+    try { $result = & $scriptPath -PropsPath $temporaryFile -Component $Component -MinimumVersion $MinimumVersion }
     catch { $failed = $true }
 
     if ($ShouldFail) {
@@ -58,4 +60,14 @@ Test-VersionIncrement '65535.3.4.1' -ShouldFail
 Test-VersionIncrement '2.3.4' -ShouldFail
 Test-VersionIncrement '2.3.4.1-beta' -ShouldFail
 Test-VersionIncrement '2.3.4.1' -ShouldFail -Duplicate
-Write-Host 'All 8 core version increment regression cases passed.'
+Test-VersionIncrement '1.2.3.4' '1.2.4.4' -Component Revision
+Test-VersionIncrement '1.2.65534.4' -Component Revision -ShouldFail
+Test-VersionIncrement '1.2.3.4' '1.3.0.4' -Component Minor
+Test-VersionIncrement '0.9.1.57' '1.0.0.57' -Component Major
+Test-VersionIncrement '1.2.3.4' '2.0.0.4' -Component Major
+Test-VersionIncrement '65534.2.3.4' -Component Major -ShouldFail
+Test-VersionIncrement '1.2.3.6' '1.2.4.7' -MinimumVersion '1.2.4.5'
+Test-VersionIncrement '1.2.3.6' '1.2.5.6' -Component Revision -MinimumVersion '1.2.4.5'
+Test-VersionIncrement '0.9.1.57' '1.0.0.70' -Component Major -MinimumVersion '0.9.3.70'
+Test-VersionIncrement '1.2.3.4' -MinimumVersion 'invalid' -ShouldFail
+Write-Host "All $caseCount core version increment regression cases passed."

@@ -39,9 +39,17 @@ jobs:
           BASE_BRANCH: ${{ github.event.pull_request.base.ref }}
           MERGE_SHA: ${{ github.event.pull_request.merge_commit_sha }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_LABELS_JSON: ${{ toJSON(github.event.pull_request.labels.*.name) }}
         run: |
+          $masterBump = 'Revision'
+          $labels = @($env:PR_LABELS_JSON | ConvertFrom-Json)
+          if ($env:BASE_BRANCH -eq 'master') {
+            if ('release:major' -in $labels -and 'release:minor' -in $labels) { throw 'Choose one release label: release:major or release:minor.' }
+            if ('release:major' -in $labels) { $masterBump = 'Major' }
+            elseif ('release:minor' -in $labels) { $masterBump = 'Minor' }
+          }
           $planPath = Join-Path $env:RUNNER_TEMP 'release-plan.json'
-          ./scripts/Prepare-MergedRelease.ps1 -BaseBranch $env:BASE_BRANCH -MergeCommit $env:MERGE_SHA -PullRequestNumber ([int]$env:PR_NUMBER) -OutputPath $planPath
+          ./scripts/Prepare-MergedRelease.ps1 -BaseBranch $env:BASE_BRANCH -MergeCommit $env:MERGE_SHA -PullRequestNumber ([int]$env:PR_NUMBER) -OutputPath $planPath -MasterBump $masterBump
           $plan = Get-Content -LiteralPath $planPath -Raw | ConvertFrom-Json
           "commit=$($plan.Commit)" >> $env:GITHUB_OUTPUT
           "tag=$($plan.Tag)" >> $env:GITHUB_OUTPUT

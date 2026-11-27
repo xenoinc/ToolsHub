@@ -155,7 +155,11 @@ try
   & $prepareScript -BaseBranch master -MergeCommit $masterMerge -PullRequestNumber 103 -OutputPath $output -AllowLocalRepository | Out-Null
 
   $master = Get-Content -LiteralPath $output -Raw | ConvertFrom-Json
-  Assert-Release ($master.CoreVersion -eq $first.CoreVersion -and $master.Commit -eq $masterMerge) 'Master must use the exact merge commit without incrementing.'
+  Assert-Release ($master.CoreVersion -eq '1.2.4.5' -and $master.Commit -ne $masterMerge) 'Master must increment Revision while preserving Build.'
+  & $prepareScript -BaseBranch master -MergeCommit $masterMerge -PullRequestNumber 103 -OutputPath $output -AllowLocalRepository | Out-Null
+  $masterRerun = Get-Content -LiteralPath $output -Raw | ConvertFrom-Json
+  Assert-Release ($masterRerun.Commit -eq $master.Commit) 'Master retries must not increment Revision twice.'
+
 
   $assets = Join-Path $root 'assets'
   New-FixtureAssets $assets $first.PackageVersion
@@ -189,6 +193,33 @@ try
   Invoke-FixtureGit commit --allow-empty -m 'Conflicting stable version'
   $conflict = git rev-parse HEAD
   Expect-Failure { & $publishScript -Repository 'example/Dockzi' -BaseBranch master -Commit $conflict -AssetsDirectory $stableAssets }
+
+  Invoke-FixtureGit checkout develop
+  Invoke-FixtureGit commit --allow-empty -m 'Next development merge'
+  Invoke-FixtureGit push origin develop
+  $nextMerge = git rev-parse HEAD
+  & $prepareScript -BaseBranch develop -MergeCommit $nextMerge -PullRequestNumber 104 -OutputPath $output -AllowLocalRepository | Out-Null
+  $nextPreview = Get-Content -LiteralPath $output -Raw | ConvertFrom-Json
+  Assert-Release ($nextPreview.CoreVersion -eq '1.2.4.7') 'Develop must carry the master Revision forward and increment Build.'
+
+  Invoke-FixtureGit checkout master
+  Invoke-FixtureGit reset --hard origin/master
+  Invoke-FixtureGit commit --allow-empty -m 'Major release merge'
+  Invoke-FixtureGit push origin master
+  $majorMerge = git rev-parse HEAD
+  & $prepareScript -BaseBranch master -MergeCommit $majorMerge -PullRequestNumber 105 -MasterBump Major -OutputPath $output -AllowLocalRepository | Out-Null
+  $majorRelease = Get-Content -LiteralPath $output -Raw | ConvertFrom-Json
+  Assert-Release ($majorRelease.CoreVersion -eq '2.0.0.5' -and $majorRelease.Tag -eq 'v2.0.0.5') 'Major release must reset Minor/Revision and preserve Build.'
+  & $prepareScript -BaseBranch master -MergeCommit $majorMerge -PullRequestNumber 105 -MasterBump Major -OutputPath $output -AllowLocalRepository | Out-Null
+  $majorRetry = Get-Content -LiteralPath $output -Raw | ConvertFrom-Json
+  Assert-Release ($majorRetry.Commit -eq $majorRelease.Commit) 'Major-release retry must remain idempotent.'
+
+  Invoke-FixtureGit commit --allow-empty -m 'Minor release merge'
+  Invoke-FixtureGit push origin master
+  $minorMerge = git rev-parse HEAD
+  & $prepareScript -BaseBranch master -MergeCommit $minorMerge -PullRequestNumber 106 -MasterBump Minor -OutputPath $output -AllowLocalRepository | Out-Null
+  $minorRelease = Get-Content -LiteralPath $output -Raw | ConvertFrom-Json
+  Assert-Release ($minorRelease.CoreVersion -eq '2.1.0.5') 'Minor release must reset Revision and preserve Build.'
 
   Invoke-FixtureGit checkout --detach $first.Commit
   Set-Content -LiteralPath (Join-Path $assets 'Dockzi-win-Setup.exe') -Value 'Corrupted asset'

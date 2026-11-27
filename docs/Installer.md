@@ -58,7 +58,7 @@ Windows sign-in startup uses Velopack's stable root `Dockzi.exe` launcher. Logs,
 
 ## Publish updates
 
-Merged PRs now build and publish automatically: `develop` produces a version-bumped prerelease; `master` publishes the current version as stable. Both publish only after validating the exact release commit. See [versioning and release automation](Versioning.md). The manual instructions below remain available for deliberate local releases.
+Merged PRs now build and publish automatically: `develop` produces a version-bumped prerelease; `master` increments Revision and publishes a stable release. Master PR labels `release:major` and `release:minor` override the Revision increment for major/minor milestones while preserving Build. Both publish only after validating the exact release commit. See [versioning and release automation](Versioning.md). The manual instructions below remain available for deliberate local releases.
 
 For the default GitHub source, create a published stable release in `xenoinc/ToolsHub` and attach the generated `releases.win.json`, `.nupkg` packages, and Setup.exe. Draft GitHub releases are excluded. Prerelease GitHub releases require opting into **Receive preview updates** in General settings. For an HTTPS feed override, upload the generated release indexes and `.nupkg` files to that feed directory. Distribute Setup.exe for first installs. Do not upload `.staging` or any user data. A different channel uses its corresponding `releases.<channel>.json` index. This build script generates files locally and does not upload or publish anything.
 
