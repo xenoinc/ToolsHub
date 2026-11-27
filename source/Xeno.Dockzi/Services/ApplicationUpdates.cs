@@ -20,6 +20,12 @@ public sealed class ApplicationUpdates
   {
   }
 
+  public ApplicationUpdates(UpdatePreferences preferences)
+    : this(LoadConfiguration(), configuration => new VelopackUpdateClient(configuration, preferences.ReceivePreviewUpdates))
+  {
+    ArgumentNullException.ThrowIfNull(preferences);
+  }
+
   public ApplicationUpdates(InstallationConfiguration configuration, Func<InstallationConfiguration, IApplicationUpdateClient> createClient)
   {
     _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
@@ -44,7 +50,7 @@ public sealed class ApplicationUpdates
     _busy = true;
     try
     {
-      _client ??= _createClient(_configuration);
+      _client = _createClient(_configuration);
       if (!_client.IsInstalled || _client.IsPortable)
       {
         MessageBox.Show("Install Dockzi using Setup.exe to receive application updates.", "Dockzi updates");

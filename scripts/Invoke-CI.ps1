@@ -21,6 +21,7 @@ $repositoryPath = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 $solutionPath = Join-Path $repositoryPath 'source/Dockzi.slnx'
 $testAssembly = Join-Path $repositoryPath 'output/tests/Xeno.Dockzi.Tests.dll'
 $resultsPath = [IO.Path]::GetFullPath($ResultsDirectory)
+
 New-Item -ItemType Directory -Force -Path $resultsPath | Out-Null
 Write-Host "Validation logs: $resultsPath"
 
@@ -36,11 +37,17 @@ try {
   & dotnet build $solutionPath --configuration $Configuration --no-restore --no-incremental `
     --disable-build-servers -m:1 -p:UseSharedCompilation=false -warnaserror --verbosity minimal 2>&1 |
     Tee-Object -FilePath (Join-Path $resultsPath 'build.log')
+
   if ($LASTEXITCODE -ne 0) { throw 'Solution build failed.' }
 
   & (Join-Path $PSScriptRoot 'Test-DockziVersion.ps1') *>&1 |
     Tee-Object -FilePath (Join-Path $resultsPath 'versioning-tests.log')
-} finally {
+
+  & (Join-Path $PSScriptRoot 'Test-ReleaseAutomation.ps1') *>&1 |
+    Tee-Object -FilePath (Join-Path $resultsPath 'release-automation-tests.log')
+}
+finally
+{
   Pop-Location
 }
 
@@ -48,14 +55,20 @@ try {
 # logs and test working files away from the checkout without depending on dotnet
 # test's working-directory-based global.json runner selection.
 Push-Location -LiteralPath $resultsPath
-try {
+try
+{
   $platformResults = Join-Path $resultsPath 'TestResults'
+
   & dotnet exec $testAssembly --results-directory $platformResults --minimum-expected-tests 1 `
     --timeout 5m --diagnostic --diagnostic-verbosity Information `
     --diagnostic-output-directory $platformResults 2>&1 |
     Tee-Object -FilePath (Join-Path $resultsPath 'automated-tests.log')
-  if ($LASTEXITCODE -ne 0) { throw 'Automated tests failed. See automated-tests.log and TestResults.' }
-} finally {
+
+  if ($LASTEXITCODE -ne 0) {
+    throw 'Automated tests failed. See automated-tests.log and TestResults.' }
+}
+finally
+{
   Pop-Location
 }
 

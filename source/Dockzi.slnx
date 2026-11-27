@@ -9,6 +9,15 @@
     <Project Path="Xeno.Dockzi.SampleAssmAddin/SampleAssmAddin.csproj" />
     <Project Path="Xeno.Dockzi.SampleXmlAddin/SampleXmlAddin.csproj" />
   </Folder>
+  <Folder Name="/Scripts/">
+    <File Path="../scripts/Get-ReleasePlan.ps1" />
+    <File Path="../scripts/Increment-DockziVersion.ps1" />
+    <File Path="../scripts/Invoke-CI.ps1" />
+    <File Path="../scripts/Prepare-MergedRelease.ps1" />
+    <File Path="../scripts/Publish-GitHubRelease.ps1" />
+    <File Path="../scripts/Test-DockziVersion.ps1" />
+    <File Path="../scripts/Test-ReleaseAutomation.ps1" />
+  </Folder>
   <Folder Name="/Solution Items/">
     <File Path="../Directory.Packages.props" />
     <File Path=".editorconfig" />

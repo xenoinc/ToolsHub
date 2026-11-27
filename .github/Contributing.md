@@ -5,7 +5,7 @@
 Every pull request runs **Build and test (Debug)** and **Build and test (Release)**
 on Windows with the .NET 10 SDK. Both checks restore dependencies, build the entire
 `source/Dockzi.slnx` solution with warnings treated as errors, run the PowerShell
-version-increment regression checks, and execute the complete
+version-increment and release-automation regression checks, and execute the complete
 `Xeno.Dockzi.Tests` suite. Merge queues and manual workflow runs are also supported.
 New commits cancel superseded validation runs for the same PR.
 
@@ -26,6 +26,16 @@ folder. Use `-ResultsDirectory` to select another location.
 To make these checks mandatory before merging, add **Build and test (Debug)** and
 **Build and test (Release)** as required status checks in the target branch's
 GitHub ruleset or branch protection settings after the workflow has run once.
+
+## Releases after merge
+
+PR merges into `develop` increment only the core Build number, validate/package that
+commit, and publish a tag such as `v0.9.1.58-preview` with a GitHub prerelease.
+PR merges into `master` keep the current core version and publish `v0.9.1.58` as
+a stable GitHub release. Both include the installer, update feed, and packages.
+General settings lets users opt into previews; the default is stable updates only.
+See [versioning and release automation](../docs/Versioning.md) for permissions,
+version mapping, retry behavior, and local regression tests.
 
 ## Contributing changes
 

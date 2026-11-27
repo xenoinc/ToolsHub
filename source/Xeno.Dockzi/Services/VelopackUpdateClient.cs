@@ -8,11 +8,14 @@ using Velopack;
 internal sealed class VelopackUpdateClient : IApplicationUpdateClient
 {
   private readonly UpdateManager _manager;
+
   private UpdateInfo _available;
 
-  public VelopackUpdateClient(InstallationConfiguration configuration)
+  public VelopackUpdateClient(InstallationConfiguration configuration, bool receivePreviewUpdates = false)
   {
-    _manager = new UpdateManager(configuration.CreateUpdateSource(), new UpdateOptions { ExplicitChannel = configuration.Channel });
+    _manager = new UpdateManager(
+      configuration.CreateUpdateSource(receivePreviewUpdates),
+      new UpdateOptions { ExplicitChannel = configuration.Channel });
   }
 
   public bool IsInstalled => _manager.IsInstalled;
