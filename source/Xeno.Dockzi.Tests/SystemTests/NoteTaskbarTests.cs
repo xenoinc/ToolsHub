@@ -48,7 +48,9 @@ public class NoteTaskbarTests
         Assert.AreEqual(ReadAppId(first), ReadAppId(second));
         Assert.AreNotEqual(ReadAppId(first), ReadAppId(ordinary));
         Assert.Contains("NoteIcon.ico", first.Icon.ToString());
-        Assert.AreNotEqual(IntPtr.Zero, SendMessage(new WindowInteropHelper(first).Handle, 0x007F, new IntPtr(1), IntPtr.Zero));
+        Assert.AreNotEqual(
+          IntPtr.Zero,
+          NativeMethods.SendMessage(new WindowInteropHelper(first).Handle, 0x007F, new IntPtr(1), IntPtr.Zero));
       }
       catch (Exception ex)
       {
@@ -70,14 +72,11 @@ public class NoteTaskbarTests
       System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(failure).Throw();
   }
 
-  [DllImport("ole32.dll")]
-  private static extern int PropVariantClear(ref PropVariant value);
-
   private static string ReadAppId(Window window)
   {
     var iid = typeof(IPropertyStore).GUID;
-    Marshal.ThrowExceptionForHR(SHGetPropertyStoreForWindow(new WindowInteropHelper(window).Handle, ref iid, out var store));
-    var value = new PropVariant();
+    Marshal.ThrowExceptionForHR(NativeMethods.SHGetPropertyStoreForWindow(new WindowInteropHelper(window).Handle, ref iid, out var store));
+    PropVariant value = default;
     try
     {
       var key = new PropertyKey { Format = new Guid("9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3"), Id = 5 };
@@ -87,16 +86,10 @@ public class NoteTaskbarTests
     }
     finally
     {
-      PropVariantClear(ref value);
+      NativeMethods.PropVariantClear(ref value);
       Marshal.ReleaseComObject(store);
     }
   }
-
-  [DllImport("user32.dll")]
-  private static extern IntPtr SendMessage(IntPtr window, uint message, IntPtr wParam, IntPtr lParam);
-
-  [DllImport("shell32.dll")]
-  private static extern int SHGetPropertyStoreForWindow(IntPtr window, ref Guid iid, [MarshalAs(UnmanagedType.Interface)] out IPropertyStore store);
 
   [StructLayout(LayoutKind.Sequential)]
   private struct PropertyKey
@@ -114,5 +107,17 @@ public class NoteTaskbarTests
     public ushort Reserved3;
     public IntPtr Pointer;
     public IntPtr Padding;
+  }
+
+  private static class NativeMethods
+  {
+    [DllImport("ole32.dll")]
+    public static extern int PropVariantClear(ref PropVariant value);
+
+    [DllImport("user32.dll")]
+    public static extern IntPtr SendMessage(IntPtr window, uint message, IntPtr wParam, IntPtr lParam);
+
+    [DllImport("shell32.dll")]
+    public static extern int SHGetPropertyStoreForWindow(IntPtr window, ref Guid iid, [MarshalAs(UnmanagedType.Interface)] out IPropertyStore store);
   }
 }
