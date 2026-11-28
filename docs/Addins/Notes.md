@@ -9,8 +9,10 @@ Addins metadata is declared in `source/addins/NotesAddin/AddinAssembly.cs`.
 - Change or disable the global shortcut in **Preferences > Notes**. An optional Windows modifier is available. A conflicting shortcut reports an error; the tray command remains available.
 - Write Markdown or plain text. Use `# Title here` for the centered window title. Notes without a level-one heading are called **Untitled note**.
 - Click the rendered note (or press **F2**) to edit the source. Press **Ctrl+S** or click the small save icon to save and return to the formatted view.
+- In the editor, **Tab** inserts two spaces. **Enter** at the end of a list item continues `-`, `*`, or `+` bullets, or increments numbered markers such as `1.` and `1)`, preserving indentation. Enter on an empty item ends the list. Code blocks and typing in the middle of a line keep normal Enter behavior.
 - Press **Esc** while editing to discard unsaved changes and return to the formatted view. Press **Esc** again from the formatted view to close. Dismissing a new, discarded draft this way does not save it.
 - Drag the title to move the note, resize its edges, and use **×** to close. Closing also saves pending changes. If saving fails, the note stays open unless you explicitly discard it.
+- Notes use the embedded `NoteIcon.ico` and share their own Windows taskbar group, separate from Dockzi's application icon.
 - The tray submenu shows the **10 most recently saved** notes, newest first. Saving an older note moves it to the top. Closing a note keeps its file.
 - **Preferences > Notes** lists all saved notes with their title, saved date, and a trash icon. Double-click a note to open it. To delete a note, click its trash icon in Preferences or choose **… > Delete** beside Close in the note window. Confirm **Are you sure you want to delete note?** to proceed; **No** is selected by default. Deleting also closes the note and discards any pending edits.
 

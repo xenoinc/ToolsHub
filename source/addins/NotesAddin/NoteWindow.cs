@@ -17,6 +17,7 @@ public sealed class NoteWindow : Window
   private readonly FlowDocumentScrollViewer _preview;
   private readonly Func<string, Note> _save;
   private readonly TextBlock _title;
+
   private bool _discardOnClose;
   private bool _hasSaved;
   private string _savedText;
@@ -57,7 +58,10 @@ public sealed class NoteWindow : Window
     Height = 380;
     MinWidth = 240;
     MinHeight = 180;
+
+    // Ensure we're using the NoteIcon.ico
     Icon = BitmapFrame.Create(new Uri("pack://application:,,,/NotesAddin;component/Resources/NoteIcon.ico", UriKind.Absolute));
+    NoteTaskbarIdentity.Attach(this);
 
     WindowStartupLocation = WindowStartupLocation.CenterScreen;
     WindowStyle = WindowStyle.None;
@@ -78,12 +82,7 @@ public sealed class NoteWindow : Window
     header.ColumnDefinitions.Add(new ColumnDefinition());
     header.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(38) });
 
-    // Balance Save and a spacer against the menu and Close to keep the title centered.
     header.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(38) });
-
-    var noteIcon = new Image { Source = Icon, Width = 20, Height = 20, IsHitTestVisible = false, ToolTip = "Dockzi Notes" };
-    Grid.SetColumn(noteIcon, 1);
-    header.Children.Add(noteIcon);
 
     var saveButton = new Button
     {
@@ -142,7 +141,8 @@ public sealed class NoteWindow : Window
         DragMove();
     };
 
-    Grid.SetColumn(_title, 2);
+    Grid.SetColumn(_title, 1);
+    Grid.SetColumnSpan(_title, 2);
     var closeButton = new Button
     {
       Content = "×",
@@ -169,7 +169,7 @@ public sealed class NoteWindow : Window
     {
       Text = note.Text,
       AcceptsReturn = true,
-      AcceptsTab = true,
+      AcceptsTab = false,
       TextWrapping = TextWrapping.Wrap,
       VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
       FontFamily = new FontFamily("Consolas"),
@@ -179,6 +179,7 @@ public sealed class NoteWindow : Window
       Padding = new Thickness(20, 16, 20, 20),
     };
 
+    NoteEditorBehavior.Attach(_editor);
     _editor.TextChanged += (_, _) => UpdateTitle();
     _preview = new FlowDocumentScrollViewer
     {

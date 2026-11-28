@@ -344,7 +344,7 @@ public class NotesAddinTests
   }
 
   [TestMethod]
-  public void PopupNotesUseTheirOwnEmbeddedIconInTheWindowAndHeader()
+  public void PopupNotesKeepWindowIconAndExpandTitleIntoRemovedHeaderIconSpace()
   {
     RunSta(() =>
     {
@@ -355,9 +355,11 @@ public class NotesAddinTests
         Assert.IsNotNull(window.Icon);
 
         var header = (System.Windows.Controls.Grid)((System.Windows.Controls.Grid)window.Content).Children[0];
-        var icon = header.Children.OfType<System.Windows.Controls.Image>().Single();
+        Assert.IsEmpty(header.Children.OfType<System.Windows.Controls.Image>());
 
-        Assert.AreSame(window.Icon, icon.Source);
+        var title = header.Children.OfType<System.Windows.Controls.TextBlock>().Single();
+        Assert.AreEqual(1, System.Windows.Controls.Grid.GetColumn(title));
+        Assert.AreEqual(2, System.Windows.Controls.Grid.GetColumnSpan(title));
 
         var frame = (System.Windows.Media.Imaging.BitmapFrame)window.Icon;
         Assert.Contains(item => item.PixelWidth == 16, frame.Decoder.Frames);
