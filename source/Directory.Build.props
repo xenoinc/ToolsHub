@@ -1,7 +1,7 @@
 <Project>
   <!-- Core executable only: Major.Minor.Revision.Build. Add-ins retain their own versions. -->
   <PropertyGroup Condition="'$(MSBuildProjectName)' == 'Xeno.Dockzi'">
-    <DockziVersion>0.10.0.57</DockziVersion>
+    <DockziVersion>0.10.0.58</DockziVersion>
     <Version>$(DockziVersion)</Version>
     <AssemblyVersion>$(DockziVersion)</AssemblyVersion>
     <FileVersion>$(DockziVersion)</FileVersion>
