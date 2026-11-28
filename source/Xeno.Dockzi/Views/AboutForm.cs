@@ -7,9 +7,11 @@
  */
 
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Reflection;
 using System.Windows.Forms;
+using Xeno.Dockzi.Services.Logging;
 
 namespace Xeno.Dockzi.Views
 {
@@ -32,13 +34,35 @@ namespace Xeno.Dockzi.Views
 
     private void AboutForm_Load(object sender, EventArgs e)
     {
-      linkGitHub.Links.Add(new LinkLabel.Link { LinkData = "https://github.com/DamianSuess/ToolsHub" });
+      linkGitHub.Links.Add(new LinkLabel.Link { LinkData = "https://github.com/xenoinc/ToolsHub" });
       linkXenoInc.Links.Add(new LinkLabel.Link { LinkData = "https://xenoinc.com" });
     }
 
     private void LinkedLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
     {
-      Process.Start(e.Link.LinkData as string);
+      if (e.Link?.LinkData is not string target ||
+          !Uri.TryCreate(target, UriKind.Absolute, out var uri) ||
+          (uri.Scheme != Uri.UriSchemeHttps && uri.Scheme != Uri.UriSchemeHttp))
+        return;
+
+      try
+      {
+        using var process = Process.Start(new ProcessStartInfo(uri.AbsoluteUri)
+        {
+          UseShellExecute = true,
+        });
+        e.Link.Visited = true;
+      }
+      catch (Exception ex) when (ex is Win32Exception or InvalidOperationException)
+      {
+        Log.Warn($"Unable to open About link '{uri.AbsoluteUri}': {ex.Message}");
+        MessageBox.Show(
+          this,
+          $"Unable to open your browser. You can visit:\n{uri.AbsoluteUri}",
+          "Dockzi",
+          MessageBoxButtons.OK,
+          MessageBoxIcon.Warning);
+      }
     }
   }
 }
